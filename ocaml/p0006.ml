@@ -1,4 +1,4 @@
-(* Project Euler: Problem 5 *)
+(* Project Euler: Problem 6 *)
 
 let rec pow b e =
   if e <= 0 then 1 else b * pow b (e - 1);;
