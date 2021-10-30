@@ -11,7 +11,7 @@ usage:
 all: $(PROBLEMS)
 
 clean:
-	rm -f cmd/* *.o *.cmi *.cmx
+	rm -f cmd/* *.o *.cmi *.cmx *~
 
 str.cmxa:
 
