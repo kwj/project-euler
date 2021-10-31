@@ -16,7 +16,7 @@ let sieve_of_eratosthenes num =
       | Some v -> aux (IntSet.diff st (mult v)) v
   in
   IntSet.elements (aux (IntSet.of_list @@ List.init (pred num) (fun x -> x + 2)) 1)
-  
+
 let () =
   let primes = sieve_of_eratosthenes 2_000_000 in
   Printf.printf "the sum of all the primes below two million is %d\n" (List.fold_left (+) 0 primes);;
