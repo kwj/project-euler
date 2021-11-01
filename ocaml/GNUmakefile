@@ -2,7 +2,7 @@
 PROBLEMS  = p0001 p0002 p0003 p0004 p0005 p0006 p0007 p0008 p0009 p0010
 
 %: %.ml
-	ocamlopt -o cmd/$@ $(wordlist 2, $(words $^), $^) $<
+	ocamlfind ocamlopt -o cmd/$@ $<
 
 usage:
 	@echo 'Usage: make <problem>'
@@ -13,15 +13,5 @@ all: $(PROBLEMS)
 clean:
 	rm -f cmd/* *.o *.cmi *.cmx *~
 
-str.cmxa:
-
-p0001:
-p0002:
-p0003:
-p0004:
-p0005:
-p0006:
-p0007:
-p0008: str.cmxa
-p0009:
-p0010:
+p0008:
+	ocamlfind ocamlopt -o cmd/$@ -linkpkg -package str $@.ml
