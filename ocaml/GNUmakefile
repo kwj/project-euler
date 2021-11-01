@@ -5,7 +5,7 @@ PROBLEMS += p0011
 p0008_PKGS = str
 
 %: %.ml
-	ocamlfind ocamlopt -o cmd/$@ $(if $($@_PKGS),-linkpkg $(patsubst %,-package %,$($@_PKGS))) $<
+	ocamlfind ocamlopt -o $@ $(if $($@_PKGS),-linkpkg $(patsubst %,-package %,$($@_PKGS))) $<
 
 .PHONY: usage
 usage:
@@ -17,4 +17,4 @@ all: $(PROBLEMS)
 
 .PHONY: clean
 clean:
-	rm -f cmd/* *.o *.cmi *.cmx *~
+	@rm -f $(PROBLEMS) *.o *.cmi *.cmx *~
