@@ -1,6 +1,6 @@
 (* Project Euler: Problem 12 *)
 
-let divisors n =
+let factors n =
   let u_limit = truncate(sqrt (float n)) in
   let rec aux lst i =
     if i > u_limit then
@@ -18,7 +18,7 @@ let divisors n =
                           
 let rec find_num a b =
   let tri_num = a + b in
-  let divs = divisors tri_num in
+  let divs = factors tri_num in
   if List.length divs >= 500 then
     tri_num
   else
