@@ -43,18 +43,16 @@ let calc x y dir =
 let find_max_product =
   let result = ref 0 in
   for x = 0 to n_row - 1 do
-    for y = 0 to n_col - size do
+    for y = 0 to n_col - 1 do
       if x <= n_row - size then
         result := max !result (calc x y Down);
       if y <= n_col - size then (
         result := max !result (calc x y Right);
-        if x >= size - 1 then (
-          result := max !result (calc x y UpperRight)
-        );
-        if x <= n_row - size then (
+        if x >= size - 1 then
+          result := max !result (calc x y UpperRight);
+        if x <= n_row - size then
           result := max !result (calc x y DownRight)
-        );
-      );
+      )
     done
   done;
   !result
