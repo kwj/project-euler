@@ -20,4 +20,4 @@ let nth_prime num =
   aux 2 num;;
 
 let () =
-  Printf.printf "the 10 001st prime number is %d\n" (nth_prime 10001);;
+  Printf.printf "the 10001st prime number is %d\n" (nth_prime 10001);;
