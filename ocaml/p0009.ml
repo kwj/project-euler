@@ -19,4 +19,4 @@ let rec find_triplet a b c =
 
 let () =
   let a, b, c = find_triplet 1 2 3 in
-  Printf.printf "Pythagorean triplet for which a + b + c = 1000 is (%d, %d, %d).\na*b*c = %d\n" a b c (a * b * c);;
+  Printf.printf "Pythagorean triplet for which a + b + c = 1000 is (%d, %d, %d).\na*b*c = %d\n" a b c (a * b * c)

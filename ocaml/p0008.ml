@@ -26,7 +26,7 @@ let source_data = "73167176531330624919225119674426574742355349194934\
 let culc s =
   Str.split (Str.regexp "") s
   |> List.map int_of_string
-  |> List.fold_left ( * ) 1;;
+  |> List.fold_left ( * ) 1
 
 let find_max_product str =
   let len = String.length str in
@@ -38,7 +38,7 @@ let find_max_product str =
       let product = culc s in
       if product > value then aux (idx + 1) product else aux (idx + 1) value
   in
-  aux 0 0;;
+  aux 0 0
 
 let () =
-  Printf.printf "the thirteen adjacent digits in the 1000-digit number that have the greatest product is %d\n" (find_max_product source_data);;
+  Printf.printf "the thirteen adjacent digits in the 1000-digit number that have the greatest product is %d\n" (find_max_product source_data)

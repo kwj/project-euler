@@ -8,7 +8,7 @@ let is_prime num =
     else
       (n mod k <> 0) && (aux n (k - 1))
   in
-  if num <= 1 then false else aux num upper;;
+  if num <= 1 then false else aux num upper
 
 let nth_prime num =
   let rec aux i n =
@@ -17,7 +17,7 @@ let nth_prime num =
     else
       aux (i + 1) n
   in
-  aux 2 num;;
+  aux 2 num
 
 let () =
-  Printf.printf "the 10001st prime number is %d\n" (nth_prime 10001);;
+  Printf.printf "the 10001st prime number is %d\n" (nth_prime 10001)

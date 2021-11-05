@@ -19,4 +19,4 @@ let sieve_of_eratosthenes num =
 
 let () =
   let primes = sieve_of_eratosthenes 2_000_000 in
-  Printf.printf "the sum of all the primes below two million is %d\n" (List.fold_left (+) 0 primes);;
+  Printf.printf "the sum of all the primes below two million is %d\n" (List.fold_left (+) 0 primes)
