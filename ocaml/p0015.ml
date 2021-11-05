@@ -36,4 +36,4 @@ let calc_by_list num =
 let () =
   Printf.printf "the number of routes is there through a 20×20 grid is:\n";
   Printf.printf "   %s: (w/ Zarith module)\n" (calc_by_zarith 20);
-  Printf.printf "   %s: (w/o Zarith module)\n" (calc_by_list 20);
+  Printf.printf "   %s: (w/o Zarith module)\n" (calc_by_list 20)
