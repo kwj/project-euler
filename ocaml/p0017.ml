@@ -1,6 +1,5 @@
 (* Project Euler: Problem 17 *)
 
-
 let words = [
     (1, String.length "one");
     (2, String.length "two");
@@ -61,4 +60,4 @@ let count_chars num =
 
 let () =
   Printf.printf "all the numbers from 1 to 1000 (one thousand) inclusive were written out in words, how many letters would be used?\n";
-  Printf.printf "   answer: %d\n" (count_chars 1000);
+  Printf.printf "   answer: %d\n" (count_chars 1000)
