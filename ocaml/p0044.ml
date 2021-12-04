@@ -89,7 +89,7 @@ let find_min_d_2 num =
       else
         find_kj pd (pred x) result
   in
-  let rec aux n: (int * int) list =
+  let rec aux n =
     match find_kj (penta n) (pred n) [] with
     | [] -> aux (succ n)
     | lst -> lst
@@ -130,7 +130,7 @@ let find_min_d_3 num =
       else
         find_kj pd (pred x) result
   in
-  let rec aux n: (int * int) list =
+  let rec aux n =
     match find_kj (penta n) (pred n) [] with
     | [] -> aux (succ n)
     | lst -> lst
