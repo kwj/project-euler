@@ -2,8 +2,7 @@
 
 It was confirmed to work with OCaml 4.13.1.
 
-For the first one hundred problems, I used the following libraries/packages
-in addition to the standard libraries part of OCaml 4.13.
+I used only the following libraries/packages in addition to the OCaml 4.13 standard library.
 
 - Str [1]
 - Zarith [2]
