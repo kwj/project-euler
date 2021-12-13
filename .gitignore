@@ -2,6 +2,7 @@
 #--------------------
 # project specific rules here
 
+p*.txt
 
 
 #--------------------
