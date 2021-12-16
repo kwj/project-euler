@@ -48,23 +48,25 @@ let count_consecutive a b =
 
 let solve () =
   let primes = era_sieve 2000 in    (* candidates of 'x' *)
-  let max_len, max_tupl = ref 0, ref (0, 0) in
-  let rec aux l =
+  let rec aux l max_len max_tpl =
     match l with
-    | [] -> !max_len, !max_tupl
+    | [] -> max_len, max_tpl
     | b :: tl ->
-       let a_list = List.map (fun x -> x - b - 1) @@ List.filter (fun x -> (abs (x - b - 1)) < 1000) primes in
-       for i = 0 to (List.length a_list) - 1 do
-         let a = List.nth a_list i in
-         let len = count_consecutive a b in
-         if len > !max_len then (
-           max_len := len;
-           max_tupl := (a, b)
-         )
-       done;
-       aux tl
+       let rec aux' a_lst max_len max_tpl =
+         match a_lst with
+         | [] -> max_len, max_tpl
+         | a :: tl ->
+            let len = count_consecutive a b in
+            if len > max_len then
+              aux' tl len (a, b)
+            else
+              aux' tl max_len max_tpl
+       in
+       let new_len, new_tpl =
+         aux' (List.map (fun x -> x - b - 1) @@ List.filter (fun x -> (abs (x - b - 1)) < 1000) primes) max_len max_tpl in
+       aux tl new_len new_tpl
   in
-  aux (List.tl (era_sieve 1000))
+  aux (List.tl (era_sieve 1000)) 0 (0, 0)
 
 let () =
   let len, (a, b) = solve() in
