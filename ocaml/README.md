@@ -2,7 +2,7 @@
 
 It was confirmed to work with OCaml 4.13.1.
 
-I used only the following libraries/packages in addition to the OCaml 4.13 standard library.
+I used the following libraries/packages in addition to the OCaml 4.13 standard library.
 
 - Str [^1]
 - Zarith [^2]
