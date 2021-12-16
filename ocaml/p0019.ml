@@ -1,29 +1,36 @@
 (* Project Euler: Problem 19 *)
 
 (*
-  dow: day of week  [0: Sunday, 1: Monday, 2: Tuesday, ..., 6: Saturday]
+  Jan 1, 1900 was Monday.
+  -->
+    day of week  [0: Sunday, 1: Monday, 2: Tuesday, ..., 6: Saturday]
+
+  Jan 1, 1901 was Tuesday since (1 + 365) mod 7 = 2
  *)
 
-let count_sundays start_year end_year dow_of_Jan1 =
-  let days_in_months y =
-    if (y mod 400 = 0) || (y mod 4 = 0 && y mod 100 <> 0) then
-      [31; 29; 31; 30; 31; 30; 31; 31; 30; 31; 30; 31]    (* leap year *)
-    else
-      [31; 28; 31; 30; 31; 30; 31; 31; 30; 31; 30; 31]    (* common year *)
+let count_sundays () =
+  let cu_sum lst =
+    let rec aux pre acc = function
+      | [] -> List.rev acc
+      | hd :: tl -> aux (pre + hd) ((pre + hd) :: acc) tl
+    in
+    aux 0 [] lst
   in
-  let next_dow a b = (a + b) mod 7, (a + b) mod 7 in
-  let dow = ref dow_of_Jan1 in
-  let cnt = ref 0 in
-  for i = start_year to end_year do
-    let (t_dow, lst) = List.fold_left_map next_dow !dow (days_in_months i) in
-      dow := t_dow;
-      cnt := !cnt + (List.length @@ List.filter (fun n -> n = 0) lst)
-  done;
-  if !dow = 0 then
-    !cnt - 1
-  else
-    !cnt
+  let common_year = [31; 28; 31; 30; 31; 30; 31; 31; 30; 31; 30; 31] in
+  let leap_year = [31; 29; 31; 30; 31; 30; 31; 31; 30; 31; 30; 31] in
+  let year_2000 = List.rev(List.tl (List.rev common_year)) in
+  let rec loop i acc =
+    if i = 0 then
+      List.flatten acc
+    else
+      if i mod 4 = 0 then
+        loop (pred i) (leap_year :: acc)
+      else
+        loop (pred i) (common_year :: acc)
+  in
+  let dpm = loop 99 (year_2000 :: []) in    (* days per month: Jan 1901 - Nov 2000 *)
+
+  List.length (List.filter (fun n -> n mod 7 = 0) (cu_sum ((1 + (List.fold_left (+) 0 common_year) mod 7) :: dpm)))
 
 let () =
-  Printf.printf "number of Sundays fell on the first of the month during the twentieth century (1 Jan 1901 to 31 Dec 2000) is %d\n"
-    ((count_sundays 1900 2000 1) - (count_sundays 1900 1900 1))
+  Printf.printf "Answer: %d\n" (count_sundays())
