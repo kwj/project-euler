@@ -2,16 +2,14 @@
 
 let calc_by_zarith () =
   let ulimit = Z.pow (Z.of_int 10) 999 in    (* the minimum number which contains 1000 digits is 10**999. *)
-  let fib = Array.make 3 (Z.of_int 1) in
-  let i = ref 0 in
-  let cnt = ref 2 in
-  while fib.(!i) < ulimit do
-    i := (!i + 1) mod 3;
-    cnt := !cnt + 1;
-    fib.(!i) <- Z.add fib.((!i + 1) mod 3) fib.((!i + 2) mod 3)
-  done;
-  !cnt
-
+  let rec loop f1 f2 idx =
+    if f2 >= ulimit then
+      idx
+    else
+      loop f2 Z.(f2 + f1) (succ idx)
+  in
+  loop Z.one Z.one 2
+  
 let calc_by_array () =
   let fib = Array.make_matrix 3 (1000 + 1) 0 in    (* '+ 1' is a spare area that will never be accessed. *)
   let i = ref 0 in
