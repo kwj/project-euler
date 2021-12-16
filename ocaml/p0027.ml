@@ -41,11 +41,10 @@ let is_prime num =
   if num <= 1 then false else aux num upper
 
 let count_consecutive a b =
-  let n = ref 0 in
-  while is_prime (!n * !n +  a * !n + b) do
-    n := !n + 1
-  done;
-  !n
+  let rec loop n =
+    if is_prime(n * n + a * n + b) = false then n else loop (succ n)
+  in
+  loop 0
 
 let solve () =
   let primes = era_sieve 2000 in    (* candidates of 'x' *)
