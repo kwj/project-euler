@@ -30,7 +30,7 @@ let count_sundays () =
   in
   let days = loop 99 (year_2000 :: []) in    (* number of days in each month: Jan 1901 - Nov 2000 *)
 
-  List.length (List.filter (fun n -> n mod 7 = 0) (cu_sum ((1 + (List.fold_left (+) 0 common_year) mod 7) :: days)))
+  List.length (List.filter (fun n -> n mod 7 = 0) (cu_sum ((1 + (List.fold_left (+) 0 common_year)) :: days)))
 
 let () =
   Printf.printf "Answer: %d\n" (count_sundays())
