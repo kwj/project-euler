@@ -3,12 +3,12 @@
 (*
   (1) 10 ** (n-1) <= n-digits number < 10 ** n
   (2) assume that x is sum of the fifth power of each digit on n-digits number
-        n * (1**5) <= x <= n * (9**5) = n * 54049
+        n * (1**5) <= x <= n * (9**5) = n * 59049
 
      when n=6:
-       6 * 54049 = 324294
+       6 * 59049 = 354294
      when n=7
-       7 * 54049 = 378343 < 10 ** (7-1) = 1000000 (minimum 7-digits number)
+       7 * 59049 = 413343 < 10 ** (7-1) = 1000000 (minimum 7-digits number)
        --> contradiction
 
    It's clear that 'x' is not a single digit number.
