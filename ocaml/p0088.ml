@@ -11,7 +11,7 @@
     --> N(k) <= 2k
 
   2 <= k <= 12000
-  --> 2 <= N(k) <= 24000
+  --> k <= N(k) <= 24000
 
     >>> math.log2(24000)
     14.550746785383243
@@ -84,7 +84,7 @@ let pf_generator limit =
     let k = prod - (List.fold_left (fun m n -> m + (n - 1)) 0 lst) in
     Some (k, prod)
   in
-  let next_pf lst =
+  let next_pf () =
     if prod_lst (List.hd !pf_lst :: !pf_lst) <= limit then (
       (* [c; b; a] -> [c; c; b; a] *)
       pf_lst := List.hd !pf_lst :: !pf_lst;
