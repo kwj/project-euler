@@ -25,8 +25,8 @@ let solve num =
     in
     aux n Z.zero
   in
+  let multi_z = Z.(pow ((of_int) 10) 198) in
   let rec loop n result =
-    let multi_z = Z.(pow ((of_int) 10) 198) in
     if n > num then
       result
     else
