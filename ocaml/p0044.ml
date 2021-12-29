@@ -61,7 +61,7 @@ let find_min_d_1 lst =
 (*
   P(n) = n(3n-1) / 2
   let P(d) = D(k,j) = P(k) - P(j) [j<k]
-    define x as x = k - j, [0<x<d]]
+    let x = k - j, [0<x<d]]
       P(d) = P(k) - P(k-x)
            = (k(3k-1) - (k-x)(3(k-x)-1)) / 2
            = (3k^2 - k - (k-x)(3k-3x-1)) / 2
@@ -72,26 +72,29 @@ let find_min_d_1 lst =
            = 3kx - x(3x+1)/2
   -->  3kx = P(d) + x(3x+1)/2
   -->    k = (P(d) + x(3x+1)/2) / 3x  [0<x<d]
-          if k is existed as a natural number, a pair of P(k) and P(j=k-x) is exist.
+          if k is existed as a natural number, a pair of P(k) and P(j=k-x) is exist
+          and (P(d) + x(3x+1)/2) mod 3 = 0
+          --> ((d(3d-1) + x(3x+1)) / 2) mod 3 = 0
+              (x - d) mod 3 = 0  [0<x<d]
  *)
 
 let find_min_d_2 num =
   let rec find_kj pd x result =
-    if x = 0 then
+    if x <= 0 then
       result
     else
       if (pd + x * (3 * x + 1) / 2) mod (3 * x) = 0 then
         let k = (pd + x * (3 * x + 1) / 2) / (3 * x) in
         if is_pentagonal ((penta k) + (penta (k - x))) then
-          find_kj pd (pred x) ((k, k - x) :: result)
+          find_kj pd (x - 3) ((k, k - x) :: result)
         else
-          find_kj pd (pred x) result
+          find_kj pd (x - 3) result
       else
-        find_kj pd (pred x) result
+        find_kj pd (x - 3) result
   in
-  let rec aux n =
-    match find_kj (penta n) (pred n) [] with
-    | [] -> aux (succ n)
+  let rec aux d =
+    match find_kj (penta d) (d - 3) [] with
+    | [] -> aux (succ d)
     | lst -> lst
   in
   aux num
@@ -101,7 +104,7 @@ let find_min_d_2 num =
 (*
   P(n) = n(3n-1) / 2
   let P(d) = D(k,j) = P(k) - P(j) [j<k]
-    define x as x = k - j, [0<x<d]]
+    let x = k - j, [0<x<d]]
       P(d) = P(j+x) - P(j)
            = ((j+x)(3(j+x)-1) - j(3j-1)) / 2
            = ((j+x)(3j+3x-1) - j(3j-1)) / 2
@@ -113,26 +116,29 @@ let find_min_d_2 num =
   -->  3jx = P(d) - P(x)
   -->    j = (P(d) - P(x)) / 3x [0<x<d]
           if j is existed as a natural number, a pair of P(k=j+x) and P(j) is exist.
+          and (P(d) - P(x) mod 3 = 0
+          --> ((d(3d-1) - x(3x-1)) / 2) mod 3 = 0
+              (x - d) mod 3 = 0  [0<x<d]
  *)
 
 let find_min_d_3 num =
   let rec find_kj pd x result =
-    if x = 0 then
+    if x <= 0 then
       result
     else
       let px = penta x in
       if (pd - px) mod (3 * x) = 0 then
         let j = (pd - px) / (3 * x) in
         if is_pentagonal ((penta (j + x)) + (penta (j))) then
-          find_kj pd (pred x) ((j + x, j) :: result)
+          find_kj pd (x - 3) ((j + x, j) :: result)
         else
-          find_kj pd (pred x) result
+          find_kj pd (x - 3) result
       else
-        find_kj pd (pred x) result
+        find_kj pd (x - 3) result
   in
-  let rec aux n =
-    match find_kj (penta n) (pred n) [] with
-    | [] -> aux (succ n)
+  let rec aux d =
+    match find_kj (penta d) (d - 3) [] with
+    | [] -> aux (succ d)
     | lst -> lst
   in
   aux num
