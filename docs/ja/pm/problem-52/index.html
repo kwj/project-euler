@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Problem 52 | Project Euler 感想戦</title>
+  
+  <link rel="stylesheet" href="/project-euler/css/style.css" />
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          
+          
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          
+          throwOnError : false
+        });
+    });
+</script>
+
+
+</head>
+<body>
+    <header><div class="top-menu">
+  
+  <div class="top-menu-item">
+    <a href="/project-euler/ja/">Home</a>
+  </div>
+  
+  <div class="top-menu-item">
+    <a href="https://github.com/kwj/project-euler/">GitHub</a>
+  </div>
+  
+</div>
+
+<section class="content-meta">
+  <h1><span class="title">Problem 52</span></h1>
+</section>
+</header>
+    <main id="content">
+<h2 id="問題へのリンク">問題へのリンク</h2>
+<ul>
+<li><a href="https://projecteuler.net/problem=52">Permuted multiples</a></li>
+</ul>
+<h2 id="感想">感想</h2>
+<p>求める数を $x$ として、6 倍しても桁数が変わらないので捜索範囲を絞ることができる。</p>
+<p>例えば 2 桁の場合、6 倍しても 2 桁になる $x$ の範囲は $10 \le x \le \lfloor (100-1)/6 \rfloor$。
+2 桁で求める解が見つからない場合は $100 \le x \le \lfloor (1000-1)/6 \rfloor$ を捜索する。</p>
+<p>さらに $x$ の最上位桁が 1 であることから、$x, 2x, 3x, 4x, 5x, 6x$ の最上位桁はそれぞれ異なった数字になる。
+つまり $x$ は少なくとも 6 桁の数である。</p>
+
+<hr>
+<div class="PrevNextLink">
+  
+  <div class="PrevNextLink_prev">
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-51/">Problem 51</a>
+  </div>
+  
+  <div class="PrevNextLink_up">
+    <a href="../">[Up]</a>
+  </div>
+  
+  <div class="PrevNextLink_next">
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-53/">Problem 53</a>
+  </div>
+  
+</div>
+
+
+    </main><footer>
+  <div class="footer">
+  
+  
+  <span class="copyright">
+  <p>© 2021 Jun Kawai</p>
+  </span>
+  
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Problem 12 | Project Euler 感想戦</title>
+  
+  <link rel="stylesheet" href="/project-euler/css/style.css" />
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          
+          
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          
+          throwOnError : false
+        });
+    });
+</script>
+
+
+</head>
+<body>
+    <header><div class="top-menu">
+  
+  <div class="top-menu-item">
+    <a href="/project-euler/ja/">Home</a>
+  </div>
+  
+  <div class="top-menu-item">
+    <a href="https://github.com/kwj/project-euler/">GitHub</a>
+  </div>
+  
+</div>
+
+<section class="content-meta">
+  <h1><span class="title">Problem 12</span></h1>
+</section>
+</header>
+    <main id="content">
+<h2 id="問題へのリンク">問題へのリンク</h2>
+<ul>
+<li><a href="https://projecteuler.net/problem=12">Highly divisible triangular number</a></li>
+</ul>
+<h2 id="感想">感想</h2>
+<p>三角数の約数を数えるだけ。</p>
+<p>ある数 $m$ について、$1 \le a \le \lfloor m / 2 \rfloor$ ではなく
+$1 \le a \le \lfloor \sqrt{m} \rfloor$ の範囲で割れるか否かを確認すればよい。
+28 を例にすると $\lfloor \sqrt{m} \rfloor = 5$ だから、下記のように $6$ 個になる。
+$$ \begin{aligned} 1 \cdot 28 &amp;= 28 \\ 2 \cdot 14 &amp;= 28 \\ 4 \cdot 7 &amp;= 28 \end{aligned}$$
+この方式の場合 $m$ が平方数のときの数え上げに注意。三角数ではないが $m=144$ なら $13$ 個になる。
+$$ \begin{aligned}
+1 \cdot 144 &amp;= 144 \\
+2 \cdot 72 &amp;= 144 \\
+4 \cdot 38 &amp;= 144 \\
+6 \cdot 24 &amp;= 144 \\
+8 \cdot 18 &amp;= 144 \\
+9 \cdot 16 &amp;= 144 \\
+12 \cdot 12 &amp;= 144 \\
+\end{aligned}$$</p>
+
+<hr>
+<div class="PrevNextLink">
+  
+  <div class="PrevNextLink_prev">
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-11/">Problem 11</a>
+  </div>
+  
+  <div class="PrevNextLink_up">
+    <a href="../">[Up]</a>
+  </div>
+  
+  <div class="PrevNextLink_next">
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-13/">Problem 13</a>
+  </div>
+  
+</div>
+
+
+    </main><footer>
+  <div class="footer">
+  
+  
+  <span class="copyright">
+  <p>© 2021 Jun Kawai</p>
+  </span>
+  
+  </div>
+</footer>
+</body>
+</html>

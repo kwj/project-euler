@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Problem 88 | Project Euler 感想戦</title>
+  
+  <link rel="stylesheet" href="/project-euler/css/style.css" />
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          
+          
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          
+          throwOnError : false
+        });
+    });
+</script>
+
+
+</head>
+<body>
+    <header><div class="top-menu">
+  
+  <div class="top-menu-item">
+    <a href="/project-euler/ja/">Home</a>
+  </div>
+  
+  <div class="top-menu-item">
+    <a href="https://github.com/kwj/project-euler/">GitHub</a>
+  </div>
+  
+</div>
+
+<section class="content-meta">
+  <h1><span class="title">Problem 88</span></h1>
+</section>
+</header>
+    <main id="content">
+<h2 id="問題へのリンク">問題へのリンク</h2>
+<ul>
+<li><a href="https://projecteuler.net/problem=88">Product-sum numbers</a></li>
+</ul>
+<h2 id="感想">感想</h2>
+<p>定義に従って $N(k) = a_1 + a_2 + \ldots + a_k = a_1 \cdot a_2 \cdot \ldots \cdot a_k$ とする。
+まず $2 \le k \le 12000$ のとき $N(k)$ の最小値が取り得る範囲を確認する。</p>
+<p>$k=2$ の時は問題文にあるように明らかに $N(k) = 2 + 2 = 2 \cdot 2 = 4$ のみ。</p>
+<p>以下、$k&gt;2$ とする。</p>
+<p>$\sum_{i=1}^k a_n$ が最小になるのは $a_n=1 \: [1 \le n \le k]$ のケースであり、
+この時は和と積が一致することはないので $N(k)$ になることはないが $N(k) \ge k$ は言える。</p>
+<p>一方、${a_1, a_2, \ldots, a_{k-2}, a_{k-1}, a_k} = {1, 1, \ldots, 1, 2, k}$ という
+ケースを考えると、$\sum_{i=1}^k a_n = (k-2) + 2 + k = 2k$ で $\prod_{i=1}^k a_n = 1 \cdot 2 \cdot k = 2k$ なので
+$N(k)$ の条件を満たす。つまり $k&gt;2$ なら $N(k) = 2k$ となる $a_n$ を作ることができるので、
+$N(k)$ の最小値については $N(k) \le 2k$ が言える。</p>
+<p>以上より、$N(k)$ の最小値の範囲については下記の通り。</p>
+<p>$$
+2 \le k \le 12000 \rightarrow k \le N(k) \le 24000
+$$</p>
+<p>さて、$N(k)$ の定義より $N(k)$ が素数になることは無いのは明らかである(和と積が一致しないため)。
+$N(k)$ の範囲内の合成数が対象になるが合成数を素因数分解して調査するのは少し面倒なので、
+(1以外の)因子による掛け算から $N(k)$ を作る方向で調査する。</p>
+<p>以下に具体例を挙げる。$(2,2,3)$ という因子の場合は積は $2 \cdot 2 \cdot 3 = 12$ となるが、
+和も $12$ になるように $1$ を加えた $a_n$ を作成する。</p>
+<p>$$
+(2,2,3) \rightarrow a_n = \{1,1,1,1,1,2,2,3\}, \enspace k=8
+$$</p>
+<p>こうすることで和と積が一致するので $N(8) = 12$ となる $a_n$ が作成できた。他にも $N(8)$ に
+なる $a_n$ を作成できる因子の組があるかもしれないため、$N(k)$ の範囲内で積がおさまる因子の組を
+全て調査する必要がある。なお単に素因数分解するだけでは駄目で、積が 12 になる因子の組は下記のように
+他にも存在しており、これら全てを洗い出す必要がある。</p>
+<p>$$
+(2,2,3), (2,6), (3,4)
+$$</p>
+<p>そのため、上記に書いたように積が $N(k)$ の最小値の範囲内に収まる因子の組から
+$N(k)$ を作って $k$ に対する最小値か否かを調査する。この方針の場合は因子の組の
+作り方が実装の肝になる。</p>
+<h2 id="結局">結局</h2>
+<p>ごちゃごちゃ書いたけれど、ある整数を少なくとも 2 つの(1以外の)自然数の積に
+分割したリストを作成するのが重要かと思います。バラして作るか、バラしたもの
+から作るかの違い。</p>
+
+<hr>
+<div class="PrevNextLink">
+  
+  <div class="PrevNextLink_prev">
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-87/">Problem 87</a>
+  </div>
+  
+  <div class="PrevNextLink_up">
+    <a href="../">[Up]</a>
+  </div>
+  
+  <div class="PrevNextLink_next">
+    <a href="https://kwj.github.io/project-euler/ja/pm/problme-89/">Problem 89</a>
+  </div>
+  
+</div>
+
+
+    </main><footer>
+  <div class="footer">
+  
+  
+  <span class="copyright">
+  <p>© 2021 Jun Kawai</p>
+  </span>
+  
+  </div>
+</footer>
+</body>
+</html>

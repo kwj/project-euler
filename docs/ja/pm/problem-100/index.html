@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Problem 100 | Project Euler 感想戦</title>
+  
+  <link rel="stylesheet" href="/project-euler/css/style.css" />
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          
+          
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          
+          throwOnError : false
+        });
+    });
+</script>
+
+
+</head>
+<body>
+    <header><div class="top-menu">
+  
+  <div class="top-menu-item">
+    <a href="/project-euler/ja/">Home</a>
+  </div>
+  
+  <div class="top-menu-item">
+    <a href="https://github.com/kwj/project-euler/">GitHub</a>
+  </div>
+  
+</div>
+
+<section class="content-meta">
+  <h1><span class="title">Problem 100</span></h1>
+</section>
+</header>
+    <main id="content">
+<h2 id="問題へのリンク">問題へのリンク</h2>
+<ul>
+<li><a href="https://projecteuler.net/problem=100">Arranged probability</a></li>
+</ul>
+<h2 id="感想">感想</h2>
+<p>青いディスクを $a$ 枚、全てのディスクを $b$ 枚とする。問題文の定義より $P(BB) = a/b \cdot (a-1)/(b-1) = 1/2$、したがって</p>
+<p>$$
+\begin{aligned}
+\frac{a}{b} \cdot \frac{a-1}{b-1} &amp;= \frac{1}{2} \\
+2a(a-1) &amp;= b(b-1) \\
+2a^{2} - 2a &amp;= b^{2} - b \\
+8a^{2} - 8a &amp;= 4b^{2} - 4b \\
+2(4a^{2} - 4a) &amp;= 4b^{2} - 4b \\
+2(2a - 1)^{2} - 2 &amp;= (2b - 1)^{2} - 1 \\
+(2b - 1)^{2} - 2(2a - 1)^{2} &amp;= -2 + 1 \\
+(2b - 1)^{2} - 2(2a - 1)^{2} &amp;= -1
+\end{aligned}
+$$</p>
+<p>右辺が $-1$ である形式の<a href="https://en.wikipedia.org/wiki/Pell%27s_equation#The_negative_Pell_equation">ペル方程式</a>に帰着できたので、
+あとは条件を満たす解を求めればよい。</p>
+
+<hr>
+<div class="PrevNextLink">
+  
+  <div class="PrevNextLink_prev">
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-99/">Problem 99</a>
+  </div>
+  
+  <div class="PrevNextLink_up">
+    <a href="../">[Up]</a>
+  </div>
+  
+</div>
+
+
+    </main><footer>
+  <div class="footer">
+  
+  
+  <span class="copyright">
+  <p>© 2021 Jun Kawai</p>
+  </span>
+  
+  </div>
+</footer>
+</body>
+</html>

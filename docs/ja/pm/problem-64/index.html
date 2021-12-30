@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Problem 64 | Project Euler 感想戦</title>
+  
+  <link rel="stylesheet" href="/project-euler/css/style.css" />
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          
+          
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          
+          throwOnError : false
+        });
+    });
+</script>
+
+
+</head>
+<body>
+    <header><div class="top-menu">
+  
+  <div class="top-menu-item">
+    <a href="/project-euler/ja/">Home</a>
+  </div>
+  
+  <div class="top-menu-item">
+    <a href="https://github.com/kwj/project-euler/">GitHub</a>
+  </div>
+  
+</div>
+
+<section class="content-meta">
+  <h1><span class="title">Problem 64</span></h1>
+</section>
+</header>
+    <main id="content">
+<h2 id="問題へのリンク">問題へのリンク</h2>
+<ul>
+<li><a href="https://projecteuler.net/problem=64">Odd period square roots</a></li>
+</ul>
+<h2 id="感想">感想</h2>
+<p>Problem 57 で触れたが連分数についてはよく知らなかったので大変だった。</p>
+<p>$\sqrt{N} = \frac{\sqrt{N} + b_0}{c_0} = a_0 + \frac{1}{x_1} \enspace [b_0=0, c_0=1, a_0=\lfloor \frac{\sqrt{N} + b_0}{c_0} \rfloor]$ とすると
+下記のように変形できる。</p>
+<p>$$
+\begin{aligned}
+x_1 &amp; = \frac{c_0}{\sqrt{N} + (b_0 - a_{0}c_{0})} \\
+&amp; = \frac{c_{0} (\sqrt{N} - (b_0 - a_{0}c_{0}))}{N - (b_0 - a_{0}c_{0})^{2}} \\
+&amp; = \frac{\sqrt{N} + (a_{0}c_{0} - b_0)}{\frac{N - (b_0 - a_{0}c_{0})^{2}}{c_0}}
+\end{aligned}
+$$</p>
+<p>ここで $b_{1} = a_{0}c_{0} - b_0, c_{1} = \frac{N - (b_0 - a_{0}c_{0})^{2}}{c_0}$ と置くと</p>
+<p>$$
+\frac{\sqrt{N} + (a_{0}c_{0} - b_0)}{\frac{N - (b_0 - a_{0}c_{0})^{2}}{c_0}}
+= \frac{\sqrt{N} + b_{1}}{c_{1}}
+$$</p>
+<p>となり、 $a_1 = \lfloor \frac{\sqrt{N} + b_1}{c_1} \rfloor$ とすると</p>
+<p>$$
+x_{1} = \frac{\sqrt{N} + b_{1}}{c_{1}} = a_{1} + \frac{1}{x_{2}}
+$$</p>
+<p>と表せる。つまり、与えられた $N$ と初期値 $b_0=0, c_0=1$ に対して $n \ge 0$ ならば</p>
+<p>$$
+\begin{aligned}
+a_{n} &amp;= \lfloor \frac{\sqrt{N} + b_{n}}{c_{n}} \rfloor \\
+b_{n+1} &amp;= a_{n}c_{n} - b_{n} \\
+c_{n+1} &amp;= \frac{N - (b_{n} - a_{n}c_{n})^{2}}{c_{n}} = \frac{N - (a_{n}c_{n} - b_{n})^{2}}{c_{n}} = \frac{N - {b_{n+1}}^{2}}{c_{n}}
+\end{aligned}
+$$</p>
+<p>となる。
+よって $n$ を増加させて同じ $(b_n, c_n)$ が出てくるまで、
+つまり $a_n$ の繰り返しが成立するまで辿れば周期を求めることができる。</p>
+
+<hr>
+<div class="PrevNextLink">
+  
+  <div class="PrevNextLink_prev">
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-63/">Problem 63</a>
+  </div>
+  
+  <div class="PrevNextLink_up">
+    <a href="../">[Up]</a>
+  </div>
+  
+  <div class="PrevNextLink_next">
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-65/">Problem 65</a>
+  </div>
+  
+</div>
+
+
+    </main><footer>
+  <div class="footer">
+  
+  
+  <span class="copyright">
+  <p>© 2021 Jun Kawai</p>
+  </span>
+  
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Problem 60 | Project Euler 感想戦</title>
+  
+  <link rel="stylesheet" href="/project-euler/css/style.css" />
+  
+
+</head>
+<body>
+    <header><div class="top-menu">
+  
+  <div class="top-menu-item">
+    <a href="/project-euler/ja/">Home</a>
+  </div>
+  
+  <div class="top-menu-item">
+    <a href="https://github.com/kwj/project-euler/">GitHub</a>
+  </div>
+  
+</div>
+
+<section class="content-meta">
+  <h1><span class="title">Problem 60</span></h1>
+</section>
+</header>
+    <main id="content">
+<h2 id="問題へのリンク">問題へのリンク</h2>
+<ul>
+<li><a href="https://projecteuler.net/problem=60">Prime pair sets</a></li>
+</ul>
+<h2 id="感想">感想</h2>
+<p>最初は素数を頂点としてペアとなる素数を結ぶ辺からなる無向グラフから
+大きさ 5 のクリークを探すことを考えた。確認はしていないが疎なグラフに
+なりそうなのでクリークを求める処理でもいけるかもと感じたが、
+無向グラフ自体が成長する(素数が増える)ことから相当面倒くさい雰囲気がしたため
+別アプローチを採用した。</p>
+<p>素数を追加する際に、既に追加された素数からペアになる素数を洗い出して紐づける。
+つまり自分より小さい素数とのペア情報のみ所持する。この時、ペアの個数が 4 以上の
+場合に求めるクリークが出来ているか否かをチェックするようにした。</p>
+<p>大きさ 5 のクリークが見つかったとして、これが求めるクリーク(属する素数の和が最小)か
+否かはさらに調べないと判断できない。そのため Problem 44 における力技と同様に、
+見つかったクリークから捜索範囲の上限を再設定して範囲内を調べ上げる必要があった。
+最初のクリークが見つかる前後で処理を変えるのはプログラムの構造が複雑化するので、
+Problem 44 の力技と同じように上限の初期値は整数の最大値として処理は一本化した。</p>
+<p>拙いアルゴリズムのせいか、処理時間は結構かかり Raspberry Pi 4 Model B で 10 秒弱必要だった。</p>
+<pre tabindex="0"><code>$ time ./p0060
+Answer: [*** censored ***]
+./p0060  8.74s user 0.11s system 99% cpu 8.885 total
+</code></pre><h2 id="最後に">最後に</h2>
+<p>別アプローチでも面倒だった。</p>
+
+<hr>
+<div class="PrevNextLink">
+  
+  <div class="PrevNextLink_prev">
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-59/">Problem 59</a>
+  </div>
+  
+  <div class="PrevNextLink_up">
+    <a href="../">[Up]</a>
+  </div>
+  
+  <div class="PrevNextLink_next">
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-61/">Problem 61</a>
+  </div>
+  
+</div>
+
+
+    </main><footer>
+  <div class="footer">
+  
+  
+  <span class="copyright">
+  <p>© 2021 Jun Kawai</p>
+  </span>
+  
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Problem 68 | Project Euler 感想戦</title>
+  
+  <link rel="stylesheet" href="/project-euler/css/style.css" />
+  
+
+</head>
+<body>
+    <header><div class="top-menu">
+  
+  <div class="top-menu-item">
+    <a href="/project-euler/ja/">Home</a>
+  </div>
+  
+  <div class="top-menu-item">
+    <a href="https://github.com/kwj/project-euler/">GitHub</a>
+  </div>
+  
+</div>
+
+<section class="content-meta">
+  <h1><span class="title">Problem 68</span></h1>
+</section>
+</header>
+    <main id="content">
+<h2 id="問題へのリンク">問題へのリンク</h2>
+<ul>
+<li><a href="https://projecteuler.net/problem=68">Magic 5-gon ring</a></li>
+</ul>
+<h2 id="感想">感想</h2>
+<p>Problem 43 と同様に紙と鉛筆で解ける問題。</p>
+<p>問題文の条件から数字 10 は内部の 5 角形に存在していはいけないことが判るので、
+プログラムで解くならば制約条件に加えてしらみ潰しにすれば良い。</p>
+<p>下記は実装したプログラムのコメントから抜粋。</p>
+<pre tabindex="0"><code>        &lt;e1&gt;
+          a0
+            \   &lt;e2&gt;
+            a1  a3
+           /  \ /
+         a8   a2
+         /\   /
+       a9 a6-a4-a5 &lt;e3&gt;
+     &lt;e5&gt;   \
+             a7
+             &lt;e4&gt;
+
+  list [a0; a1; a2; a3; a4; a5; a6; a7; a8; a9]
+   - one of {a3, a5, a7, a9} is 10
+   - a0 &lt; {a3, a5, a7, a9}
+   - each lines (e1..e5) have same weight
+</code></pre><p>順列で数字を埋めるパターンを生成して、上記の制約条件を満たすものを解の候補にした。</p>
+
+<hr>
+<div class="PrevNextLink">
+  
+  <div class="PrevNextLink_prev">
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-67/">Problem 67</a>
+  </div>
+  
+  <div class="PrevNextLink_up">
+    <a href="../">[Up]</a>
+  </div>
+  
+  <div class="PrevNextLink_next">
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-69/">Problem 69</a>
+  </div>
+  
+</div>
+
+
+    </main><footer>
+  <div class="footer">
+  
+  
+  <span class="copyright">
+  <p>© 2021 Jun Kawai</p>
+  </span>
+  
+  </div>
+</footer>
+</body>
+</html>

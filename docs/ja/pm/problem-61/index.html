@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Problem 61 | Project Euler 感想戦</title>
+  
+  <link rel="stylesheet" href="/project-euler/css/style.css" />
+  
+
+</head>
+<body>
+    <header><div class="top-menu">
+  
+  <div class="top-menu-item">
+    <a href="/project-euler/ja/">Home</a>
+  </div>
+  
+  <div class="top-menu-item">
+    <a href="https://github.com/kwj/project-euler/">GitHub</a>
+  </div>
+  
+</div>
+
+<section class="content-meta">
+  <h1><span class="title">Problem 61</span></h1>
+</section>
+</header>
+    <main id="content">
+<h2 id="問題へのリンク">問題へのリンク</h2>
+<ul>
+<li><a href="https://projecteuler.net/problem=61">Cyclical figurate numbers</a></li>
+</ul>
+<h2 id="感想">感想</h2>
+<p>Problem 60 に引き続き面倒くさかった問題、の筈だが自分でも何を考えてロジックを
+実装したのか後からソースを読んでもすぐに理解できなかった。</p>
+<p>対象となる三角数から八角数のうち 4 桁のものをすべて洗い出し、繋がりを確認しやすいよう
+上位 2 桁と下位 2 桁に分割した形式にしてマスターのデータとして保持している。
+このデータに対して、3 から 8 までの 6 個の数字からなる順列を辿るパターンとして
+該当するサイクルが存在するか調査していた。</p>
+<p>答えは一つしか無いと問題文にあるのに順列を全調査しているなど、我ながら何を
+やっているのだかと反省しきり。</p>
+<h3 id="感想-1">感想</h3>
+<p>明日の自分は他人。
+他人が保守できないようなロジックは採用してはいけない。
+Problem 60 で疲れていたのか、思考力がかなり落ちていた模様。</p>
+<p>本問は素直に解くだけの筈なので、リスト「やり直したい問題」入り。</p>
+
+<hr>
+<div class="PrevNextLink">
+  
+  <div class="PrevNextLink_prev">
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-60/">Problem 60</a>
+  </div>
+  
+  <div class="PrevNextLink_up">
+    <a href="../">[Up]</a>
+  </div>
+  
+  <div class="PrevNextLink_next">
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-62/">Problem 62</a>
+  </div>
+  
+</div>
+
+
+    </main><footer>
+  <div class="footer">
+  
+  
+  <span class="copyright">
+  <p>© 2021 Jun Kawai</p>
+  </span>
+  
+  </div>
+</footer>
+</body>
+</html>

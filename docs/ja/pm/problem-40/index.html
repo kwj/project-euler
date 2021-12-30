@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Problem 40 | Project Euler 感想戦</title>
+  
+  <link rel="stylesheet" href="/project-euler/css/style.css" />
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          
+          
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          
+          throwOnError : false
+        });
+    });
+</script>
+
+
+</head>
+<body>
+    <header><div class="top-menu">
+  
+  <div class="top-menu-item">
+    <a href="/project-euler/ja/">Home</a>
+  </div>
+  
+  <div class="top-menu-item">
+    <a href="https://github.com/kwj/project-euler/">GitHub</a>
+  </div>
+  
+</div>
+
+<section class="content-meta">
+  <h1><span class="title">Problem 40</span></h1>
+</section>
+</header>
+    <main id="content">
+<h2 id="問題へのリンク">問題へのリンク</h2>
+<ul>
+<li><a href="https://projecteuler.net/problem=40">Champernowne&rsquo;s constant</a></li>
+</ul>
+<h2 id="感想">感想</h2>
+<p>問題の意味がよく理解できなくて、どういう意図があるのか悩んでしまった。
+残念ながら思考力が足りず意図があるのか判らなかったので、大人しく調べます。</p>
+<pre tabindex="0"><code>    0.123456789 | 10111213...979899 | 100101102...997998999 | 100010011002  ...
+      ---------   -----------------   ---------------------   ----------------
+  len: 1 * 9       2 * 90              3 * 900                 4 * 9000     ...
+       1 * 9 * 1   2 * 9 * 10          3 * 9 * 100             4 * 9 * 1000 ...
+
+  block #1: 1-digit number
+  block #2: 2-digit number
+  block #3: 3-digit number
+    ...
+  block #n: n-digit number
+</code></pre><p>1 桁の数から成るブロック、2 桁の数から成るブロック、続いて 3 桁の数から成るブロック、
+というように小数点以下の数字が続く。この数値をタイトルにあるチャンパーノウン定数と
+呼ぶそうだ。</p>
+<p>本題に戻って、ブロック番号 $i$ の長さは下記の数式で表せることが判る</p>
+<p>$$i \cdot 9 \cdot 10^{i-1}$$</p>
+<p>あとは $d_{1}, d_{10}, d_{100}, d_{1000}, d_{10000}, d_{100000}, d_{1000000}$ が
+所属するブロックを判別し、ブロック内の位置を特定して $d_{n}$ の値を求めるだけ。
+上記の数式から累積和のデータを作っておくと処理が楽そう。</p>
+
+<hr>
+<div class="PrevNextLink">
+  
+  <div class="PrevNextLink_prev">
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-39/">Problem 39</a>
+  </div>
+  
+  <div class="PrevNextLink_up">
+    <a href="../">[Up]</a>
+  </div>
+  
+  <div class="PrevNextLink_next">
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-41/">Problem 41</a>
+  </div>
+  
+</div>
+
+
+    </main><footer>
+  <div class="footer">
+  
+  
+  <span class="copyright">
+  <p>© 2021 Jun Kawai</p>
+  </span>
+  
+  </div>
+</footer>
+</body>
+</html>
