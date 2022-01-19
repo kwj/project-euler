@@ -188,7 +188,7 @@ $$ 2 \le a + b \le 2c $$
       
       <guid>https://kwj.github.io/project-euler/ja/pm/problem-83/</guid>
       <description>問題へのリンク  Path sum: four ways  感想 自由に動けるが一回通った箇所は通れない迷路と一緒。
-スタートとゴールは決められているから、各要素の値を要素への移動コストとしてグラフを作成し、 ダイクストラのアルゴリズムで解を求めた。</description>
+スタートとゴールは決められているから Problem 81 と同様に斜め方向で最小移動コストを計算すれば解けるが、 素直に各要素の値を要素への移動コストとして作成したグラフをダイクストラのアルゴリズムで解を求めた。</description>
     </item>
     
     <item>
@@ -373,11 +373,12 @@ $\sqrt{D}$ を連分数に展開するのに Problem 64 を、展開して求ま
       <pubDate>Sat, 25 Dec 2021 14:11:38 -0800</pubDate>
       
       <guid>https://kwj.github.io/project-euler/ja/pm/problem-65/</guid>
-      <description>問題へのリンク  Convergents of e  感想 問題については例示されている 10 項を眺めて漸化式を思いついて解くことができたのですが、 せっかくなので連分数について調べた内容を記述して本問題の解決に帰着させます。 思いついた漸化式は本記事の末尾に書かれています。本記事は直感で浮かんだ式に対する 論理による解法の説明です。
+      <description>問題へのリンク  Convergents of e  感想 例示されている 10 項から漸化式を仮定して答えの値は求まったのですが、 せっかくなので連分数について調べた内容から問題を論理的に解決します。 本記事は直感で浮かんだ式に対する論理による解法の説明です。 思いついた漸化式は本記事の末尾に書かれています。
+下記に示す連分数
 $$ a_0 + \cfrac{b_1}{a_1 + \cfrac{b_2}{a_2 + \cfrac{b_3}{\ddots \cfrac{\ddots}{a_n + \cfrac{b_{n+1}}{\ddots}}}}} $$
-という連分数に対して、
+に対して、
 $$ A_0 = a_0 = \frac{x_0}{y_0}, \; A_1 = a_0 + \frac{b_1}{a_1} = \frac{x_1}{y_1}, \; A_2 = a_0 + \cfrac{b_1}{a_1 + \cfrac{b_2}{a_2}} = \frac{x_2}{y_2}, \; \dots $$
-とする。このとき
+のように連分数の展開を途中の $a_{n}$ で打ち切った $A_{n} = x_{n} / y_{n}$ を定義する。このとき
 $$ \begin{aligned} n=0 \rightarrow x_0 &amp;amp; = a_0 \\ y_0 &amp;amp; = 1 \\ n=1 \rightarrow x_1 &amp;amp; = a_{0}a_{1} + b_1 \\ y_1 &amp;amp; = a_1 \\ n=2 \rightarrow x_2 &amp;amp; = a_{0}a_{1}a_{2} + a_{0}b_{2} + a_{2}b_{1} \\ y_2 &amp;amp; = a_{1}a_{2} + b_{2} \end{aligned} $$</description>
     </item>
     
@@ -434,11 +435,11 @@ $10^{\frac{n-1}{n}}$ は単調増加なので、$0&amp;lt;m&amp;lt;10$ の範囲
       <pubDate>Sat, 25 Dec 2021 09:56:42 -0800</pubDate>
       
       <guid>https://kwj.github.io/project-euler/ja/pm/problem-60/</guid>
-      <description>問題へのリンク  Prime pair sets  感想 最初は素数を頂点としてペアとなる素数を結ぶ辺からなる無向グラフから 大きさ 5 のクリークを探すことを考えた。確認はしていないが疎なグラフに なりそうなのでクリークを求める処理でもいけるかもと感じたが、 無向グラフ自体が成長する(素数が増える)ことから相当面倒くさい雰囲気がしたため 別アプローチを採用した。
+      <description>問題へのリンク  Prime pair sets  感想 最初は素数を頂点としてペアとなる素数を結ぶ辺からなる無向グラフから 大きさ 5 のクリークを探すことを考えた。確認はしていないが疎なグラフに なりそうなので出来そうな感じがしたが、 面倒な雰囲気もしたので無向グラフを使わない方法を選択した。
 素数を追加する際に、既に追加された素数からペアになる素数を洗い出して紐づける。 つまり自分より小さい素数とのペア情報のみ所持する。この時、ペアの個数が 4 以上の 場合に求めるクリークが出来ているか否かをチェックするようにした。
 大きさ 5 のクリークが見つかったとして、これが求めるクリーク(属する素数の和が最小)か 否かはさらに調べないと判断できない。そのため Problem 44 における力技と同様に、 見つかったクリークから捜索範囲の上限を再設定して範囲内を調べ上げる必要があった。 最初のクリークが見つかる前後で処理を変えるのはプログラムの構造が複雑化するので、 Problem 44 の力技と同じように上限の初期値は整数の最大値として処理は一本化した。
 拙いアルゴリズムのせいか、処理時間は結構かかり Raspberry Pi 4 Model B で 10 秒弱必要だった。
-$ time ./p0060 Answer: [*** censored ***] ./p0060 8.74s user 0.11s system 99% cpu 8.885 total 最後に 別アプローチでも面倒だった。</description>
+$ time ./p0060 Answer: [*** censored ***] ./p0060 8.74s user 0.11s system 99% cpu 8.885 total 最後に 無向グラフを使わない方法でも面倒だった。</description>
     </item>
     
     <item>
@@ -528,8 +529,8 @@ $$ a_1 = 1 + \frac{1}{2}, \; a_n = 1 + \frac{1}{1+a_{n-1}} \enspace [n&amp;gt;1]
       <guid>https://kwj.github.io/project-euler/ja/pm/problem-51/</guid>
       <description>問題へのリンク  Prime digit replacements  感想 入れ替えた結果、8 個の素数の組が出来るという点が調査範囲の絞り込みに効いてくる。
  末尾 1 桁は入れ替え桁の対象外で、元の数字の桁数は入れ替える桁数よりも大きい 入れ替える桁数は 3 の倍数  入れ替える数字に必ず偶数が含まれることから前者は明らかなので、後者について説明する。
-n 桁を入れ替えると仮定し、入れ替え対象桁の各桁の和を 3 を法とする 剰余で分類すると下記の通り。
-$$ \begin{array}{ccc} \hline 数字 &amp;amp; 対象桁の和 &amp;amp; (mod \; 3) \\ \hline 0 &amp;amp; 0 &amp;amp; 0 \\ 1 &amp;amp; n &amp;amp; n \; mod \; 3 \\ 2 &amp;amp; 2n &amp;amp; 2n \; mod \; 3 \\ 3 &amp;amp; 3n &amp;amp; 0 \\ 4 &amp;amp; 4n &amp;amp; n \; mod \; 3 \\ 5 &amp;amp; 5n &amp;amp; 2n \; mod \; 3 \\ 6 &amp;amp; 6n &amp;amp; 0 \\ 7 &amp;amp; 7n &amp;amp; n \; mod \; 3 \\ 8 &amp;amp; 8n &amp;amp; 2n \; mod \; 3 \\ 9 &amp;amp; 9n &amp;amp; 0 \\ \hline \end{array} $$</description>
+n 桁を入れ替えると仮定し、入れ替え対象桁の各桁の和を 3 を法とする 剰余を求めると下記の通り。
+$$ \begin{array}{ccc} \hline 入れ替え後の数字 &amp;amp; 対象桁の和 &amp;amp; (mod \; 3) \\ \hline 0 &amp;amp; 0 &amp;amp; 0 \\ 1 &amp;amp; n &amp;amp; n \; mod \; 3 \\ 2 &amp;amp; 2n &amp;amp; 2n \; mod \; 3 \\ 3 &amp;amp; 3n &amp;amp; 0 \\ 4 &amp;amp; 4n &amp;amp; n \; mod \; 3 \\ 5 &amp;amp; 5n &amp;amp; 2n \; mod \; 3 \\ 6 &amp;amp; 6n &amp;amp; 0 \\ 7 &amp;amp; 7n &amp;amp; n \; mod \; 3 \\ 8 &amp;amp; 8n &amp;amp; 2n \; mod \; 3 \\ 9 &amp;amp; 9n &amp;amp; 0 \\ \hline \end{array} $$</description>
     </item>
     
     <item>
@@ -596,13 +597,11 @@ $$ \begin{array}{ccc} \hline 数字 &amp;amp; 対象桁の和 &amp;amp; (mod \; 
       <pubDate>Fri, 24 Dec 2021 08:09:35 -0800</pubDate>
       
       <guid>https://kwj.github.io/project-euler/ja/pm/problem-44/</guid>
-      <description>問題へのリンク  Pentagon numbers  感想 きちんと解くには少し工夫が必要な問題。 最小の $|P_{k}-P_{j}|$ であることをどう保証するかが鍵になる。
-力技による方法 $j,k$ の組み合わせを小さい値から調べていくと、問題文の条件を満たす五角数 $P_{j}, P_{k}$ は 早期に見つかる。この時の差 $|P_{k}-P_{j}|$ を $P_{d}$ とする。
-$P_{n}-P_{n-1} &amp;gt; P_{d}$ となるまで、差が $P_{d}$ より小さい五角数のペアが 存在するか否かを調べる。存在した場合は終了条件を更新して捜索を続ける。ところが この捜索範囲が非常に大きくなるため、適切な枝刈りをしないと計算に時間がかかる。 枝刈りさえすれば短い時間で終わる。
-フォーラムを覗いたら、かなりの割合で最初の $P_{d}$ を見つけた時点で捜索終了している様子。 しかも $n$ に上限を決め打ち設定して開始する解法が多く見受けられました。 結果的に最初の $P_{d}$ が最小の $D = P_{d}$ になるのだが、これらは答えは正しいが解法は正しく ないパターンでした。
-$P_{k}+P_{j}$ と $P_{d} = |P_{k}-P_{j}|$ の両方が五角数である $j,k$ を小さい方から探すときに $P_{d}$ も小さい順に見つかるという前提が不可な理由は、末尾の余談を参照のこと。
-数式による方法 おそらく問題が期待している解法はこちらだと思われる。力技では「条件を満たす $P_{d}$ を 見つけてから最小であるか否かを確認」したが、発想を転換して「条件を満たす $P_{d}$ が 存在するには何が必要か」を考える。
-具体的にはある $d$ に対して五角数 $P_{d} = |P_{k}-P_{j}| = P_{k}-P_{j}$ になる $j,k \enspace (k&amp;gt;j)$ が 存在すると仮定する。$P_{n}$ は単調増加なので $k-j&amp;lt;d$。そこで $x=k-j \;[0&amp;lt;x&amp;lt;d]$ とおいて $P_{d}=P_{j+x}-P_{j}$ を $j= \ldots$ の形に変形する。 このとき右辺は $P_{d}$ と $x$ から構成されている。 逆に $j$ を消して $k= \ldots$ の形でも構わないが、$k$ を消す方が単純な式になる。</description>
+      <description>問題へのリンク  Pentagon numbers  感想 きちんと解くには少し工夫が必要な問題。 最小の $D=P_{d}= |P_{k}-P_{j}|$ をどう保証するかが鍵になる。
+$j,k$ から調べる方法 和と差の条件を満たす五角数 $P_{j}, P_{k}$ について、 $j,k$ が小さい値から調べると早い段階で見つかる。 この時の差 $|P_{k}-P_{j}|$ を $P_{d}$ とする。 この時点では $P_{d}$ が条件を満たす最小の五角数であるとは判断できません。 $P_{k}+P_{j}$ と $P_{d} = |P_{k}-P_{j}|$ の両方が五角数である $j,k$ を小さい方から探すときに $P_{d}$ も小さい順に見つかるという主張をしている方もおられますが、 この主張が正しくない理由はセクション「余談」を参照のこと。
+この $P_{d}$ が最小であることを確認するには $P_{n+1}-P_{n} = 3n-2 &amp;gt; P_{d}$ となるまで、 和と差が五角数になる任意の五角数のペアについて、その差が $P_{d}$ より小さいものが存在しないことを調べる必要がある。 存在した場合は終了条件を更新して捜索を続ける。ところがこの捜索範囲が非常に大きくなるため、 適切な枝刈りをしないと計算に時間がかかる。 枝刈りをすれば比較的短い時間で終わる（捜索中に $P_{a}-P_{b}&amp;gt;P_{d}$ となったら大きさが $P_{b}$ 以下の項は不要）。
+つまり力技による捜索です。
+本問題では結果として最初の $P_{d}$ が条件を満たす最小の五角数 $D = P_{d}$ になっていることもあり、 フォーラムの投稿を見ると最初の $P_{d}$ を見つけた時点で捜索終了しているケースが多いです。 しかも $j,k$ に 5000 などの上限を決め打ち設定して開始する解法も見受けられました。 これらは最小性の確認をしておらず、答えは正しいが解法は正しくないパターンです。</description>
     </item>
     
     <item>
@@ -862,7 +861,7 @@ Wikipedia の循環小数の記述を読むと、 $d$ を因数分解して 2 �
       
       <guid>https://kwj.github.io/project-euler/ja/pm/problem-19/</guid>
       <description>問題へのリンク  Counting Sundays  感想 カレンダーのライブラリがあれば何も考えずに済みますが、せっかくなので問題文の意図に沿ってみます。
-1 Jan 1900 を初日として、これがが月曜日なら 1900 年は平年なので 1 Jan 1901 は $ (1 + 365) \equiv 2 \enspace (mod \; 7)$ で火曜日。 あとは 1 Dec 2000 まで各月の日数を累積で足していきながら剰余演算で月初めの曜日を判定すれば終了。</description>
+1 Jan 1900 を初日として、これがが月曜日なら 1900 年は平年なので 1 Jan 1901 は $ (1 + 365) \equiv 2 \enspace (mod \; 7)$ で火曜日。 あとは 1 Dec 2000 まで各月の日数を足していきながら剰余演算で月初めの曜日を判定すれば終了。</description>
     </item>
     
     <item>
@@ -871,8 +870,9 @@ Wikipedia の循環小数の記述を読むと、 $d$ を因数分解して 2 �
       <pubDate>Wed, 22 Dec 2021 14:09:28 -0800</pubDate>
       
       <guid>https://kwj.github.io/project-euler/ja/pm/problem-18/</guid>
-      <description>問題へのリンク  Maximum path sum I  感想 バックトラッキングを使って上から探すと処理が面倒なので、単純に下から畳み込むに限ります。
- ... 70 ... 91 72 ... 63 66 04 68 89 53 67 30 73 16 69 87 40 31 04 62 98 27 23 09 70 98 73 93 38 53 60 04 23 これが、こうなる。
+      <description>問題へのリンク  Maximum path sum I  感想 上から下への一方通行といった単純な経路かつ求めるのが経路でなく経路に紐づく値の場合は、 スタートもしくはゴールから単純に畳み込むに限ります。 今回はスタートが一箇所に対してゴールが不明なので、ゴール側である下から処理します。
+これが、
+ ... 70 ... 91 72 ... 63 66 04 68 89 53 67 30 73 16 69 87 40 31 04 62 98 27 23 09 70 98 73 93 38 53 60 04 23 こうなる。
  ... 70 ... 91 72 ... 125 164 102 95 112 123 165 128 166 109 122 147 100 54 一番左側の 125 の項で説明すると、最下段の 2 つの項 04 と 62 を 比較して大きい方(62)を下から二段目の一番左側の項(63)に加算した ものです。あとは最上段まで繰り返して項が 1 個になったら、それが 求める解答です。</description>
     </item>
     
@@ -938,7 +938,8 @@ $$ \begin{array}{ccccccccccc} \hline number &amp;amp; 13 &amp;amp; 40 &amp;amp; 
       
       <guid>https://kwj.github.io/project-euler/ja/pm/problem-12/</guid>
       <description>問題へのリンク  Highly divisible triangular number  感想 三角数の約数を数えるだけ。
-ある数 $m$ について、$1 \le a \le \lfloor m / 2 \rfloor$ ではなく $1 \le a \le \lfloor \sqrt{m} \rfloor$ の範囲で割れるか否かを確認すればよい。 28 を例にすると $\lfloor \sqrt{m} \rfloor = 5$ だから、下記のように $6$ 個になる。 $$ \begin{aligned} 1 \cdot 28 &amp;amp;= 28 \\ 2 \cdot 14 &amp;amp;= 28 \\ 4 \cdot 7 &amp;amp;= 28 \end{aligned}$$ この方式の場合 $m$ が平方数のときの数え上げに注意。三角数ではないが $m=144$ なら $13$ 個になる。 $$ \begin{aligned} 1 \cdot 144 &amp;amp;= 144 \\ 2 \cdot 72 &amp;amp;= 144 \\ 4 \cdot 38 &amp;amp;= 144 \\ 6 \cdot 24 &amp;amp;= 144 \\ 8 \cdot 18 &amp;amp;= 144 \\ 9 \cdot 16 &amp;amp;= 144 \\ 12 \cdot 12 &amp;amp;= 144 \\ \end{aligned}$$</description>
+ある数 $m$ について、$1 \le a \le \lfloor m / 2 \rfloor$ ではなく $1 \le a \le \lfloor \sqrt{m} \rfloor$ の範囲で割れるか否かを確認すればよい。 28 を例にすると $\lfloor \sqrt{m} \rfloor = 5$ だから、下記のように $6$ 個になる。 $$ \begin{aligned} 1 \cdot 28 &amp;amp;= 28 \\ 2 \cdot 14 &amp;amp;= 28 \\ 4 \cdot 7 &amp;amp;= 28 \end{aligned}$$
+今回は三角数なので考慮する必要はないが、この方式の場合 $m$ が平方数のときの数え上げに注意が必要。 例えば $m=144$ なら $13$ 個になる。 $$ \begin{aligned} 1 \cdot 144 &amp;amp;= 144 \\ 2 \cdot 72 &amp;amp;= 144 \\ 4 \cdot 38 &amp;amp;= 144 \\ 6 \cdot 24 &amp;amp;= 144 \\ 8 \cdot 18 &amp;amp;= 144 \\ 9 \cdot 16 &amp;amp;= 144 \\ 12 \cdot 12 &amp;amp;= 144 \\ \end{aligned}$$</description>
     </item>
     
     <item>
@@ -976,7 +977,8 @@ $$ \begin{array}{ccccccccccc} \hline number &amp;amp; 13 &amp;amp; 40 &amp;amp; 
       <pubDate>Tue, 21 Dec 2021 21:34:40 -0800</pubDate>
       
       <guid>https://kwj.github.io/project-euler/ja/pm/problem-8/</guid>
-      <description>問題へのリンク  Largest product in a series  感想 これも素直に解くだけ。 1000桁を数字で扱うと厳しいため、いったん文字列で処理して計算対象となるデータを抽出すればよい。</description>
+      <description>問題へのリンク  Largest product in a series  感想 これも素直に解くだけ。 1000桁を数字で扱うと厳しいため、いったん文字列で処理して計算対象となるデータを抽出すればよい。
+0 で分割して 13 桁未満の文字列は除外するのもあり。</description>
     </item>
     
     <item>
@@ -985,7 +987,7 @@ $$ \begin{array}{ccccccccccc} \hline number &amp;amp; 13 &amp;amp; 40 &amp;amp; 
       <pubDate>Tue, 21 Dec 2021 21:33:10 -0800</pubDate>
       
       <guid>https://kwj.github.io/project-euler/ja/pm/problem-7/</guid>
-      <description>問題へのリンク  10001st prime  感想 前問に引き続いて素直に解くだけ。</description>
+      <description>問題へのリンク  10001st prime  感想 素直に解くだけ。</description>
     </item>
     
     <item>
@@ -994,7 +996,7 @@ $$ \begin{array}{ccccccccccc} \hline number &amp;amp; 13 &amp;amp; 40 &amp;amp; 
       <pubDate>Tue, 21 Dec 2021 21:28:45 -0800</pubDate>
       
       <guid>https://kwj.github.io/project-euler/ja/pm/problem-6/</guid>
-      <description>問題へのリンク  Sum square difference  感想 まだ準備運動なので素直に解くだけ。</description>
+      <description>問題へのリンク  Sum square difference  感想 まだ準備運動なので素直に解くだけ。和の公式を使えば計算量を減らせる。</description>
     </item>
     
     <item>
@@ -1003,7 +1005,8 @@ $$ \begin{array}{ccccccccccc} \hline number &amp;amp; 13 &amp;amp; 40 &amp;amp; 
       <pubDate>Tue, 21 Dec 2021 19:58:43 -0800</pubDate>
       
       <guid>https://kwj.github.io/project-euler/ja/pm/problem-5/</guid>
-      <description>問題へのリンク  Smallest multiple  感想 問題内容が最小公倍数(least common multiple)そのものです。 $$ lcm(a,b) = \frac{|ab|}{gcd(a,b)} $$</description>
+      <description>問題へのリンク  Smallest multiple  感想 問われているのは最小公倍数(least common multiple)そのものです。2 個の数字の場合は以下の通り。
+$$ lcm(a,b) = \frac{|ab|}{gcd(a,b)} $$</description>
     </item>
     
     <item>
@@ -1012,7 +1015,7 @@ $$ \begin{array}{ccccccccccc} \hline number &amp;amp; 13 &amp;amp; 40 &amp;amp; 
       <pubDate>Tue, 21 Dec 2021 19:48:06 -0800</pubDate>
       
       <guid>https://kwj.github.io/project-euler/ja/pm/problem-4/</guid>
-      <description>問題へのリンク  Largest palindrome product  感想 回文数。3桁の数の積の最大値($999 \cdot 999 = 998001$)から小さい方に向かって、 回文数のチェック後に条件を満たす積か否かを確認するのが一番簡単だと思います。</description>
+      <description>問題へのリンク  Largest palindrome product  感想 3 桁の数字 2 個の積という点と、最大の値という点にだけ注意が必要。</description>
     </item>
     
     <item>
@@ -1022,7 +1025,7 @@ $$ \begin{array}{ccccccccccc} \hline number &amp;amp; 13 &amp;amp; 40 &amp;amp; 
       
       <guid>https://kwj.github.io/project-euler/ja/pm/problem-3/</guid>
       <description>問題へのリンク  Largest prime factor  感想 単純に素因数分解するだけ。
-扱う数が 32 bit を越えており、2021 年時点で 64 bit 環境が主流で助かった。
+600851475143 が 32 bit を越えていることに注意。
 &amp;gt;&amp;gt;&amp;gt; import math &amp;gt;&amp;gt;&amp;gt; math.log2(600851475143) 39.1282174580652 </description>
     </item>
     
@@ -1032,10 +1035,9 @@ $$ \begin{array}{ccccccccccc} \hline number &amp;amp; 13 &amp;amp; 40 &amp;amp; 
       <pubDate>Tue, 21 Dec 2021 09:17:50 -0800</pubDate>
       
       <guid>https://kwj.github.io/project-euler/ja/pm/problem-2/</guid>
-      <description>問題へのリンク  Even Fibonacci numbers  感想 偶数の値を持つ項を指定している理由は何だろうか。
-$F(n)$ を問題のフィボナッチ数列とする。
+      <description>問題へのリンク  Even Fibonacci numbers  感想 $F(n)$ を問題のフィボナッチ数列とする。
 $$ \begin{aligned}F(1) &amp;amp;= 1, \; F(2) = 2 \\ F(n) &amp;amp;= F(n-1)+F(n-2) \; [n &amp;gt; 2] \end{aligned}$$ 偶数$(E)$/奇数$(O)$で見ると、以下の通り。 $$ F(1) = O \\ F(2) = E \\ F(3) = O \\ F(4) = O \\ F(5) = E \\ F(6) = O \\ F(7) = O \\ F(8) = E \\ F(9) = O \\ \ldots $$
-$n=2,5,8, &amp;hellip;$ のときに $F(n)$ は偶数となるので、 $F(n)$ と $F(n-3), F(n-6)$ の漸化式を示せれば偶数の値を持つ項のみ数え上げ可能。 今回は条件を満たす項が11個しかないので、複雑なことはせずナイーブに処理するのが良いのかもしれない。</description>
+$n=2,5,8, &amp;hellip;$ のときに $F(n)$ は偶数となるので、 $F(n)$ と $F(n-3), F(n-6)$ の漸化式を示せれば偶数の値を持つ項のみ数え上げ可能。 今回は条件を満たす項が 11 個しかないので、 複雑なことはせず普通のフィボナッチ数列の漸化式をナイーブに処理するのが楽そう。</description>
     </item>
     
     <item>
@@ -1045,7 +1047,7 @@ $n=2,5,8, &amp;hellip;$ のときに $F(n)$ は偶数となるので、 $F(n)$ �
       
       <guid>https://kwj.github.io/project-euler/ja/pm/problem-1/</guid>
       <description>問題へのリンク  Multiples of 3 or 5  感想 注意すべき点は15（3と5の最小公倍数）の倍数についての扱い方。
- 二重計上しないように対象の数を列挙してから和を計算 3の倍数の和と5の倍数の和を足したものから15の倍数の和を減算  今回は上限も低いしナイーブに数え上げても $ O(n) $ なので、フィルタ系の機能が使えれば前者は容易に実装可能。 後者の場合は等差数列の和で計算できる。</description>
+ 3 または 5 の倍数を対象にする 3の倍数の和と5の倍数の和を足したものから15の倍数の和を減算  今回は上限も低いしナイーブに数え上げても $O(n)$ なので、フィルタ系の機能が使えれば前者は容易に実装可能。 後者の場合は等差数列の和を計算に使用できる。</description>
     </item>
     
   </channel>

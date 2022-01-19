@@ -31,15 +31,20 @@
 </head>
 <body>
     <header><div class="top-menu">
-  
-  <div class="top-menu-item">
-    <a href="/project-euler/ja/">Home</a>
+  <div class="top-menu-group-left">
+
+    <div class="top-menu-group-left-item">
+      <a href="/project-euler/ja/">Home</a>
+    </div>
+
+    <div class="top-menu-group-left-item">
+      <a href="https://github.com/kwj/project-euler/">GitHub</a>
+    </div>
+
   </div>
-  
-  <div class="top-menu-item">
-    <a href="https://github.com/kwj/project-euler/">GitHub</a>
+  <div class="top-menu-group-right">
+
   </div>
-  
 </div>
 
 <section class="content-meta">
@@ -59,11 +64,11 @@
 </ul>
 <p>入れ替える数字に必ず偶数が含まれることから前者は明らかなので、後者について説明する。</p>
 <p>n 桁を入れ替えると仮定し、入れ替え対象桁の各桁の和を 3 を法とする
-剰余で分類すると下記の通り。</p>
+剰余を求めると下記の通り。</p>
 <p>$$
 \begin{array}{ccc}
 \hline
-数字 &amp; 対象桁の和 &amp; (mod \; 3) \\
+入れ替え後の数字 &amp; 対象桁の和 &amp; (mod \; 3) \\
 \hline
 0 &amp; 0 &amp; 0 \\
 1 &amp; n &amp; n \; mod \; 3 \\
@@ -82,7 +87,7 @@ $$</p>
 <p>$$
 \begin{array}{cl}
 \hline
-(mod \; 3) &amp; 数字 \\
+(mod \; 3) &amp; 入れ替え後の数字 \\
 \hline
 0 &amp; 0, 3, 6, 9 \\
 n \; mod \; 3 &amp; 1, 4, 7 \\
@@ -102,19 +107,19 @@ n が 3 の倍数の場合は $0$ のみになるが、3 の倍数でない場�
 
 <hr>
 <div class="PrevNextLink">
-  
   <div class="PrevNextLink_prev">
-    <a href="https://kwj.github.io/project-euler/ja/pm/problem-50/">Problem 50</a>
+
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-50/">≪ Problem 50</a>
+
   </div>
-  
   <div class="PrevNextLink_up">
     <a href="../">[Up]</a>
   </div>
-  
   <div class="PrevNextLink_next">
-    <a href="https://kwj.github.io/project-euler/ja/pm/problem-52/">Problem 52</a>
+
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-52/">Problem 52 ≫</a>
+
   </div>
-  
 </div>
 
 

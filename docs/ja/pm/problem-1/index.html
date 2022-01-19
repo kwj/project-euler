@@ -31,15 +31,20 @@
 </head>
 <body>
     <header><div class="top-menu">
-  
-  <div class="top-menu-item">
-    <a href="/project-euler/ja/">Home</a>
+  <div class="top-menu-group-left">
+
+    <div class="top-menu-group-left-item">
+      <a href="/project-euler/ja/">Home</a>
+    </div>
+
+    <div class="top-menu-group-left-item">
+      <a href="https://github.com/kwj/project-euler/">GitHub</a>
+    </div>
+
   </div>
-  
-  <div class="top-menu-item">
-    <a href="https://github.com/kwj/project-euler/">GitHub</a>
+  <div class="top-menu-group-right">
+
   </div>
-  
 </div>
 
 <section class="content-meta">
@@ -54,23 +59,25 @@
 <h2 id="感想">感想</h2>
 <p>注意すべき点は15（3と5の最小公倍数）の倍数についての扱い方。</p>
 <ul>
-<li>二重計上しないように対象の数を列挙してから和を計算</li>
+<li>3 または 5 の倍数を対象にする</li>
 <li>3の倍数の和と5の倍数の和を足したものから15の倍数の和を減算</li>
 </ul>
-<p>今回は上限も低いしナイーブに数え上げても $ O(n) $ なので、フィルタ系の機能が使えれば前者は容易に実装可能。
-後者の場合は等差数列の和で計算できる。</p>
+<p>今回は上限も低いしナイーブに数え上げても $O(n)$ なので、フィルタ系の機能が使えれば前者は容易に実装可能。
+後者の場合は等差数列の和を計算に使用できる。</p>
 
 <hr>
 <div class="PrevNextLink">
-  
+  <div class="PrevNextLink_prev">
+
+  </div>
   <div class="PrevNextLink_up">
     <a href="../">[Up]</a>
   </div>
-  
   <div class="PrevNextLink_next">
-    <a href="https://kwj.github.io/project-euler/ja/pm/problem-2/">Problem 2</a>
+
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-2/">Problem 2 ≫</a>
+
   </div>
-  
 </div>
 
 

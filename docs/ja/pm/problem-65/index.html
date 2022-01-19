@@ -31,15 +31,20 @@
 </head>
 <body>
     <header><div class="top-menu">
-  
-  <div class="top-menu-item">
-    <a href="/project-euler/ja/">Home</a>
+  <div class="top-menu-group-left">
+
+    <div class="top-menu-group-left-item">
+      <a href="/project-euler/ja/">Home</a>
+    </div>
+
+    <div class="top-menu-group-left-item">
+      <a href="https://github.com/kwj/project-euler/">GitHub</a>
+    </div>
+
   </div>
-  
-  <div class="top-menu-item">
-    <a href="https://github.com/kwj/project-euler/">GitHub</a>
+  <div class="top-menu-group-right">
+
   </div>
-  
 </div>
 
 <section class="content-meta">
@@ -52,20 +57,21 @@
 <li><a href="https://projecteuler.net/problem=65">Convergents of e</a></li>
 </ul>
 <h2 id="感想">感想</h2>
-<p>問題については例示されている 10 項を眺めて漸化式を思いついて解くことができたのですが、
-せっかくなので連分数について調べた内容を記述して本問題の解決に帰着させます。
-思いついた漸化式は本記事の末尾に書かれています。本記事は直感で浮かんだ式に対する
-論理による解法の説明です。</p>
+<p>例示されている 10 項から漸化式を仮定して答えの値は求まったのですが、
+せっかくなので連分数について調べた内容から問題を論理的に解決します。
+本記事は直感で浮かんだ式に対する論理による解法の説明です。
+思いついた漸化式は本記事の末尾に書かれています。</p>
+<p>下記に示す連分数</p>
 <p>$$
 a_0 + \cfrac{b_1}{a_1 + \cfrac{b_2}{a_2 + \cfrac{b_3}{\ddots \cfrac{\ddots}{a_n + \cfrac{b_{n+1}}{\ddots}}}}}
 $$</p>
-<p>という連分数に対して、</p>
+<p>に対して、</p>
 <p>$$
 A_0 = a_0 = \frac{x_0}{y_0}, \;
 A_1 = a_0 + \frac{b_1}{a_1} = \frac{x_1}{y_1}, \;
 A_2 = a_0 + \cfrac{b_1}{a_1 + \cfrac{b_2}{a_2}} = \frac{x_2}{y_2}, \; \dots
 $$</p>
-<p>とする。このとき</p>
+<p>のように連分数の展開を途中の $a_{n}$ で打ち切った $A_{n} = x_{n} / y_{n}$ を定義する。このとき</p>
 <p>$$
 \begin{aligned}
 n=0 \rightarrow x_0 &amp; = a_0 \\ y_0 &amp; = 1 \\
@@ -81,36 +87,44 @@ A_{2} = \frac{x_2}{y_2} &amp; = \frac{ a_{0}a_{1}a_{2} + a_{0}b_{2} + a_{2}b_{1}
 &amp; = \frac{ a_{2}x_{1} + b_{2}x_{0} }{ a_{2}y_{1} + b_{2}y_{0} }
 \end{aligned}
 $$</p>
-<p>そこで、$n = k \; [k \ge 2]$ のとき下記の式が成立すると仮定する</p>
+<p>そこで $n = k \; [k \ge 2]$ のとき下記の式 $(1)$ が成立すると仮定し、
+この式が $n=k+1$ の時にも成立することを示す。</p>
 <p>$$
 \begin{align}
 A_{n} = \frac{x_n}{y_n} = \frac{ a_{n}x_{n-1} + b_{n}x_{n-2} }{ a_{n}y_{n-1} + b_{n}y_{n-2} }
 \end{align}
 $$</p>
-<p>$n=k+1$ を考えると $A_n$ の定義より $A_k$ が $A_{k+1}$ に変わると $a_k$ が $a_k + \frac{b_{k+1}}{a_{k+1}}$ に置き換えられるので</p>
+<p>$A_n$ の定義より $A_k$ が $A_{k+1}$ に変わるのは $a_k$ を $a_k + \frac{b_{k+1}}{a_{k+1}}$ に置き換える事であるので</p>
 <p>$$
 \begin{aligned}
-A_{k+1} = \frac{x_{k+1}}{y_{k+1}} &amp; = \frac{ ( a_k + \frac{b_{k+1}}{a_{k+1}} )  x_{k-1} + b_{k}x_{k-2} }{ ( a_k + \frac{b_{k+1}}{a_{k+1}} ) y_{k-1} + b_{k}y_{k-2} } \\
+A_{k+1} &amp; = \frac{ ( a_k + \frac{b_{k+1}}{a_{k+1}} )  x_{k-1} + b_{k}x_{k-2} }{ ( a_k + \frac{b_{k+1}}{a_{k+1}} ) y_{k-1} + b_{k}y_{k-2} } \\
 &amp; = \frac{ ( \frac{a_{k}a_{k+1} + b_{k+1}}{a_{k+1}} )  x_{k-1} + b_{k}x_{k-2} }{ ( \frac{a_{k}a_{k+1} + b_{k+1}}{a_{k+1}} ) y_{k-1} + b_{k}y_{k-2} } \\
 &amp; = \frac{ (a_{k}a_{k+1} + b_{k+1}) x_{k-1} + a_{k+1}b_{k}x_{k-2} }{ (a_{k}a_{k+1} + b_{k+1}) y_{k-1} + a_{k+1}b_{k}y_{k-2} } \\
 &amp; = \frac{ a_{k+1}(a_{k}x_{k-1} + b_{k}x_{k-2}) + b_{k+1}x_{k-1} }{ a_{k+1}(a_{k}x_{k-1} + b_{k}y_{k-2}) + b_{k+1}y_{k-1} } \\
-&amp; = \frac{ a_{k+1}x_{k} + b_{k+1}x_{k-1} }{ a_{k+1}y_{k} + b_{k+1}y_{k-1} }
+&amp; = \frac{ a_{k+1}x_{k} + b_{k+1}x_{k-1} }{ a_{k+1}y_{k} + b_{k+1}y_{k-1} } \\
+&amp; = \frac{x_{k+1}}{y_{k+1}}
 \end{aligned}
 $$</p>
 <p>よって 式 $(1)$ が $n=k \; [k \ge 2]$ で成立するならば $n=k+1$ でも成立することが確認できた。
-既に $n=2$ の時に成立するのは示しており、式 $(1)$ は $n \ge 2$ で成立する。</p>
-<p>さて Problem 65 に戻ると、ネイピア数 $e$ に対して</p>
+既に $n=2$ の時に成立するのは示しており、式 $(1)$ は $n \ge 2$ で成立することがわかる。</p>
+<p>Problem 65 に戻ると、ネイピア数 $e$ は
+$b_{n}$ が全て 1 である正則連分数(regular continued fraction)で表記できると示されている。</p>
 <p>$$
 \begin{aligned}
 e &amp;= [a_{0};a_{1},a_{2}, &hellip;] \\
 &amp;= [2;1,2,1,1,4,1,1,6,1, \dots,1,2k,1, \dots]
 \end{aligned}
 $$</p>
-<p>正則連分数(regular continued fraction)で表記できるとのことなので $a_0 = 2$、$n \ge 1$ とすると</p>
+<p>従って $a_0 = 2, \, b_0=1$ として、$n \ge 1$ では</p>
 <p>$$
 \begin{aligned}
 a_{n} &amp; = 2 \cdot \lceil \frac{n}{3} \rceil \; [n \equiv 2 \:(mod \, 3)], \enspace 1 \; [n \equiv 0,1 \:(mod \, 3)] \\
 b_{n} &amp; = 1 \\
+\end{aligned}
+$$</p>
+<p>となるので、$x_{0}, x_{1}$ は</p>
+<p>$$
+\begin{aligned}
 x_{0} &amp; = a_{0} = 2 \\
 x_{1} &amp; = a_{0}a_{1} + b_{1} = 2 \cdot 1 + 1 = 3
 \end{aligned}
@@ -120,19 +134,19 @@ $$</p>
 
 <hr>
 <div class="PrevNextLink">
-  
   <div class="PrevNextLink_prev">
-    <a href="https://kwj.github.io/project-euler/ja/pm/problem-64/">Problem 64</a>
+
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-64/">≪ Problem 64</a>
+
   </div>
-  
   <div class="PrevNextLink_up">
     <a href="../">[Up]</a>
   </div>
-  
   <div class="PrevNextLink_next">
-    <a href="https://kwj.github.io/project-euler/ja/pm/problem-66/">Problem 66</a>
+
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-66/">Problem 66 ≫</a>
+
   </div>
-  
 </div>
 
 

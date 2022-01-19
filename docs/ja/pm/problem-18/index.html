@@ -11,15 +11,20 @@
 </head>
 <body>
     <header><div class="top-menu">
-  
-  <div class="top-menu-item">
-    <a href="/project-euler/ja/">Home</a>
+  <div class="top-menu-group-left">
+
+    <div class="top-menu-group-left-item">
+      <a href="/project-euler/ja/">Home</a>
+    </div>
+
+    <div class="top-menu-group-left-item">
+      <a href="https://github.com/kwj/project-euler/">GitHub</a>
+    </div>
+
   </div>
-  
-  <div class="top-menu-item">
-    <a href="https://github.com/kwj/project-euler/">GitHub</a>
+  <div class="top-menu-group-right">
+
   </div>
-  
 </div>
 
 <section class="content-meta">
@@ -32,13 +37,16 @@
 <li><a href="https://projecteuler.net/problem=18">Maximum path sum I</a></li>
 </ul>
 <h2 id="感想">感想</h2>
-<p>バックトラッキングを使って上から探すと処理が面倒なので、単純に下から畳み込むに限ります。</p>
+<p>上から下への一方通行といった単純な経路かつ求めるのが経路でなく経路に紐づく値の場合は、
+スタートもしくはゴールから単純に畳み込むに限ります。
+今回はスタートが一箇所に対してゴールが不明なので、ゴール側である下から処理します。</p>
+<p>これが、</p>
 <pre tabindex="0"><code>        ...
       70 ...
     91 72 ...
   63 66 04 68 89 53 67 30 73 16 69 87 40 31
 04 62 98 27 23 09 70 98 73 93 38 53 60 04 23
-</code></pre><p>これが、こうなる。</p>
+</code></pre><p>こうなる。</p>
 <pre tabindex="0"><code>        ...
       70 ...
     91  72   ...
@@ -52,19 +60,19 @@
 
 <hr>
 <div class="PrevNextLink">
-  
   <div class="PrevNextLink_prev">
-    <a href="https://kwj.github.io/project-euler/ja/pm/problem-17/">Problem 17</a>
+
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-17/">≪ Problem 17</a>
+
   </div>
-  
   <div class="PrevNextLink_up">
     <a href="../">[Up]</a>
   </div>
-  
   <div class="PrevNextLink_next">
-    <a href="https://kwj.github.io/project-euler/ja/pm/problem-19/">Problem 19</a>
+
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-19/">Problem 19 ≫</a>
+
   </div>
-  
 </div>
 
 

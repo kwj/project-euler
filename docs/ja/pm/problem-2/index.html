@@ -31,15 +31,20 @@
 </head>
 <body>
     <header><div class="top-menu">
-  
-  <div class="top-menu-item">
-    <a href="/project-euler/ja/">Home</a>
+  <div class="top-menu-group-left">
+
+    <div class="top-menu-group-left-item">
+      <a href="/project-euler/ja/">Home</a>
+    </div>
+
+    <div class="top-menu-group-left-item">
+      <a href="https://github.com/kwj/project-euler/">GitHub</a>
+    </div>
+
   </div>
-  
-  <div class="top-menu-item">
-    <a href="https://github.com/kwj/project-euler/">GitHub</a>
+  <div class="top-menu-group-right">
+
   </div>
-  
 </div>
 
 <section class="content-meta">
@@ -52,33 +57,35 @@
 <li><a href="https://projecteuler.net/problem=2">Even Fibonacci numbers</a></li>
 </ul>
 <h2 id="感想">感想</h2>
-<p>偶数の値を持つ項を指定している理由は何だろうか。</p>
 <p>$F(n)$ を問題のフィボナッチ数列とする。</p>
 <p>$$ \begin{aligned}F(1) &amp;= 1, \; F(2) = 2 \\ F(n) &amp;= F(n-1)+F(n-2) \; [n &gt; 2] \end{aligned}$$
 偶数$(E)$/奇数$(O)$で見ると、以下の通り。
 $$ F(1) = O \\ F(2) = E \\ F(3) = O \\ F(4) = O \\ F(5) = E \\ F(6) = O \\ F(7) = O \\ F(8) = E \\ F(9) = O \\ \ldots $$</p>
 <p>$n=2,5,8, &hellip;$ のときに $F(n)$ は偶数となるので、
 $F(n)$ と $F(n-3), F(n-6)$ の漸化式を示せれば偶数の値を持つ項のみ数え上げ可能。
-今回は条件を満たす項が11個しかないので、複雑なことはせずナイーブに処理するのが良いのかもしれない。</p>
+今回は条件を満たす項が 11 個しかないので、
+複雑なことはせず普通のフィボナッチ数列の漸化式をナイーブに処理するのが楽そう。</p>
 <p>フィボナッチ数列の一般項から判るように、偶数の値を持つ項の一般項を求めてみたが同じく無理数が含まれている。
-複素数を扱う時と同様に処理すれば出来ないことはないが、費やす労力を考えると漸化式で扱うのが妥当かと。
-$$ a_k = \frac{(4+2\sqrt{5})(2+\sqrt{5})^{k-1} - (4-2\sqrt{5})(2-\sqrt{5})^{k-1}}{2\sqrt{5}} \enspace [k&gt;0, n=3k-1] $$</p>
+複素数を扱う時と同様に処理すれば出来ないことはないが、費やす労力を考えると普通の一般項を $n=2,5,8,..$ で計算する方が楽だし、
+一般項を複数回計算するくらいなら漸化式から計算する方がもっと楽だと思う。</p>
+<p>$$ a_k = \frac{(4+2\sqrt{5})(2+\sqrt{5})^{k-1} - (4-2\sqrt{5})(2-\sqrt{5})^{k-1}}{2\sqrt{5}} \enspace [k&gt;0, n=3k-1] $$</p>
+<p>偶数の値を持つ項を指定している理由が何かしらありそうで気になります。</p>
 
 <hr>
 <div class="PrevNextLink">
-  
   <div class="PrevNextLink_prev">
-    <a href="https://kwj.github.io/project-euler/ja/pm/problem-1/">Problem 1</a>
+
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-1/">≪ Problem 1</a>
+
   </div>
-  
   <div class="PrevNextLink_up">
     <a href="../">[Up]</a>
   </div>
-  
   <div class="PrevNextLink_next">
-    <a href="https://kwj.github.io/project-euler/ja/pm/problem-3/">Problem 3</a>
+
+    <a href="https://kwj.github.io/project-euler/ja/pm/problem-3/">Problem 3 ≫</a>
+
   </div>
-  
 </div>
 
 
