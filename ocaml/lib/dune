@@ -1,0 +1,3 @@
+(library
+  (name euler)
+  (libraries core zarith))
