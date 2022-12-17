@@ -24,8 +24,7 @@ module M = Euler.Math
 let get_divisors n =
   M.factorize n @ M.factorize (3 * n - 1)    (* 'n' and '3n-1' are relatively prime. *)
   |> M.pfactors_to_divisors
-  |> List.filter ~f:(fun i -> i < n)
-  |> List.filter ~f:(fun i -> i mod 3 = n mod 3)
+  |> List.filter ~f:(fun i -> i < n && (i mod 3 = n mod 3))
 
 let solve () =
   let check_conditions r1 r2 =
