@@ -36,12 +36,9 @@ let sum_2 num tbl =
     if d < 1 then
       acc
     else
-      if d = num / d then
-        aux (pred d) acc
-      else
-        aux (pred d) (acc + ((num / d - num / (d + 1)) * tbl.(d)))
+      aux (pred d) (acc + ((num / d - num / (d + 1)) * tbl.(d)))
   in
-  aux (Euler.Math.isqrt num) 0
+  aux (num / ((Euler.Math.isqrt num) + 1)) 0
 
 let solve num =
   let _, s_phi_tbl = make_phi_tbl num in
