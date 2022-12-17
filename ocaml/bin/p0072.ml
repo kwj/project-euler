@@ -2,6 +2,8 @@
 
 (*
   https://mathproblems123.wordpress.com/2018/05/10/sum-of-the-euler-totient-function/
+
+  table version
  *)
 
 open Core
