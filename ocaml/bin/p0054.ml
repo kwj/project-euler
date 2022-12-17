@@ -1,6 +1,9 @@
 (* Project Euler: Problem 54 *)
 
 (*
+  We'll need the following file to run this program.
+    - https://projecteuler.net/project/resources/p054_poker.txt
+
   card rank:
     2, 3, 4, 5, 6, 7, 8, 9, Ten(10), Jack(11), Queen(12), King(13), Ace(14)
 
