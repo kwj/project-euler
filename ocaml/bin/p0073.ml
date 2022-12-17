@@ -1,33 +1,18 @@
 (* Project Euler: Problem 73 *)
 
-(*
-  stupid algorithm
-
-  the following looks interesting and I'll read and think about it later
-    https://en.wikipedia.org/wiki/Farey_sequence#Next_term
- *)
-
-(* ---------------------------------------------------------------- *)
-
-let rec gcd m n =
-  if n = 0 then m else gcd n (m mod n)
+open Core
 
 let solve limit =
-  let rec loop' num den low result =
-    if num <= low then
-      result
+  let rec dfs left right =
+    let x = left + right in
+    if x > limit then
+      0
     else
-      match gcd den num with
-      | 1 -> loop' (pred num) den low (succ result)
-      | _ -> loop' (pred num) den low result
+      (dfs left x) + (dfs x right) + 1
   in
-  let rec loop n result =
-    if n < 4 then
-      result
-    else
-      loop (pred n) (result + (loop' (n / 2) n (n / 3) 0))
-  in
-  loop limit 0
+  dfs 3 2
 
-let () =
-  Printf.printf "Answer: %d\n" (solve 12_000)
+let exec () =
+  Int.to_string (solve 12_000)
+
+let () = Euler.Task.run exec

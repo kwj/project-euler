@@ -27,14 +27,14 @@
              | 2n/3 (i mod 3 = 0)   
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
 let sum_of_digits num =
   let rec aux n result =
-    if Z.(n = zero) then
+    if Z.(equal n zero) then
       result
     else
-      aux Z.(div n (of_int 10)) (result + Z.(to_int (rem n (of_int 10))))
+      aux Z.(div n ~$10) (result + Z.(to_int (rem n ~$10)))
   in
   aux num 0
 
@@ -42,17 +42,16 @@ let c = function
   | n when n mod 3 = 0 -> Z.of_int (2 * n / 3)
   | _ -> Z.one
 
-let series start upper =
+let solve start upper =
   let rec loop i n1 n2 =
     if i > upper then
       sum_of_digits n1
     else
       loop (succ i) Z.(n1 * (c i) + n2) n1
   in
-  loop start (Z.of_int 3) (Z.of_int 2)
+  loop start Z.(~$3) Z.(~$2)
 
-let solve () =
-  series 3 100
+let exec () =
+  Int.to_string (solve 3 100)
 
-let () =
-  Printf.printf "Answer: %d\n" (solve())
+let () = Euler.Task.run exec

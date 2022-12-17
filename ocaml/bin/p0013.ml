@@ -1,5 +1,7 @@
 (* Project Euler: Problem 13 *)
 
+open Core
+
 let numbers = [
     "37107287533902102798797998220837590246510135740250";
     "46376937677490009712648124896970078050417018260538";
@@ -106,7 +108,7 @@ let numbers = [
 let calc_by_zarith nums =
   let open Z in
   let z_add acc s = add acc @@ of_string s in
-  to_string @@ List.fold_left z_add zero nums
+  to_string @@ List.fold_left nums ~init:zero ~f:z_add
 
 let add_string_list nums =
   let rec l_add acc s =
@@ -116,11 +118,11 @@ let add_string_list nums =
           aux (int_of_string(Char.escaped s.[i]) :: l) (pred i) in
       aux [] (String.length s - 1) in
     if List.length acc < String.length s then
-      l_add (List.append (List.init (String.length s - List.length acc) (fun n -> 0)) acc) s
+      l_add (List.append (List.init (String.length s - List.length acc) ~f:(fun _ -> 0)) acc) s
     else
-      List.map2 (+) acc @@ s_to_l s
+      List.map2_exn ~f:(+) acc @@ s_to_l s
   in
-  List.fold_left l_add [] nums;;
+  List.fold_left ~f:l_add ~init:[] nums;;
 
 let carry_up lst =
   let rec aux lst =
@@ -132,9 +134,11 @@ let carry_up lst =
   List.rev @@ aux @@ List.rev lst;;
 
 let calc_by_list nums =
-  List.fold_left (fun acc n -> acc ^ string_of_int n) "" @@ carry_up @@ add_string_list nums
+  List.fold_left ~f:(fun acc n -> acc ^ string_of_int n) ~init:"" @@ carry_up @@ add_string_list nums
 
-let () =
-  Printf.printf "the first ten digits of the sum of the following one-hundred 50-digit number is:\n";
-  Printf.printf "   %s: (w/ Zarith module)\n" (String.sub (calc_by_zarith numbers) 0 10);
-  Printf.printf "   %s: (w/o Zarith module)\n" (String.sub (calc_by_list numbers) 0 10)
+let exec () =
+  sprintf "%s (w/ Zarith module)\n%s (w/o Zarith module)"
+    (String.sub (calc_by_zarith numbers) ~pos:0 ~len:10)
+    (String.sub (calc_by_list numbers) ~pos:0 ~len:10)
+
+let () = Euler.Task.run exec

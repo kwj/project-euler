@@ -1,59 +1,43 @@
 (* Project Euler: Problem 50 *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
-let make_primes n =
-  (* Sieve of Eratosthenes *)
-  let primes_array = Array.init (n + 1) (fun i -> i) in
-  let primes_lst = ref [] in
-  primes_array.(0) <- 0;
-  primes_array.(1) <- 0;
-  for i = 2 to n do
-    if primes_array.(i) <> 0 then (
-      if i <= (n / 2) then (
-        primes_lst := i :: !primes_lst;
-      );
-      let j = ref (i * i) in
-      while !j <= n do
-        primes_array.(!j) <- 0;
-        j := !j + i
-      done
-    )
-  done;
-  primes_array, !primes_lst
+module E = Euler.Eratosthenes
 
-let find_maxlen p_arr p_lst =
-  let max_len, max_sum = ref 0, ref 0 in
-  let limit = Array.length p_arr - 1 in
-  let rec aux lst cnt sum =
-    match lst with
-    | hd :: tl when hd + sum <= limit ->
-       if p_arr.(hd + sum) <> 0 then (
-         max_len := cnt + 1; max_sum := hd + sum
-       );
-       aux tl (succ cnt) (hd + sum)
-    | _ ->
-       !max_len, !max_sum
+let solve u_limit =
+  let prime_t = E.generate u_limit in
+  let check_consecutiveness lst =
+    let rec aux l acc cnt result =
+      match l with
+      | x :: xs when (x + acc) <= u_limit ->
+          if E.is_prime prime_t (x + acc) then
+            aux xs (x + acc) (succ cnt) (cnt, x + acc)
+          else
+            aux xs (x + acc) (succ cnt) result
+      | _ -> result
+    in
+    aux lst 0 1 (0, 0)
   in
-  aux p_lst 0 0
+  let rec make_prime_lst acc = function
+    | x1 :: x2 :: _ when (x1 + x2) > u_limit -> List.rev (x1 :: acc)
+    | x :: xs -> make_prime_lst (x :: acc) xs
+    | [] -> List.rev acc
+  in
 
-let solve n =
-  let p_arr, p_lst = make_primes n in
-  let rec aux lst max_len max_sum =
+  let prime_lst = make_prime_lst [] (E.to_list prime_t) in
+  let rec aux lst (max_len, max_sum) =
     if List.length lst < max_len then
       max_len, max_sum
     else
       match lst with
-      | hd :: tl ->
-         let l, s = find_maxlen p_arr lst in
-         if l > max_len then
-           aux tl l s
-         else
-           aux tl max_len max_sum
+      | _ :: xs -> let len, sum = check_consecutiveness lst in
+                   if len > max_len then aux xs (len, sum) else aux xs (max_len, max_sum)
       | [] -> max_len, max_sum
   in
-  aux p_lst 0 0
+  aux prime_lst (0, 0)
 
-let () =
+let exec () =
   let len, sum = solve 1_000_000 in
-  Printf.printf "Answer: len:%d, sum:%d\n" len sum
+  sprintf "%d (%d chains)" sum len
+
+let () = Euler.Task.run exec

@@ -1,65 +1,57 @@
 (* Project Euler: Problem 38 *)
 
 (*
-  1) not more than five digits from condition.
-  2) if number is four digits, n = 2  (x1 -> 4-digits, x2 -> 5-digits)
-  3) if number is three digits, n = 3  (x1 -> 3-digits, x2 -> 3-digits, x3 -> 3-digits)
-  4) if number is two digits, n = 4  (x1 -> 2-digits, x2 -> 2-digits, x3 -> 2-digits, x4 -> 3-digits)
-  5) if number is own digit, n = 9 or 5 (only '1', '9').
+  It is clear that number X is within 4 digits from the requirement
+  1) if number X is four digits, n = 2  (X * 1 -> 4-digits, X * 2 -> 5-digits)
+  2) if number X is three digits, n = 3  (X * 1 -> 3-digits, X * 2 -> 3-digits, X * 3 -> 3-digits)
+  3) if number X is two digits, n = 4  (X * 1 -> 2-digits, X * 2 -> 2-digits, X * 3 -> 2-digits, X * 4 -> 3-digits)
+  4) if number X is one digit, n = 9 or 5 (only X=1 and n=9, X=9 and n=5).
 
+  case #1:
+    5000 <= X <= 9999
   case #2:
-    5000 <= x <= 9999
+    100 <= X <= 333
   case #3:
-    100 <= x <= 333
+    10 <= X <= 33
   case #4:
-    10 <= x <= 33
-  case #5:
-    x = 1, 9
+    X = 1, 9
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
-let is_pandigital lst =
-  let mk_bits num =
-    let rec aux n bits =
-      if n = 0 then bits else aux (n / 10) (bits lor (1 lsl ((n mod 10) - 1)))
-    in
-    aux num 0
-  in
-  let rec aux lst =
-    match lst with
-    | [] -> 0
-    | hd :: tl -> (mk_bits hd) lor (aux tl)
-  in
-  aux lst = ((1 lsl 9) - 1)
-
-let rec find_cands start stop =
-  let mk_plist num =
-    match num with
-    | n when n = 1 -> [1; 2; 3; 4; 5; 6; 7; 8; 9]
-    | n when n = 9 -> [9; 18; 27; 36; 45]
-    | n when n < 100 -> [num; num * 2; num * 3; num * 4]
-    | n when n < 1000 -> [num; num * 2; num * 3]
-    | _ -> [num; num * 2]
-  in
-  if start < stop then find_cands stop start
+let rec find_candidates start stop =
+  if start < stop then
+    find_candidates stop start
   else
-    let rec aux n result =
-      if n < stop then result
+    let make_cand num =
+      match num with
+      | x when x = 1 -> Some [1; 2; 3; 4; 5; 6; 7; 8; 9]    (* case #4 *)
+      | x when x = 9 -> Some [9; 18; 27; 36; 45]    (* case #4 *)
+      | x when x >= 10 && x <= 33 -> Some [num; num * 2; num * 3; num * 4]    (* case #3 *)
+      | x when x >= 1000 && x <= 333 -> Some [num; num * 2; num * 3]    (* case #2 *)
+      | x when x >= 5000 && x <= 9999 -> Some [num; num * 2]    (* case #1 *)
+      | _ -> None
+    in
+    let rec aux i result =
+      if i < stop then
+        result
       else
-        let tmp = mk_plist n in
-        if is_pandigital tmp = true then
-          aux (pred n) ((int_of_string (List.fold_left (fun acc e -> acc ^ string_of_int e) "" tmp), n) :: result)
-        else
-          aux (pred n) result
+        match make_cand i with
+        | Some lst -> if Euler.Math.is_pandigital_lst lst then
+                        aux (pred i) ((Int.of_string (List.fold lst ~init:"" ~f:(fun acc n -> acc ^ Int.to_string n)), i) :: result)
+                      else
+                        aux (pred i) result
+        | None -> aux (pred i) result
     in
     aux start []
 
 let solve () =
-  let concat_products = List.sort (fun (p1, _) (p2, _) -> p2 - p1)
-                          ((find_cands 9999 5000) @ (find_cands 333 100) @ (find_cands 33 10) @ (find_cands 9 9) @ (find_cands 1 1)) in
-  List.hd concat_products
+  ((find_candidates 9999 5000) @ (find_candidates 333 100) @ (find_candidates 33 10) @ (find_candidates 9 9) @ (find_candidates 1 1))
+  |> List.sort ~compare:(fun (p1, _) (p2, _) -> p2 - p1)
+  |> List.hd_exn
 
-let () =
-  let p, n = solve() in
-  Printf.printf "Answer: %d (n=%d)\n" p n
+let exec () =
+  let prod, x = solve () in
+  sprintf "%d (x=%d)" prod x
+
+let () = Euler.Task.run exec

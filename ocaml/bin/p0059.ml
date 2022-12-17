@@ -6,107 +6,63 @@
 
     lower case characters:
       'a'..'z': 0x61(97d)..0x7a(122d)
-    printable characters:
-      0x20(32d)..0x7E(126d)
-    common English words:
-      assume that [A-Za-z]+
 
-  Approach
-    step 1:
-      try to decrypt with all keys. (brute force)
-      if the decrypted data only contains printable characters, the key is a candidate key.
-    step 2:
-        the key which has the best score by evaluating decrypted data is used as secret key.
-        print decrypted text and the sum of ASCII values with secret key.
-
-  You will need the following files to run this program.
-   - https://projecteuler.net/project/resources/p059_cipher.txt   [encrypted data]
+  We'll need the following files to run this program.
+    - https://projecteuler.net/project/resources/p059_cipher.txt   [encrypted data]
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
-let read_data() =
-  let filename = ref "" in
-  let anon_fun n = () in
-  let speclist = [("-f", Arg.Set_string filename, "<filename>  Set ecrypted file name (If not specified, read from stdin)")] in
-  Arg.parse speclist anon_fun "Usage:";
-  let enc_data =
-    if !filename <> "" then (
-      let fin = open_in !filename in
-      let rec loop acc =
-        match input_line fin with
-        | l -> loop (l :: acc)
-        | exception End_of_file -> close_in fin; List.rev acc
-      in
-      loop []
-    ) else (
-      let rec loop acc =
-        match read_line () with
-        | l -> loop (l :: acc)
-        | exception End_of_file -> List.rev acc
-      in
-      loop []
-    )
+let keylist_generator len =
+  let alpha = List.map ~f:(fun e -> [e]) (List.range ~stop:`inclusive 0x61 0x7a) in    (* 'a': 0x61, 'z': 0x7a *)
+  let product_lst l1 l2 = List.concat (List.map ~f:(fun e -> List.map ~f:(fun x -> e @ x) l2) l1) in
+  let keys = ref (product_lst alpha (product_lst alpha alpha)) in
+  let make_keylist key =
+    let rec aux cnt acc =
+      if cnt = 0 then
+        List.take (List.concat acc) len
+      else
+        aux (pred cnt) (key :: acc)
+    in
+    aux (len / 3 + 1) []
   in
-  List.map int_of_string (List.flatten (List.map (fun line -> Str.split (Str.regexp ",") line) enc_data))
+  let next () =
+    match !keys with
+    | [] -> None
+    | x :: xs -> keys := xs; Some (make_keylist x)
+  in
+  next
 
-let decrypt enc_lst key_lst =
-  let rec aux lst result =
-    match lst with
-    | e1 :: e2 :: e3 :: tl ->
-       aux tl ((e3 lxor (List.nth key_lst 2)) :: (e2 lxor (List.nth key_lst 1)) :: (e1 lxor (List.nth key_lst 0)) :: result)
-    | e1 :: e2 :: [] ->
-       aux [] ((e2 lxor (List.nth key_lst 1)) :: (e1 lxor (List.nth key_lst 0)) :: result)
-    | e1 :: [] ->
-       aux [] ((e1 lxor (List.nth key_lst 0)) :: result)
-    | _ ->
-       List.rev result
-  in
-  aux enc_lst []
+let decode cipher_text key =
+  List.map2_exn cipher_text key ~f:(fun x y -> x lxor y)
 
-let step1 enc_lst =
-  let is_plaintext lst =
-    let is_non_printable c = if c < 32 || c > 126 then true else false in
-    if List.exists is_non_printable lst then false else true
-  in
-  let cands_tbl = Hashtbl.create 128 in      (* 128 is a tentative value, meaningless *)
-  (* 'a'=97, 'z'=122  *)
-  for k1 = 97 to 122 do
-    for k2 = 97 to 122 do
-      for k3 = 97 to 122 do
-        let dec_lst = decrypt enc_lst [k1; k2; k3] in
-        if is_plaintext dec_lst then
-          Hashtbl.add cands_tbl [k1; k2; k3] dec_lst
-      done
-    done
-  done;
-  cands_tbl
+let parse_data data =
+  List.hd_exn data |> String.split ~on:',' |> List.map ~f:(fun s -> Int.of_string s)
 
-let step2 cands_tbl =
-  let lstint_to_str lst =
-    let b = Buffer.create 1500 in
-    List.iter (Buffer.add_char b) (List.map char_of_int lst);
-    Buffer.contents b
+let eval_ptext lst =
+  let s_lst = List.map ~f:Char.of_int_exn lst |> String.of_char_list |> Str.split (Str.regexp "[,. ]") in
+  let rec aux cnt = function
+    | [] -> cnt
+    | x :: xs -> aux (List.length (List.filter ~f:(String.(=) x) s_lst) + cnt) xs
   in
-  let eval_str str =
-    (* terrible strategy ... *)
-    let lst = Str.split (Str.regexp "[^A-Za-z]+") str in
-    (List.length (List.filter ((=) "the") lst))
-    + (List.length (List.filter ((=) "of") lst))
-    + (List.length (List.filter ((=) "is") lst))
-    + (List.length (List.filter ((=) "this") lst))
-  in
-  let _, k =
-    Seq.map (fun (k, ilst) -> (eval_str (lstint_to_str ilst)), k) (Hashtbl.to_seq cands_tbl)
-    |> List.of_seq
-    |> List.sort (fun (n1, k1) (n2, k2) -> n2 - n1)
-    |> List.hd
-  in
-  Printf.printf "%s\n" (lstint_to_str (Hashtbl.find cands_tbl k));
-  Printf.printf "sum=%d, key=%s\n" (List.fold_left (+) 0 (Hashtbl.find cands_tbl k)) (lstint_to_str k)
+  aux 0 ["and"; "of"; "a"; "to"; "in"]
 
-let () =
-  let enc_data = read_data () in
-  let cands_tbl = step1 enc_data in
-  step2 cands_tbl
+let solve data =
+  let cipher_text = parse_data data in
+  let get_key = keylist_generator (List.length cipher_text) in
+  let rec aux max_score result =
+    match get_key () with
+    | None -> result
+    | Some key -> let ptext_lst = decode cipher_text key in
+                  let score = eval_ptext ptext_lst in
+                  if max_score < score then
+                    aux score key
+                  else
+                    aux max_score result
+  in
+  List.fold ~init:0 ~f:(+) (aux 0 [0] |> decode cipher_text)
 
+let exec data =
+  Int.to_string (solve data)
+
+let () = Euler.Task.run_with_data exec (Euler.Task.read_data ())

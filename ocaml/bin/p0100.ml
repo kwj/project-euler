@@ -24,18 +24,20 @@
               if both x{1}, y{1} are odd, all x{n}, y{n} are odd too.
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
 let solve low =
   let x1, y1 = 1, 1 in
   let border = 2 * low - 1 in      (* x = 2b - 1 *)
   let rec loop x y =
     if x > border then
-      (y + 1) / 2      (* a = (y + 1) /2 *)
+      (y + 1) / 2                  (* a = (y + 1) /2 *)
     else
       loop (3 * x + 4 * y) (2 * x + 3 * y)
   in
   loop x1 y1
 
-let () =
-  Printf.printf "Answer: %d\n" (solve 1_000_000_000_000)
+let exec () =
+  Int.to_string (solve (1_000_000_000_000))
+
+let () = Euler.Task.run exec

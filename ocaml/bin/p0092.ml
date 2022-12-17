@@ -11,76 +11,43 @@
    9999999 -> 9^2 * 7 = 567
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
-let rec sq_digit n acc =
-  if n = 0 then
-    acc
-  else
-    let x = n mod 10 in
-    sq_digit (n / 10) (acc + (x * x))
-
-let init_tbl tbl =
-  let chain num =
-    let rec loop n lst =
-      if n = 1 || n = 89 then
-        n, lst
-      else
-        loop (sq_digit n 0) (n :: lst)
-    in
-    loop num []
-  in
-  tbl.(1) <- 1; tbl.(89) <- 89;
-  for i = 2 to 567 do
-    if tbl.(i) <> 0 then
-      ()
+let next_num num =
+  let rec aux n acc =
+    if n = 0 then
+      acc
     else
-      let result, lst = chain i in
-      let rec loop l =
-        match l with
-        | [] -> ()
-        | hd :: tl ->
-           tbl.(hd) <- result;
-           loop tl
-      in
-      loop lst
-  done;
-  tbl
+      let x = n mod 10 in
+      aux (n / 10) (acc + (x * x))
+  in
+  aux num 0
 
-let calc num tbl =
+let create_tbl limit =
+  let tbl = Array.create ~len:limit 0 in
+  tbl.(1) <- 1; tbl.(89) <- 89;
   let chain num =
     let rec loop n lst =
       if tbl.(n) <> 0 then
         tbl.(n), lst
-      else
-        loop (sq_digit n 0) (n :: lst)
+      else 
+        loop (next_num n) (n :: lst)
     in
     loop num []
   in
-  let result, lst = chain num in
-  let rec loop l =
-    match l with
-    | [] -> ()
-    | hd :: tl ->
-       (* If we use permutations here, we may be able to reduce the amount of computation. *)
-       tbl.(hd) <- result;
-       loop tl
-  in
-  loop lst
+  for i = 2 to limit - 1 do
+    if tbl.(i) = 0 then (
+      let n, lst = chain i in
+      List.iter lst ~f:(fun i -> tbl.(i) <- n)
+    )
+  done;
+  tbl
 
 let solve limit =
-  let result_tbl = init_tbl (Array.make limit 0) in
-  let count = ref 0 in
-  for i = (limit - 1) downto (243 + 1) do
-    calc i result_tbl
-  done;
-  for i = 1 to limit - 1 do
-    if result_tbl.(i) = 89 then
-      count := !count + 1
-    else
-      ()
-  done;
-  !count
+  let tbl = create_tbl limit in
+  Array.fold ~init:0 ~f:(fun acc n -> if n = 89 then succ acc else acc) tbl
 
-let () =
-  Printf.printf "Answer: %d\n" (solve 10_000_000)
+let exec () =
+  Int.to_string (solve 10_000_000)
+
+let () = Euler.Task.run exec

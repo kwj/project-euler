@@ -1,13 +1,15 @@
 (* Project Euler: Problem 26 *)
 
+open Core
+
 let find_longest_cycle num =
   let div_loop a b =
     let rec aux dividend divisor cnt rems =
       if dividend = 0 then (
         0
       ) else (
-        if List.mem_assoc dividend rems = true then
-          cnt - (List.assoc dividend rems)
+        if Bool.equal (List.Assoc.mem rems dividend ~equal) true then
+          cnt - (List.Assoc.find_exn rems dividend ~equal)
         else
           aux ((dividend * 10) mod divisor) divisor (succ cnt) ((dividend, cnt) :: rems)
       )
@@ -26,7 +28,8 @@ let find_longest_cycle num =
   in
   aux num 0 0
 
-let () =
+let exec () =
   let num, cycles = find_longest_cycle 999 in
-  Printf.printf "the value of d < 1000 for which 1/d contains \
-                 the longest recurring cycle in its decimal fraction part is %d (cycles:%d)\n" num cycles
+  sprintf "%d (cycles: %d)" num cycles
+
+let () = Euler.Task.run exec

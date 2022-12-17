@@ -21,39 +21,46 @@
   --> m(m+1)*n(n+1) (\approx) 8_000_000    [assume that m<n]
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
-let search_n m ref_val =
-  let m2 = m * (m + 1) in
-  let rec loop n cand_n diff =
-    let prod = m2 * n * (n + 1) in
-    let d = abs (ref_val - prod) in
-    if d > diff && prod > ref_val then
-      cand_n, diff
-    else
-      if d < diff then
-        loop (succ n) n d
+let solve num =
+  let search_n m =
+    let m2 = m * (m + 1) in
+    let rec loop n cand_n diff =
+      let prod = m2 * n * (n + 1) in
+      let d = abs (num - prod) in
+      if prod > num && d > diff then
+        cand_n, diff
       else
-        loop (succ n) cand_n diff
+        if d < diff then
+          loop (succ n) n d
+        else
+          loop (succ n) cand_n diff
+    in
+    loop (m + 1) 0 Int.max_value
   in
-  loop (m + 1) 0 max_int
+  let module M = Euler.Math in
+  let module PQ = Euler.PrioQueue.Make(struct
+                      type t = int * (int * int)
+                      let compare x y = Int.compare (fst y) (fst x)
+                    end) in
 
-let search_m ref_val =
-  let border = truncate @@ ceil @@ sqrt @@ ceil @@ sqrt @@ float ref_val in
-  let rec loop m cand_m cand_n diff =
-    let n, d = search_n m ref_val in
-    if d > diff && m > border then
-      cand_m, cand_n
-    else
-      if d < diff then
-        loop (succ m) m n d
-      else
-        loop (succ m) cand_m cand_n diff
+  let upper_m = (M.isqrt (M.isqrt num)) + 1 in
+  let pq = PQ.init () in
+  PQ.insert pq (Int.max_value, (0, 0));
+  let rec loop m =
+    let n, d = search_n m in
+    if m > upper_m && d > fst (PQ.peek pq) then
+      PQ.peek pq
+    else (
+      PQ.insert pq (d, (m, n));
+      loop (succ m)
+    )
   in
-  loop 1 0 0 max_int
+  loop 1
 
-let solve num = search_m (num * 4)
+let exec () =
+  let _, (m, n) = solve (2_000_000 * 4) in
+  sprintf "%d (m=%d, n=%d)" (m * n) m n
 
-let () =
-  let m, n = solve 2_000_000 in
-  Printf.printf "Answer: %d [m=%d, n=%d, mC2*nC2=%d]\n" (m * n) m n (m * (m+1) * n * (n+1) / 4)
+let () = Euler.Task.run exec

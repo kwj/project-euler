@@ -1,41 +1,24 @@
 (* Project Euler: Problem 99 *)
 
 (*
-  You will need the following file to run this program.
-   - https://projecteuler.net/project/resources/p099_base_exp.txt
+  log10 base^exp = exp * (log10 base)
+
+  We will need the following file to run this program.
+    - https://projecteuler.net/project/resources/p099_base_exp.txt
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
-let read_data() =
-  let filename = ref "" in
-  let anon_fun n = () in
-  let speclist = [("-f", Arg.Set_string filename, "<filename>  Set input file name (If not specified, read from stdin)")] in
-  Arg.parse speclist anon_fun "Usage:";
-  if !filename <> "" then
-    let fin = open_in !filename in
-    let rec loop acc =
-      match input_line fin with
-      | l -> loop (l :: acc)
-      | exception End_of_file -> close_in fin; List.rev acc
-    in
-    loop []
-  else
-    let rec loop acc =
-      match read_line () with
-      | l -> loop (l :: acc)
-      | exception End_of_file -> List.rev acc
-    in
-    loop []
+let parse_data data =
+  List.map ~f:(fun l -> Str.split (Str.regexp ",") l |> List.map ~f:Float.of_string) data
+  |> List.mapi ~f:(fun i be_lst -> (List.nth_exn be_lst 1) *. (Float.log10 (List.nth_exn be_lst 0)), (i + 1))
 
-let cnvt_data lines =
-  List.map (fun l -> Str.split (Str.regexp ",") l |> List.map float_of_string) lines
-  |> List.mapi (fun i be_lst -> (((List.nth be_lst 1) *. (Float.log10 (List.nth be_lst 0))), (i + 1)))
-       
-let solve () =
-  let n_lst = List.rev (read_data () |> cnvt_data) in
-  let _, line_num = List.hd (List.rev (List.sort compare n_lst)) in
-  line_num
+let solve lst =
+  List.sort ~compare:(fun (f1, _) (f2, _) -> Float.compare f2 f1) lst
+  |> List.hd_exn
+  |> snd
 
-let () =
-  Printf.printf "Answer: %d\n" (solve ())
+let exec data =
+  Int.to_string (solve (parse_data data))
+
+let () = Euler.Task.run_with_data exec (Euler.Task.read_data ())

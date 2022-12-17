@@ -1,34 +1,30 @@
 (* Project Euler: Problem 62 *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
-let compute num_of_perm =
-  let tbl = Hashtbl.create 1024 in
+let solve () =
   let make_key num =
-    List.fold_left (^) "" (List.sort compare (Str.split (Str.regexp "") (string_of_int num)))
+    List.sort ~compare:String.compare (Str.split (Str.regexp "") (Int.to_string num))
+    |> List.fold ~init:"" ~f:(^)
   in
-  let rec loop n result =
+  let update_tbl tbl key data =
+    match Hashtbl.find tbl key with
+    | None -> Hashtbl.set tbl ~key ~data:[data]; [data]
+    | Some v -> Hashtbl.set tbl ~key ~data:(data :: v); data :: v
+  in
+  let tbl = Hashtbl.create (module String) in
+
+  let rec loop n =
     let cube = n * n * n in
-    let key = make_key cube in
-    if String.length key > List.nth result 1 then
-      result
-    else (
-      (match Hashtbl.find_opt tbl key with
-       | None -> Hashtbl.add tbl key [cube]
-       | Some v -> Hashtbl.replace tbl key (cube :: v));
-      if List.length (Hashtbl.find tbl key) < num_of_perm then
-        loop (succ n) result
-      else
-        let tmp = List.hd (List.rev (Hashtbl.find tbl key)) in
-        if tmp < List.hd result then
-          loop (succ n) [tmp; String.length key]
-        else
-          loop (succ n) result
-    )
+    let cube_lst = update_tbl tbl (make_key cube) cube in
+    if List.length cube_lst = 5 then
+      List.last_exn cube_lst
+    else
+      loop (succ n)
   in
-  loop 1 [max_int; max_int]      (* [cube; num_of_digits(cube)] *)
+  loop 1
 
-let solve () = compute 5
+let exec () =
+  Int.to_string (solve ())
 
-let () =
-  Printf.printf "Answer: %d\n" (List.hd (solve()))
+let () = Euler.Task.run exec

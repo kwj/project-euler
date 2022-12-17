@@ -9,41 +9,28 @@
   (sum_{1}_{4} n) mod 3 = 10 mod 3 = 1
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
-let is_pandigital number =
-  let mk_bits num =
-    let rec aux n bits =
-      if n = 0 then bits else aux (n / 10) (bits lor (1 lsl ((n mod 10) - 1)))
-    in
-    aux num 0
+let solve max_num =
+  let is_pandigital = Euler.Math.is_pandigital in
+  let is_prime = Euler.Math.mr_isprime in
+
+  (* This function always terminates. Because n=2143 is a 4-digit pandigital and is also prime. *)
+  let rec aux n =
+    if n > 7_654_321 then
+      aux 7_654_321
+    else if n = 999_999 then
+      aux 9_999
+    else
+      if is_pandigital n && is_prime n then
+        n
+      else
+        aux (n - 2)
   in
-  let ndigits = String.length (string_of_int number) in
-  mk_bits number = ((1 lsl ndigits) - 1)
+  let num = if max_num mod 2 = 0 then max_num - 1 else max_num in
+  aux num
 
-let is_prime num =
-  let upper = truncate @@ sqrt @@ float num in
-  let rec aux n k =
-    if k < 2 then true else (n mod k <> 0) && (aux n (k - 1))
-  in
-  if num <= 1 then false else aux num upper
+let exec () =
+  Int.to_string (solve 7_654_321)
 
-let solve n =
-  let rec aux num =
-    match num with
-    | n when 999999 < n && n <= 9999999    (* 7 digits *)
-      -> if n mod 3 = 0 || n mod 5 = 0 then aux (n - 2) else
-           if is_pandigital n && is_prime n then n else aux (n - 2)
-    | n when 999 < n && n <= 9999    (* 4 digits *)
-      -> if n mod 3 = 0 || n mod 5 = 0 then aux (n - 2) else
-           if is_pandigital n && is_prime n then n else aux (n - 2)
-    | n when 9999 < n && n <= 999999    (* skip if the number is 5 or 6 digits *)
-      -> aux 9999
-    | _    (* not reached it on this problem *)
-      -> 0
-  in
-  let start = if n mod 2 = 0 then n - 1 else n in
-  aux start
-
-let () =
-  Printf.printf "Answer: %d\n" (solve 7654321)
+let () = Euler.Task.run exec

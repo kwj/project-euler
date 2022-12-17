@@ -24,33 +24,37 @@
     'p' is always EVEN.
  *)
 
-(* ---------------------------------------------------------------- *)
-
+open Core
 
 let solve num =
-  let rec aux p result =
-    let rec search_sols a sols =
+  let rec find_candidates p result =
+    let rec aux a result =
       if a <= 0 then
-        sols
+        result
       else
         if (p * p - 2 * a * p) mod (2 * (p - a)) = 0 then
           let b = (p * p - 2 * a * p) / (2 * (p - a)) in
-          search_sols (pred a) ((a, b, p - a - b) :: sols)
+          aux (pred a) ((a, b, p - a - b) :: result)
         else
-          search_sols (pred a) sols
+          aux (pred a) result
     in
     if p <= 0 then
       result
     else
-      let tmp = search_sols (p / 3) [] in
-      if List.length tmp > 0 then
-        aux (p - 2) ((tmp, p) :: result)
+      let cands = aux (p / 3) [] in
+      if List.length cands > 0 then
+        find_candidates (p - 2) ((cands, p) :: result)
       else
-        aux (p - 2) result
+        find_candidates (p - 2) result
   in
-  let start = if num mod 2 = 0 then num else num - 1 in
-  List.hd @@ List.sort (fun (t1, _) (t2, _) -> List.length t2 - List.length t1) (aux start [])
+  let start_p = if num mod 2 = 0 then num else num - 1 in
 
-let () =
-  let _, p = solve 1000 in
-  Printf.printf "Answer: %d\n" p
+  find_candidates start_p []
+  |> List.sort ~compare:(fun (t1, _) (t2, _) -> List.length t2 - List.length t1)
+  |> List.hd_exn
+
+let exec () =
+  let lst, p = solve 1_000 in
+  sprintf "%d (number of solutions = %d)" p (List.length lst)
+
+let () = Euler.Task.run exec

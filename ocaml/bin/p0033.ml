@@ -28,34 +28,27 @@
    -> c(b - a) = 9b(a - c)  [a < b => c < a < b]
    -> a - c = c/9 - ac/9b => 1   ==> NG (bacause c/9 < 1)
 
-  so, I search for only case #1.
+  Therefore, I only need to search for case #1.
  *)
 
-(* ---------------------------------------------------------------- *)
-
-let rec combination r lst =
-  match r, lst with
-  | 0, _ -> [[]]
-  | _, []  -> []
-  | n, hd :: tl -> List.map (List.cons hd) (combination (n - 1) tl) @ combination n tl
-
-let rec gcd m n =
-  if n = 0 then m else gcd n (m mod n)
+open Core
 
 let solve () =
-  let cands = combination 3 (List.init 9 (fun e -> e + 1)) in
+  let cands = Euler.Util.combination 3 [1; 2; 3; 4; 5; 6; 7; 8; 9] in
   let rec aux lst result =
     match lst with
     | [] -> result
-    | hd :: tl ->
-       let a, b, c = List.nth hd 0, List.nth hd 1, List.nth hd 2 in
-       if 9 * a * (c - b) = c * (b - a) then
-         aux tl ((a, b) :: result)
-       else
-         aux tl result
+    | x :: xs ->
+        let a, b, c = List.nth_exn x 0, List.nth_exn x 1, List.nth_exn x 2 in
+        if 9 * a * (c - b) = c * (b - a) then
+          aux xs ((a, b) :: result)
+        else
+          aux xs result
   in
-  let a, b = List.fold_left (fun (x1, x2) (y1, y2) -> (x1 * y1, x2 * y2)) (1, 1) (aux cands []) in
-  b / (gcd a b)
+  let a, b = List.fold (aux cands []) ~init:(1, 1) ~f:(fun (x1, x2) (y1, y2) -> (x1 * y1, x2 * y2)) in
+  b / (Euler.Math.gcd a b)
 
-let () =
-  Printf.printf "Answer: %d\n" (solve())
+let exec () =
+  Int.to_string (solve ())
+
+let () = Euler.Task.run exec

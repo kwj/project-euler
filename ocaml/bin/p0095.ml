@@ -3,131 +3,62 @@
 (*
   This program is slow.
 
-  The 'divsum' table is made in a naively honest way, and it will be
-  faster if we improve this. We can modify sieve of Eratosthenes to
-  create it directly, instead of creating it from divisors.
+  % /bin/time -p _build/default/bin/p0095.exe
+  14316 [length of chain=28]
+  Elapsed time: 5.1873927116394043s
+  real 5.21
+  user 5.10
+  sys 0.09
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
-class eratosthenes limit =
-  object(self)
-    val prime_tbl = Array.make (limit + 1) true
-    val minfactor_tbl = Array.make (limit + 1) (-1)
-
-    method is_prime n =
-      prime_tbl.(n)
-
-    method factorize n =
-      let rec loop n result =
-        if n < 2 then
-          List.rev result
-        else
-          let p = minfactor_tbl.(n) in
-          let rec loop' n e =
-            if minfactor_tbl.(n) <> p then
-              n, (p, e)
-            else
-              loop' (n / p) (succ e)
-          in
-          let new_n, elm = loop' n 0 in
-          loop new_n (elm :: result)
-      in
-      loop n []
-
-    method divisors n =
-      let mul_lst i p e =
-        let rec loop e acc =
-          if e = 0 then
-            List.rev acc
-          else
-            loop (pred e) (((List.hd acc) * p) :: acc)
-        in
-        loop e [i]
-      in
-      let rec loop pf_lst result =
-        match pf_lst with
-        | [] -> List.sort compare result
-        | (prime, exp) :: tl ->
-           loop tl (List.map (fun i -> mul_lst i prime exp) result |> List.flatten)
-      in
-      if n <= 0 then
-        raise (Failure "n <= 0")
-      else
-        loop (self#factorize n) [1]
-      
-    initializer
-      begin
-        prime_tbl.(1) <- false;
-        minfactor_tbl.(1) <- 1;
-        for i = 2 to limit do
-          if prime_tbl.(i) = false then ()
-          else (
-            let rec loop j =
-              if j > limit then ()
-              else (
-                prime_tbl.(j) <- false;
-                if minfactor_tbl.(j) <> -1 then ()
-                else (
-                  minfactor_tbl.(j) <- i
-                );
-                loop (j + i)
-              )
-            in
-            minfactor_tbl.(i) <- i;
-            loop (i * 2)
-          )
-        done
-      end
-  end
-
-let make_divsum er num =
-  let tbl = Array.make (num + 1) 1 in
-  for i = 2 to num do
-    tbl.(i) <- (List.fold_left (+) 0 (er#divisors i)) - i
-  done;
+let make_divsum_tbl limit =
+  let module P = Euler.Math.Prime in
+  let prime_t = P.make_tables limit in
+  let tbl = Array.init (limit + 1)
+              ~f:(fun i -> if i < 2 then 0 else
+                             List.fold ~init:0 ~f:(+) (P.divisors prime_t i) - i) in
   tbl
 
-let rec trim_lst n lst =
-  match lst with
-  | [] -> []
-  | hd :: tl when hd = n -> lst
-  | hd :: tl -> trim_lst n tl
-
 let solve limit =
-  let er = new eratosthenes limit in
-  let divsum_tbl = make_divsum er limit in
-  let visited_tbl = Array.make (limit + 1) 0 in
-  let rec loop num result =
-    if num < 1 then
-      result
-    else (
-      let rec chain_loop n lst =
-        if n > limit || n = 1 then
-          None
+  let module PQ = Euler.PrioQueue.Make(struct
+                      type t = int * int list
+                      let compare x y = Int.compare (fst x) (fst y)
+                    end) in
+  let divsum_tbl = make_divsum_tbl limit in
+  let chain_tbl = Array.create ~len:(limit + 1) 0 in
+  let chain start_idx =
+    let rec aux n acc =
+      if n > limit || n < 2 then
+        None
+      else
+        if chain_tbl.(n) = start_idx then
+          Some (List.drop_while (List.rev acc) ~f:((<>) n))
         else
-          if visited_tbl.(n) <> 0 then
-            if lst = [] then None else Some (n, lst)
+          if chain_tbl.(n) <> 0 then
+            None
           else (
-            visited_tbl.(n) <- 1;
-            chain_loop divsum_tbl.(n) (n :: lst)
+            chain_tbl.(n) <- start_idx;
+            aux divsum_tbl.(n) (n :: acc)
           )
-      in
-      match chain_loop num [] with
-      | None -> loop (pred num) result
-      | Some (n, lst) ->
-         if List.hd lst = n then
-           loop (pred num) result
-         else
-           let chain_lst = trim_lst n (List.rev lst) in
-           if List.length chain_lst > List.length result then
-             loop (pred num) chain_lst
-           else
-             loop (pred num) result
-    )
+    in
+    aux start_idx []
   in
-  loop limit []
 
-let () =
-  let l = solve 1_000_000 in
-  Printf.printf "Answer: %d [length of chain=%d]\n" (List.hd (List.sort compare l)) (List.length l)
+  let pq = PQ.init () in
+  let rec loop num =
+    if num < 1 then
+      PQ.peek pq
+    else
+      match chain num with
+        None -> loop (pred num)
+      | Some lst -> PQ.insert pq (List.length lst, lst); loop (pred num)
+  in
+  loop limit
+
+let exec () =
+  let len, lst = solve (1_000_000) in
+  sprintf "%d [length of chain=%d]" (List.hd_exn (List.sort lst ~compare)) len
+
+let () = Euler.Task.run exec

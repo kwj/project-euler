@@ -17,52 +17,37 @@
   sum of numbers lying along both diagonals:
     4n + 1
 
-  each numbers in the four corners:
+  each numbers in the four corners: (P:Prime, C:Composite)
+
   n=0  1,
   n=1        (1+2),     (1+2+2),     (1+2+2+2),     a1=(1+2+2+2+2),
   n=2        (a1+4),    (a1+4+4),    (a1+4+4+4),    a2=(a1+4+4+4+4),
-  n=3        (a2+6),    (a2+6+6),    ...
+  n=3        (a2+6),    (a2+6+6),    (a2+6+6+6),    a3=(a2+6+6+6+6),
              ...
   0-----------------------------------------------------------------
-      NonP,  P or NonP, P or NonP,   P or NonP,     NonP (square number)
+      NonP,  P or C     P or C       P or C         C (square number)
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
 let solve () =
-  let is_prime num =
-    let rec aux n k =
-      if k < 2 then
-        true
-      else
-        (n mod k <> 0) && (aux n (k - 2))
-    in
-    if num mod 2 = 0 then
-      false
-    else
-      if num <= 1 then
-        false
-      else
-        let upper = truncate @@ sqrt @@ float num in
-        if upper mod 2 = 0 then
-          aux num (upper + 1)
-        else
-          aux num upper
-  in
   let is_prime_wrapper num =
-    if is_prime num = true then 1 else 0
+    if Euler.Math.mr_isprime num then 1 else 0
   in
   let rec aux n nprimes acc =
     let nprimes = nprimes
                   + is_prime_wrapper(acc + 2 * n)
                   + is_prime_wrapper(acc + 4 * n)
                   + is_prime_wrapper(acc + 6 * n) in
-    if (float nprimes) /. (float (4 * n + 1)) <= 0.1 then
+    if Float.(of_int nprimes / of_int Int.(4 * n + 1) <= 0.1) then
       2 * n + 1
     else
       aux (succ n) nprimes (acc + 8 * n)
   in
   aux 1 0 1
 
-let () =
-  Printf.printf "Answer: %d\n" (solve ())
+let exec () =
+  Int.to_string (solve ())
+
+let () = Euler.Task.run exec
+

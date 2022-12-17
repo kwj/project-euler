@@ -1,49 +1,36 @@
 (* Project Euler: Problem 49 *)
 
-(*
-  Is the number 3300 meaningful?
- *)
+open Core
 
-(* ---------------------------------------------------------------- *)
+module E = Euler.Eratosthenes
 
-let era_sieve n =
-  let rec sieve lst =
+let prime_t = E.generate 9999
+
+let rec find_tpls prime_lst result =
+  let rec aux p1 lst acc =
     match lst with
-    | [] -> []
-    | hd :: tl -> hd :: (sieve (List.filter (fun x -> x mod hd <> 0) tl))
+    | x :: xs -> let p2 = (p1 + x) / 2 in
+                 if E.is_prime prime_t p2 then
+                   aux p1 xs ((p1, p2, x) :: acc)
+                 else
+                   aux p1 xs acc
+    | [] -> acc
   in
-  sieve (List.init (n - 1) (fun x -> x + 2))
+  match prime_lst with
+  | x :: xs -> find_tpls xs (aux x xs result)
+  | [] -> result
 
-let mk_strkey number =
-  let rec numlst n lst =
-    if n = 0 then lst else numlst (n / 10) ((n mod 10) :: lst)
-  in
-  List.sort compare (numlst number [])
-  |> List.fold_left (fun s n -> s ^ (string_of_int n)) ""
+let is_perm (p1, p2, p3) =
+  let module M = Euler.Math in
+  M.is_permutation p1 p2 && M.is_permutation p2 p3
 
-module IntSet = Set.Make(Int)
-let find_cands p_lst =
-  let size = List.length p_lst in
-  let p_array = Array.of_list p_lst in
-  let p_set = IntSet.of_list p_lst in
-  let result = ref [] in
-  for i = 0 to size - 1 do
-    for j = i + 1 to size - 1 do
-      let tmp = 2 * p_array.(j) - p_array.(i) in
-      if IntSet.mem tmp p_set then
-        if mk_strkey(p_array.(i)) = mk_strkey(p_array.(j)) && mk_strkey(p_array.(i)) = mk_strkey(tmp) then
-          result := (p_array.(i), p_array.(j), 2 * p_array.(j) - p_array.(i)) :: !result
-    done
-  done;
-  !result
+let solve () =
+  let p_lst = E.to_list prime_t |> List.filter ~f:(fun n -> n > 999) in
+  List.filter (find_tpls p_lst []) ~f:is_perm
+  |> List.filter ~f:(fun (p1, _, p3) -> p1 <> 1487 && p3 <> 8147)
+  |> List.map ~f:(fun (p1, p2, p3) -> Int.to_string p1 ^ Int.to_string p2 ^ Int.to_string p3)
 
-let () =
-  let cands = List.filter ((<) 999) (era_sieve 9999) |> find_cands in
-  let rec aux lst =
-    match lst with
-    | (i, j, k) :: tl ->
-       Printf.printf "%d%d%d (%d, %d, %d)\n" i j k i j k; aux tl
-    | []
-      -> ()
-  in
-  aux cands
+let exec () =
+  String.concat ~sep:"\n" (solve ())
+
+let () = Euler.Task.run exec

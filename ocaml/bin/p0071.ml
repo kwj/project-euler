@@ -13,11 +13,14 @@
       5+7x <= 1_000_000
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
 let solve num =
   let x = (num - 5) / 7 in
   2 + 3 * x
 
-let () =
-  Printf.printf "Answer: %d\n" (solve 1_000_000)
+let exec () =
+  Int.to_string (solve 1_000_000)
+
+let () = Euler.Task.run exec
+

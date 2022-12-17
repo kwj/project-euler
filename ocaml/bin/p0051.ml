@@ -32,132 +32,90 @@
   moment, I assume that prime numbers less than one million. The reason
   is that I want to only consider the case of replacing three digits.
 
-   4) There are at least same three numbers other than last digit.
+  4) There are at least same three numbers other than last digit.
 
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
-let make_primes n =
-  (* Sieve of Eratosthenes *)
-  let primes_array = Array.init (n + 1) (fun i -> i) in
-  let primes_lst = ref [] in
-  primes_array.(0) <- 0;
-  primes_array.(1) <- 0;
-  for i = 2 to n do
-    if primes_array.(i) <> 0 then (
-      primes_lst := i :: !primes_lst;
-      let j = ref (i * i) in
-      while !j <= n do
-        primes_array.(!j) <- 0;
-        j := !j + i
-      done
-    )
-  done;
-  primes_array, List.rev !primes_lst
+let is_prime = Euler.Math.mr_isprime
 
-let digits_of_int num =
-  let rec aux n =
-    if n < 10 then [n] else (n mod 10) :: aux (n / 10)
+(*
+  # get_patterns 6;;
+  - : int list list =
+  [[0; 1; 1; 1; 0; 0]; [0; 1; 1; 0; 1; 0]; [0; 1; 1; 0; 0; 1];
+   [0; 1; 0; 1; 1; 0]; [0; 1; 0; 1; 0; 1]; [0; 1; 0; 0; 1; 1];
+   [0; 0; 1; 1; 1; 0]; [0; 0; 1; 1; 0; 1]; [0; 0; 1; 0; 1; 1];
+   [0; 0; 0; 1; 1; 1]]
+
+  [LSD; ...; MSD] : LSD - Least Significant Digit, MSD - Most Significant Digit
+ *)
+let get_patterns n_digits =
+  let select_bits () =
+    let rec aux acc = function
+      | x :: xs -> aux ((Euler.Util.combination x (List.range 1 n_digits)) :: acc) xs
+      | [] -> List.concat acc
+    in
+    aux [] (List.range ~stride:3 3 n_digits)
   in
-  List.rev (aux num)
-
-let rec zip xs ys =
-  match xs, ys with
-  | x :: xs, y :: ys -> (x, y) :: (zip xs ys)
-  | _, _ -> []
-
-let compare_pat num pat =
-  let rec shrink lst =
-    match lst with
-    | a :: (b :: _ as tl) when a = b -> shrink tl
-    | hd :: tl -> hd :: (shrink tl)
-    | [] -> []
+  let flip_bits bit_lst =
+    let arr = Array.create ~len:n_digits 0 in
+    let rec aux = function
+      | x :: xs -> arr.(x) <- 1; aux xs
+      | [] -> Array.to_list arr
+    in
+    aux bit_lst
   in
-  let kinds = zip pat (digits_of_int num)
-              |> List.filter (fun (x, _) -> x = 1)
-              |> List.sort compare
-              |> shrink
-              |> List.length
+  List.map ~f:flip_bits (select_bits ())
+
+(*
+  # is_match 121213 [0; 1; 0; 1; 0; 1];;
+  - : int list option = Some [0; 1; 0; 1; 0; 1]
+  # is_match 121213 [0; 1; 0; 1; 1; 0];;
+  - : int list option = None
+ *)
+let is_match prime pat =
+  let msd = List.last_exn pat in  (* msd: most significant digit *)
+  let rec aux acc n = function
+    | x :: xs when x = 1 -> aux ((n mod 10) :: acc) (n / 10) xs
+    | _ :: xs -> aux acc (n / 10) xs
+    | [] -> List.dedup_and_sort acc ~compare
   in
-  if kinds = 1 then true else false
+  let num_lst = aux [] prime pat in
+  if List.length num_lst <> 1 then
+    None
+  else
+    if List.hd_exn num_lst > (2 + msd) then None else Some pat
 
-let choose_patlst num =
-  let d4 = [
-      [1; 1; 1; 0]
-    ] in
-  let d5 = [
-      [0; 1; 1; 1; 0];
-      [1; 0; 1; 1; 0];
-      [1; 1; 0; 1; 0];
-      [1; 1; 1; 0; 0]
-    ] in
-  let d6 = [
-      [0; 0; 1; 1; 1; 0];
-      [0; 1; 0; 1; 1; 0];
-      [0; 1; 1; 0; 1; 0];
-      [0; 1; 1; 1; 0; 0];
-      [1; 0; 0; 1; 1; 0];
-      [1; 0; 1; 0; 1; 0];
-      [1; 0; 1; 1; 0; 0];
-      [1; 1; 0; 0; 1; 0];
-      [1; 1; 0; 1; 0; 0];
-      [1; 1; 1; 0; 0; 0]
-    ] in
-  match List.length (digits_of_int num) with
-  | 4 -> List.filter (compare_pat num) d4
-  | 5 -> List.filter (compare_pat num) d5
-  | 6 -> List.filter (compare_pat num) d6
-  | _ -> assert false
+let check_prime_group prime pat =
+  let module U = Euler.Util in
+  let mask_lst = List.map2_exn (U.int_to_nlst prime) pat ~f:(fun a b -> if b = 0 then a else -1) in
+  let prime_group = List.map (List.range (List.last_exn pat) 10)
+                      ~f:(fun x -> List.map mask_lst ~f:(fun m -> if m = -1 then x else m))
+                    |> List.map ~f:U.nlst_to_int
+                    |> List.filter ~f:is_prime in
+  if List.length prime_group = 8 then Some prime_group else None
 
-let pruning num =
-  let cnt_table = Array.make 10 0 in
-  let rec aux n =
-    if n = 0 then
-      Array.exists (fun n -> n >= 3) cnt_table
-    else (
-      cnt_table.(n mod 10) <- cnt_table.(n mod 10) + 1;
-      aux (n / 10)
-    )
+let solve () =
+  let rec loop n_digits =
+    let primes = Euler.Eratosthenes.to_list (Euler.Eratosthenes.generate (Int.pow 10 n_digits))
+                 |> List.filter ~f:(fun n -> n > Int.pow 10 (n_digits - 1)) in
+    let master_pat_lst = get_patterns n_digits in
+    let rec aux = function
+      | [] -> loop (succ n_digits)
+      | x :: xs ->
+          match List.filter_map master_pat_lst ~f:(is_match x) with
+          | [] -> aux xs
+          | pat_lst ->
+              match List.filter_map pat_lst ~f:(check_prime_group x) with
+              | [] -> aux xs
+              | l -> List.hd_exn l
+    in
+    aux primes
   in
-  aux (num / 10)
+  loop 4 |> List.hd_exn
 
-let count_keys htbl lst =
-  let rec aux lst =
-    match lst with
-    | (key, prime) :: tl ->
-       if Hashtbl.mem htbl key then (
-         Hashtbl.replace htbl key (prime :: (Hashtbl.find htbl key))
-       ) else (
-         Hashtbl.add htbl key [prime]
-       );
-       aux tl
-    | _ -> htbl
-  in
-  aux lst
+let exec () =
+  Int.to_string (solve ())
 
-let solve num =
-  let family_tbl = Hashtbl.create 1024 in    (* 1024 is a tentative value, meaningless *)
-  let _, tmp_lst = make_primes num in
-  let p_lst = List.filter ((<) 999) tmp_lst |> List.filter (pruning) in
-  let rec aux lst result =
-    match lst with
-    | hd :: tl ->
-       let pats = choose_patlst hd in
-       if pats = [] then
-         aux tl result
-       else
-         aux tl (List.map (fun pat ->
-                     List.map2 (fun n p -> if p = 0 then string_of_int n else "#")
-                       (digits_of_int hd) pat
-                     |> List.fold_left (fun s1 s2 -> s1 ^ s2) "", hd)
-                   pats @ result)
-    | [] -> result
-  in
-  Hashtbl.to_seq_values (count_keys family_tbl (aux p_lst []));
-  |> List.of_seq
-  |> List.filter (fun e -> List.length e = 8)
-  |> List.hd
-
-let () =
-  Printf.printf "Answer: %d\n" (List.hd (solve 1_000_000))
+let () = Euler.Task.run exec

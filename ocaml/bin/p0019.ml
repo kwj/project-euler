@@ -1,36 +1,35 @@
 (* Project Euler: Problem 19 *)
 
-(*
-  Jan 1, 1900 was Monday.
-  -->
-    day of week  [0: Sunday, 1: Monday, 2: Tuesday, ..., 6: Saturday]
-
-  Jan 1, 1901 was Tuesday since (1 + 365) mod 7 = 2
- *)
+open Core
 
 let count_sundays () =
-  let cu_sum lst =
-    let rec aux pre acc = function
-      | [] -> List.rev acc
-      | hd :: tl -> aux (pre + hd) ((pre + hd) :: acc) tl
-    in
-    aux 0 [] lst
-  in
   let common_year = [31; 28; 31; 30; 31; 30; 31; 31; 30; 31; 30; 31] in
   let leap_year = [31; 29; 31; 30; 31; 30; 31; 31; 30; 31; 30; 31] in
-  let year_2000 = List.rev(List.tl (List.rev common_year)) in
-  let rec loop i acc =
-    if i = 0 then
-      List.flatten acc
-    else
-      if i mod 4 = 0 then
-        loop (pred i) (leap_year :: acc)
+  let repeat_lst lst n =
+    let rec loop i acc =
+      if i = 0 then
+        acc
       else
-        loop (pred i) (common_year :: acc)
+        loop (pred i) (List.append acc lst)
+    in
+    loop n []
   in
-  let days = loop 99 (year_2000 :: []) in    (* number of days in each month: Jan 1901 - Nov 2000 *)
+  (* days per month (Jan 1901 - Nov 2000) *)
+  let days = List.drop_last_exn (repeat_lst (List.append (repeat_lst common_year 3) leap_year) 25) in
 
-  List.length (List.filter (fun n -> n mod 7 = 0) (cu_sum ((1 + (List.fold_left (+) 0 common_year)) :: days)))
+  (*
+    # day of week - [0: Sunday, 1: Monday, 2: Tuesday, ..., 6: Saturday]
+    # Jan 1, 1900 was Monday and assume this day is the first day. (Monday is '1 mod 7 = 1')
+    # And then, the year 1900 was common year (365 days).
+    # --> Jan 1, 1901 was Tuesday since (1 + 365) mod 7 = 2.
+    #     Feb 1, 1901 was Firday since ((1 + 365) + 31) mod 7 = 5.
+    #     ... and so on
+   *)
+  List.folding_map ((1 + 365) :: days) ~init:0 ~f:(fun x y -> x + y, x + y)   (* cumulative sum *)
+  |> List.filter ~f:(fun n -> n mod 7 = 0) 
+  |> List.length
 
-let () =
-  Printf.printf "Answer: %d\n" (count_sundays())
+let exec () =
+  Int.to_string (count_sundays ())
+
+let () = Euler.Task.run exec

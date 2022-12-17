@@ -1,5 +1,7 @@
 (* Project Euler: Problem 18 *)
 
+open Core
+
 let triangle = [
     [75];
     [95; 64];
@@ -22,14 +24,18 @@ let calc_from_bottom l_lst =
   let add_max_leaf a b =
     let rec select_leaf lst =
       match lst with
-      | a :: b :: [] -> [max a b]
-      | a :: (b :: _ as tl) -> (max a b) :: (select_leaf tl)
+      | x :: y :: [] -> [max x y]
+      | x :: (y :: _ as tl) -> (max x y) :: (select_leaf tl)
       | _ -> assert false
     in
-    List.map2 (+) a (select_leaf b)
+    List.map2_exn a (select_leaf b) ~f:(+)
   in
-  List.hd @@
-    List.fold_right add_max_leaf l_lst (List.init ((List.length @@ List.hd @@ List.rev l_lst) + 1) (fun n -> 0))
+  List.fold_right l_lst
+    ~f:add_max_leaf
+    ~init:(List.init ((List.length @@ List.hd_exn @@ List.rev l_lst) + 1) ~f:(fun _ -> 0))
+  |> List.hd_exn
 
-let () =
-  Printf.printf "the maximum total from top to bottom of the triangle is %d\n" (calc_from_bottom triangle)
+let exec () =
+  Int.to_string (calc_from_bottom triangle)
+
+let () = Euler.Task.run exec

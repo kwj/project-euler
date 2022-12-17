@@ -4,127 +4,119 @@
   Infix notation and Reverse Polish notation
 
     case 1:
-       IN: ((a1 OP1 a2) OP2 a3) OP3 a4
-      RPN: a1 a2 OP1 a3 OP2 a4 OP3
+       IN: ((x1 OP1 x2) OP2 x3) OP3 x4
+      RPN: x1 x2 OP1 x3 OP2 x4 OP3
 
     case 2:
-       IN: (a1 OP1 (a2 OP2 a3)) OP3 a4
-      RPN: a1 a2 a3 OP2 OP1 a4 OP3
+       IN: (x1 OP1 (x2 OP2 x3)) OP3 x4
+      RPN: x1 x2 x3 OP2 OP1 x4 OP3
 
     case 3:
-       IN: (a1 OP1 a2) OP2 (a3 OP3 a4)
-      RPN: a1 a2 OP1 a3 a4 OP3 OP2
+       IN: (x1 OP1 x2) OP2 (x3 OP3 x4)
+      RPN: x1 x2 OP1 x3 x4 OP3 OP2
 
     case 4:
-       IN: a1 OP1 ((a2 OP2 a3) OP3 a4)
-      RPN: a1 a2 a3 OP2 a4 OP3 OP1
+       IN: x1 OP1 ((x2 OP2 x3) OP3 x4)
+      RPN: x1 x2 x3 OP2 x4 OP3 OP1
 
     case 5:
-       IN: a1 OP1 (a2 OP2 (a3 OP3 a4))
-      RPN: a1 a2 a3 a4 OP3 OP2 OP1
+       IN: x1 OP1 (x2 OP2 (x3 OP3 x4))
+      RPN: x1 x2 x3 x4 OP3 OP2 OP1
  *)
 
 (* ---------------------------------------------------------------- *)
 
-let reperm r lst =
+open Core
+
+type element = Num of Q.t | Op of (Q.t -> Q.t -> Q.t)
+
+let rep_perm r lst =
   let rec aux ys n xs acc =
     if n <= 0 then
       ys :: acc
     else
-      List.fold_right (fun x -> aux (x :: ys) (n - 1) xs) xs acc
+      List.fold_right ~init:acc ~f:(fun x -> aux (x :: ys) (n - 1) xs) xs
   in
   aux [] r lst []                                         
 
-let rec perm r lst =
-  let rec insert x lst =
-    match lst with
-    | [] -> [[x]]
-    | hd::tl -> (x::lst) :: (List.map (fun l -> hd::l) (insert x tl))
+let op_lst = rep_perm 3 [Op Q.add; Op Q.sub; Op Q.mul; Op Q.div]
+             |> List.map ~f:(fun l -> (List.nth_exn l 0, List.nth_exn l 1, List.nth_exn l 2))
+
+let make_rpn_lst (a, b, c, d) =
+  let rec loop_num result = function
+      [] -> result
+    | [x1; x2; x3; x4] :: xs ->
+        let rec aux acc = function
+            [] -> acc
+          | (op1, op2, op3) :: ops ->
+              aux ([x1; x2; op1; x3; op2; x4; op3] ::    (* case 1 *)
+                   [x1; x2; x3; op2; op1; x4; op3] ::    (* case 2 *)
+                   [x1; x2; op1; x3; x4; op3; op2] ::    (* case 3 *)
+                   [x1; x2; x3; op2; x4; op3; op1] ::    (* case 4 *)
+                   [x1; x2; x3; x4; op3; op2; op1] ::    (* case 5 *)
+                   acc) ops
+        in
+        loop_num (aux result op_lst) xs
+    | _ -> assert false
   in
-  if r = 1 then
-    List.map (fun e -> [e]) lst
-  else
-    match lst with
-    | [] -> []
-    | hd::tl -> List.append
-                  (List.concat (List.map (fun e -> (insert hd e)) (perm (pred r) tl)))
-                  (perm r tl)
+  loop_num [] (Euler.Util.permutation 4 [Num (Q.of_int a); Num (Q.of_int b); Num (Q.of_int c); Num (Q.of_int d)])
 
-type element = Number of Q.t | Operator of (Q.t -> Q.t -> Q.t)
 
-let op_lst = reperm 3 [Operator Q.add; Operator Q.sub; Operator Q.mul; Operator Q.div]
+let make_num_tpl_lst () =
+  let lst = ref [] in
+  for a = 1 to 6 do
+    for b = a + 1 to 7 do
+      for c = b + 1 to 8 do
+        for d = c + 1 to 9 do
+          lst := (a, b, c, d) :: !lst
+        done
+      done
+    done
+  done;
+  !lst
 
-let make_rpn_lst a b c d =
-  let rec loop_n nlst acc =
-    match nlst with
-    | [] -> acc
-    | hd :: tl ->
-       let rec loop_o ns olst acc =
-         match olst with
-         | [] -> acc
-         | ops :: tl ->
-            loop_o ns tl
-              ( (* case 1 *)
-               [List.nth ns 0; List.nth ns 1; List.nth ops 0; List.nth ns 2; List.nth ops 1; List.nth ns 3; List.nth ops 2]
-                (* case 2 *)
-               :: [List.nth ns 0; List.nth ns 1; List.nth ns 2; List.nth ops 1; List.nth ops 0; List.nth ns 3; List.nth ops 2]
-                (* case 3 *)
-               :: [List.nth ns 0; List.nth ns 1; List.nth ops 0; List.nth ns 2; List.nth ns 3; List.nth ops 2; List.nth ops 1]
-                (* case 4 *)
-               :: [List.nth ns 0; List.nth ns 1; List.nth ns 2; List.nth ops 1; List.nth ns 3; List.nth ops 2; List.nth ops 0]
-                (* case 5 *)
-               :: [List.nth ns 0; List.nth ns 1; List.nth ns 2; List.nth ns 3; List.nth ops 2; List.nth ops 1; List.nth ops 0]
-               :: acc)
-       in
-       loop_n tl (loop_o hd op_lst acc)
+let calc_rpn_lst rpn_lst =
+  let rec loop acc = function
+    [] ->
+      let tmp = List.hd_exn acc in
+      if Z.(equal (Q.den tmp) one) then Z.to_int (Q.num tmp) else 0
+  | x :: xs ->
+      match x with
+        Num v -> loop (v :: acc) xs
+      | Op op -> loop (op (List.nth_exn acc 0) (List.nth_exn acc 1) :: (List.tl_exn (List.tl_exn acc))) xs
   in
-  loop_n (perm 4 [Number (Q.of_int a); Number (Q.of_int b); Number (Q.of_int c); Number (Q.of_int d)]) []
-
-let calc_rpn lst =
-  let rec loop elms acc =
-    match elms with
-    | [] ->
-       let tmp = List.hd acc in
-       if Q.classify tmp <> NZERO || Q.den tmp <> Z.one then 0 else Z.to_int (Q.num tmp)
-    | hd :: tl ->
-       match hd with
-       | Number v -> loop tl (v :: acc)
-       | Operator op -> loop tl (op (List.nth acc 0) (List.nth acc 1) :: (List.tl (List.tl acc)))
-  in
-  loop lst []
-
-let rec uniq lst =
-  match lst with
-  | [] -> []
-  | hd1 :: (hd2 :: _ as tl) when hd1 = hd2 -> uniq tl
-  | hd :: tl -> hd :: (uniq tl)
+  loop [] rpn_lst
 
 let find_consecutive lst =
   let rec loop = function
-    | a :: (b :: _ as tl) when a + 1 = b -> loop tl
-    | a :: tl -> a
+    | a :: (b :: _ as xs) when a + 1 = b -> loop xs
+    | a :: _ -> a
     | [] -> assert false
   in
   loop lst
 
 let solve () =
-  let acc = ref [] in
-  for a = 1 to 6 do
-    for b = a + 1 to 7 do
-      for c = b + 1 to 8 do
-        for d = c + 1 to 9 do
-          let consec_num = List.map calc_rpn (make_rpn_lst a b c d)
-                           |> List.filter ((<) 0)
-                           |> List.sort compare
-                           |> uniq
-                           |> find_consecutive in
-          acc := (consec_num, Printf.sprintf "%d%d%d%d" a b c d) :: !acc
-        done
-      done
-    done
-  done;
-  List.sort (fun (n1, _) (n2, _) -> n2 - n1) !acc |> List.hd
+  let module PQ = Euler.PrioQueue.Make(struct
+                      type t = int * (int * int * int * int)
+                      let compare x y = Int.compare (fst x) (fst y)
+                    end) in
+  let pq = PQ.init () in
 
-let () =
-  let _, numstr = solve() in
-  Printf.printf "Answer: %s\n" numstr
+  let rec loop lst =
+    match lst with
+      [] -> PQ.peek pq
+    | tpl :: xs ->
+        let v = List.map ~f:calc_rpn_lst (make_rpn_lst tpl)
+                |> List.filter ~f:((<) 0)
+                |> List.dedup_and_sort ~compare
+                |> find_consecutive in
+        PQ.insert pq (v, tpl);
+        loop xs
+  in
+  loop (make_num_tpl_lst ())
+
+let exec () =
+  let _, (a, b, c, d) = solve () in
+  sprintf "%d%d%d%d" a b c d
+
+let () = Euler.Task.run exec

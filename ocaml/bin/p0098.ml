@@ -1,136 +1,104 @@
 (* Project Euler: Problem 98 *)
 
 (*
-  You will need the following file to run this program.
-   - https://projecteuler.net/project/resources/p098_words.txt
+  We will need the following file to run this program.
+    - https://projecteuler.net/project/resources/p098_words.txt
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
-let read_data() =
-  let filename = ref "" in
-  let anon_fun n = () in
-  let speclist = [("-f", Arg.Set_string filename, "<filename>  Set input file name (If not specified, read from stdin)")] in
-  Arg.parse speclist anon_fun "Usage:";
-  if !filename <> "" then
-    let fin = open_in !filename in
-    let rec loop acc =
-      match input_line fin with
-      | l -> loop (l :: acc)
-      | exception End_of_file -> close_in fin; List.rev acc
-    in
-    loop []
-  else
-    let rec loop acc =
-      match read_line () with
-      | l -> loop (l :: acc)
-      | exception End_of_file -> List.rev acc
-    in
-    loop []
+module U = Euler.Util
+module M = Euler.Math
 
-let cnvt_data lines =
-  let data = List.hd lines in
-  let word_wkey = Str.split (Str.regexp {|","|}) (String.sub data 1 (String.length data - 2))
-                  |> List.map (fun s -> (List.fold_left (^) "" (List.sort compare (Str.split (Str.regexp "") s)), s))
-                  |> List.sort (fun (k1, _) (k2, _) -> String.compare k1 k2) in
-  let rec loop lst acc result =
-    match lst with
-    | [] -> List.rev result
-    | (k1, w1) :: ((k2, w2) :: _ as tl) when k1 = k2 -> loop tl (w1 :: acc) result
-    | (k1, w1) :: tl -> loop tl [] ((k1, (w1 :: acc)) :: result)
-  in
-  loop word_wkey [] [] |> List.filter (fun (k, wl) -> List.length wl > 1)
+(*
+  -> (int * string list list) list
+    example: [(2, [["O"; "N"]; ["N"; "O"]]); ...]
+*)
+let parse_data data =
+  let line = List.hd_exn data in
+  Str.split (Str.regexp {|","|}) (String.sub line ~pos:1 ~len:(String.length line - 2))
+  |> List.map ~f:(fun s -> (List.fold ~init:"" ~f:(^)
+                             (List.sort ~compare:String.compare (Str.split (Str.regexp "") s)),
+                           Str.split (Str.regexp "") s))
+  |> List.sort ~compare:(fun (k1, _) (k2, _) -> String.compare k1 k2)
+  |> U.list_assoc_group
+  |> List.filter ~f:(fun (_, kw_lst) -> List.length kw_lst > 1)
+  |> List.map ~f:(fun (k, word_lst) -> List.map ~f:(fun l -> (String.length k, l)) (U.combination 2 word_lst))
+  |> List.concat
+  |> List.sort ~compare:(fun (k1, _) (k2, _) -> Int.compare k2 k1)
 
-let rec uniq = function
-  | [] -> []
-  | hd1 :: (hd2 :: _ as tl) when hd1 = hd2 -> uniq tl
-  | hd :: tl -> hd :: uniq tl
-
-let make_squares wlst =
-  let add_record len tbl =
-    let pow b e =
-      let rec loop n acc =
-        match n with
-        | n when n < 1 -> acc
-        | _ -> loop (pred n) (acc * b)
-      in
-      loop e 1
-    in
-    let low = pow 10 (len - 1) in
-    let rec aux n limit acc =
+(*
+  -> (int * int list list) list
+    example: [(1, [[1]; [4]; [9]]); [(2, [[1; 6]; [2; 5]; [3; 6]; [4; 9]; [6; 4]; [8; 1]]); ... ]
+*)
+let make_sq_tbl wp_lst =
+  let limit = M.isqrt (Int.pow 10 (fst (List.hd_exn wp_lst)) - 1) in
+  let rec loop n acc =
+    if n > limit then
+      List.sort ~compare:(fun (k1, _) (k2, _) -> Int.compare k1 k2) acc
+      |> U.list_assoc_group
+    else
       let sq = n * n in
-      if sq >= limit then
-        List.rev @@ List.map string_of_int @@ List.filter (fun i -> i >= low) acc
-      else
-        aux (succ n) limit (sq :: acc)
-    in
-    Hashtbl.replace tbl len (aux (truncate @@ sqrt @@ float low) (pow 10 len) []);
-    tbl
-  in      
-  let keys, _ = List.split wlst in
-  let len_lst = List.map (fun k -> String.length k) keys |> List.sort compare |> uniq in
-  let rec loop lst tbl =
-    match lst with
-    | [] -> tbl
-    | hd :: tl -> loop tl (add_record hd tbl)
+      loop (succ n) ((M.num_of_digits sq, U.num_to_list sq) :: acc)
   in
-  loop len_lst (Hashtbl.create (List.hd (List.rev len_lst)))
-  
-let is_anagramic_sq w_lst sq_lst =
-  let is_mismatch map_lst =
-    let rec loop = function
-      | [] -> false
-      | (k1, v1) :: (k2, v2) :: _ when k1 = k2 && v1 <> v2 -> true
-      | (_, _) :: tl -> loop tl
-    in
-    loop (List.sort compare map_lst) || loop (List.sort compare (List.map (fun (k, v) -> (v, k)) map_lst))
-  in
-  let rec check_sq word lst acc =
-    match lst with
-    | [] -> acc
-    | hd :: tl ->
-       let kv_map = List.combine (Str.split (Str.regexp "") word) (Str.split (Str.regexp "") hd) in
-       if is_mismatch kv_map then
-         check_sq word tl acc
-       else
-         check_sq word tl (kv_map :: acc)
-  in
-  let cnvt_word word kv_lst =
-    List.map (fun ch_str -> List.assoc ch_str kv_lst) (Str.split (Str.regexp "") word)
-    |> List.fold_left (^) ""
-  in
-  let rec loop_kvmap lst acc =
-    match lst with
-    | [] ->
-       if acc = [] then None
-       else
-         Some (List.hd (List.rev (List.sort compare (List.flatten acc))))
-    | kv_map :: tl ->
-       let nums_lst = List.map (fun word -> int_of_string (cnvt_word word kv_map)) w_lst in
-       if List.mem false (List.map (fun n -> (List.mem (string_of_int n) sq_lst) && Float.(is_integer (sqrt (of_int n)))) nums_lst) then
-         loop_kvmap tl acc
-       else
-         loop_kvmap tl (nums_lst :: acc)
+  loop 1 []
 
+(*
+  --> int list list option
+    example: Some [[9216; 1296]; ...]
+*)
+let find_squares kw_pair sq_tbl =
+  let kw1 = List.nth_exn (snd kw_pair) 0 and
+      kw2 = List.nth_exn (snd kw_pair) 1 in
+
+  let make_trans_tbl kw sq =
+    let is_injective_ks match_lst =
+      List.sort ~compare:(fun (k1, _) (k2, _) -> String.compare k1 k2) match_lst
+      |> U.list_assoc_group
+      |> List.for_all ~f:(fun (_, v) -> List.length (List.dedup_and_sort ~compare v) = 1)
+    in
+    let is_injective_sk match_lst =
+      List.sort ~compare:(fun (k1, _) (k2, _) -> Int.compare k1 k2) match_lst
+      |> U.list_assoc_group
+      |> List.for_all ~f:(fun (_, v) -> List.length (List.dedup_and_sort ~compare:String.compare v) = 1)
+    in
+    let tbl_ks = List.zip_exn kw sq and
+        tbl_sk = List.zip_exn sq kw in
+    match is_injective_ks tbl_ks && is_injective_sk tbl_sk with
+      true -> Some tbl_ks
+    | false -> None
   in
-  let kv_map_lst = check_sq (List.hd w_lst) sq_lst [] in
-  loop_kvmap kv_map_lst []
-       
-let solve () =
-  let words = List.rev (read_data () |> cnvt_data) in
-  let sq_tbl = make_squares words in
+
+  let kw_to_num kw tbl =
+    List.map ~f:(fun s -> List.Assoc.find_exn tbl s ~equal:String.equal) kw
+  in
+
   let rec loop acc = function
-    | [] -> acc
-    | (k, wl) :: tl ->
-       match is_anagramic_sq wl (Hashtbl.find sq_tbl (String.length k)) with
-       | None -> loop acc tl
-       | Some v ->
-          if v > acc then
-            loop v tl
-          else
-            loop acc tl
+      [] -> if List.length acc = 0 then None else Some acc
+    | sq :: sqs ->
+        match make_trans_tbl kw1 sq with
+          None -> loop acc sqs
+        | Some tbl -> let tmp = kw_to_num kw2 tbl in
+                      if (List.hd_exn tmp) <> 0 && (M.is_square (U.list_to_num tmp)) then
+                        loop ([U.list_to_num sq; U.list_to_num tmp] :: acc) sqs
+                      else
+                        loop acc sqs
   in
-  loop 0 words
+  loop [] (List.Assoc.find_exn sq_tbl (fst kw_pair) ~equal)
 
-let () =
-  Printf.printf "Answer: %d\n" (solve ())
+let solve kw_pair_lst =
+  let sq_tbl = make_sq_tbl kw_pair_lst in
+  let rec loop acc lst =
+    match lst with
+      [] -> List.sort (List.concat acc) ~compare:(fun x y -> Int.compare y x)
+    | x :: xs ->
+        match find_squares x sq_tbl with
+          None -> loop acc xs
+        | Some lst -> loop ((List.concat lst) :: acc) xs
+  in
+  loop [] kw_pair_lst
+
+let exec data =
+  Int.to_string (List.hd_exn (solve (parse_data data)))
+
+let () = Euler.Task.run_with_data exec (Euler.Task.read_data ())

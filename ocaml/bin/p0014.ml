@@ -1,7 +1,9 @@
 (* Project Euler: Problem 14 *)
 
+open Core
+
 let find_max_seq ulimit =
-  let cache = Array.make (ulimit + 1) 0 in
+  let cache = Array.create ~len:(ulimit + 1) 0 in
   let number = ref 0 in
   let max_len = ref 0 in
   let rec aux term start steps =
@@ -22,6 +24,8 @@ let find_max_seq ulimit =
   done;
   !number, !max_len + 1
 
-let () =
+let exec () =
   let num, len = find_max_seq 999_999 in
-  Printf.printf "the value which has longest chain is %d (%d terms).\n" num len
+  sprintf "%d (%d terrms)" num len
+
+let () = Euler.Task.run exec

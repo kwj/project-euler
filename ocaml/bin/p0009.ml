@@ -1,5 +1,7 @@
 (* Project Euler: Problem 9 *)
 
+open Core
+
 exception Failure of string
 
 let rec find_triplet a b c =
@@ -17,6 +19,8 @@ let rec find_triplet a b c =
         else
           find_triplet a b (c + 1)
 
-let () =
+let exec () =
   let a, b, c = find_triplet 1 2 3 in
-  Printf.printf "Pythagorean triplet for which a + b + c = 1000 is (%d, %d, %d).\na*b*c = %d\n" a b c (a * b * c)
+  sprintf "%d (a, b, c) = (%d, %d, %d)" (a * b * c) a b c
+
+let () = Euler.Task.run exec

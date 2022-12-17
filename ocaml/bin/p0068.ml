@@ -143,96 +143,6 @@
         6,3,5;7,5,2;8,2,4;9,4,1;10,1;3
  *)
 
-(* ---------------------------------------------------------------- *)
-
-(* permutation generator *)
-(*
-  I use the following library in this source file.
-    aw_perm (https://github.com/kwj/aw_perm)  [(c) 2021 Jun Kawai]
- *)
-
-let perm_sigma arr =
-  let len = Array.length arr in
-  let tmp = arr.(0) in
-  Array.blit arr 1 arr 0 (len - 1);
-  arr.(len - 1) <- tmp
-
-let perm_tau arr =
-  let tmp = arr.(0) in
-  arr.(0) <- arr.(1); arr.(1) <- tmp
-
-let find_idx elm arr =
-  let rec aux i =
-    if i < 0 then
-      failwith "index error"
-    else
-      if arr.(i) = elm then i else aux (pred i)
-  in
-  aux ((Array.length arr) - 1)
-
-let is_tau arr t_arr =
-  if Array.for_all2 (=) arr t_arr then
-    false
-  else
-    let len = Array.length arr in
-    let idx = ((find_idx len arr) + 1) mod len in
-    if idx <> 1 then (
-      arr.(1) = (arr.(idx) mod (len - 1)) + 1
-    ) else (
-      arr.(1) = (arr.(2) mod (len - 1)) + 1
-    )
-
-let constr_lst arr lst =
-  let rec reorder l acc =
-    match l with
-    | [] -> List.rev acc
-    | hd :: tl -> reorder tl ((List.nth lst (hd - 1)) :: acc)
-  in
-  reorder (Array.to_list arr) []
-
-let aw_perm_generator lst =
-  let rec factorial n =
-    if n <= 0 then 1 else n * factorial (n - 1)
-  in
-  let len = List.length lst in
-  let cnt = ref (factorial len) in
-  match len with
-  | n when n <= 0 -> failwith "size error"
-  | 1 ->
-     let next () =
-       if !cnt = 0 then None
-       else (
-         cnt := !cnt - 1;
-         Some lst
-       )
-     in
-     next
-  | 2 ->
-     let l = ref [[(List.nth lst 0); (List.nth lst 1)]; [(List.nth lst 1); (List.nth lst 0)]] in
-     let next () =
-       if !cnt = 0 then None
-       else (
-         cnt := !cnt - 1;
-         Some (List.nth !l !cnt)
-       )
-     in
-     next
-  | _ ->
-     let trigger = Array.init len (fun i -> len - i) in
-     let a_idx = Array.copy trigger in
-     perm_tau a_idx;
-     let next () =
-       if !cnt = 0 then
-         None
-       else (
-         cnt := !cnt - 1;
-         let result = constr_lst a_idx lst in
-         if is_tau a_idx trigger then perm_tau a_idx else perm_sigma a_idx;
-         Some result
-       )
-     in
-     next
-
 (*
         <e1>
           a0
@@ -254,45 +164,44 @@ let aw_perm_generator lst =
   I'll use brute force with the above conditions.
  *)
 
+open Core
+
 let check_10 lst =
-  List.nth lst 3 = 10 || List.nth lst 5 = 10 || List.nth lst 7 = 10 || List.nth lst 9 = 10
+  List.nth_exn lst 3 = 10 || List.nth_exn lst 5 = 10 || List.nth_exn lst 7 = 10 || List.nth_exn lst 9 = 10
 
 let check_outer lst =
-  List.nth lst 0 < List.nth lst 3 && List.nth lst 0 < List.nth lst 5 &&
-    List.nth lst 0 < List.nth lst 7 && List.nth lst 0 < List.nth lst 9
+  List.nth_exn lst 0 < List.nth_exn lst 3 && List.nth_exn lst 0 < List.nth_exn lst 5 &&
+    List.nth_exn lst 0 < List.nth_exn lst 7 && List.nth_exn lst 0 < List.nth_exn lst 9
 
 let check_weight lst =
-  let e1 = (List.nth lst 0) + (List.nth lst 1) + (List.nth lst 2) in
-  let e2 = (List.nth lst 2) + (List.nth lst 3) + (List.nth lst 4) in
-  let e3 = (List.nth lst 4) + (List.nth lst 5) + (List.nth lst 6) in
-  let e4 = (List.nth lst 6) + (List.nth lst 7) + (List.nth lst 8) in
-  let e5 = (List.nth lst 8) + (List.nth lst 9) + (List.nth lst 1) in
+  let e1 = (List.nth_exn lst 0) + (List.nth_exn lst 1) + (List.nth_exn lst 2) in
+  let e2 = (List.nth_exn lst 2) + (List.nth_exn lst 3) + (List.nth_exn lst 4) in
+  let e3 = (List.nth_exn lst 4) + (List.nth_exn lst 5) + (List.nth_exn lst 6) in
+  let e4 = (List.nth_exn lst 6) + (List.nth_exn lst 7) + (List.nth_exn lst 8) in
+  let e5 = (List.nth_exn lst 8) + (List.nth_exn lst 9) + (List.nth_exn lst 1) in
   e1 = e2 && e2 = e3 && e3 = e4 && e4 = e5
 
 let check_conditions lst =
   check_10 lst && check_outer lst && check_weight lst
 
 let intlst_to_str lst =
-  match List.map (string_of_int) lst with
+  match List.map lst ~f:Int.to_string with
   | a0 :: a1 :: a2 :: a3 :: a4 :: a5 :: a6 :: a7 :: a8 :: a9 :: [] ->
-     List.fold_left (^) "" [a0; a1; a2; a3; a2; a4; a5; a4; a6; a7; a6; a8; a9; a8; a1]
+     List.fold ~init:"" ~f:(^) [a0; a1; a2; a3; a2; a4; a5; a4; a6; a7; a6; a8; a9; a8; a1]
   | _ -> assert false
 
 let solve () =
-  let perm = aw_perm_generator [1; 2; 3; 4; 5; 6; 7; 8; 9; 10] in
+  let perm = Euler.Aw_perm.generator [1; 2; 3; 4; 5; 6; 7; 8; 9; 10] in
   let rec loop acc =
-    match perm() with
+    match perm () with
     | None -> acc
-    | Some l -> if check_conditions l then
-                  loop (l :: acc)
-                else
-                  loop acc
+    | Some l -> if check_conditions l then loop (l :: acc) else loop acc
   in
   loop []
-  |> List.map intlst_to_str
-  |> List.sort compare
-  |> List.rev
-  |> List.hd
+  |> List.map ~f:intlst_to_str
+  |> List.sort ~compare:String.descending
+  |> List.hd_exn
 
-let () =
-  Printf.printf "Answer: %s\n" (solve())
+let exec () = solve ()
+
+let () = Euler.Task.run exec

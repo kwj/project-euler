@@ -1,50 +1,28 @@
 (* Project Euler: Problem 81 *)
 
 (*
-  You will need the following files to run this program.
+  We will need the following files to run this program.
     - https://projecteuler.net/project/resources/p081_matrix.txt
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
-let read_data() =
-  let filename = ref "" in
-  let anon_fun n = () in
-  let speclist = [("-f", Arg.Set_string filename, "<filename>  Set input file name (If not specified, read from stdin)")] in
-  Arg.parse speclist anon_fun "Usage:";
-  if !filename <> "" then
-    let fin = open_in !filename in
-    let rec loop acc =
-      match input_line fin with
-      | l -> loop (l :: acc)
-      | exception End_of_file -> close_in fin; List.rev acc
-    in
-    loop []
-  else
-    let rec loop acc =
-      match read_line () with
-      | l -> loop (l :: acc)
-      | exception End_of_file -> List.rev acc
-    in
-    loop []
+let parse_data data =
+  List.map ~f:(fun l -> Str.split (Str.regexp ",") l) data
+  |> List.map ~f:(fun l -> Array.of_list (Int.max_value :: (List.map ~f:Int.of_string l)))
 
-let cnvt_data data =
-  List.map (fun l -> Str.split (Str.regexp ",") l) data
-  |> List.map (fun l -> Array.of_list (max_int :: (List.map (int_of_string) l)))
-
-let find_min_path arr_lst =
-  let rec loop work_arr lst =
-    match lst with
+let solve arr_lst =
+  let rec loop work_arr = function
     | [] ->
        work_arr.((Array.length work_arr) - 1)
-    | arr :: tl ->
+    | arr :: xs ->
        for i = 1 to Array.length arr - 1 do
          if arr.(i - 1) < work_arr.(i) then
            arr.(i) <- arr.(i) + arr.(i - 1)
          else
            arr.(i) <- arr.(i) + work_arr.(i)
        done;
-       loop arr tl
+       loop arr xs
   in
   let init_arr arr =
     for i = 2 to Array.length arr - 1 do
@@ -52,7 +30,9 @@ let find_min_path arr_lst =
     done;
     arr
   in
-  loop (init_arr (List.hd arr_lst)) (List.tl arr_lst)
+  loop (init_arr (List.hd_exn arr_lst)) (List.tl_exn arr_lst)
 
-let () =
-  Printf.printf "Answer: %d\n" (read_data() |> cnvt_data |> find_min_path)
+let exec data =
+  Int.to_string (solve (parse_data data))
+
+let () = Euler.Task.run_with_data exec (Euler.Task.read_data ())

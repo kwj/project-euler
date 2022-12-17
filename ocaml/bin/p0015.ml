@@ -1,10 +1,34 @@
 (* Project Euler: Problem 15 *)
 
-let calc_by_zarith num =
-  (* Answer: (m+n)! / (m! * n!) *)
-  let open Z in
-  to_string (div (fac (Int.add num num)) (mul (fac num) (fac num)))
+open Core
 
+(*
+  Method 1: combination
+    (m+n)! / (m! * n!)
+*)
+let calc_by_zarith num =
+  let open Z in
+  to_string (div (fac (Int.(+) num num)) (mul (fac num) (fac num)))
+
+(*
+  Method 2: counting up
+
+  [sample: matrix size=3]
+    1 - 1 - 1 - 1
+    |   |   |   |
+    1 - 2 - 3 - 4
+    |   |   |   |
+    1 - 3 - 6 - 10
+    |   |   |   |
+    1 - 4 - 10 -20(End)
+
+  # extend_list [1] 1;;
+  - : int list = [1; 1]
+  # extend_list [1] 2;;
+  - : int list = [1; 2; 1]
+  # extend_list [1] 3;;
+  - : int list = [1; 3; 3; 1]
+ *)
 let calc_by_list num =
   let rec extend_list lst n =
     let rec aux lst =
@@ -27,13 +51,13 @@ let calc_by_list num =
       | _ -> assert false
     in
     if List.length lst = 1 then
-      List.hd lst
+      List.hd_exn lst
     else
       shrink_list (aux lst)
   in
   string_of_int (shrink_list @@ extend_list [1] num)
 
-let () =
-  Printf.printf "the number of routes is there through a 20×20 grid is:\n";
-  Printf.printf "   %s: (w/ Zarith module)\n" (calc_by_zarith 20);
-  Printf.printf "   %s: (w/o Zarith module)\n" (calc_by_list 20)
+let exec () =
+  sprintf "%s (w/ Zarith module)\n%s (w/o Zarith module)" (calc_by_zarith 20) (calc_by_list 20)
+
+let () = Euler.Task.run exec

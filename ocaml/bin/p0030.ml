@@ -16,6 +16,8 @@
      10 <= 'x' <= 354294 = 6 * (9 ** 5)
  *)
 
+open Core
+
 (*
   let make_nth_powers exp =
     let rec aux n lst =
@@ -27,7 +29,7 @@
   aux 9 []
  *)
 
-let brute_force () =
+let solve () =
   let sum_of_digits num =
     (* see above make_nth_powers() *)
     let a_pows = [(0, 0); (1, 1); (2, 32); (3, 243); (4, 1024); (5, 3125); (6, 7776); (7, 16807); (8, 32768); (9, 59049)] in
@@ -35,7 +37,7 @@ let brute_force () =
       if n = 0 then
         result
       else
-        aux (n / 10) (result + (List.assoc (n mod 10) a_pows))
+        aux (n / 10) (result + (List.Assoc.find_exn a_pows (n mod 10) ~equal))
     in
     aux num 0
   in
@@ -50,6 +52,7 @@ let brute_force () =
   in
   aux 354294 0
 
-let () =
-  Printf.printf "the sum of all the numbers that can be written as \
-                 the sum of fifth powers of their digits is %d\n" (brute_force())
+let exec () =
+  Int.to_string (solve ())
+
+let () = Euler.Task.run exec

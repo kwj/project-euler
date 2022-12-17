@@ -54,15 +54,15 @@
 
 (* ---------------------------------------------------------------- *)
 
-let rec gcd m n =
-  if n = 0 then m else gcd n (m mod n)
+open Core
 
 let solve limit =
-  let upper_m = truncate @@ sqrt @@ (float limit /. 2.)  in
-  let cnt_arr = Array.make (limit + 1) 0 in
+  let upper_m = Euler.Math.isqrt (limit / 2) in
+  let cnt_arr = Array.create ~len:(limit + 1) 0 in
   let rec loop_i mn i =
     let l = i * mn in
-    if l > limit then ()
+    if l > limit then
+      ()
     else (
       cnt_arr.(l) <- cnt_arr.(l) + 1;
       loop_i mn (succ i)
@@ -70,11 +70,13 @@ let solve limit =
   in
   for m = 2 to upper_m do
     for n = 1 to m - 1 do
-      if (m + n) mod 2 = 1 && gcd m n = 1 then
+      if (m + n) mod 2 = 1 && Euler.Math.gcd m n = 1 then
         loop_i (2 * m * (m + n)) 1
     done
   done;
-  Array.fold_left (fun i j -> if j = 1 then i + 1 else i) 0 cnt_arr
+  Array.fold cnt_arr ~init:0 ~f:(fun acc i -> if i = 1 then (succ acc) else acc)
 
-let () =
-  Printf.printf "Answer: %d\n" (solve 1_500_000)
+let exec () =
+  Int.to_string (solve 1_500_000)
+
+let () = Euler.Task.run exec

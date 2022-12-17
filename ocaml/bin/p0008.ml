@@ -1,5 +1,7 @@
 (* Project Euler: Problem 8 *)
 
+open Core
+
 let source_data = "73167176531330624919225119674426574742355349194934\
                    96983520312774506326239578318016984801869478851843\
                    85861560789112949495459501737958331952853208805511\
@@ -23,8 +25,8 @@ let source_data = "73167176531330624919225119674426574742355349194934\
 
 let culc s =
   Str.split (Str.regexp "") s
-  |> List.map int_of_string
-  |> List.fold_left ( * ) 1
+  |> List.map ~f:int_of_string
+  |> List.fold_left ~f:( * ) ~init:1
 
 let find_max_product str =
   let len = String.length str in
@@ -32,11 +34,13 @@ let find_max_product str =
     if idx >= len - 13 then
       value
     else
-      let s = String.sub source_data idx 13 in
+      let s = String.sub source_data ~pos:idx ~len:13 in
       let product = culc s in
       if product > value then aux (idx + 1) product else aux (idx + 1) value
   in
   aux 0 0
 
-let () =
-  Printf.printf "the thirteen adjacent digits in the 1000-digit number that have the greatest product is %d\n" (find_max_product source_data)
+let exec () =
+  Int.to_string (find_max_product source_data)
+
+let () = Euler.Task.run exec

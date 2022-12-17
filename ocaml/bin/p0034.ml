@@ -26,12 +26,12 @@
   This is a contradiction, so the answer I look for is 1999999 or less.
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
 (*
   let make_fact_table () =
     let rec fact n = if n = 0 then 1 else n * fact (n - 1) in
-    let table = Array.make 10 0 in
+    let table = Array.create ~len:10 0 in
     let rec aux n =
       if n < 0 then
         table
@@ -62,5 +62,7 @@ let solve () =
   in
   solve' 1_999_999 0
 
-let () =
-  Printf.printf "Answer: %d\n" (solve())
+let exec () =
+  Int.to_string (solve ())
+
+let () = Euler.Task.run exec

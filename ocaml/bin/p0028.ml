@@ -21,6 +21,8 @@
 
  *)
 
+open Core
+
 let solve side_len =
   let rec aux n result =
     if n < 1 then
@@ -30,5 +32,7 @@ let solve side_len =
   in
   aux ((side_len - 1) / 2) 0
 
-let () =
-  Printf.printf "the sum of the numbers on the diagonals in a 1001 by 1001 spiral formed is %d\n" (solve 1001)
+let exec () =
+  Int.to_string (solve 1001)
+
+let () = Euler.Task.run exec

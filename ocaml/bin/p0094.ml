@@ -41,14 +41,15 @@
 
     perimeter = m + m + 2n = 6n - 2 = 2*(3n - 2) + 2 = 2x + 2
 
-  sqrt(3) = [1;(1,2)]  (from problem 64)
-    a{i} + b{i}*sqrt(3) = (2 + 1*sqrt(3))^i  (from problem 66)
-    --> a{1} = 2, b{1} = 1  ==> a mod 3 = 2, 3n+2 = 2 -> n=0  (ignore)
-        a{2} = 7, b{2} = 3  ==> a mod 3 = 1, 3n-2 = 7 -> n=3,m=5, p = 2 * a{2} + 2 = 16
-          ...
+  Pell's equation: x^2 -3y^2 = 1
+    sqrt(3) = [1;(1,2)]  (from problem 64)
+      a{i} + b{i}*sqrt(3) = (2 + 1*sqrt(3))^i  (from problem 66)
+      --> a{1} = 2, b{1} = 1  ==> a mod 3 = 2, 3n+2 = 2 -> n=0  (ignore)
+          a{2} = 7, b{2} = 3  ==> a mod 3 = 1, 3n-2 = 7 -> n=3,m=5, p = 2 * a{2} + 2 = 16
+            ...
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
 let solve limit =
   let rec loop a b result =
@@ -71,5 +72,7 @@ let solve limit =
   in
   loop 2 1 0      (* a{1}=2, b{1}=1 *)
 
-let () =
-  Printf.printf "Answer: %d\n" (solve 1_000_000_000)
+let exec () =
+  Int.to_string (solve 1_000_000_000)
+
+let () = Euler.Task.run exec

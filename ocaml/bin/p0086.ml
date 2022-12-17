@@ -3,7 +3,7 @@
 (*
   1 <= a, b, c <= M
 
-  since we can ignore rotations, there is only one case to consider.
+  we can ignore rotations. there is only one case to consider.
     1 <= a <= b <= c <= M
      --> 2 <= a + b <= 2c
 
@@ -22,43 +22,49 @@
       num of (a,b) = floor(x/2) = floor((a+b)/2)
 
   when a+b > c
-      num of (a,b) = floor((a+b)/2) - ((a+b) - (c+1))
+      num of (a,b) = floor((a+b)/2) - ((a+b-1) - c)
+
+      exampe: c=10, a+b=15
+        (a,b) = (1,14), ..., (5,10), (6,9), (7,8), ..., (14,1)
+                             ####################
+                ^^^ b>c ^^^ = (a+b-1) - c
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ = floor((a+b)/2)
+
+      exampe: c=10, a+b=16
+        (a,b) = (1,15), ..., (6,10), (7,9), (8,8), ..., (14,1)
+                             ####################
+                ^^^ b>c ^^^ = (a+b-1) - c
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ = floor((a+b)/2)
  *)
 
-(* ---------------------------------------------------------------- *)
-
-let sq_tbl = Hashtbl.create 1024
-
-let sq_memo n =
-  match Hashtbl.find_opt sq_tbl n with
-  | Some v -> v
-  | None ->
-     let tmp = n * n in
-     Hashtbl.add sq_tbl n tmp;
-     tmp
+open Core
 
 let solve limit =
   let rec loop c acc =
-    if acc >= limit then
-      c - 1
+    if acc > limit then
+      pred c
     else
-      let rec loop' a_b acc =
-        if a_b < 2 then
+      let rec aux sum_ab acc =
+        if sum_ab < 2 then
           acc
-        else
-          let tmp = (sq_memo c) + (sq_memo (a_b)) in
-          let sqrt_tmp = truncate @@ sqrt @@ float tmp in
-          if tmp = sq_memo sqrt_tmp then
-            if a_b <= c then
-              loop' (pred a_b) (acc + ((a_b) / 2))
+        else (
+          let tmp = (c * c) + (sum_ab * sum_ab) in
+          let sq_tmp = Euler.Math.isqrt tmp in
+          if tmp <> sq_tmp * sq_tmp then
+            aux (pred sum_ab) acc
+          else (
+            if sum_ab <= c then
+              aux (pred sum_ab) (acc + sum_ab / 2)
             else
-              loop' (pred a_b) (acc + ((a_b) / 2) - (a_b - (c + 1)))
-          else
-            loop' (pred a_b) acc
+              aux (pred sum_ab) (acc + sum_ab / 2 - ((sum_ab - 1) - c))
+          )
+        )
       in
-      loop (succ c) (acc + loop' (c * 2) 0)
+      loop (succ c) (acc + aux (c * 2) 0)
   in
   loop 1 0
 
-let () =
-  Printf.printf "Answer: %d\n" (solve 1_000_000)
+let exec () =
+  Int.to_string (solve (1_000_000))
+
+let () = Euler.Task.run exec

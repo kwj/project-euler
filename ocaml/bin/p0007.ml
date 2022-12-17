@@ -1,23 +1,18 @@
 (* Project Euler: Problem 7 *)
 
-let is_prime num =
-  let upper = truncate @@ sqrt @@ float num in
-  let rec aux n k =
-    if k < 2 then
-      true
-    else
-      (n mod k <> 0) && (aux n (k - 1))
-  in
-  if num <= 1 then false else aux num upper
+open Core
 
 let nth_prime num =
+  let is_prime = Euler.Math.is_prime in
   let rec aux i n =
-    if is_prime i = true then
-      if n = 1 then i else aux (i + 1) (n - 1)
+    if Bool.(is_prime i = true) then
+      if n = 1 then i else aux (i + 2) (n - 1)
     else
-      aux (i + 1) n
+      aux (i + 2) n
   in
-  aux 2 num
+  aux 3 num    (* skip '2' *)
 
-let () =
-  Printf.printf "the 10001st prime number is %d\n" (nth_prime 10001)
+let exec () =
+  Int.to_string (nth_prime 10_000)  (* skip '2, so use 10000 instead of 10001 *)
+
+let () = Euler.Task.run exec

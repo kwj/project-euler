@@ -10,7 +10,7 @@
     - https://en.wikipedia.org/wiki/Modular_exponentiation
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
 (* -- method 1 -- *)
 (* using arbitrary-precision arithmetic library *)
@@ -18,13 +18,13 @@ let mod_pow base exp modulus =
   let open Z in
   let m = of_int modulus in
   let rec aux b e result =
-    if e <= 0 then
+    if Int.(e <= 0) then
       to_int result
     else
-      if Int.rem e 2 = 1 then
-        aux ((b * b) mod m) (Int.div e 2) ((result * b) mod m)
+      if Int.(rem e 2 = 1) then
+        aux ((b * b) mod m) Int.(e / 2) ((result * b) mod m)
       else
-        aux ((b * b) mod m) (Int.div e 2) result
+        aux ((b * b) mod m) Int.(e / 2) result
   in
   aux ((of_int base) mod m) exp (of_int 1)
 
@@ -41,58 +41,10 @@ let solve_1 num =
 (* -- method 2 -- *)
 (* using list, but it's a straightforward calculation *)
 let solve_2 num =
-  let lst_of_int num =
-    let rec aux n acc =
-      if n = 0 then
-        List.rev acc
-      else
-        aux (n / 10) ((n mod 10) :: acc)
-    in
-    aux num []
-  in
-  let rec add_nlst l1 l2 =
-    let rec aux l1 l2 carry acc =
-      match l1, l2 with
-      | hd1 :: tl1, hd2 :: tl2 ->
-         aux tl1 tl2 ((hd1 + hd2 + carry) / 10) (((hd1 + hd2 + carry) mod 10) :: acc)
-      | [], [] when carry > 0 ->
-         List.rev (carry :: acc)
-      | _ ->
-         List.rev acc
-    in
-    let diff = (List.length l1) - (List.length l2) in
-    if diff = 0 then
-      aux l1 l2 0 []
-    else
-      if diff > 0 then
-        add_nlst l1 (l2 @ [0])
-      else
-        add_nlst (l1 @ [0]) l2
-  in
-  let mul_nlst lst num =
-    let rec aux lst carry acc =
-      match lst with
-      | hd :: tl ->
-         aux tl ((hd * num + carry) / 10) (((hd * num + carry) mod 10) :: acc)
-      | [] when carry > 0 ->
-         aux [] (carry / 10) ((carry mod 10) :: acc)
-      | _ ->
-         List.rev acc
-    in
-    aux lst 0 []
-  in
-  let take n lst =
-    let rec aux m l acc =
-      if m = 0 || l = [] then
-        List.rev acc
-      else
-        aux (pred m) (List.tl l) (List.hd l :: acc)
-    in
-    aux n lst []
-  in
+  let module U = Euler.Util in
   let rec loop_a a acc =
     if a < 0 then
-      take 10 acc
+      List.take acc 10
     else
       if a mod 10 = 0 then
         (* no calculation is required since the last 10 digits are all zeros *)
@@ -103,12 +55,13 @@ let solve_2 num =
             lst
           else
             (* we are only interested in the last 10 digits *)
-            loop_b (take 10 (mul_nlst lst a)) (pred cnt)
+            loop_b (List.take (U.mul_nlst lst a) 10) (pred cnt)
         in
-        loop_a (pred a) (take 10 (add_nlst (loop_b (lst_of_int a) a) acc))
+        loop_a (pred a) (List.take (U.add_nlst (loop_b (U.nlst_of_int a) a) acc) 10)
   in
-  List.fold_left (^) "" (List.map string_of_int (List.rev (loop_a num [])))
+  List.fold ~f:(^) ~init:"" (List.map ~f:Int.to_string (List.rev (loop_a num [])))
 
-let () =
-  Printf.printf "Answer: %d  (w/ Zarith module)\n" (solve_1 1000);
-  Printf.printf "Answer: %s  (w/o Zarith module)\n" (solve_2 1000)
+let exec () =
+  sprintf "%d  (w/ Zarith module)\n%s  (w/o Zarith module)" (solve_1 1000) (solve_2 1000)
+
+let () = Euler.Task.run exec

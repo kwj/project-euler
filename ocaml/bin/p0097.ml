@@ -13,7 +13,7 @@
   Note 2: Without Zarith module version is omitted since I'm tired.
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
 
 (* using arbitrary-precision arithmetic library *)
 let mod_pow base exp modulus =
@@ -23,10 +23,10 @@ let mod_pow base exp modulus =
     if e <= 0 then
       to_int result
     else
-      if Int.rem e 2 = 1 then
-        aux ((b * b) mod m) (Int.div e 2) ((result * b) mod m)
+      if Int.(e % 2) = 1 then
+        aux ((b * b) mod m) Int.(e / 2) ((result * b) mod m)
       else
-        aux ((b * b) mod m) (Int.div e 2) result
+        aux ((b * b) mod m) Int.(e / 2) result
   in
   aux ((of_int base) mod m) exp (of_int 1)
 
@@ -34,6 +34,7 @@ let solve () =
   let modulus = 10_000_000_000 in
   (28433 * (mod_pow 2 7830457 modulus) + 1) mod modulus
 
+let exec () =
+  Int.to_string (solve ())
 
-let () =
-  Printf.printf "Answer: %d  (w/ Zarith module)\n" (solve ())
+let () = Euler.Task.run exec

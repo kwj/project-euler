@@ -26,7 +26,7 @@
    -->
      b{n+1} = a{n}*c{n} - b{n}
      c{n+1} = (N - b{n+1}^2) / c{n}
-     a{n+1} = floor((sqrt(N)+b{n+1}) / c{n+1})
+     a{n+1} = floor((sqrt(N)+b{n+1}) / c{n+1}) = (floor(sqrt(N)) + b{n+1}) / c{n+1}
 
        a{0} = floor(sqrt(N)), b{0} = 0, c{0} = 1
 
@@ -77,7 +77,9 @@
         y{k+1} = a{k+1} * y{k} + y{k-1} 
  *)
 
-(* ---------------------------------------------------------------- *)
+open Core
+
+let isqrt = Euler.Math.isqrt
 
 (* 
   Please see the following page.
@@ -86,43 +88,46 @@
 let is_pell n x y =
   let open Z in
   let tmp = x * x - (of_int n) * y * y in
-  if tmp = Z.one then      (* X^2 - D*Y^2 = 1 *)
-    Some (x, y)
+  if Z.(equal tmp one) then
+    Some (x, y)                                         (* when X^2 - D*Y^2 = 1 *)
   else
-    if tmp = Z.minus_one then      (* X^2 - D*Y^2 = - 1 *)
-      Some (x * x + (of_int n) * y * y, (of_int 2) * x * y)
+    if Z.(equal tmp minus_one) then
+      Some (x * x + (of_int n) * y * y, ~$2 * x * y)    (* when X^2 - D*Y^2 = -1 *)
     else
       None
 
-let find_pair num =
-  let sqrt_num = Float.(to_int (sqrt (of_int num))) in
-  let rec loop a b c n1 n2 d1 d2 =
+let find_pair n isqrt_N =
+  let rec loop a b c x2 x1 y2 y1 =
     let next_b = a * c - b in
-    let next_c = (num - next_b * next_b) / c in
-    let next_a = (sqrt_num + next_b) / next_c in
-    let next_n = Z.((of_int next_a) * n1 + n2) in
-    let next_d = Z.((of_int next_a) * d1 + d2) in
-    match is_pell num next_n next_d with
-    | None -> loop next_a next_b next_c next_n n1 next_d d1
+    let next_c = (n - next_b * next_b) / c in
+    let next_a = (isqrt_N + next_b) / next_c in
+    let next_x = Z.((of_int next_a) * x2 + x1) in
+    let next_y = Z.((of_int next_a) * y2 + y1) in
+
+    match is_pell n next_x next_y with
     | Some v -> v
+    | None -> loop next_a next_b next_c next_x x2 next_y y2
   in
-  loop sqrt_num 0 1 Z.(of_int sqrt_num) Z.one Z.one Z.zero      (* a0, b0, c0, x0, x{-1}, y0, y{-1} *)
+  loop isqrt_N 0 1 Z.(of_int isqrt_N) Z.one Z.one Z.zero    (* a0, b0, c0, x0, x{-1}, y0, y{-1} *)
 
 let solve () =
-  let rec loop m max_x d =
-    if m > 1_000 then
-      d
+  let rec loop d max_x max_d =
+    if d > 1_000 then
+      max_d
     else
-      if Float.(is_integer (sqrt (of_int m))) then
-        loop (succ m) max_x d
+      let isqrt_D = isqrt d in
+      if d = isqrt_D * isqrt_D then
+        loop (succ d) max_x max_d
       else
-        let x, _ = find_pair m in
-        if x > max_x then
-          loop (succ m) x m
+        let x, _ = find_pair d isqrt_D in
+        if Z.(gt x max_x) then
+          loop (succ d) x d
         else
-          loop (succ m) max_x d
+          loop (succ d) max_x max_d
   in
   loop 2 Z.zero 0
 
-let () =
-  Printf.printf "Answer: %d\n" (solve())
+let exec () =
+  Int.to_string (solve ())
+
+let () = Euler.Task.run exec

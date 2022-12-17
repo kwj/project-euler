@@ -1,16 +1,12 @@
 (* Project Euler: Problem 47 *)
 
-(*
-  I think it would be faster to use Sieve of Eratosthenes.
-  However I didn't know the upper limit, I didn't use it.
- *)
+open Core
 
-(* ---------------------------------------------------------------- *)
-
-let count_pf num =
-  let ulimit = truncate @@ sqrt @@ float num in
-  let rec div_all i n =
-    if n mod i <> 0 || n = 1 then n else div_all i (n / i)
+(* List.length (Euler.Math.factorize num) is slow. Therefore, I wrote the following function *)
+let num_of_pfactors num =
+  let ulimit = Euler.Math.isqrt num in
+  let rec div_all n i =
+    if n mod i <> 0 || n = 1 then n else div_all (n / i) i
   in
   let rec aux i n result =
     if n <= 1 then
@@ -22,24 +18,21 @@ let count_pf num =
         if n mod i <> 0 then
           aux (succ i) n result
         else
-          aux (succ i) (div_all i n) (succ result)
+          aux (succ i) (div_all n i) (succ result)
   in
   aux 2 num 0
 
-let rec find_number n =
-  if count_pf n <> 4 then
-    find_number (n + 1)
+let rec find_number n cnt =
+  if num_of_pfactors n <> 4 then
+    find_number (succ n) 0
   else
-    if count_pf (n + 1) <> 4 then
-      find_number (n + 2)
+    if cnt = 3 then
+      n - 3
     else
-      if count_pf (n + 2) <> 4 then
-        find_number (n + 3)
-      else
-        if count_pf (n + 3) <> 4 then
-          find_number (n + 4)
-        else
-          n
+      find_number (succ n) (succ cnt)
 
-let () =
-  Printf.printf "Answer: %d\n" (find_number 1)
+let exec () =
+  (* 2 * 3 * 5 * 7 = 210 is the smallest number which is product of four prime numbers. *)
+  Int.to_string (find_number (2 * 3 * 5 * 7) 0)
+
+let () = Euler.Task.run exec

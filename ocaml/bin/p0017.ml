@@ -1,5 +1,7 @@
 (* Project Euler: Problem 17 *)
 
+open Core
+
 let words = [
     (1, String.length "one");
     (2, String.length "two");
@@ -41,23 +43,26 @@ let count_chars num =
          (* one thousand *)
          aux (pred num) (cnt + 11)
       | n when n < 20 ->
-         aux (pred num) (cnt + (List.assoc n words))
+         aux (pred num) (cnt + (List.Assoc.find_exn words n ~equal))
       | n when n < 100 ->
-         aux (pred num) (cnt + (List.assoc (n - (n mod 10)) words) + (List.assoc (n mod 10) words))
+         aux (pred num) (cnt + (List.Assoc.find_exn words (n - (n mod 10)) ~equal) +
+                           (List.Assoc.find_exn words (n mod 10) ~equal))
       | n when (n mod 100) = 0 ->
          (* X00 hundred *)
-         aux (pred num) (cnt + (List.assoc (n / 100) words) + 7)
+         aux (pred num) (cnt + (List.Assoc.find_exn words (n / 100) ~equal) + 7)
       | n when (n mod 100) < 20 ->
          (* XYZ hundred and ...  (YZ < 20) *)
-         aux (pred num) (cnt + (List.assoc (n / 100) words) + 7 + 3 +
-                           (List.assoc (n mod 100) words))
+         aux (pred num) (cnt + (List.Assoc.find_exn words (n / 100) ~equal) + 7 + 3 +
+                           (List.Assoc.find_exn words (n mod 100) ~equal))
       | n ->
          (* XYZ hundred and ...  (20 <= YZ <= 99) *)
-         aux (pred num) (cnt + (List.assoc (n / 100) words) + 7 + 3 +
-                           (List.assoc ((n mod 100) - (n mod 10)) words) + (List.assoc (n mod 10) words))
+         aux (pred num) (cnt + (List.Assoc.find_exn words (n / 100) ~equal) + 7 + 3 +
+                           (List.Assoc.find_exn words ((n mod 100) - (n mod 10)) ~equal) +
+                           (List.Assoc.find_exn words (n mod 10) ~equal))
   in
   aux num 0
 
-let () =
-  Printf.printf "all the numbers from 1 to 1000 (one thousand) inclusive were written out in words, how many letters would be used?\n";
-  Printf.printf "   answer: %d\n" (count_chars 1000)
+let exec () =
+   sprintf "%d" (count_chars 1_000)
+
+let () = Euler.Task.run exec

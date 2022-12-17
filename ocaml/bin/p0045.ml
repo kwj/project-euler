@@ -13,18 +13,16 @@
                   = H(k)
 
     Hexagonal numbers are also triangle numbers.
-    So I search a hexagonal number which is also pentagonal number from n=144.
+    So I search for a hexagonal number which is also pentagonal number from n=144.
  *)
 
-(* ---------------------------------------------------------------- *)
-
-let is_pentagonal num =
-  let tmp = sqrt (float_of_int (1 + 24 * num)) in
-  if tmp = floor tmp && (int_of_float tmp) mod 6 = 5 then true else false
+open Core
 
 let rec find_hexnum n =
-  if is_pentagonal (n * (2 * n - 1)) then n else find_hexnum (succ n)
+  let hex_num = n * (2 * n - 1) in
+  if Euler.Math.is_pentagonal hex_num then hex_num else find_hexnum (succ n)
 
-let () =
-  let n = find_hexnum 144 in
-  Printf.printf "Answer: %d\n" (n * (2 * n - 1))
+let exec () =
+  Int.to_string (find_hexnum 144)
+
+let () = Euler.Task.run exec

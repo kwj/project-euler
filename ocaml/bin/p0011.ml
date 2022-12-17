@@ -1,5 +1,7 @@
 (* Project Euler: Problem 11 *)
 
+open Core
+
 type direction = Right | Down | UpperRight | DownRight
 
 let n_row = 20
@@ -40,7 +42,7 @@ let calc x y dir =
   done;
   !v
 
-let find_max_product () =
+let exec () =
   let result = ref 0 in
   for x = 0 to n_row - 1 do
     for y = 0 to n_col - 1 do
@@ -55,7 +57,6 @@ let find_max_product () =
       )
     done
   done;
-  !result
+  Int.to_string !result
 
-let () =
-  Printf.printf "the greatest product of four adjacent numbers in the same direction in the grid is %d\n" (find_max_product())
+let () = Euler.Task.run exec

@@ -1,31 +1,18 @@
 (* Project Euler: Problem 21 *)
 
+open Core
+
 let find_amicable num =
-  let divisors n =
-    let u_limit = truncate(sqrt (float n)) in
-    let rec aux lst i =
-      if i > u_limit then
-        lst
-      else
-        if n mod i <> 0 then
-          aux lst (succ i)
-        else
-          if i * i = n then
-            aux (i::lst) (succ i)
-          else
-            aux ((n / i) :: (i::lst)) (succ i)
-    in
-    List.filter (fun x -> x <> n) (aux [] 1)
-  in
+  let p_divisors num = List.drop_last_exn (Euler.Math.divisors num) in
   let rec aux num result =
     if num < 2 then
       result
     else
-      if List.mem num result then
+      if List.mem result num ~equal then
         aux (pred num) result
       else
-        let d_num = List.fold_left (+) 0 (divisors num) in
-        let d_x = List.fold_left (+) 0 (divisors d_num) in
+        let d_num = List.fold ~f:(+) ~init:0 (p_divisors num) in
+        let d_x = List.fold ~f:(+) ~init:0 (p_divisors d_num) in
         if num = d_x && d_num <> d_x then
             aux (pred num) (d_num :: (d_x :: result))
         else
@@ -33,5 +20,7 @@ let find_amicable num =
   in
   aux num []
 
-let () =
-  Printf.printf "The sum of all the amicable numbers under 10000 is %d\n" (List.fold_left (+) 0 (find_amicable 10000))
+let exec () =
+  Int.to_string (List.fold ~f:(+) ~init:0 (find_amicable 10_000))
+
+let () = Euler.Task.run exec

@@ -16,7 +16,7 @@
       --> 50 * 50
 
   case #2:
-    2-1) P(x1,y1) is the right angle and Q(x2>x1,y2<y1)
+    2-1) P(x1,y1) is the right angle and Qi(x_i>x1,y_i<y1)
       Y
        | P(x1,y1)
        |   #   Q1(a1,b1)
@@ -26,26 +26,25 @@
       -O------------------------------------- X
                                             *
 
-      --> min((y1 / (x / gcd(x1,y1))), ((50-x1) / (y / gcd(x1,y))))
+      --> min((y1 / (x / gcd(x1,y1))), ((50-x1) / (y / gcd(x1,y1))))
 
     2-2) P(x1,y1) is the right angle and Q(x2<x1,y2>y1)
       same qty as case 2-1.  [mirror on the y=x line]
  *)
 
-(* ---------------------------------------------------------------- *)
-
-let rec gcd m n =
-  if n = 0 then m else gcd n (m mod n)
+open Core
 
 let solve () =
   let answer = ref (50 * 50 * 3) in
   for x = 1 to 50 do
     for y = 1 to 50 do
-      let m = gcd x y in
+      let m = Euler.Math.gcd x y in
       answer := !answer + (min ((y * m) / x) ((50 - x) * m / y)) * 2
     done
   done;
   !answer
 
-let () =
-  Printf.printf "Answer: %d\n" (solve ())
+let exec () =
+  Int.to_string (solve ())
+
+let () = Euler.Task.run exec
