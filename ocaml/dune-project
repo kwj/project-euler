@@ -1,0 +1,12 @@
+(lang dune 3.5)
+
+(name project_euler_ocaml)
+
+(package
+ (name project_euler_ocaml)
+ (synopsis "Project Euler in OCaml")
+ (description "Project Euler in OCaml")
+ (depends ocaml dune)
+ (tags
+  (topics "Project Euler")))
+
