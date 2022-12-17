@@ -1,18 +1,21 @@
 # Notes
 
-It was confirmed to work with OCaml 4.13.1.
+It was confirmed to work with OCaml 4.14.0.
 
-I used the following libraries/packages in addition to the OCaml 4.13 standard library.
+I used the following libraries/packages in addition to the OCaml 4.14 standard library.
 
 - Str [^1]
-- Zarith [^2]
+- Zarith 1.12[^2]
+- Core v0.15.1[^3]
 
 I also used the following package for compilation.
 
-- Findlib [^3]
+- Dune 3.6.1[^4]
 
 [^1]: It's distributd with OCaml itself.
 
 [^2]: https://github.com/ocaml/Zarith
 
-[^3]: https://github.com/ocaml/ocamlfind/
+[^3]: https://github.com/janestreet/core
+
+[^4]: https://github.com/ocaml/dune
