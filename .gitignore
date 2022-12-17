@@ -2,8 +2,6 @@
 #--------------------
 # project specific rules here
 
-p*.txt
-
 
 #--------------------
 # ref: https://github.com/github/gitignore
