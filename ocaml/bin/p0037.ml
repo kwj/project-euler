@@ -10,12 +10,7 @@ open Core
 let is_prime = Euler.Math.mr_isprime
 
 let add_prefix_num pre_lst post_lst =
-  let ndigits num =
-    let rec aux n d =
-      if n = 0 then d else aux (n / 10) (succ d)
-    in
-    if num = 0 then 1 else aux num 0
-  in
+  let ndigits = Euler.Math.num_of_digits in
   let rec aux lst result =
     match lst with
     | [] -> result
