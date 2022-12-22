@@ -228,11 +228,6 @@ let to_array p =
   Array.of_list (to_list p)
 
 let prev_prime p num =
-  let wrapper_get_term_elt num =
-    match get_term_elt num with
-      0xFF -> 0
-    | n -> n
-  in
   match num with
     n when n > p.size -> raise (Invalid_argument "Too large")
   | n when n <= 2 -> raise (Invalid_argument "Too small")
@@ -249,4 +244,4 @@ let prev_prime p num =
                30 * idx + mod30.(Util.get_NTZ (get_msb ((Char.code p.data.(idx)) land flags)))
            )
          in
-         aux ((pred n) / 30) (wrapper_get_term_elt (pred n))
+         aux ((pred n) / 30) (get_term_elt (pred n))
