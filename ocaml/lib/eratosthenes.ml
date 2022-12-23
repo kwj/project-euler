@@ -248,4 +248,3 @@ let prev_prime p num =
            aux ((n - 1) / 30) (get_term_elt (pred n))
          else
            aux ((n - 2) / 30) 0xFF
-           
