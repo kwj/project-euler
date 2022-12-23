@@ -229,11 +229,6 @@ class Eratosthenes:
                 return reduce(lambda acc_tpl, x: aux(acc_tpl, x), self.prime_tbl, (0, [2, 3, 5]))[1]
 
     def prev_prime(self, num):
-        def wrapper_get_term_elt(n):
-            match self.__get_term_elt(n):
-                case 0xFF: return 0
-                case v: return v
-
         match num:
             case n if n > self.size:
                 raise ValueError("too large")
