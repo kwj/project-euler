@@ -163,6 +163,9 @@ class Eratosthenes:
         n |= (n >> 4)
         return n ^ (n >> 1)
 
+    def __get_lsb(self, n):
+        return n & (-n)
+
     def __init__(self, num):
         if num < 2:
             raise ValueError("argument too small")
@@ -175,7 +178,7 @@ class Eratosthenes:
 
         for q, flag in enumerate(self.prime_tbl):
             while flag != 0:
-                r_bit = b_bit = self.__get_bit_pos(flag & (-flag))    # flag & (-flag): isolate the rightmost 1-bit
+                r_bit = b_bit = self.__get_bit_pos(self.__get_lsb(flag))
                 r = self.__mod30[r_bit]
                 idx = q * (30 * q + 2 * r) + (r * r) // 30    # [*1]
                 while idx < self.tbl_size:
@@ -253,6 +256,39 @@ class Eratosthenes:
                     return aux((n - 1) // 30, self.__get_term_elt(n - 1))
                 else:
                     return aux((n - 2) // 30, 0xFF)
+
+    def next_prime(self, num):
+        def get_max_prime(n):
+            idx = self.tbl_size - 1
+            while self.prime_tbl[idx] == 0:
+                idx -= 1
+
+            return 30 * idx + self.__mod30[self.__get_bit_pos(self.__get_msb(self.prime_tbl[idx]))]
+
+        match num:
+            case n if n >= get_max_prime(n):
+                raise ValueError("too large")
+            case n if n < 0:
+                raise ValueError("too small")
+            case n if n < 2:
+                return 2
+            case n if n < 3:
+                return 3
+            case n if n < 5:
+                return 5
+            case n:
+                def aux(idx, flags):
+                    if idx >= self.tbl_size:
+                        raise ValueError("not found")
+                    elif self.prime_tbl[idx] & flags == 0:
+                        return aux(idx + 1, 0xFF)
+                    else:
+                        return 30 * idx + self.__mod30[self.__get_bit_pos(self.__get_lsb(self.prime_tbl[idx] & flags))]
+
+                if n % 30 == 0:
+                    return aux((n + 1) // 30, 0xFF)
+                else:
+                    return aux(n // 30, ~(self.__get_term_elt(n)) & 0xFF)
 
 def eratosthenes(num):
     return Eratosthenes(num)
