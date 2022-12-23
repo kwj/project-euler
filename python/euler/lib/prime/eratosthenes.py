@@ -250,11 +250,14 @@ class Eratosthenes:
                     if idx < 0:
                         raise ValueError("not found")
                     elif self.prime_tbl[idx] & flags == 0:
-                        aux(idx - 1, 0xFF)
+                        return aux(idx - 1, 0xFF)
                     else:
                         return 30 * idx + self.__mod30[self.__get_bit_pos(self.__get_msb(self.prime_tbl[idx] & flags))]
 
-                return aux((n - 1) // 30, self.__get_term_elt(n - 1))
+                if n % 30 != 1:
+                    return aux((n - 1) // 30, self.__get_term_elt(n - 1))
+                else:
+                    return aux((n - 2) // 30, 0xFF)
         
 def eratosthenes(num):
     return Eratosthenes(num)

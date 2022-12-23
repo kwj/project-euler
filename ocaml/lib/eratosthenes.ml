@@ -244,4 +244,8 @@ let prev_prime p num =
                30 * idx + mod30.(Util.get_NTZ (get_msb ((Char.code p.data.(idx)) land flags)))
            )
          in
-         aux ((pred n) / 30) (get_term_elt (pred n))
+         if n mod 30 <> 1 then
+           aux ((n - 1) / 30) (get_term_elt (pred n))
+         else
+           aux ((n - 2) / 30) 0xFF
+           
