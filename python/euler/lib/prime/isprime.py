@@ -37,7 +37,7 @@ def _is_prime_64bit(d, s, n):
                     return NumType.PRIME
                 elif x == n - 1:
                     return NumType.UNDECIDED
-                
+
             return NumType.COMPOSITE
 
     for a in [2, 325, 9375, 28178, 450775, 9780504, 1795265022]:
@@ -59,7 +59,7 @@ def _is_prime_more_64bit(d, s, n):
                 x = pow(x, 2, n)
                 if x == n - 1:
                     return NumType.UNDECIDED
-            
+
             return NumType.COMPOSITE
 
     def rand_gen():
@@ -78,7 +78,7 @@ def is_probably_prime(num):
     s = 0
     while d % 2 == 0:
         d, s = (d // 2), (s + 1)
-    
+
     if num <= 2 ** 64:
         return _is_prime_64bit(d, s, num)
     else:

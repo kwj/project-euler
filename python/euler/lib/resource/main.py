@@ -19,10 +19,10 @@ def asset_file(url):
         with open(str(asset_file), 'rb') as fr:
             if d[filename] != hashlib.sha256(fr.read()).hexdigest():
                 print('Warning: hash mismatch - {}'.format(filename))
-            
+
     f = open(str(asset_file))
     return f
-    
+
 def download(url, filename):
     with urllib.request.urlopen(url) as fr:
         content = fr.read()

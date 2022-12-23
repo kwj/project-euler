@@ -96,7 +96,7 @@
 
   // [*4] c-b: difference of elements of mod30
     mod30_diff = [6, 4, 2, 4, 2, 4, 6, 2]
-  
+
     c -> 7; 11; 13; 17; 19; 23; 29; 31
     b -> 1;  7; 11; 13; 17; 19; 23; 29
     -----------------------------------
@@ -131,7 +131,7 @@ class Eratosthenes:
                   [5, 3, 1, 4, 1, 3, 5, 1], [6, 4, 2, 4, 2, 4, 6, 1]]
 
         return q * mod30_diff[b] + rb_tbl[r][b]
-        
+
     def __get_term_elt(self, n):
         match n % 30:
             case 0: return 0xFF
@@ -185,7 +185,7 @@ class Eratosthenes:
                     idx += self.__get_idx_offset(q, r_bit, b_bit)
                     b_bit = (b_bit + 1) & 0b00000111
                 flag &= (flag - 1)    # turn off the rightmost 1-bit
-                
+
     def is_prime(self, num):
         if num > self.size:
             raise ValueError("argument too large")
@@ -258,6 +258,6 @@ class Eratosthenes:
                     return aux((n - 1) // 30, self.__get_term_elt(n - 1))
                 else:
                     return aux((n - 2) // 30, 0xFF)
-        
+
 def eratosthenes(num):
     return Eratosthenes(num)

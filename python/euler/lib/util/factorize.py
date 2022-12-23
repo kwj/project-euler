@@ -9,7 +9,7 @@ def factorize(n):
         return result
     elif n == 1:
         return [(1, 1)]
-    
+
     result = []
     for b in [2, 3, 5]:
         e = 0
@@ -34,7 +34,7 @@ def factorize(n):
             result.append((b, e))
         b += diff[idx]
         idx = (idx + 1) % 8
-        
+
     if n != 1:
         result.append((n, 1))
 

@@ -41,7 +41,7 @@ class Sieve:
             idx += 2
 
         return result
-    
+
     def factorize(self, num):
         result = []
         while num > 1:
@@ -66,6 +66,6 @@ class Sieve:
                     result.append(result[i] * v)
 
         return result
-            
+
 def sieve(num):
     return Sieve(num)

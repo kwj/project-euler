@@ -23,4 +23,4 @@ def is_pandigital_nz(num):
         return True
 
     return check_zero(num) and is_pandigital(num * 10)
-    
+
