@@ -59,7 +59,7 @@
 
   // [*3] c-b: difference of elements of mod30
   let mod30_diff = [|6; 4; 2; 4; 2; 4; 6; 2|]
-  
+
     c -> 7; 11; 13; 17; 19; 23; 29; 31
     b -> 1;  7; 11; 13; 17; 19; 23; 29
     -----------------------------------
@@ -198,7 +198,7 @@ let is_prime p num =
       else
         (Char.code (p.data.(num / 30)) land (get_msb (get_term_elt num))) <> 0
     )
-  
+
 let count p =
   match p.size with
     2 -> 1
