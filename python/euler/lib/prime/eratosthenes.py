@@ -286,7 +286,7 @@ class Eratosthenes:
                         return 30 * idx + self.__mod30[self.__get_bit_pos(self.__get_lsb(self.prime_tbl[idx] & flags))]
 
                 if n % 30 == 0:
-                    return aux((n + 1) // 30, 0xFF)
+                    return aux(n // 30, 0xFF)
                 else:
                     return aux(n // 30, ~(self.__get_term_elt(n)) & 0xFF)
 
