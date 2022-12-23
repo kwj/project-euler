@@ -1,8 +1,8 @@
 # Notes
 
-It was confirmed to work with OCaml 4.14.1.
+It was confirmed to work with OCaml 5.0.0.
 
-I used the following libraries/packages in addition to the standard libraries part of OCaml 4.14.
+I used the following libraries/packages in addition to the standard libraries part of OCaml 5.0.
 
 - Str [^1]
 - Zarith 1.12[^2]
