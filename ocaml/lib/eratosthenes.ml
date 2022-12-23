@@ -186,6 +186,9 @@ let get_msb n =
   let x = if x land 0xCC <> 0 then (x land 0xCC) else x in
   if x land 0xAA <> 0 then (x land 0xAA) else x
 
+let get_lsb n =
+  n land (-n)
+
 let is_prime p num =
   if num > p.size then
     raise (Invalid_argument "Too large")
@@ -248,3 +251,34 @@ let prev_prime p num =
            aux ((n - 1) / 30) (get_term_elt (pred n))
          else
            aux ((n - 2) / 30) 0xFF
+
+let next_prime p num =
+  let get_max_prime () =
+    let rec aux idx =
+      if Char.code p.data.(idx) <> 0 then
+        30 * idx + mod30.(Util.get_NTZ (get_msb (Char.code p.data.(idx))))
+      else
+        aux (pred idx)
+    in
+    aux (Array.length p.data - 1)
+  in
+  match num with
+    n when n >= get_max_prime () -> raise (Invalid_argument "Too large")
+  | n when n < 0 -> raise (Invalid_argument "Too small")
+  | n when n < 2 -> 2
+  | n when n < 3 -> 3
+  | n when n < 5 -> 5
+  | n -> let rec aux idx flags =
+           if idx >= Array.length p.data - 1 then
+             raise Not_found
+           else (
+             if Char.code p.data.(idx) land flags = 0 then
+               aux (succ idx) 0xFF
+             else
+               30 * idx + mod30.(Util.get_NTZ (get_lsb (Char.code p.data.(idx) land flags)))
+           )
+         in
+         if n mod 30 = 0 then
+           aux (n / 30) 0xFF
+         else
+           aux (n / 30) ((lnot (get_term_elt n)) land 0xFF)
