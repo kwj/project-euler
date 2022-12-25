@@ -6,7 +6,31 @@
     https://en.wikipedia.org/wiki/Dancing_Links
  *)
 
-type node = {
+(*
+ MIT License
+
+Copyright (c) 2021 Jun Kawai
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+ *)
+
+ type node = {
     mutable tag : string;
     mutable cnt : int;
     mutable l : node;
@@ -23,7 +47,7 @@ type t = {
     mutable nrow : int;
     mutable ans : string list list
 }
-       
+
 let _dlx_node () =
   let rec n = { tag = "head"; cnt = 0; l = n; r = n; u = n; d = n; c = n} in
   n
@@ -40,7 +64,7 @@ let _dlx_node () =
 
   ncol = n
  *)
-  
+
 let dlx_init col_size =
   if col_size <= 0 then
     raise (Failure "invalid column size")
@@ -73,7 +97,7 @@ let dlx_init col_size =
            |          |         |                   |
           u|         u|        u|                  u|
     +-----------r-+-------r-+-------r-+--     -+-------r-+  tag: "haed", "col_#"
- <---> head_node <-> col_1 <-> col_2 <-> .... <-> col_n <---> 
+ <---> head_node <-> col_1 <-> col_2 <-> .... <-> col_n <--->
     +-l-----------+-l-------+-l-------+--     -+-l-------+
            |d         |d        |d                  |d
            |          |         |                   |
@@ -94,7 +118,7 @@ let dlx_init col_size =
                |                   c : node
              [d]own
  *)
-    
+
 let dlx_add_row ?name dlx idx_lst =
   let s_lst = List.sort compare idx_lst in
   if List.hd s_lst < 1 || List.nth s_lst (List.length s_lst - 1) > dlx.ncol then
@@ -146,7 +170,7 @@ let _follow n f dir =
     )
   in
   loop (next n)
-                                   
+
 let _dlx_cover col_n =
   let _cover n =
     n.u.d <- n.d;
@@ -159,7 +183,7 @@ let _dlx_cover col_n =
   col_n.r.l <- col_n.l;
   col_n.l.r <- col_n.r;
   _follow col_n _cover_row Down
-        
+
 let _dlx_uncover col_n =
   let _uncover n =
     n.u.d <- n;
@@ -235,4 +259,4 @@ let _dlx_print dlx =
     loop_2 dlx.cs.(i).d
   done;
 
-  print_newline ()  
+  print_newline ()
