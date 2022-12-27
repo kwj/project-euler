@@ -186,7 +186,19 @@ let is_pandigital_strlst lst =
 
 let is_pandigital_lst lst =
   is_pandigital_strlst (List.map (string_of_int) lst)
-    
+
+let is_palindrome num =
+  let rec loop n d =
+    if n < 10 then
+      true
+    else
+      if n / d <> n mod 10 then
+        false
+      else
+        loop (((n - (n mod 10)) mod d) / 10) (d / 100)
+  in
+  loop num Float.(to_int (pow 10. (floor (log10 (of_int num) +. 1.) -. 1.)))
+
 let is_prime num =
   let upper = isqrt num in
   let rec aux n k =

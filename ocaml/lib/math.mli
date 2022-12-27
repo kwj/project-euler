@@ -22,6 +22,8 @@ val is_pandigital_str : string -> bool
 val is_pandigital_strlst : string list -> bool
 val is_pandigital_lst : int list -> bool
 
+val is_palindrome : int -> bool
+
 (* naive method *)
 val is_prime : int -> bool
 (* Miller–Rabin primality test *)

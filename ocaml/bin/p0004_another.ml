@@ -2,18 +2,15 @@
 
 open Core
 
-let solve () =
+let exec () =
   let lst = ref [] in
   for x = 100 to 999 do
     for y = x to 999 do
       let tmp = x * y in
-      if Bool.(Euler.Math.is_palindrome tmp = true) then
+      if tmp = Int.of_string (String.rev (Int.to_string tmp)) then
         lst := tmp :: !lst
     done
   done;
-  List.rev (List.sort ~compare !lst) |> List.hd_exn
-
-let exec () =
-  Int.to_string (solve ())
+  List.rev (List.sort ~compare !lst) |> List.hd_exn |> Int.to_string
 
 let () = Euler.Task.run exec
