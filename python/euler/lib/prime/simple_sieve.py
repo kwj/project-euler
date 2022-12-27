@@ -6,7 +6,7 @@ def get_primes(limit):
     [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
     '''
     primes = list(range(limit + 1))
-    primes[4::2] = [0] * len(primes[4::2])
+    primes[2 * 2::2] = [0] * len(primes[2 * 2::2])
     for i in range(3, limit + 1, 2):
         if primes[i] != 0:
             primes[i * i::i] = [0] * len(primes[i * i::i])
@@ -22,7 +22,7 @@ def get_prime_tbl(limit):
      (14, False), (15, False), (16, False), (17, True), (18, False), (19, True), (20, False)]
     '''
     prime_tbl = [False] * 2 + [True] * (limit - 1)
-    prime_tbl[4::2] = [False] * len(prime_tbl[4::2])
+    prime_tbl[2 * 2::2] = [False] * len(prime_tbl[2 * 2::2])
     for i in range(3, limit + 1, 2):
         if prime_tbl[i] == True:
             prime_tbl[i * i::i] = [False] * len(prime_tbl[i * i::i])
