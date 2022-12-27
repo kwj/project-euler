@@ -172,20 +172,32 @@ let is_pandigital num =
       if n = 0 then
         bits
       else
-        aux (n / 10) (bits lor (1 lsl ((n mod 10) - 1)))
+        aux (n / 10) (bits lor (1 lsl (n mod 10)))
     in
     aux num 0
   in
   mk_bits num = (1 lsl (num_of_digits num) - 1)
 
-let is_pandigital_str s =
-  is_pandigital (int_of_string s)
+let is_pandigital_nz num =
+  let rec check_zero n =
+    if n = 0 then
+      true
+    else
+      if n mod 10 = 0 then
+        false
+      else
+        check_zero (n / 10)
+  in
+  num > 0 && check_zero num && is_pandigital (num * 10)
 
-let is_pandigital_strlst lst =
-  is_pandigital_str (List.fold_left (fun acc s -> acc ^ s) "" lst)
+let is_pandigital_str_nz s =
+  is_pandigital_nz (int_of_string s)
 
-let is_pandigital_lst lst =
-  is_pandigital_strlst (List.map (string_of_int) lst)
+let is_pandigital_strlst_nz lst =
+  is_pandigital_str_nz (List.fold_left (fun acc s -> acc ^ s) "" lst)
+
+let is_pandigital_lst_nz lst =
+  is_pandigital_strlst_nz (List.map (string_of_int) lst)
 
 let is_palindrome num =
   let rec loop n acc =
@@ -251,7 +263,7 @@ let mr_isprime num =
            | Undecided -> sprp_loop tl
       in
       sprp_loop [2; 325; 9375; 28178; 450775; 9780504; 1795265022]      (* Jim Sinclair's bases *)
-  
+
 module Prime = struct
   type t = {
       size : int;
@@ -290,7 +302,7 @@ module Prime = struct
     { size = upper; prime_tbl = isprime; minfactor_tbl = minfactor; mobius_tbl = mobius }
 
   let is_prime p num = p.prime_tbl.(num)
-  
+
   let prime_tbl p = Array.copy p.prime_tbl
 
   let minfactor_tbl p = Array.copy p.minfactor_tbl
@@ -330,10 +342,10 @@ module Prime = struct
       assert false
     else
       aux num [] |> List.sort (fun (b1, _) (b2, _) -> compare b1 b2)
-  
+
   let divisors p num =
     pfactors_to_divisors (factorize p num)
-  
+
   let generator () =
     let tbl = Hashtbl.create 128 in
     let prime = ref 2 in
@@ -351,7 +363,7 @@ module Prime = struct
                 !prime - 1
     in
     next
-  
+
   let generator2 ?(start=2) () =
     let p = ref (if start mod 2 = 0 && start <> 2 then start - 1 else start - 2) in
     let rec aux n =

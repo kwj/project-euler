@@ -18,9 +18,10 @@ val factorize : int -> (int * int) list
 val pfactors_to_divisors : (int * int) list -> int list
 
 val is_pandigital : int -> bool
-val is_pandigital_str : string -> bool
-val is_pandigital_strlst : string list -> bool
-val is_pandigital_lst : int list -> bool
+val is_pandigital_nz : int -> bool
+val is_pandigital_str_nz : string -> bool
+val is_pandigital_strlst_nz : string list -> bool
+val is_pandigital_lst_nz : int list -> bool
 
 val is_palindrome : int -> bool
 

@@ -37,7 +37,7 @@ let rec find_candidates start stop =
         result
       else
         match make_cand i with
-        | Some lst -> if Euler.Math.is_pandigital_lst lst then
+        | Some lst -> if Euler.Math.is_pandigital_lst_nz lst then
                         aux (pred i) ((Int.of_string (List.fold lst ~init:"" ~f:(fun acc n -> acc ^ Int.to_string n)), i) :: result)
                       else
                         aux (pred i) result

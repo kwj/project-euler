@@ -12,7 +12,7 @@
 open Core
 
 let solve max_num =
-  let is_pandigital = Euler.Math.is_pandigital in
+  let is_pandigital = Euler.Math.is_pandigital_nz in
   let is_prime = Euler.Math.mr_isprime in
 
   (* This function always terminates. Because n=2143 is a 4-digit pandigital and is also prime. *)
