@@ -24,11 +24,11 @@
   if the first digit is '2' on 7-digits number, the maximum number of the remaing 6-digits is 999999 (6 * 9! = 2177280).
   so, 2nd-digit is 0 or 1. if 2nd-digit is 1, the maximum number 2! + 1! + 5*9! = 2 + 1 + 1814400 = 1814403.
   This is a contradiction, so the answer I look for is 1999999 or less.
- *)
 
-open Core
+  assume that a 7-digits number '1 d_{1} .. d{6}', any d_{i} >= 5. it becomes 1! + sum(d_{i}!) mod 10 = 1. it's a contradiction.
+  so, at least one d_{i} is equal or less than 4. 1! + 4! + 5 * 9! = 1814425. 1! + 8! + 4! + 4 * 9! = 1491865.
 
-(*
+
   let make_fact_table () =
     let rec fact n = if n = 0 then 1 else n * fact (n - 1) in
     let table = Array.create ~len:10 0 in
@@ -41,28 +41,27 @@ open Core
       )
     in
     aux 9
+
+  --> [|1; 1; 2; 6; 24; 120; 720; 5040; 40320; 362880|]
  *)
 
-let solve () =
-  let sum_of_fact num =
-    let fact_table = [|1; 1; 2; 6; 24; 120; 720; 5040; 40320; 362880|] in    (* make_fact_table() *)
-    let rec aux n sum =
-      if n = 0 then sum else aux (n / 10) (sum + fact_table.(n mod 10))
-    in
-    aux num 0
-  in
-  let rec solve' n sum =
-    if n < 10 then
+open Core
+
+let solve limit =
+  let memo = Array.create ~len:(limit + 1) 0 in
+  let rec loop n sum =
+    if n > limit then
       sum
-    else
-      if n = sum_of_fact n then
-        solve' (pred n) (sum + n)
-      else
-        solve' (pred n) sum
+    else (
+      memo.(n) <- memo.(n / 10) + memo.(n mod 10);
+      if n = memo.(n) then loop (succ n) (sum + n) else loop (succ n) sum
+    )
   in
-  solve' 1_999_999 0
+  memo.(0) <- 1; memo.(1) <- 1; memo.(2) <- 2; memo.(3) <- 6; memo.(4) <- 24;
+  memo.(5) <- 120; memo.(6) <- 720; memo.(7) <- 5040; memo.(8) <- 40320; memo.(9) <- 362880;
+  loop 10 0
 
 let exec () =
-  Int.to_string (solve ())
+  Int.to_string (solve 1_491_865)
 
 let () = Euler.Task.run exec
