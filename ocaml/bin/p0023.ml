@@ -18,7 +18,6 @@ let find_abundant_numbers upper =
   aux upper []
 
 let sum_of_targets an_lst =
-  let sum = ref 0 in
   let tgt_table = Array.create ~len:(const_upper + 1) false in
   let an_str = Array.of_list an_lst in
   for i = 0 to (Array.length an_str) - 1 do
@@ -28,11 +27,8 @@ let sum_of_targets an_lst =
         tgt_table.(idx) <- true
     done
   done;
-  for i = 1 to (Array.length tgt_table) - 1 do
-    if Bool.equal tgt_table.(i) false then
-      sum := !sum + i
-  done;
-  !sum
+  Array.foldi tgt_table ~init:0
+    ~f:(fun i acc elt -> if Bool.(elt = false) then acc + i else acc)
 
 let exec () =
   find_abundant_numbers const_upper
