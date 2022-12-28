@@ -11,7 +11,7 @@ let solve () =
         lst := tmp :: !lst
     done
   done;
-  List.rev (List.sort ~compare !lst) |> List.hd_exn
+  List.sort ~compare:(fun x y -> y - x) !lst |> List.hd_exn
 
 let exec () =
   Int.to_string (solve ())
