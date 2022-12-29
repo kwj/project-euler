@@ -3,7 +3,7 @@
 open Core
 
 let lcm_list lst =
-  List.fold_left lst ~f:Euler.Math.lcm ~init:1
+  List.fold lst ~f:Euler.Math.lcm ~init:1
 
 let exec () =
   Int.to_string (lcm_list (List.init 20 ~f:(fun n -> n + 1)))

@@ -26,7 +26,7 @@ let source_data = "73167176531330624919225119674426574742355349194934\
 let culc s =
   Str.split (Str.regexp "") s
   |> List.map ~f:int_of_string
-  |> List.fold_left ~f:( * ) ~init:1
+  |> List.fold ~f:( * ) ~init:1
 
 let find_max_product str =
   let len = String.length str in

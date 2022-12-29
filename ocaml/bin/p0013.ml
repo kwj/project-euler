@@ -108,7 +108,7 @@ let numbers = [
 let calc_by_zarith nums =
   let open Z in
   let z_add acc s = add acc @@ of_string s in
-  to_string @@ List.fold_left nums ~init:zero ~f:z_add
+  to_string @@ List.fold nums ~init:zero ~f:z_add
 
 let add_string_list nums =
   let rec l_add acc s =
@@ -122,7 +122,7 @@ let add_string_list nums =
     else
       List.map2_exn ~f:(+) acc @@ s_to_l s
   in
-  List.fold_left ~f:l_add ~init:[] nums;;
+  List.fold ~f:l_add ~init:[] nums;;
 
 let carry_up lst =
   let rec aux lst =
@@ -134,7 +134,7 @@ let carry_up lst =
   List.rev @@ aux @@ List.rev lst;;
 
 let calc_by_list nums =
-  List.fold_left ~f:(fun acc n -> acc ^ string_of_int n) ~init:"" @@ carry_up @@ add_string_list nums
+  List.fold ~f:(fun acc n -> acc ^ string_of_int n) ~init:"" @@ carry_up @@ add_string_list nums
 
 let exec () =
   sprintf "%s (w/ Zarith module)\n%s (w/o Zarith module)"

@@ -9,7 +9,7 @@ let rec make_fib_seq upper l =
   | _ -> l;;
 
 let exec () =
-  Int.to_string (List.fold_left
+  Int.to_string (List.fold
                    (List.filter (make_fib_seq 4_000_000 []) ~f:(fun n -> n mod 2 = 0))
                    ~f:(+) ~init:0)
 
