@@ -3,7 +3,9 @@
 
 from time import perf_counter
 
-def sum_of_divs_by(n, upper):
+def sum_of_divs_by(n, ulimit):
+    upper = ulimit - 1
+
     return (n + (upper - (upper % n))) * (upper // n) // 2
 
 def compute(ulimit):
@@ -11,7 +13,7 @@ def compute(ulimit):
     
 def solve():
     start = perf_counter()
-    result = compute(1000 - 1)
+    result = compute(1000)
     elapsed_time = perf_counter() - start
 
     return (result, "{:f}".format(elapsed_time))

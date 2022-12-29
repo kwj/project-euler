@@ -8,17 +8,21 @@ def is_palindrome(num):
 
     return ns == ns[::-1]
 
-def compute(limit):
+def compute(digits):
+    n_upper = (10 ** digits) - 1
+    n_lower = (10 ** (digits - 1)) - 1
+    limit = 10 ** (digits * 2)
+    blk_width = 10 ** (digits * 2 - 2)
     answer = []
-    width = 10 ** 4
-    for upper in range(limit, 0, -width):
-        lower = upper - width
-        for x in range(999, 99, -1):
-            if x * x < lower:
+
+    for blk_upper in range(limit, 0, -blk_width):
+        blk_lower = blk_upper - blk_width
+        for x in range(n_upper, n_lower, -1):
+            if x * x < blk_lower:
                 break
-            for y in range(min(upper // x, x), 99, -1):
+            for y in range(min(blk_upper // x, x), n_lower, -1):
                 tmp = x * y
-                if tmp < lower:
+                if tmp < blk_lower:
                     break
                 if is_palindrome(tmp) == True:
                     answer.append(tmp)
@@ -28,7 +32,7 @@ def compute(limit):
 
 def solve():
     start = perf_counter()
-    result = compute(10 ** 6)
+    result = compute(3)
     elapsed_time = perf_counter() - start
 
     return (result, "{:f}".format(elapsed_time))
