@@ -7,8 +7,8 @@ import sys
 def main(nlst):
     for i in nlst:
         num = int(i)
-        if (Path(__file__).parents[0] / 'problems' / 'p{:04d}.py'.format(num)).exists():
-            module = import_module('euler.problems.p{:04d}'.format(num))
+        if (Path(__file__).parents[0] / 'bin' / 'p{:04d}.py'.format(num)).exists():
+            module = import_module('euler.bin.p{:04d}'.format(num))
             result, etstr = module.solve()
             print('[Problem {}]'.format(i))
             print('Answer: {}'.format(result))
