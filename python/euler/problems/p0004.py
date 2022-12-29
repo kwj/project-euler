@@ -11,13 +11,13 @@ def is_palindrome(num):
 def compute(limit):
     width = 10 ** 4
     for upper in range(limit, 0, -width):
-        low = upper - width
+        lower = upper - width
         for x in range(999, 0, -1):
-            if x * x < low:
+            if x * x < lower:
                 break
             for y in range(min(upper // x, x), 0, -1):
                 tmp = x * y
-                if tmp < low:
+                if tmp < lower:
                     break
                 if is_palindrome(tmp) == True:
                     return tmp
