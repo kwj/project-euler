@@ -13,10 +13,10 @@ def compute(limit):
     width = 10 ** 4
     for upper in range(limit, 0, -width):
         lower = upper - width
-        for x in range(999, 0, -1):
+        for x in range(999, 99, -1):
             if x * x < lower:
                 break
-            for y in range(min(upper // x, x), 0, -1):
+            for y in range(min(upper // x, x), 99, -1):
                 tmp = x * y
                 if tmp < lower:
                     break
