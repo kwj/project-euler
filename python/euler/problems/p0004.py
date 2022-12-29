@@ -9,6 +9,7 @@ def is_palindrome(num):
     return ns == ns[::-1]
 
 def compute(limit):
+    answer = []
     width = 10 ** 4
     for upper in range(limit, 0, -width):
         lower = upper - width
@@ -20,7 +21,10 @@ def compute(limit):
                 if tmp < lower:
                     break
                 if is_palindrome(tmp) == True:
-                    return tmp
+                    answer.append(tmp)
+
+        if len(answer) != 0:
+            return max(answer)
 
 def solve():
     start = perf_counter()
