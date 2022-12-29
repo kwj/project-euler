@@ -8,19 +8,23 @@ def is_palindrome(num):
 
     return ns == ns[::-1]
 
-def compute():
-    for num in range(999*999, 100*100 - 1, -1):
-        if is_palindrome(num) == False:
-            continue
-        for x in range(999, 100, -1):
-            if num % x == 0:
-                d = num // x
-                if d > 99 and d < 1000:
-                    return num
+def compute(limit):
+    width = 10 ** 4
+    for upper in range(limit, 0, -width):
+        low = upper - width
+        for x in range(999, 0, -1):
+            if x * x < low:
+                break
+            for y in range(min(upper // x, x), 0, -1):
+                tmp = x * y
+                if tmp < low:
+                    break
+                if is_palindrome(tmp) == True:
+                    return tmp
 
 def solve():
     start = perf_counter()
-    result = compute()
+    result = compute(10 ** 6)
     elapsed_time = perf_counter() - start
 
     return (result, "{:f}".format(elapsed_time))
