@@ -11,7 +11,7 @@ def fib_gen():
         yield a
 
 def compute(ulimit):
-    return sum(i for i in takewhile(lambda n: n < ulimit, fib_gen()) if i % 2 == 0)
+    return str(sum(i for i in takewhile(lambda n: n < ulimit, fib_gen()) if i % 2 == 0))
 
 def solve():
     start = perf_counter()

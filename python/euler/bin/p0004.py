@@ -28,7 +28,7 @@ def compute(digits):
                     answer.append(tmp)
 
         if len(answer) != 0:
-            return max(answer)
+            return str(max(answer))
 
 def solve():
     start = perf_counter()
