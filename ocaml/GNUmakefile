@@ -3,9 +3,9 @@
 usage:
 	@echo 'Usage:'
 	@echo '  make clean'
-	@echo '    remove build files and backup files'
-	@echo '  make clean-backups'
 	@echo '    remove backup files only'
+	@echo '  make clean-all'
+	@echo '    remove build files and backup files'
 
 .PHONY: all
 all:
@@ -13,11 +13,11 @@ all:
 
 .PHONY: clean
 clean:
-	@dune clean
 	@rm -f bin/*~ lib/*~ ./*~
 
-.PHONY: clean-backups
+.PHONY: clean-all
 clean-backups:
+	@dune clean
 	@rm -f bin/*~ lib/*~ ./*~
 
 .PHONY: list
