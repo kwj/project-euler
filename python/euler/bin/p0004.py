@@ -32,7 +32,7 @@ def compute(digits):
 
 def solve():
     start = perf_counter()
-    result = compute(3)
+    result = compute(3)    # 3: 3-digit
     elapsed_time = perf_counter() - start
 
     return (result, "{:f}".format(elapsed_time))
