@@ -6,13 +6,13 @@
 sh solve.sh <problem_number> [-f data_file]
 ```
 
-The following are examples:
+The following are examples.
 
 ```
 $ sh solve.sh 1
 ```
 ```
-$ sh solve.sh 22 data/p022_names.txt
+$ sh solve.sh 22 -f data/p022_names.txt
 ```
 
 ## Notes
