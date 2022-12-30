@@ -1,4 +1,21 @@
-# Notes
+# Solutions in OCaml
+
+## How to run
+
+```
+sh solve.sh <problem_number> [-f data_file]
+```
+
+The following are examples:
+
+```
+$ sh solve.sh 1
+```
+```
+$ sh solve.sh 22 data/p022_names.txt
+```
+
+## Notes
 
 It was confirmed to work with OCaml 5.0.0.
 

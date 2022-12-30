@@ -1,4 +1,6 @@
-# What is this?
+# Project Euler solutions
+
+## What is this?
 
 I play around with Project Euler to get a feel for programing languages.
 This repository deals with only first one-hundred problems based on the rules[^1].
