@@ -3,7 +3,7 @@
 ## How to run
 
 ```
-sh solve.sh <problem_number> [-f data_file]
+$ sh solve.sh <problem_number> [-f data_file]
 ```
 
 The following are examples.

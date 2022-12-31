@@ -3,7 +3,7 @@
 ## How to run
 
 ```
-python3 solve.py <problem_number> [problem_number ...]
+$ python3 solve.py <problem_number> [problem_number ...]
 ```
 
 The following are examples.
