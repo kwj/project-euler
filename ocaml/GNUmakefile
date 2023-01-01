@@ -22,4 +22,4 @@ clean-backups:
 
 .PHONY: list
 list:
-	@ls _build/default/bin/p*.*exe | sed -e 's#.*/##' -e 's/.exe.*//'
+	@ls _build/default/bin/p*.*exe | sed -e 's#.*/##' -e 's/.exe.*//' -e 's/^p0*//'

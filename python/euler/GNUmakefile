@@ -13,16 +13,12 @@ usage:
 clean:
 	@rm -f ./*~
 	@for subdir in $(SUBDIRS); do \
-	( \
-	  cd $$subdir; make clean \
-	) \
+	  make -C $$subdir clean; \
 	done
 
 .PHONY: clean-all
 clean-all:
 	@rm -f ./*~ ./__pycache__/*
 	@for subdir in $(SUBDIRS); do \
-	( \
-	  cd $$subdir; make clean-all \
-	) \
+	  make -C $$subdir clean-all; \
 	done
