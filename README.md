@@ -1,4 +1,4 @@
-# Project Euler solutions
+# Project Euler solutions (the first 100 problems)
 
 ## What is this?
 
