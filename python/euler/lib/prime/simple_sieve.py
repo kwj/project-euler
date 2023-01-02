@@ -28,3 +28,9 @@ def get_prime_tbl(limit):
             prime_tbl[i * i::i] = [False] * len(prime_tbl[i * i::i])
 
     return prime_tbl
+
+def tbl_to_primes(tbl):
+    primes, _ = zip(*filter(lambda tpl: tpl[1] == True, enumerate(tbl)))
+
+    return primes
+                    
