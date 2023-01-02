@@ -49,12 +49,18 @@ let solve () =
   let p_tbl = make_polygonal_tbl () in
   let trans_lst = List.map ~f:(fun l -> l @ [8]) (Euler.Util.permutation 5 [3; 4; 5; 6; 7]) in
 
-  let cycles = List.concat (List.map ~f:(fun lst -> find_chain lst p_tbl) trans_lst) in
+  (*
+    From the problem statement:
+      - Each elements in cycle is represent by a different number
+      - There is only one cycle exist
+  *)
+  let cycles = List.concat (List.map ~f:(fun lst -> find_chain lst p_tbl) trans_lst)
+               |> List.map ~f:(fun lst -> List.map ~f:(fun (x, y) -> 100 * x + y) lst)
+               |> List.filter ~f:(fun lst -> Bool.(List.contains_dup ~compare:Int.compare lst = false)) in
   if List.length cycles <> 1 then
     failwith "abort"
   else
-    List.map ~f:(fun (x, y) -> 100 * x + y) (List.hd_exn cycles)
-    |> List.fold ~init:0 ~f:(+)
+    List.fold ~init:0 ~f:(+) (List.hd_exn cycles)
 
 let exec () =
   Int.to_string (solve ())
