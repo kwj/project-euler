@@ -1,7 +1,8 @@
 (* Project Euler: Problem 60 *)
 
 (*
-  This program is slow. Here is a result on Raspberry Pi 4 Model B.
+  I wanted to see the progress along the way, so I implemented a naive algorithm.
+  As a result, this program is slow. Here is a result on Raspberry Pi 4 Model B.
 
     % ./solve.sh 60
     26033
