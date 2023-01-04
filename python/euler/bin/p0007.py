@@ -2,11 +2,11 @@
 # project euler: problem 7
 
 from itertools import islice
-from euler.lib.prime import generator
+from euler.lib.prime import prime_generator
 from time import perf_counter
 
 def compute(num):
-    return str(next(islice((n for n in generator()), num - 1, num)))
+    return str(next(islice((n for n in prime_generator()), num - 1, num)))
 
 def solve():
     start = perf_counter()

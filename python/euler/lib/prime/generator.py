@@ -1,5 +1,5 @@
 
-def generator():
+def prime_generator():
     prime = 2
     tbl = {}
     while True:
