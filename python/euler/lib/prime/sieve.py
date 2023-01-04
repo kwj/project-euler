@@ -75,6 +75,18 @@ class Sieve:
 
         return result
 
+    def prev_prime(self, num):
+        match num:
+            case n if n > len(self.prime_tbl) - 1:
+                raise ValueError("too large")
+            case n if n <= 2:
+                raise ValueError("too small")
+            case _:
+                num -= 1
+                while self.prime_tbl[num] == False:
+                    num -= 1
+                return num
+
     def factorize(self, num):
         result = []
         while num > 1:
