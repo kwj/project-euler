@@ -10,7 +10,7 @@ let fact_sum num =
     else
       loop (n / 10) (result + fact.(n mod 10))
   in
-  loop num 0
+  if num = 0 then fact.(0) else loop num 0
 
 let update_chain_info c_info idx c_lst =
   let limit = Array.length c_info in
