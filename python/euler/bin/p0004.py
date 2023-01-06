@@ -9,13 +9,17 @@ def is_palindrome(num):
     return ns == ns[::-1]
 
 def compute(digits):
+    assert digits > 0, 'range error'
     n_upper = (10 ** digits) - 1
     n_lower = (10 ** (digits - 1)) - 1
-    limit = 10 ** (digits * 2)
+    blk_upper_limit = 10 ** (digits * 2)
+    blk_lower_limit = 10 ** ((digits - 1) * 2) if digits > 1 else 0
     blk_width = 10 ** (digits * 2 - 2)
     answer = []
 
-    for blk_upper in range(limit, 0, -blk_width):
+    # The blocks of product of two numbers are checked in descending order
+    # The block width, blk_width, is 1/100 of the upper limit
+    for blk_upper in range(blk_upper_limit, blk_lower_limit, -blk_width):
         blk_lower = blk_upper - blk_width
         for x in range(n_upper, n_lower, -1):
             if x * x < blk_lower:
