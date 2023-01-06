@@ -78,7 +78,7 @@ let chance sq =
 
 let throw_die () = (Random.int 4) + 1
 
-let solve limit =
+let monte_calro limit =
   let counter = Array.create ~len:40 0 in
   let rec loop n sq double =
     if n = 0 then (
@@ -103,7 +103,29 @@ let solve limit =
   let (_, s1), (_, s2), (_, s3) = result.(0), result.(1), result.(2) in
   s1 ^ s2 ^ s3
 
+let solve () =
+  let rec loop n acc =
+    Random.self_init ();
+    if n = 0 then
+      let rec aux cnt acc = function
+          x1 :: (x2 :: _ as xs) when Bool.(String.equal x1 x2 = true) ->
+            aux (succ cnt) acc xs
+        | x1 :: (_ :: _ as xs) ->
+            aux 1 ((cnt, x1) :: acc) xs
+        | x :: [] ->
+            (cnt, x) :: acc
+        | [] ->
+            failwith "not reached"
+      in
+      aux 1 [] (List.sort acc ~compare:String.compare)
+      |> List.sort ~compare:(fun (x1, _) (x2, _) -> x2 - x1)
+      |> List.hd_exn
+    else
+      loop (pred n) ((monte_calro 100_000) :: acc)
+  in
+  loop 100 []
+
 let exec () =
-  solve 1_000_000
+  snd (solve ())
 
 let () = Euler.Task.run exec
