@@ -1,6 +1,7 @@
 
 # project euler: problem 8
 
+from euler.lib.util import flatten
 from math import prod
 from time import perf_counter
 
@@ -27,14 +28,14 @@ numstr = """
 71636269561882670428252483600823257530420752963450
 """.replace('\n', '')
 
-def max_product(digits, s):
+def str_product(digits, s):
     cnt = len(s) - (digits - 1)
     lst = [int(ch) for ch in s]
 
-    return max(prod(lst[i:i + digits]) for i in range(cnt))
+    return [prod(lst[i:i + digits]) for i in range(cnt)]
 
 def compute(digits):
-    return str(max(max_product(digits, num_str) for num_str in [s for s in numstr.split('0') if len(s) >= digits]))
+    return str(max(flatten(str_product(digits, num_str) for num_str in [s for s in numstr.split('0') if len(s) >= digits])))
 
 def solve():
     start = perf_counter()
