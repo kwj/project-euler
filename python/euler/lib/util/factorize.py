@@ -6,7 +6,7 @@ from functools import reduce
 def factorize(n):
     # special case
     if n < 1:
-        return result
+        assert False
     elif n == 1:
         return [(1, 1)]
 
@@ -48,7 +48,10 @@ def pfactors_to_divisors(pf_lst):
             acc_lst += list(map(lambda x: x * m, lst))
         lst += acc_lst
 
-    return sorted(lst)
+    if lst[1] == 1:
+        return [1]
+    else:
+        return sorted(lst)
 
 def pfactors_to_num(pf_lst):
     return reduce(lambda x, y: x * y, starmap(pow, pf_lst))
