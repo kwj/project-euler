@@ -1,6 +1,10 @@
 
-class Sieve:
-    '''Prime number flag/Least prime factors/Mobius function tables
+class MpSieve:
+    '''Multipurpose Sieve
+
+      - Prime numbers
+      - Least prime factors
+      - Mobius function
 
     Compute above sequences in a range of less than or equal to a specific value.
     Note: The first element is an invalid value.
@@ -112,5 +116,5 @@ class Sieve:
 
         return sorted(result)
 
-def sieve(num):
-    return Sieve(num)
+def mp_sieve(num):
+    return MpSieve(num)
