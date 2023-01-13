@@ -10,8 +10,9 @@ class Sieve:
 
         self._mini_primes = []
         self._mini_tbl = []
-        self._update_minitbl()
-        self._make_prime_tbl()
+        if end != 0:
+            self._update_minitbl()
+            self._make_prime_tbl()
 
     def _update_minitbl(self, new_size=0):
         def start_pos(n):
@@ -49,24 +50,45 @@ class Sieve:
         return
 
     def update(self, begin, end):
-        if end > self._end:
-            self._update_minitbl(end)
+        if self._end == 0:
+            assert begin > 0 and begin < end, 'range error'
+            self._begin = begin
+            self._end = end
+            self._update_minitbl()
+            self._make_prime_tbl()
+        else:
+            if end > self._end:
+                self._update_minitbl(end)
 
-        self._begin = begin
-        self._end = end
-        self._make_prime_tbl()
+            self._begin = begin
+            self._end = end
+            self._make_prime_tbl()
 
         return
 
     def get_primes(self):
-        return self._primes
+        if self._end != 0:
+            return self._primes
+        else:
+            assert False, 'not initialized'
 
     def is_prime(self, num):
-        return self._prime_tbl[num - self._begin] > 1
+        if self._end != 0:
+            return self._prime_tbl[num - self._begin] > 1
+        else:
+            assert False, 'not initialized'
 
-def sieve(end, begin=1):
-    if end < begin:
-        begin, end = end, begin
+def sieve(*args):
+    match len(args):
+        case 0:
+            begin, end = 0, 0
+        case 1:
+            assert args[0] > 1, 'range eroor'
+            begin, end = 1, args[0]
+        case 2:
+            begin, end = args
+            assert begin > 0 and begin < end, 'range error'
+        case _:
+            assert False, 'invalid arguments'
 
-    assert end > 1, 'range error'
     return Sieve(begin, end)
