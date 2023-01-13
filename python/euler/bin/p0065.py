@@ -44,7 +44,7 @@ def compute(nth):
     for i in range(3, nth + 1):
         n_i1, n_i2 = n_i1 * c(i) + n_i2, n_i1
 
-    return str(sum(map(int, list(str(n_i1)))))
+    return str(sum(map(int, str(n_i1))))
 
 def solve():
     start = perf_counter()
