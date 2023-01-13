@@ -5,7 +5,7 @@ from time import perf_counter
 from math import isqrt
 
 def compute(limit, digit):
-    return str(sum(sum(map(int, list(str(isqrt(10**((digit - 1) * 2) * n))[:digit]))) for n in range(1,(limit + 1)) if not (n ** 0.5).is_integer()))
+    return str(sum(sum(map(int, str(isqrt(10**((digit - 1) * 2) * n))[:digit])) for n in range(1,(limit + 1)) if not (n ** 0.5).is_integer()))
 
 def solve():
     start = perf_counter()
