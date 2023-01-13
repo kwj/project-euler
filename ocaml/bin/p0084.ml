@@ -95,7 +95,7 @@ let monte_calro limit =
         let next_sq = get_square (((get_pos sq) + d1 + d2) mod 40) in
         match next_sq with
           G2J -> loop (pred n) JAIL next_double
-        | CC1| CC2 | CC3 -> loop (pred n) (c_chest next_sq) next_double
+        | CC1 | CC2 | CC3 -> loop (pred n) (c_chest next_sq) next_double
         | CH1 | CH2 | CH3 -> loop (pred n) (chance next_sq) next_double
         | _ -> loop (pred n) next_sq next_double
   in
