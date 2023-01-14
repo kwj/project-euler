@@ -19,7 +19,7 @@ Unfortunately, the following method fails with a recursion error.
     > RecursionError: maximum recursion depth exceeded in comparison
 
 
-I tried using looping approach but it was slow.
+I tried using ohter approach but it was slow.
 
     def compute(limit):
         count = 0
@@ -34,6 +34,17 @@ I tried using looping approach but it was slow.
                 count += 1
 
         return str(count)
+
+Brute force is not interesting.
+
+    def compute(limit):
+        cnt = 0
+        for denom in range(1, limit + 1):
+            for numerator in range((denom // 3) + 1, (denom + 1) // 2):
+                if gcd(numerator, denom) == 1:
+                    cnt += 1
+
+        return str(cnt)
 
 
 That's why I solved it with math.
