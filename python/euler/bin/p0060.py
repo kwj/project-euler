@@ -47,7 +47,7 @@ def compute():
     _ = next(p_gen); _ = next(p_gen); _ = next(p_gen)
 
     tbl = {3: set()}
-    prime_set = [set(), {3}, {3}]    # Grouping by modulus of 3. prime_set[0] isn't used.
+    prime_set = [set(), {3}, {3}]    # Grouping by modulus of 3, but exclude 3. prime_set[0] isn't used.
     answer = sys.maxsize
 
     while (prime := next(p_gen)) < answer - 792:    # 792 = sum([3, 7, 109, 673])
