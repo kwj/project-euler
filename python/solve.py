@@ -22,7 +22,7 @@ if version_check() == False:
 
 args = sys.argv
 
-if len(args) > 1 and reduce(lambda x, y: x and str.isdecimal(y), args[1:], True):
+if len(args) > 1 and all(str.isdecimal(x) for x in args[1:]):
     euler.main(args[1:])
 else:
     print('argument error')
