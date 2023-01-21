@@ -1,7 +1,6 @@
 
 # project euler: problem 35
 
-from itertools import dropwhile
 from euler.lib.prime import get_prime_tbl, tbl_to_primes
 from time import perf_counter
 
