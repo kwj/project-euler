@@ -52,7 +52,7 @@ def compute():
     p_tbl = make_polygonal_tbl()
 
     # From the problem statement:
-    #   - Each elements in cycle is represent by a different number
+    #   - Each elements in cycle is belong to different polygonal type
     #   - There is only one cycle exist
     cycles = list(filter(lambda lst: len(lst) == len(set(lst)),
                          reduce(concat, map(lambda route: find_cycles(p_tbl, route), route_patterns))))
