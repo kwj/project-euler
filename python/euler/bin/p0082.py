@@ -21,7 +21,7 @@ def compute(fn, fh):
         for i in range(1, len(crnt)):
             work[i] = crnt[i] + fn(work[i], work[i - 1])
         for i in reversed(range(0, len(crnt) - 1)):
-            work[i] = min(work[i], work[i + 1] + crnt[i])
+            work[i] = fn(work[i], work[i + 1] + crnt[i])
 
     return str(sorted(work)[0])
 
