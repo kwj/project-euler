@@ -29,7 +29,7 @@ from time import perf_counter
 def compute(limit):
     p_gen = prime_generator()
     acc = 1
-    while acc <= limit:
+    while True:
         next_p = next(p_gen)
         if acc * next_p > limit:
             break
