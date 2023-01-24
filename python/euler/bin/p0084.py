@@ -16,9 +16,6 @@ class SQ:
     G2J = 30;  G1 = 31;  G2 = 32;  CC3 = 33; G3 = 34
     R4 = 35;   CH3 = 36; H1 = 37;  T2 = 38;  H2 = 39
 
-def throw_die(faces):
-    return random.randint(1, faces)
-
 # Community Chest
 def community_chest(sq):
     match random.randrange(16):
