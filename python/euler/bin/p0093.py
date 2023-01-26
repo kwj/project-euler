@@ -20,7 +20,7 @@ It is slow, but I use Reverse Polish notation and Python's fraction module.
 
     # The following cases can be ignored since the following reasons
     #   - they are symmetrical with the above cases
-    #   - numbers(x{n}) are prvided as permutations
+    #   - numbers(x{n}) are provided as permutations
     #   - operators(OP{n}) are provided as permutations with repetition
 
     case 4:   (it is symmetrical with case 2)
