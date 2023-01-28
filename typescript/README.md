@@ -2,16 +2,20 @@
 
 ## How to run
 
-You need the Deno[^1] runtime. These solutions don't work with the Node.js runtime.
+The Deno[^1] runtime is required. These solutions don't work with the Node.js runtime.
 
 ```console
-sh solve.sh <problem_number>
+sh solve.sh <problem_number> [problem_number ...]
 ```
 
 The following are examples.
 
 ```console
 sh solve.sh 1
+```
+
+```console
+sh solve.sh 31 32 33
 ```
 
 ## Notes
