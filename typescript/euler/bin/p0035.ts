@@ -1,0 +1,43 @@
+
+// project euler: problem 35
+
+import { getPrimeTbl, primeTblToPrimes } from "../lib/primes.ts";
+import { range } from "../lib/util.ts";
+
+export function compute(limit: number): string {
+  function checkRotNum(n: number): boolean {
+    const s = String(n) + String(n);
+    const m = Math.trunc(s.length / 2);
+
+    for (const pos of range(0, m)) {
+      if (primeTbl[Number(s.slice(pos, pos + m))] == false) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  const primeTbl = getPrimeTbl(limit);
+
+  let acc = 0;
+  for (const n of primeTblToPrimes(primeTbl)) {
+    if (checkRotNum(n) === true) {
+      acc += 1;
+    }
+  }
+
+  return String(acc);
+}
+
+export function solve(): void {
+  const t0 = performance.now();
+  const result = compute(1_000_000);
+  const t1 = performance.now();
+  const duration_ms = (t1 - t0).toFixed(4);
+
+  console.log(`Answer: ${result}`);
+  console.log(`Elapsed time: ${duration_ms} msec.`);
+
+  return;
+}

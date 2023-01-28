@@ -1,0 +1,10 @@
+{
+  "imports": {
+    "std/": "https://deno.land/std@0.174.0/",
+    "combinatorics/": "https://deno.land/x/combinatorics@1.1.2/"
+  },
+  "tasks": {
+    "solve": "deno run --quiet --allow-hrtime --allow-read --allow-net ./main.ts",
+    "test": "deno test --allow-read --allow-net ./test/"
+  }
+}
