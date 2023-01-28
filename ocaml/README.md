@@ -2,17 +2,17 @@
 
 ## How to run
 
-```
-$ sh solve.sh <problem_number> [-f data_file]
+```console
+sh solve.sh <problem_number> [-f data_file]
 ```
 
 The following are examples.
 
+```console
+sh solve.sh 1
 ```
-$ sh solve.sh 1
-```
-```
-$ sh solve.sh 22 -f data/p022_names.txt
+```console
+sh solve.sh 22 -f data/p022_names.txt
 ```
 
 ## Notes
