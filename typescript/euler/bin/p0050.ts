@@ -37,7 +37,7 @@ export function compute(limit: number): string {
       width += lst.length;
       ans = lst[0] - begin;
     }
-    cs_lst.concat(cs_gen.next().value as number);
+    cs_lst.push(cs_gen.next().value as number);
     i += 1;
   }
 
