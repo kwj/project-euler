@@ -4,7 +4,7 @@
 import { factorize } from "../lib/math.ts";
 
 export function compute(n: number): string {
-  return String(factorize(n).slice(-1)[0][0]);
+  return String(factorize(n).at(-1)![0]);
 }
 
 export function solve(): void {
