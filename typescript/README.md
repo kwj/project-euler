@@ -2,6 +2,8 @@
 
 ## How to run
 
+You need the Deno[^1] runtime. These solutions don't work with the Node.js runtime.
+
 ```console
 sh solve.sh <problem_number>
 ```
@@ -25,11 +27,13 @@ It was confirmed to work with Deno v1.30.0.
 
 I used the following libraries/packages in addition to the standard runtime APIs part of Deno v1.30.0.
 
-- Deno Standard Modules 0.174.0[^1]
-- Combinatorics 1.1.2[^2]
+- Deno Standard Modules 0.174.0[^2]
+- Combinatorics 1.1.2[^3]
 
 If you try to run these solutions on newer version of Deno, you should update import map for Deno Standard Modules in the configuration file.
 
-[^1]: https://deno.land/std@0.174.0
+[^1]: https://deno.land/
 
-[^2]: https://deno.land/x/combinatorics@1.1.2
+[^2]: https://deno.land/std@0.174.0
+
+[^3]: https://deno.land/x/combinatorics@1.1.2
