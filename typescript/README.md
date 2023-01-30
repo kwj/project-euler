@@ -2,7 +2,7 @@
 
 ## How to run
 
-The Deno[^1] runtime is required. These solutions don't work with the Node.js runtime.
+The Deno[^1] runtime is required. I think most solutions don't work with other runtimes since I used some functions which depend on the Deno.
 
 ```console
 sh solve.sh <problem_number> [problem_number ...]
@@ -20,7 +20,7 @@ sh solve.sh 31 32 33
 
 ## Notes
 
-Caution: These solutions aren't good examples for programming since I am a JavaScript/TypeScript beginner.
+Caution: These solutions aren't good examples for programming since I am a JavaScript/TypeScript newbie.
 
 It was confirmed to work with Deno v1.30.0.
 
