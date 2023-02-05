@@ -1,28 +1,43 @@
 
 // project euler: problem 2
 
-function* fibGen() {
-  let a = 0, b = 1;
+/*
+  f₁ = 1, f₂ = 2, f₃ = 3, f₄ = 5, f₅ = 8, f₆ = 13, f₇ = 21, f₈ = 34, f₉ = 55, ...
+
+  assume that k ≥ 7
+    f(k) = f(k-1) + f(k-2)
+         = 2f(k-2) + f(k-3)
+         = 2(f(k-3) + f(k-4)) + f(k-3)
+         = 3f(k-3) + 2f(k-4)
+         = 3f(k-3) + 2f(k-5) + 2f(k-6)
+         = 4f(k-3) - f(k-3) + 2f(k-5) + 2f(k-6)
+         = 4f(k-3) - (f(k-4) + f(k-5)) + 2f(k-5) + 2f(k-6)
+         = 4f(k-3) - f(k-4) + f(k-5) + 2f(k-6)
+         = 4f(k-3) - f(k-4) + (f(k-5) + f(k-6)) + f(k-6)
+         = 4f(k-3) - f(k-4) + f(k-4) + f(k-6)
+         = 4f(k-3) + f(k-6)
+*/
+
+function* evenFibGen() {
+  let a = 8, b = 2;
   let temp;
   while (true) {
-    temp = a + b;
+    temp = 4 * a + b;
     yield temp;
-    a = b;
-    b = temp;
+    b = a;
+    a = temp;
   }
 }
 
 export function compute(limit: number): string {
-  const fib_gen = fibGen();
-  let result = 0;
+  const fib_gen = evenFibGen();
+  let result = 8 + 2;
 
   for (const n of fib_gen) {
     if (n >= limit) {
       break;
     }
-    if (n % 2 === 0) {
-      result += n;
-    }
+    result += n;
   }
 
   return String(result);
