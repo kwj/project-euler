@@ -22,7 +22,7 @@ open Core
 let rec make_even_fib_seq upper l =
   match l with
   | [] -> make_even_fib_seq upper [8; 2]
-  | m :: n :: _ -> if m + n >= upper then l else make_even_fib_seq upper (4 * m + n :: l)
+  | m :: n :: _ -> if m + n > upper then l else make_even_fib_seq upper (4 * m + n :: l)
   | _ -> l;;
 
 let exec () =

@@ -34,7 +34,7 @@ export function compute(limit: number): string {
   let result = 8 + 2;
 
   for (const n of fib_gen) {
-    if (n >= limit) {
+    if (n > limit) {
       break;
     }
     result += n;

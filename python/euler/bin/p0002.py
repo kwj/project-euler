@@ -28,7 +28,7 @@ def even_fib_gen():
         yield a
 
 def compute(ulimit):
-    return str(sum(i for i in takewhile(lambda n: n < ulimit, even_fib_gen())) + (8 + 2))
+    return str(sum(i for i in takewhile(lambda n: n <= ulimit, even_fib_gen())) + (8 + 2))
 
 def solve():
     start = perf_counter()
