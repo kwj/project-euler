@@ -3,10 +3,7 @@
 open Core
 
 let solve num =
-  let base, _ = Euler.Math.factorize num
-                |> List.filter ~f:(fun (_, exp) -> exp = 1)
-                |> List.rev
-                |> List.hd_exn in
+  let base, _ = Euler.Math.factorize num |> List.last_exn in
   base
 
 let exec () =
