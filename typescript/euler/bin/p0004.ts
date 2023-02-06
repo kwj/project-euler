@@ -27,7 +27,7 @@ export function compute(digits: number): string {
         if (tmp < blk_lower) {
           break;
         }
-        if (isPalindrome(String(tmp)) == true) {
+        if (isPalindrome(tmp) === true) {
           answer.push(tmp);
         }
       }
@@ -37,7 +37,7 @@ export function compute(digits: number): string {
     }
   }
 
-  return String(max(answer));
+  return answer.length !== 0 ? String(max(answer)) : "0";
 }
 
 export function solve(): void {

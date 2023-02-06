@@ -4,10 +4,7 @@
 import { isPalindrome, range } from "../lib/util.ts";
 
 function isBothPalindrome(n: number): boolean {
-  const n_d = n.toString();
-  const n_b = n.toString(2);
-
-  return isPalindrome(n_d) === true && isPalindrome(n_b) === true;
+  return isPalindrome(n) === true && isPalindrome(n, 2) === true;
 }
 
 export function compute(limit: number): string {

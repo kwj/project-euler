@@ -157,8 +157,15 @@ export function Counter<T>(lst: T[]): [string, number][] {
   return Object.entries(cntr);
 }
 
-export function isPalindrome(s: string): boolean {
-  return s === s.split("").reverse().join("");
+export function isPalindrome(num: number, base = 10): boolean {
+  let x = num;
+  let acc = 0;
+  while (x > 0) {
+    acc = acc * base + (x % base);
+    x = Math.trunc(x / base);
+  }
+
+  return num === acc;
 }
 
 export function dedupSort<T>(lst: T[], compareFn?: (a: T, b: T) => number): T[] {
