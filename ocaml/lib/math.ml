@@ -199,12 +199,12 @@ let is_pandigital_strlst_nz lst =
 let is_pandigital_lst_nz lst =
   is_pandigital_strlst_nz (List.map (string_of_int) lst)
 
-let is_palindrome num =
+let is_palindrome ?(base=10) num =
   let rec loop n acc =
     if n = 0 then
       acc
     else
-      loop (n / 10) (acc * 10 + (n mod 10))
+      loop (n / base) (acc * base + (n mod base))
   in
   num = loop num 0
 

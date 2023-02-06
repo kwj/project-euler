@@ -23,7 +23,7 @@ val is_pandigital_str_nz : string -> bool
 val is_pandigital_strlst_nz : string list -> bool
 val is_pandigital_lst_nz : int list -> bool
 
-val is_palindrome : int -> bool
+val is_palindrome : ?base:int -> int -> bool
 
 (* naive method *)
 val is_prime : int -> bool
