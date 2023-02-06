@@ -24,3 +24,11 @@ def is_pandigital_nz(num):
 
     return check_zero(num) and is_pandigital(num * 10)
 
+def is_palindrome(num, base=10):
+    x = num
+    acc = 0
+    while x > 0:
+        acc = acc * base + (x % base)
+        x //= base
+
+    return acc == num

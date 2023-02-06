@@ -1,12 +1,8 @@
 
 # project euler: problem 4
 
+from euler.lib.util import is_palindrome
 from time import perf_counter
-
-def is_palindrome(num):
-    ns = str(num)
-
-    return ns == ns[::-1]
 
 def compute(digits):
     assert digits > 0, 'range error'
