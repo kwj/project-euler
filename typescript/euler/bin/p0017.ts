@@ -42,23 +42,18 @@ export function compute(limit: number): string {
     if (n === 1000) {
       acc += 11;
     } else if (n < 20) {
-      // @ts-ignore: Ignore "Object is possibly 'undefined'.deno-ts(2532)" warning on the Deno runtime
-      acc += words.get(n);
+      acc += words.get(n)!;
     } else if (n < 100) {
-      // @ts-ignore: Ignore "Object is possibly 'undefined'.deno-ts(2532)" warning on the Deno runtime
-      acc += words.get(n - (n % 10)) + words.get(n % 10);
+      acc += words.get(n - (n % 10))! + words.get(n % 10)!;
     } else if (n % 100 === 0) {
       /* "xxx" hundred -> "xxx".length + 7 */
-      // @ts-ignore: Ignore "Object is possibly 'undefined'.deno-ts(2532)" warning on the Deno runtime
-      acc += words.get(trunc(n / 100)) + 7;
+      acc += words.get(trunc(n / 100))! + 7;
     } else if (n % 100 < 20) {
       /* "xxx" hundred and ... -> "xxx".length + 7 + 3 + ... */
-      // @ts-ignore: Ignore "Object is possibly 'undefined'.deno-ts(2532)" warning on the Deno runtime
-      acc += words.get(trunc(n / 100)) + 7 + 3 + words.get(n % 100);
+      acc += words.get(trunc(n / 100))! + 7 + 3 + words.get(n % 100)!;
     } else {
       /* "xxx" hundred and ... -> "xxx".length + 7 + 3 + ... */
-      // @ts-ignore: Ignore "Object is possibly 'undefined'.deno-ts(2532)" warning on the Deno runtime
-      acc += words.get(trunc(n / 100)) + 7 + 3 + words.get((n % 100) - (n % 10)) + words.get(n % 10);
+      acc += words.get(trunc(n / 100))! + 7 + 3 + words.get((n % 100) - (n % 10))! + words.get(n % 10)!;
     }
   }
 
