@@ -2,7 +2,7 @@
 
 ## How to run
 
-The Deno[^1] runtime is required. I think most solutions don't work with other runtimes since I used some functions which depend on the Deno.
+The Deno[^1] runtime is required.
 
 ```console
 sh solve.sh <problem_number> [problem_number ...]
