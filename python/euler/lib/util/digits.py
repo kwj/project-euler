@@ -1,8 +1,10 @@
 
-from math import log10, floor
+from math import log, floor
 
-def num_of_digits(num):
-    return floor(log10(num)) + 1
+def num_of_digits(num, base=10):
+    if abs(num) <= 1:
+        return 1
+    return floor(log(abs(num), base)) + 1
 
 def is_pandigital(num):
     def mk_bits(n):
