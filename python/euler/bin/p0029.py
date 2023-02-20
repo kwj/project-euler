@@ -1,13 +1,20 @@
 
 # project euler: problem 29
 
+from math import isqrt, lcm
+from euler.lib.util import num_of_digits, flatten
 from time import perf_counter
 
-def brute_force(upper):
-    return len({a ** b for a in range(2, upper + 1) for b in range(2, upper + 1)})
-
 def compute(upper):
-    return str(brute_force(upper))
+    dup_tbl = [[0 for i in range(upper + 1)] for j in range(upper + 1)]
+    for x in range(2, isqrt(upper) + 1):
+        for y in range(2, num_of_digits(upper, base=x)):
+            for z in range(1, y):
+                k = lcm(y, z) // y
+                length = len(dup_tbl[x ** y][max(k, 2):(upper * z // y + 1):k])
+                dup_tbl[x ** y][max(k, 2):(upper * z // y + 1):k] = [1] * length
+
+    return str((upper - 1) ** 2 - flatten(dup_tbl).count(1))
 
 def solve():
     start = perf_counter()
