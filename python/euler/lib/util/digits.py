@@ -1,10 +1,8 @@
 
-from math import log, floor
+from .misc import get_max_exp
 
 def num_of_digits(num, base=10):
-    if abs(num) <= 1:
-        return 1
-    return floor(log(abs(num), base)) + 1
+    return get_max_exp(num, base) + 1
 
 def is_pandigital(num):
     def mk_bits(n):
