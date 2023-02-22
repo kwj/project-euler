@@ -21,19 +21,19 @@ def make_dupctr_tbl(upper):
 
 def compute(upper):
     dup_ctr = make_dupctr_tbl(upper)
-    exp_ctr = [0] * len(dup_ctr)
     base_limit = isqrt(upper)
     skip_flag = [False] * (base_limit + 1)
 
+    ans = (upper - 1) ** 2
     for b in range(2, base_limit + 1):
         if skip_flag[b] == True:
             continue
         for e in range(2, get_max_exp(upper, base=b) + 1):
-            exp_ctr[e] += 1
+            ans -= dup_ctr[e]
             if (tmp := b ** e) <= base_limit:
                 skip_flag[tmp] = True
 
-    return str((upper - 1) ** 2 - sum(map(lambda x: x[0] * x[1], zip(dup_ctr, exp_ctr))))
+    return str(ans)
 
 def solve():
     start = perf_counter()
