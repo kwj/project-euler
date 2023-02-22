@@ -313,3 +313,13 @@ export function isHexagonal(n: number): boolean {
 
   return tmp_sqrt * tmp_sqrt === tmp && tmp_sqrt % 4 === 3;
 }
+
+export function getMaxExp(n: number, base: number): number {
+  let e = 0;
+  while (n >= base) {
+    n = Math.trunc(n / base);
+    e += 1;
+  }
+
+  return e;
+}
