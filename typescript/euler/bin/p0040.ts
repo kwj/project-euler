@@ -29,7 +29,7 @@
 //          = 2
 function d(pos: number): number {
   const trunc = Math.trunc;
-  let nDigits = 0;
+  let nDigits = 1;
   while (pos > nDigits * 9 * (10 ** (nDigits - 1))) {
     pos -= nDigits * 9 * (10 ** (nDigits - 1));
     nDigits += 1;
