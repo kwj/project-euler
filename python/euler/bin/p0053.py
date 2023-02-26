@@ -16,14 +16,14 @@ def compute(num, boundary):
     ans = 0
 
     for start in range(1, num):
-        stop = (start + 2) // 2 - 1
-        for i in range(start, stop, -1):
+        stop = (start + 2) // 2
+        for i in range(start, stop - 1, -1):
             data[i] = data[i] + data[i - 1]
             if data[i] > boundary:
                 ans += i - (start - i)
                 break
         if start % 2 == 0:
-            data[stop] = data[stop + 1]
+            data[stop - 1] = data[stop]
 
     return str(ans)
 
