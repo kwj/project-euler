@@ -11,9 +11,12 @@ Pascal's triangle
 
 from time import perf_counter
 
+'''
+# old version
 def compute(num, boundary):
+    assert num >= 1, 'range error'
     data = [1] * (num + 1)
-    ans = 0
+    ans = 0 if boundary > 0 else num * 2
 
     for start in range(1, num):
         stop = (start + 2) // 2
@@ -24,6 +27,24 @@ def compute(num, boundary):
                 break
         if start % 2 == 0:
             data[stop - 1] = data[stop]
+
+    return str(ans)
+'''
+
+def compute(num, boundary):
+    assert num >= 1, 'range error'
+    n = x = num
+    c = r = 1
+    ans = 0 if boundary > 0 else num * 2
+
+    while r <= n // 2:
+        if (c := c * x // r) > boundary:
+            ans += n - (r * 2) + 1
+            c = c * r // n
+            n -= 1
+        else:
+            r += 1
+        x -= 1
 
     return str(ans)
 
