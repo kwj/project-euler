@@ -2,21 +2,20 @@
 // project euler: problem 53
 
 export function compute(num: number, boundary: number): string {
-  let n = num, r = 1;
-  let c = 1, x = n;
-  let answer = 0;
+  let n = num, x = num;
+  let c = 1, r = 1;
+  let answer = boundary > 0 ? 0 : num * 2;
 
-  while (r < (n + 1) / 2) {
+  while (r <= (n >> 1)) {
     c = c * x / r;
     if (c > boundary) {
       answer += n - (r * 2) + 1;
       c = c * r / n;
       n -= 1;
-      x -= 1;
     } else {
       r += 1;
-      x -= 1;
     }
+    x -= 1;
   }
 
   return String(answer)
