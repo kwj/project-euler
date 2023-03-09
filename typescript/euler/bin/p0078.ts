@@ -28,7 +28,7 @@
   I consider only value of 'mod 1_000_000' because the problem is divisible by one million or not.
 */
 
-function* diffGenerator(): Generator<number, void, unknown> {
+function* gpnumGenerator(): Generator<number, void, unknown> {
   // Generalized pentagonal numbers
   //        0   1   2   5   7   12   15   22   26   35   40   51   57   70   77   92   100   117  ...
   // diff:    1   1   3   2   5    3    7    4    9    5    11   6    13   7    15    8    17
@@ -36,34 +36,46 @@ function* diffGenerator(): Generator<number, void, unknown> {
   //   [g: gap, s: step]
   let gap = 1;
   let step = 1;
+  let acc = 0;
   while (true) {
-    yield gap;
-    yield step;
+    acc += gap;
+    yield acc;
     gap += 2;
+
+    acc += step;
+    yield acc;
     step += 1;
   }
 }
 
 export function compute(denom: number): string {
-  const p_tbl = new Map<number, number>();
-  p_tbl.set(0, 1);
+  // generalized pentagonal numbers: gp[0] = 1, gp[1] = 2, gp[2] = 5, gp[3] = 7, ...
+  const gpnum_gen = gpnumGenerator();
+  const gp: number[] = Array(0);
+  gp.push(gpnum_gen.next().value as number);
 
-  let n = 0;
-  while (p_tbl.get(n) !== 0) {
-    n += 1;
-    const diff_gen = diffGenerator();
-    let param = n;
-    let sign = 1;
-    let acc = 0;
-    while (param >= 0) {
-      param -= diff_gen.next().value as number;
-      acc += sign * (p_tbl.get(param) || 0);
-      param -= diff_gen.next().value as number;
-      acc += sign * (p_tbl.get(param) || 0);
-      sign = -sign;
+  // number of partitions of n: p[n]
+  const p: number[] = [1];
+
+  let n = 1;
+  while (true) {
+    if (n > gp.at(-1)!) {
+      gp.push(gpnum_gen.next().value as number);
     }
 
-    p_tbl.set(n, acc % denom);
+    let rem = 0;
+    for (const [i, x] of gp.entries()) {
+      if (x > n) {
+        break;
+      }
+      rem = (rem + ((i % 4 < 2) ? p[n - x] : -p[n - x])) % denom;
+    }
+
+    if (rem === 0) {
+      break;
+    }
+    p.push(rem);
+    n += 1;
   }
 
   return String(n);

@@ -30,7 +30,7 @@
 
 from time import perf_counter
 
-def gen_gpnum_diff():
+def gpnum_generator():
     # Generalized pentagonal numbers
     #        0   1   2   5   7   12   15   22   26   35   40   51   57   70   77   92   100   117  ...
     # diff:    1   1   3   2   5    3    7    4    9    5    11   6    13   7    15    8    17
@@ -38,31 +38,43 @@ def gen_gpnum_diff():
     #   [g: gap, s: step]
     gap = 1
     step = 1
+    acc = 0
     while True:
-        yield gap
-        yield step
+        acc += gap
+        yield acc
         gap += 2
+
+        acc += step
+        yield acc
         step += 1
 
 def compute(denom):
-    p_tbl = dict()
-    p_tbl[0] = 1
+    # generalized pentagonal numbers: gp[0] = 1, gp[1] = 2, gp[2] = 5, gp[3] = 7, ...
+    gpnum_gen = gpnum_generator()
+    gp = [next(gpnum_gen)]
 
-    n = 0
-    while p_tbl[n] != 0:
+    # number of partitions of n: p[n]
+    p = [1]
+
+    n = 1
+    while True:
+        if n > gp[-1]:
+           gp.append(next(gpnum_gen))
+
+        rem = 0
+        for (i, x) in enumerate(gp):
+            if x > n:
+                break
+            if i % 4 < 2:
+                rem = (rem + p[n - x])
+            else:
+                rem = (rem - p[n - x])
+
+        rem %= denom
+        if rem == 0:
+            break
+        p.append(rem)
         n += 1
-        param = n
-        diff_gen = gen_gpnum_diff()
-        sign = 1
-        acc = 0
-        while param >= 0:
-            param -= next(diff_gen)
-            acc += sign * p_tbl.get(param, 0)
-            param -= next(diff_gen)
-            acc += sign * p_tbl.get(param, 0)
-            sign = -sign
-
-        p_tbl[n] = acc % denom
 
     return str(n)
 
