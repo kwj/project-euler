@@ -26,57 +26,43 @@
       [p(0) = 1, p(k) = 0 when k < 0]
 
   I consider only value of 'mod 1_000_000' because the problem is divisible by one million or not.
+
+  memo:
+    # Generalized pentagonal numbers
+    #        0   1   2   5   7   12   15   22   26   35   40   51   57   70   77   92   100   117  ...
+    # diff:    1   1   3   2   5    3    7    4    9    5    11   6    13   7    15    8    17
+    # g/s      g   s   g   s   g    s    g    s    g    s     g   s     g   s     g    s     g
+    #   [g: gap, s: step]
 */
 
-function* gpnumGenerator(): Generator<number, void, unknown> {
-  // Generalized pentagonal numbers
-  //        0   1   2   5   7   12   15   22   26   35   40   51   57   70   77   92   100   117  ...
-  // diff:    1   1   3   2   5    3    7    4    9    5    11   6    13   7    15    8    17
-  // g/s      g   s   g   s   g    s    g    s    g    s     g   s     g   s     g    s     g
-  //   [g: gap, s: step]
-  let gap = 1;
-  let step = 1;
-  let acc = 0;
-  while (true) {
-    acc += gap;
-    yield acc;
-    gap += 2;
-
-    acc += step;
-    yield acc;
-    step += 1;
-  }
-}
-
 export function compute(denom: number): string {
-  // generalized pentagonal numbers: gp[0] = 1, gp[1] = 2, gp[2] = 5, gp[3] = 7, ...
-  const gpnum_gen = gpnumGenerator();
-  const gp: number[] = Array(0);
-  gp.push(gpnum_gen.next().value as number);
-
-  // number of partitions of n: p[n]
+  //number of partitions of n: p[n]
   const p: number[] = [1];
 
-  let n = 1;
-  while (true) {
-    if (n > gp.at(-1)!) {
-      gp.push(gpnum_gen.next().value as number);
-    }
-
-    let rem = 0;
-    for (const [i, x] of gp.entries()) {
-      if (x > n) {
-        break;
-      }
-      rem = (rem + ((i % 4 < 2) ? p[n - x] : -p[n - x])) % denom;
-    }
-
-    if (rem === 0) {
-      break;
-    }
-    p.push(rem);
+  let n = 0;
+  let rem = 0;
+  do {
     n += 1;
-  }
+    rem = 0;
+    let sign = 1;
+    let k = 1;
+    let n1 = 0;
+    let n2 = 0;
+    do {
+      n1 = n - k * (3 * k - 1) / 2;
+      n2 = n - k * (3 * k + 1) / 2;
+      if (n1 >= 0) {
+        rem = (rem + sign * p[n1]) % denom;
+      }
+      if (n2 >= 0) {
+        rem = (rem + sign * p[n2]) % denom;
+      }
+      sign = -sign;
+      k += 1;
+    } while (n2 > 0 && n1 > 0)
+
+    p.push(rem);
+  } while (rem !== 0)
 
   return String(n);
 }
