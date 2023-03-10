@@ -12,7 +12,7 @@ class TestSolution(unittest.TestCase):
         fh = asset_file('https://projecteuler.net/project/resources/p083_matrix.txt')
         for args, expected in test_patterns:
             with self.subTest(f'data file: p083_matrix.txt'):
-                self.assertEqual(expected, compute(min, fh))
+                self.assertEqual(expected, compute(fh))
         fh.close()
 
 if __name__ == '__main__':

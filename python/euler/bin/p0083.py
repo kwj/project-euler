@@ -26,7 +26,7 @@ def make_neighbor_tbl(rows, columns):
 def make_distance_tbl(rows, columns):
     return [[sys.maxsize] * columns for _ in range(rows)]
 
-def compute(fn, fh):
+def compute(fh):
     def parse_data(fh):
         return [list(map(int, line.split(','))) for line in fh.read().splitlines()]
 
@@ -49,7 +49,7 @@ def compute(fn, fh):
 def solve():
     fh = asset_file('https://projecteuler.net/project/resources/p083_matrix.txt')
     start = perf_counter()
-    result = compute(min, fh)
+    result = compute(fh)
     elapsed_time = perf_counter() - start
     fh.close()
 
