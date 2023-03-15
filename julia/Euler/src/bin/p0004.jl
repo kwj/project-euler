@@ -5,13 +5,13 @@ module Prob0004
 
 import ..Util: is_palindrome
 
-function solve_0004(digits = 3)
-    @assert digits > 0 "Range Error: The digits parameter must be larger than 0. [$digits]"
-    num_upper = 10 ^ digits - 1
-    num_lower = digits == 1 ? 1 : 10 ^ (digits - 1)
-    blk_upper_limit = 10 ^ (digits * 2)
-    blk_lower_limit = digits > 1 ? 10 ^ ((digits - 1) * 2) : 0
-    blk_width = 10 ^ (digits * 2 - 2)
+function solve_0004(n_digits = 3)
+    @assert n_digits > 0 "Range Error: The digits parameter must be larger than 0. [$n_digits]"
+    num_upper = 10 ^ n_digits - 1
+    num_lower = n_digits == 1 ? 1 : 10 ^ (n_digits - 1)
+    blk_upper_limit = 10 ^ (n_digits * 2)
+    blk_lower_limit = n_digits > 1 ? 10 ^ ((n_digits - 1) * 2) : 0
+    blk_width = 10 ^ (n_digits * 2 - 2)
     answer = Int[]
 
     for blk_upper in StepRange(blk_upper_limit, -blk_width, blk_lower_limit)
