@@ -25,7 +25,7 @@
 
 module Prob0089
 
-function replace_numbers(line::String)
+function replace_numbers(line)
     replace(line, r"IIIIIIIII|XXXXXXXXX|CCCCCCCCC" => "##",
                   r"VIIII|LXXXX|DCCCC" => "##",
                   r"IIIII|XXXXX|CCCCC" => "#",

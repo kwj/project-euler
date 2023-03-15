@@ -5,7 +5,7 @@ module Prob0077
 
 import Primes: prime
 
-function prime_generator(c::Channel)
+function prime_generator(c)
     for i in Iterators.countfrom(1)
         put!(c, prime(i))
     end

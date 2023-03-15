@@ -21,7 +21,7 @@
 
 module Prob0002
 
-function solve_0002(limit = 4_000_000)
+function solve_0002(limit::Int = 4_000_000)
     fₙ = 8; fₙ₋₁ = 2
     acc = fₙ₋₁
     while fₙ <= limit

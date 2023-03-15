@@ -3,7 +3,7 @@
 
 module Prob0055
 
-function is_rychrel(n::BigInt)
+function is_rychrel(n)
     tmp = parse(BigInt, reverse(string(n)))
     for _ = 1:50
         n += tmp
@@ -15,7 +15,7 @@ function is_rychrel(n::BigInt)
     return true
 end
 
-function solve_0055(upper = 10_000)
+function solve_0055(upper::Int = 10_000)
     count(is_rychrel, BigInt(1):(upper -1))
 end
 

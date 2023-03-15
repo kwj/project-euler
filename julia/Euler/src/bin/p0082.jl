@@ -3,7 +3,7 @@
 
 module Prob0082
 
-function solve_0082(fname = "p082_matrix.txt", fn = min)
+function solve_0082(fname::String = "p082_matrix.txt", fn::Function = min)
     data = vcat(([parse(Int, x) for x in split(l, ",")]' for l in readlines(joinpath((@__DIR__), "../../assets", fname)))...)
 
     work = data[:, 1]

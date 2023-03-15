@@ -46,7 +46,7 @@ function make_dupctr_tbl(upper)
     max_exp = get_max_exp(upper, base=2)
     dup_ctr = zeros(Int, 1, max_exp)
 
-    dups = Array{Int, 1}(undef, upper)
+    dups = Vector{Int}(undef, upper)
     for x = 2:max_exp
         fill!(dups, 0)
         for y = 1:(x - 1)
@@ -58,7 +58,7 @@ function make_dupctr_tbl(upper)
     dup_ctr
 end
 
-function solve_0029(upper = 100)
+function solve_0029(upper::Int = 100)
     dup_ctr = make_dupctr_tbl(upper)
     base_limit = isqrt(upper)
     skip_flag = falses(base_limit)

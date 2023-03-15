@@ -15,8 +15,8 @@ function get_collatz(n)
     end
 end
 
-function solve_0014(limit = 1_000_000)
-    argmax(get_collatz, limit÷2:limit-1)
+function solve_0014(limit::Int = 1_000_000)
+    argmax(get_collatz, (limit ÷ 2):(limit - 1))
 end
 
 end #module

@@ -3,7 +3,7 @@
 
 module Prob0081
 
-function solve_0081(fname = "p081_matrix.txt", fn = min)
+function solve_0081(fname::String = "p081_matrix.txt", fn::Function = min)
     data = vcat(([parse(Int, x) for x in split(l, ",")]' for l in readlines(joinpath((@__DIR__), "../../assets", fname)))...)
 
     data[1, :] = accumulate(+, data[1, :])

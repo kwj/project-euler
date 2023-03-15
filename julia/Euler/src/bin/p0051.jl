@@ -63,7 +63,7 @@ function is_family(p, f_size)
     return false
 end
 
-function solve_0051(f_size = 8)
+function solve_0051(f_size::Int = 8)
     first(p for exp in Iterators.countfrom(3) for p in primes(10^exp, 10^(exp+1)) if is_family(p, f_size) == true)
 end
 

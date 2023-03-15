@@ -22,7 +22,7 @@ const data = reverse!([
 ])
 
 function select_leaf(fn, lst)
-    result = Int[]
+    result = eltype(lst)[]
     prev = lst[1]
     for i in lst
         push!(result, fn(prev, i))
@@ -31,7 +31,7 @@ function select_leaf(fn, lst)
     result[2:end]
 end
 
-function solve_0018(fn = max)
+function solve_0018(fn::Function = max)
     prev = zeros(Int, length(data[1]) + 1)
     for lst in data
         selected = select_leaf(fn, prev)

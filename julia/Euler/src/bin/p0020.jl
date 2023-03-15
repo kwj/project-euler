@@ -3,7 +3,7 @@
 
 module Prob0020
 
-function solve_0020(n = 100)
+function solve_0020(n::Int = 100)
     sum(digits(factorial(big(n))))
 end
 

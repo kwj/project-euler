@@ -27,7 +27,7 @@
 
 module Prob0039
 
-function solve_0039(limit = 1_000)
+function solve_0039(limit::Int = 1_000)
     function check_pair(p, a)
         (p * p - 2 * a * p) % (2 * (p - a)) == 0
     end

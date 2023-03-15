@@ -19,7 +19,7 @@ function num_of_divs(n)
     prod(map(x -> x + 1, values(factor(Dict, n))))
 end
 
-function solve_0012(thr = 500)
+function solve_0012(thr::Int = 500)
     n = 1
     while true
         if num_of_divs(n) * num_of_divs((n + 1) ÷ 2) > thr

@@ -5,14 +5,14 @@ module Prob0023
 
 import ..Util: get_σ_tbl
 
-function solve_0023(upper = 28_123)
+function solve_0023(upper::Int = 28_123)
     d_tbl = get_σ_tbl(1, upper)
     for x = 1:upper
         d_tbl[x] -= x
     end
 
     abndnt_flag = [i < d_tbl[i] for i in 1:upper]
-    abndnt_lst = Int[]
+    abndnt_lst = Vector{Int}(undef, 0)
     acc = 0
     for i = 1:upper
         if i % 2 == 0 && abndnt_flag[i ÷ 2] == true

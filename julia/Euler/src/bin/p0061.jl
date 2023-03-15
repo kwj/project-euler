@@ -36,8 +36,8 @@ function make_polynum_tbl()
     tbl
 end
 
-function find_cycle(polynum_tbl::Dict{Int, Dict{Int, Vector{Int}}}, route::Vector{Int})::Union{Vector{Int}, Nothing}
-    function is_distinct_numbers(nums::Vector{Int})
+function find_cycle(polynum_tbl, route)
+    function is_distinct_numbers(nums)
         tmp = Set{Int}()
         for i = 1:(length(nums) - 1)
             push!(tmp, nums[i] * 100 + nums[i + 1])
@@ -45,7 +45,7 @@ function find_cycle(polynum_tbl::Dict{Int, Dict{Int, Vector{Int}}}, route::Vecto
         length(tmp) == (length(nums) - 1)
     end
 
-    function dfs(route::Vector{Int}, path::Vector{Int})::Union{Vector{Int}, Nothing}
+    function dfs(route, path)
         if length(route) == 0
             if path[1] == path[end] && is_distinct_numbers(path) == true
                 return path[2:end]

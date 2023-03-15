@@ -17,7 +17,7 @@ module Prob0079
 
 import ..Util: undigits
 
-function dfs(graph::Dict{Char, Set{Char}}, perm::Vector{Char}, v::Char)
+function dfs(graph, perm, v)
     function visit(temp::Vector{Char}, visited::Vector{Char}, node::Char)
         if node in temp
             @assert false "cycle path is found"
@@ -39,7 +39,7 @@ function dfs(graph::Dict{Char, Set{Char}}, perm::Vector{Char}, v::Char)
     visit(Vector{Char}(), perm, v)
 end
 
-function solve_0079(fname = "p079_keylog.txt")
+function solve_0079(fname::String = "p079_keylog.txt")
     graph = Dict{Char, Set{Char}}()
     for code in readlines(joinpath((@__DIR__), "../../assets", fname))
         v1 = get!(graph, code[1], Set{Char}())

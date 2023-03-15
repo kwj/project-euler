@@ -32,7 +32,7 @@ function str_max_product(len, s)
     maximum(prod(arr_digits[i - len + 1:i]) for i = len:length(s))
 end
 
-function solve_0008(len = 13)
+function solve_0008(len::Int = 13)
     maximum(broadcast(str_max_product, len, (filter(x -> length(x) >= len, split(replace(data, "\n" => "", " " => ""), "0")))))
 end
 

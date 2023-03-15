@@ -3,7 +3,7 @@
 
 module Prob0005
 
-function solve_0005(start = 1, stop = 20)
+function solve_0005(start::Int = 1, stop::Int = 20)
     lcm(start:stop)
 end
 

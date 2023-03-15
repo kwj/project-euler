@@ -3,7 +3,7 @@
 
 module Prob0074
 
-function fact_sum(n::Int)
+function fact_sum(n)
     tbl = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880]
     if n == 0
         return tbl[0]

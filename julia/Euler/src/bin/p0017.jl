@@ -34,7 +34,7 @@ const words = Dict{Int, Int}([
     (0, 0)
 ])
 
-function solve_0017(limit = 1_000)
+function solve_0017(limit::Int = 1_000)
     acc = 0
     for n = 1:limit
         if n == 1_000

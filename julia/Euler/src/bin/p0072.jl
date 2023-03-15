@@ -7,7 +7,7 @@
 
 module Prob0072
 
-function sum_phi(num::Int, cache::Dict{Int, Int})
+function sum_phi(num, cache)
     get!(cache, num) do
         v = num * (num + 1) ÷ 2
         for m = 2:isqrt(num)

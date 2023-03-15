@@ -10,7 +10,7 @@
 
 module Prob0076
 
-function solve_0076(coins = collect(1:99), target = 100)
+function solve_0076(coins::Vector{Int} = collect(1:99), target::Int = 100)
     tbl = zeros(Int, target + 1)
     tbl[1] = 1
 

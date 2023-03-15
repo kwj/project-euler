@@ -3,7 +3,7 @@
 
 module Prob0098
 
-function get_squares(tbl::Dict{Int, Vector{String}}, n_digits::Int)
+function get_squares(tbl, n_digits)
     get!(tbl, n_digits) do
         lst = Array{String}(undef, 0)
         for i = (isqrt(10 ^ (n_digits - 1) - 1) + 1):(isqrt(10 ^ n_digits - 1))
@@ -13,8 +13,8 @@ function get_squares(tbl::Dict{Int, Vector{String}}, n_digits::Int)
     end
 end
 
-function check_anagram(words::Vector{String}, squares::Vector{String})
-    function aux(w1::String, w2::String)
+function check_anagram(words, squares)
+    function aux(w1, w2)
         result = 0
         for sq in squares
             trans = Dict(v => k for (k, v) in Dict(zip(sq, w1)))
@@ -40,7 +40,7 @@ function check_anagram(words::Vector{String}, squares::Vector{String})
     result
 end
 
-function solve_0098(fname = "p098_words.txt")
+function solve_0098(fname::String = "p098_words.txt")
     word_tbl = Dict{String, Vector{String}}()
     for w in split(replace(readline(joinpath((@__DIR__), "../../assets", fname)), "\"" => ""), ",")
         key = join(sort(collect(w)))

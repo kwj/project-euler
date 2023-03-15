@@ -5,7 +5,7 @@ module Prob0010
 
 import Primes: primes
 
-function solve_0010(upper = 2_000_000)
+function solve_0010(upper::Int = 2_000_000)
     sum(primes(upper))
 end
 

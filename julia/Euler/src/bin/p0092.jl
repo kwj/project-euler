@@ -64,7 +64,7 @@ module Prob0092
 
 import Combinatorics: with_replacement_combinations
 
-function is_group89(n::Int)
+function is_group89(n)
     while n != 89 && n > 1
         acc = 0
         while n != 0
@@ -77,7 +77,7 @@ function is_group89(n::Int)
     return n == 89
 end
 
-function countmap(lst::Vector{Int})
+function countmap(lst)
     tbl = Dict{Int, Int}()
     for elt in lst
         haskey(tbl, elt) ? tbl[elt] += 1 : tbl[elt] = 1

@@ -21,7 +21,7 @@ function init_cumsum_lst(cs_gen, limit)
     lst
 end
 
-function solve_0050(limit = 1_000_000)
+function solve_0050(limit::Int = 1_000_000)
     # cs_lst: [0, prime(1), prime(1) + prime(2), prime(1) + prime(2) + prime(3), ...]
     cs_gen = Channel(cumsum_generator)
     cs_lst = init_cumsum_lst(cs_gen, limit)

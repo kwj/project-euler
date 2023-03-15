@@ -5,7 +5,7 @@ module Prob0095
 
 import ..Util: get_σ_tbl
 
-function update_chain_tbl(tbl::Vector{Int}, elts::Vector{Int}, v::Int)
+function update_chain_tbl(tbl, elts, v)
     for idx in elts
         tbl[idx] = v
     end

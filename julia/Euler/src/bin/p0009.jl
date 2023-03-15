@@ -14,7 +14,7 @@
 
 module Prob0009
 
-function solve_0009(perim = 1_000)
+function solve_0009(perim::Int = 1_000)
     for m = 2:isqrt(perim ÷ 2)
         if (perim ÷ 2) % m != 0
             continue

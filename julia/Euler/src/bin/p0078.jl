@@ -63,7 +63,7 @@ function solve_0078(denom::Int = 1_000_000)
 end
 =#
 
-function gp_generator(c::Channel)
+function gp_generator(c)
     # Generalized pentagonal numbers
     #        0   1   2   5   7   12   15   22   26   35   40   51   57   70   77   92   100   117  ...
     # diff:    1   1   3   2   5    3    7    4    9    5    11   6    13   7    15    8    17

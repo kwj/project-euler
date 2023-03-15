@@ -5,7 +5,7 @@ module Prob0047
 
 import Primes: factor
 
-function solve_0047(nfactors = 4)
+function solve_0047(nfactors::Int = 4)
     cnt = 0
     for x in Iterators.countfrom(1)
         if length(factor(Set, x)) != nfactors

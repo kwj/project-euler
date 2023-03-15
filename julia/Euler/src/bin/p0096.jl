@@ -45,8 +45,8 @@ import ..AlgoX: dlx_init, dlx_add_row, dlx_solve
 
 =#
 
-function make_dlx(q::String)
-    function add_row(pos::Int, n::Int)
+function make_dlx(q)
+    function add_row(pos, n)
         r, c, b = cld(pos, 9), mod1(pos, 9), (cld(pos, 27) - 1) * 3 + cld(mod1(pos, 9), 3)
         function aux(num::Int)
             tag = "R" * string(r) * "C" * string(c) * "#" * string(num)
@@ -71,7 +71,7 @@ function make_dlx(q::String)
     d
 end
 
-function parse_data(fname::String)
+function parse_data(fname)
     trim(lst::Vector{String}) = replace(reduce(*, lst), r"[^0-9.]" => "", "." => "0")
 
     result = Array{String}(undef, 0)
@@ -98,7 +98,7 @@ function parse_data(fname::String)
     filter((x) -> length(x) == 81, result)
 end
 
-function solve_0096(fname = "p096_sudoku.txt")
+function solve_0096(fname::String = "p096_sudoku.txt")
     pickup_num(s::Vector{String}) = foldl((acc, i) -> 10 * acc + i, map((x) -> parse(Int, x[end]), s))
 
     answer = 0

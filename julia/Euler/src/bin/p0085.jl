@@ -24,7 +24,7 @@
 
 module Prob0085
 
-function get_diff(m::Int, target::Int)::Union{Tuple{Int, Int}, Nothing}
+function get_diff(m, target)
     lhs(m, n) = m * (m + 1) * n * (n + 1)
 
     n = isqrt(target ÷ (m * (m + 1))) - 1

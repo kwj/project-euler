@@ -5,7 +5,7 @@ module Prob0035
 
 import Primes: primes, isprime
 
-function solve_0035(limit = 1_000_000)
+function solve_0035(limit::Int = 1_000_000)
     function check_rot_nums(n)
         s = string(n, n)
         m = ndigits(n)

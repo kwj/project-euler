@@ -88,7 +88,7 @@
 
 module Prob0066
 
-function get_cont_fraction(n::Int)::Tuple{Int, Vector{Int}}
+function get_cont_fraction(n)
     isqrt_n = isqrt(n)
     if n == isqrt_n ^ 2
         return (isqrt_n, [])
@@ -110,7 +110,7 @@ function get_cont_fraction(n::Int)::Tuple{Int, Vector{Int}}
     end
 end
 
-function get_numerator(a0::Int, rep_lst::Vector{Int})
+function get_numerator(a0, rep_lst)
     xₙ₁, xₙ₂ = big(a0), big(1)
     for a in rep_lst
         xₙ₁, xₙ₂ = a * xₙ₁ + xₙ₂, xₙ₁

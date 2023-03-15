@@ -16,7 +16,7 @@
 
 module Prob0073
 
-function make_möbius_tbl(limit::Int)
+function make_möbius_tbl(limit)
     p_tbl = collect(1:limit)
     for i = 2:isqrt(limit)
         if p_tbl[i] == i
@@ -40,11 +40,11 @@ function make_möbius_tbl(limit::Int)
     mu_tbl
 end
 
-function f(x::Int)
+function f(x)
     sum(map((j) -> ((j - 1) ÷ 2) - (j ÷ 3), collect(1:x)))
 end
 
-function g(N::Int)
+function g(N)
     mu_tbl = make_möbius_tbl(N)
     sum(map((k) -> mu_tbl[k] * f(N ÷ k), collect(1:N)))
 end

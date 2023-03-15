@@ -25,19 +25,19 @@ import DataStructures: PriorityQueue, enqueue!, peek
 
 LIMIT = 10 ^ 7 - 1
 
-function prod(pf_lst::Vector{Tuple{Int, Int}})
+function prod(pf_lst)
     reduce(*, map((tpl) -> tpl[1] ^ tpl[2], pf_lst))
 end
 
-function phi(pf_lst::Vector{Tuple{Int, Int}})
+function phi(pf_lst)
     reduce(*, map((tpl) -> (tpl[1] ^ (tpl[2] - 1)) * (tpl[1] - 1), pf_lst))
 end
 
-function get_ratio(pf_lst::Vector{Tuple{Int, Int}})
+function get_ratio(pf_lst)
     prod(pf_lst) / phi(pf_lst)
 end
 
-function pf_generator(c::Channel, tpl::Tuple{Int, Int})
+function pf_generator(c, tpl)
     # Note:
     #   The internal data 'pf_lst' has the following structure.
     #     [(p_n, e_n), ..., (p2, e2), (p1, e1)]
@@ -83,7 +83,7 @@ function pf_generator(c::Channel, tpl::Tuple{Int, Int})
     end
 end
 
-function is_perm(x::Int, y::Int)
+function is_perm(x, y)
     sort(digits(x)) == sort(digits(y))
 end
 

@@ -3,7 +3,7 @@
 
 module Prob0099
 
-function solve_0099(fname = "p099_base_exp.txt")
+function solve_0099(fname::String = "p099_base_exp.txt")
     answer = 0
     max_value = 0
     for (idx, x) in enumerate([parse(Int, x) for x in split(l, ",")] for l in readlines(joinpath((@__DIR__), "../../assets", fname)))

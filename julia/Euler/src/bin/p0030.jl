@@ -52,7 +52,7 @@ end
 
 # This implementation depends on the combination tuples are emitted in lexicographic ordering
 # according to the order of the input *array*. Otherwise, we need to use other algorithm.
-function solve_0030(exp = 5)
+function solve_0030(exp::Int = 5)
     pow_tbl = map(x -> x ^ exp, 0:9)
     acc = 0
 

@@ -25,7 +25,7 @@
 
 module Prob0064
 
-function get_cont_fraction(n::Int)::Tuple{Int, Vector{Int}}
+function get_cont_fraction(n)
     isqrt_n = isqrt(n)
     if n == isqrt_n ^ 2
         return (isqrt_n, [])

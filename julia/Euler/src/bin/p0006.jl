@@ -3,7 +3,7 @@
 
 module Prob0006
 
-function solve_0006(start = 1, stop = 100)
+function solve_0006(start::Int = 1, stop::Int = 100)
     sum_of_squares(start, stop) = sum(map(x -> x ^ 2, start:stop))
     square_of_sum(start, stop) = sum(start:stop) ^ 2
 

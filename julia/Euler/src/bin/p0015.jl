@@ -3,7 +3,7 @@
 
 module Prob0015
 
-function solve_0015(row = 20, col = 20)
+function solve_0015(row::Int = 20, col::Int = 20)
     # factorial(big(row + col)) ÷ factorial(row) ÷ factorial(col)
     binomial(row + col, row)
 end

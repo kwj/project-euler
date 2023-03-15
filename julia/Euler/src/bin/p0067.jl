@@ -4,7 +4,7 @@
 module Prob0067
 
 function select_leaf(fn, lst)
-    result = Int[]
+    result = eltype(lst)[]
     prev = lst[1]
     for i in lst
         push!(result, fn(prev, i))
@@ -13,7 +13,7 @@ function select_leaf(fn, lst)
     result[2:end]
 end
 
-function solve_0067(fname = "p067_triangle.txt", fn = max)
+function solve_0067(fname::String = "p067_triangle.txt", fn::Function = max)
     data = reverse(map.((x) -> parse(Int, x), split.(readlines(joinpath((@__DIR__), "../../assets", fname)), " ")))
 
     prev = zeros(Int, length(data[1]) + 1)

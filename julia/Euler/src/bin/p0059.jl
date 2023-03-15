@@ -9,7 +9,7 @@ module Prob0059
 #   0x61 - 0x7A (lowercase letters, 'a' - 'z'): 3
 #   0x21 - 0x7E exclude leters: 1
 #   others: 0
-function calc_score(c::Int)
+function calc_score(c)
     c == 0x20 && return 3
     0x41 <= c <= 0x5A && return 5
     0x61 <= c <= 0x7A && return 2
@@ -17,7 +17,7 @@ function calc_score(c::Int)
     return 0
 end
 
-function solve_0059(fname = "p059_cipher.txt")
+function solve_0059(fname::String = "p059_cipher.txt")
     cipher_data = [parse(Int, x) for x in split(readline(joinpath((@__DIR__), "../../assets", fname)), ",")]
 
     score, max_score = 0, 0

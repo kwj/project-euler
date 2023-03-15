@@ -5,7 +5,7 @@ module Prob0003
 
 import Primes: factor
 
-function solve_0003(n = 600851475143)
+function solve_0003(n::Int = 600_851_475_143)
     factor(Vector, n)[end]
 end
 

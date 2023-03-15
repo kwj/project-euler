@@ -5,7 +5,7 @@ module Prob0004
 
 import ..Util: is_palindrome
 
-function solve_0004(n_digits = 3)
+function solve_0004(n_digits::Int = 3)
     @assert n_digits > 0 "Range Error: The digits parameter must be larger than 0. [$n_digits]"
     num_upper = 10 ^ n_digits - 1
     num_lower = n_digits == 1 ? 1 : 10 ^ (n_digits - 1)

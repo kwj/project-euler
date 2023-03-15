@@ -5,7 +5,7 @@ module Prob0036
 
 import ..Util: is_palindrome
 
-function solve_0036(limit = 1_000_000)
+function solve_0036(limit::Int = 1_000_000)
     function check_palindrome(n)
         is_palindrome(n) == true && is_palindrome(n, base=2) == true
     end

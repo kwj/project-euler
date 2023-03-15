@@ -23,7 +23,7 @@
 
 module Prob0028
 
-function solve_0028(len = 1_001)
+function solve_0028(len::Int = 1_001)
     result = 1
     for n = 1:((len - 1) ÷ 2)
         result += 16n^2 + 4n + 4

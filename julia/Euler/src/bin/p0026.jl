@@ -20,7 +20,7 @@ function find_cycle_length(n, d)
     end
 end
 
-function solve_0026(upper = 1_000)
+function solve_0026(upper::Int = 1_000)
     upper -= 1
     (max_cycle, idx) = (0, 0)
 

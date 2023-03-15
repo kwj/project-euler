@@ -18,7 +18,7 @@ function make_neighbor_tbl(nrow, ncol)
     tbl
 end
 
-function solve_0083(fname = "p083_matrix.txt")
+function solve_0083(fname::String = "p083_matrix.txt")
     data = vcat(([parse(Int, x) for x in split(l, ",")]' for l in readlines(joinpath((@__DIR__), "../../assets", fname)))...)
 
     nbr_tbl = make_neighbor_tbl(size(data, 1), size(data, 2))

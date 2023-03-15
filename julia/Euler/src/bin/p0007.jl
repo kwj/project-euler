@@ -5,7 +5,7 @@ module Prob0007
 
 import Primes: prime
 
-function solve_0007(nth = 10_001)
+function solve_0007(nth::Int = 10_001)
     prime(nth)
 end
 

@@ -5,8 +5,8 @@ module Prob0093
 
 import Combinatorics: combinations
 
-function make_numbers(lst::Vector{Rational{Int}})::Set{Int}
-    function aux(lst::Vector{Rational{Int}})
+function make_numbers(lst)
+    function aux(lst)
         if length(lst) == 1
             if denominator(lst[1]) == 1
                 push!(result, numerator(lst[1]))
@@ -37,7 +37,7 @@ function make_numbers(lst::Vector{Rational{Int}})::Set{Int}
     result
 end
 
-function get_consec_counts(lst::Vector{Int})::Int
+function get_consec_counts(lst)
     n_set = make_numbers([x // 1 for x in lst])
     for cnt in Iterators.countfrom(1)
         if cnt in n_set

@@ -3,7 +3,7 @@
 
 module Prob0024
 
-function solve_0024(idx = 1_000_000, lst = collect(0:9))
+function solve_0024(idx::Int = 1_000_000, lst::Vector{Int} = collect(0:9))
     idx -= 1
     acc = 0
     for i = (length(lst) - 1):-1:0

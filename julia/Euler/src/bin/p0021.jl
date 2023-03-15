@@ -5,7 +5,7 @@ module Prob0021
 
 import ..Util: get_σ_tbl
 
-function solve_0021(limit = 10_000)
+function solve_0021(limit::Int = 10_000)
     upper = limit - 1
     d_tbl = get_σ_tbl(1, upper)
     for x = 1:upper

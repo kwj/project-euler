@@ -6,8 +6,8 @@ module Prob0060
 import Primes: isprime, prime
 import Combinatorics: combinations
 
-function is_pair(x::Int, y::Int)
-    function concat(a::Int, b::Int)
+function is_pair(x, y)
+    function concat(a, b)
         n = 10
         while b > n
             n *= 10
@@ -17,11 +17,11 @@ function is_pair(x::Int, y::Int)
     isprime(concat(x, y)) && isprime(concat(y, x))
 end
 
-function find_nbrs(prime::Int, prime_lst::Vector{Int}, limit::Int)
+function find_nbrs(prime, prime_lst, limit)
     filter(p -> p + prime < limit && is_pair(prime, p) == true, prime_lst)
 end
 
-function is_clique(prime_grp::Vector{Int}, tbl::Dict{Int, Vector{Int}})
+function is_clique(prime_grp, tbl)
     for idx = 1:(length(prime_grp) - 1)
         if all(x -> in(prime_grp[idx], tbl[x]), prime_grp[idx + 1:end]) == false
             return false

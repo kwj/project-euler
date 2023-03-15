@@ -106,7 +106,7 @@ const data = [
     53503534226472524250874054075591789781264330331690,
 ]
 
-function solve_0013(len = 10)
+function solve_0013(len::Int = 10)
     foldl((acc, x) -> acc * 10 + x, digits(sum(data))[end:-1:end-len+1]; init=0)
 end
 

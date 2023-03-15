@@ -3,7 +3,7 @@
 
 module Prob0016
 
-function solve_0016(exp = 1_000)
+function solve_0016(exp::Int = 1_000)
     sum(digits(big(2) ^ exp))
 end
 

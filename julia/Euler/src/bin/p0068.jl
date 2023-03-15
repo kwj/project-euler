@@ -47,11 +47,11 @@ end
 
 module Prob0068
 
-function is_valid(x::Int, y::Int, num_bittbl::Int, n_gon::Int)
+function is_valid(x, y, num_bittbl, n_gon)
     (0 < x <= n_gon * 2 && 0 < y <= n_gon * 2) && x != y && (((1 << x) | (1 << y)) & num_bittbl) == 0
 end
 
-function dfs(n_gon::Int, idx::Int, num_bittbl::Int, r::Vector{Int}, e_weight::Int, result::Vector{String})
+function dfs(n_gon, idx, num_bittbl, r, e_weight, result)
     # num_bittbl: 0x11111111110
     #               ^        ^
     #               10  ...  1
@@ -83,7 +83,7 @@ function dfs(n_gon::Int, idx::Int, num_bittbl::Int, r::Vector{Int}, e_weight::In
     return
 end
 
-function solve_with_bt(n_gon::Int)
+function solve_with_bt(n_gon)
     ring = Array{Int}(undef, n_gon * 2 + 1)
     result = Array{String}(undef, 0)
 

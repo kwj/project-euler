@@ -16,7 +16,7 @@ function get_prime_tbl(n_digits)
     p_tbl
 end
 
-function solve_0049(n_digits = 4)
+function solve_0049(n_digits::Int = 4)
     p_tbl = get_prime_tbl(n_digits)
     for lst in values(p_tbl)
         len = length(lst)

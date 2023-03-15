@@ -5,7 +5,7 @@ module Prob0042
 
 import ..Util: is_triangular
 
-function solve_0042(fname = "p042_words.txt")
+function solve_0042(fname::String = "p042_words.txt")
     worth(word) = sum(Int(x) - Int('A') + 1 for x in word)
     data = readline(joinpath((@__DIR__), "../../assets", fname))
 

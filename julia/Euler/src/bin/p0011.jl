@@ -26,7 +26,7 @@ const data = [
     01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48
 ]
 
-function solve_0011(len = 4)
+function solve_0011(len::Int = 4)
     # size(data) -> num of rows, num of columns
     (ROW, COL) = size(data)
 
