@@ -28,8 +28,8 @@ const data = "
 
 function str_max_product(len, s)
     @assert length(s) >= len "String is too short. [$(s)]"
-    digits = [parse(Int, x) for x in s]
-    maximum(prod(digits[i - len + 1:i]) for i = len:length(s))
+    arr_digits = [parse(Int, x) for x in s]
+    maximum(prod(arr_digits[i - len + 1:i]) for i = len:length(s))
 end
 
 function solve_0008(len = 13)
