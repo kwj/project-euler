@@ -42,7 +42,7 @@ function solve_0084(nfaces::Int = 4, nsquares::Int = 3)
     # Chance Card
     # note: It must be processed before Communy Chest because the CH3 -> CC3 path is exist.
     for chance in [CH1, CH2, CH3]
-        for (current, prblty) = enumerate(stoch_matrix[chance, :])
+        for (current, prblty) = pairs(stoch_matrix[chance, :])
             next_R = (chance == CH1) ? R2 : ((chance == CH2) ? R3 : R1)
             next_U = (chance == CH2) ? U2 : U1
             for next_sq in (GO, JAIL, C1, E3, H2, R1, next_R, next_R, next_U, mod1(chance - 3, 40))

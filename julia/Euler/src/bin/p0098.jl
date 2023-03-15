@@ -32,7 +32,7 @@ function check_anagram(words, squares)
     end
 
     result = 0
-    for (idx, w1) in enumerate(words)
+    for (idx, w1) in pairs(words)
         for w2 in words[idx + 1:end]
             result = max(result, aux(w1, w2))
         end

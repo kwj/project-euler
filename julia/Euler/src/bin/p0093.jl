@@ -14,7 +14,7 @@ function make_numbers(lst)
             return
         end
 
-        for (i, d1) in enumerate(lst)
+        for (i, d1) in pairs(lst)
             for d2 in @view lst[i+1:end]
                 next_lst = setdiff(lst, [d1, d2])
                 aux(vcat(next_lst, [d1 + d2]))

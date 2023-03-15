@@ -65,7 +65,7 @@ function make_dlx(q)
 
     # 324 is the number of columns. (81 + 81 + 81 + 81)
     d = dlx_init(324)
-    for (i, n) in enumerate(map((x) -> parse(Int, x), split(q, "")))
+    for (i, n) in pairs(map((x) -> parse(Int, x), split(q, "")))
         add_row(i, n)
     end
     d

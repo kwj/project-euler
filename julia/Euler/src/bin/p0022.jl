@@ -7,7 +7,7 @@ function solve_0022(fname::String = "p022_names.txt")
     worth(word) = sum(Int(x) - Int('A') + 1 for x in word)
     data = readline(joinpath((@__DIR__), "../../assets", fname))
 
-    sum(idx * v for (idx, v) in enumerate(worth.(sort(split(replace(data, "\"" => ""), ",")))))
+    sum(idx * v for (idx, v) in pairs(worth.(sort(split(replace(data, "\"" => ""), ",")))))
 end
 
 end #module

@@ -23,7 +23,7 @@ function solve_0059(fname::String = "p059_cipher.txt")
     score, max_score = 0, 0
     answer = 0
     for key in Iterators.product(Int('a'):Int('z'), Int('a'):Int('z'), Int('a'):Int('z'))
-        decrypted_text = [xor(key[mod1(i, 3)], c) for (i, c) in enumerate(cipher_data)]
+        decrypted_text = [xor(key[mod1(i, 3)], c) for (i, c) in pairs(cipher_data)]
         score = sum(broadcast(calc_score, decrypted_text))
         if score > max_score
             max_score = score

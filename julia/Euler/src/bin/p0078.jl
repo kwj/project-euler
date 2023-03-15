@@ -101,7 +101,7 @@ function solve_0078(denom::Int = 1_000_000)
         end
 
         rem = 0
-        for (i, x) in enumerate(gp)
+        for (i, x) in pairs(gp)
             if x > n
                 break
             end
