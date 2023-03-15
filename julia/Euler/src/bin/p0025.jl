@@ -7,8 +7,8 @@
 
 module Prob0025
 
-function solve_0025(digits = 1_000)
-    boundary = big(10) ^ (digits - 1)
+function solve_0025(n_digits = 1_000)
+    boundary = big(10) ^ (n_digits - 1)
     fₙ = big(1); fₙ₋₁ = big(1)
     idx = 2
     while fₙ < boundary
