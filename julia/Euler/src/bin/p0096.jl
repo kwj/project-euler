@@ -6,6 +6,10 @@ module Prob0096
 import ..AlgoX: dlx_init, dlx_add_row, dlx_solve
 
 #=
+  This solution uses Algorithm X with dancing links.
+    https://en.wikipedia.org/wiki/Knuth%27s_Algorithm_X
+    https://arxiv.org/abs/cs/0011047
+
   [Grid]
       C1 C2 C3 C4 C5 C6 C7 C8 C9
      +--------+--------+--------+    R: Row
