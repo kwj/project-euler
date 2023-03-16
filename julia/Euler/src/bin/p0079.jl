@@ -54,7 +54,7 @@ function solve_0079(fname::String = "p079_keylog.txt")
     for v in keys(graph)
         acc = dfs(graph, acc, v)
     end
-    undigits(reverse(map((x) -> parse(Int, x), acc)))
+    undigits(reverse(map(x -> parse(Int, x), acc)))
 end
 
 end #module

@@ -41,7 +41,7 @@ import ..Util: undigits
 function is_family(p, f_size)
     for n = 0:(10 - f_size)
         p_digits = digits(p)
-        for mask in powerset(findall((x) -> x == n, p_digits), 3)
+        for mask in powerset(findall(x -> x == n, p_digits), 3)
             if mask[1] == 1 || length(mask) % 3 != 0
                 continue
             end

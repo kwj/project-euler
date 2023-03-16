@@ -69,7 +69,7 @@ function make_dlx(q)
 
     # 324 is the number of columns. (81 + 81 + 81 + 81)
     d = dlx_init(324)
-    for (i, n) in pairs(map((x) -> parse(Int, x), split(q, "")))
+    for (i, n) in pairs(map(x -> parse(Int, x), split(q, "")))
         add_row(i, n)
     end
     d
@@ -103,7 +103,7 @@ function parse_data(fname)
 end
 
 function solve_0096(fname::String = "p096_sudoku.txt")
-    pickup_num(s::Vector{String}) = foldl((acc, i) -> 10 * acc + i, map((x) -> parse(Int, x[end]), s))
+    pickup_num(s::Vector{String}) = foldl((acc, i) -> 10 * acc + i, map(x -> parse(Int, x[end]), s))
 
     answer = 0
     for q in parse_data(fname)

@@ -31,7 +31,7 @@ function solve_0050(limit::Int = 1_000_000)
     width = 1
     while cs_lst[i + width] - cs_lst[i] < limit
         start = cs_lst[i]
-        lst = collect(Iterators.dropwhile((p) -> p - start >= limit || isprime(p - start) == false, @view cs_lst[end:-1:(i + width)]))
+        lst = collect(Iterators.dropwhile(p -> p - start >= limit || isprime(p - start) == false, @view cs_lst[end:-1:(i + width)]))
         if length(lst) > 0
             width += length(lst)
             answer = lst[1] - start

@@ -16,8 +16,8 @@ import Primes: primes
 
 function solve_0087(thr::Int = 50_000_000)
     sq_plst = primes(isqrt(thr))
-    cb_plst = filter((x) -> x^3 <= thr, sq_plst)
-    tsst_plst = filter((x) -> x^4 <= thr, sq_plst)
+    cb_plst = filter(x -> x^3 <= thr, sq_plst)
+    tsst_plst = filter(x -> x^4 <= thr, sq_plst)
 
     result = Set{Int}()
     for z in tsst_plst

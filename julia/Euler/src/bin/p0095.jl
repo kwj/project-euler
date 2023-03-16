@@ -43,7 +43,7 @@ function solve_0095(limit::Int = 1_000_000)
             max_length = max(max_length, len)
         end
     end
-    findfirst((x) -> x == max_length, chain_tbl)
+    findfirst(x -> x == max_length, chain_tbl)
 end
 
 end #module

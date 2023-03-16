@@ -53,7 +53,7 @@ function solve_0098(fname::String = "p098_words.txt")
 
     answer = 0
     sq_tbl = Dict{Int, Vector{String}}()
-    for (key, words) in filter((x) -> length(x[2]) > 1, word_tbl)
+    for (key, words) in filter(x -> length(x[2]) > 1, word_tbl)
         answer = max(answer, check_anagram(words, get_squares(sq_tbl, length(key))))
     end
     answer

@@ -13,7 +13,7 @@ import DataStructures: PriorityQueue, enqueue!, dequeue_pair!, peek, isempty
 function make_neighbor_tbl(nrow, ncol)
     tbl = Array{Vector{Tuple{Int, Int}}}(undef, nrow, ncol)
     for r = 1:nrow, c = 1:ncol
-        tbl[r, c] = filter((tpl) -> tpl[1] in 1:nrow && tpl[2] in 1:ncol, [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)])
+        tbl[r, c] = filter(tpl -> tpl[1] in 1:nrow && tpl[2] in 1:ncol, [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)])
     end
     tbl
 end

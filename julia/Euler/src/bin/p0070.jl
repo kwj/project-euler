@@ -26,11 +26,11 @@ import DataStructures: PriorityQueue, enqueue!, peek
 LIMIT = 10 ^ 7 - 1
 
 function prod(pf_lst)
-    reduce(*, map((tpl) -> tpl[1] ^ tpl[2], pf_lst))
+    reduce(*, map(tpl -> tpl[1] ^ tpl[2], pf_lst))
 end
 
 function phi(pf_lst)
-    reduce(*, map((tpl) -> (tpl[1] ^ (tpl[2] - 1)) * (tpl[1] - 1), pf_lst))
+    reduce(*, map(tpl -> (tpl[1] ^ (tpl[2] - 1)) * (tpl[1] - 1), pf_lst))
 end
 
 function get_ratio(pf_lst)
@@ -101,7 +101,7 @@ function solve_0070()
             break
         end
 
-        for pf_lst in Channel((c) -> pf_generator(c, (p, prevprime(LIMIT ÷ p))))
+        for pf_lst in Channel(c -> pf_generator(c, (p, prevprime(LIMIT ÷ p))))
             # pruning: skip to the next prime smaller than 'p'
             if get_ratio(pf_lst[1:min(length(pf_lst), 2)]) > peek(pq)[2]
                 break

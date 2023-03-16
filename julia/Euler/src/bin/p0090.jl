@@ -11,7 +11,7 @@ function solve_0090()
     end
 
     squares = replace.([digits(i^2; pad = 2) for i = 1:9], 9 => 6)
-    count((dice) -> check_square(dice), with_replacement_combinations(collect(combinations(vcat(collect(0:8), [6]), 6)), 2))
+    count(dice -> check_square(dice), with_replacement_combinations(collect(combinations(vcat(collect(0:8), [6]), 6)), 2))
 end
 
 end #module

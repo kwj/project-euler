@@ -38,7 +38,7 @@ function solve_0075(L::Int = 1_500_000)
             end
         end
     end
-    count((x) -> x == 1, counter)
+    count(x -> x == 1, counter)
 end
 
 end #module
