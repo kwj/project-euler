@@ -14,13 +14,13 @@ function solve_0004(n_digits::Int = 3)
     blk_width = 10 ^ (n_digits * 2 - 2)
     answer = Int[]
 
-    for blk_upper in StepRange(blk_upper_limit, -blk_width, blk_lower_limit)
-        blk_lower = blk_upper - blk_width
-        for x in StepRange(num_upper, -1, num_lower)
+    for blk_upper in blk_upper_limit:-blk_width:blk_lower_limit
+            blk_lower = blk_upper - blk_width
+        for x in num_upper:-1:num_lower
             if x * x < blk_lower
                 break
             end
-            for y in StepRange(min(blk_upper ÷ x, x), -1, num_lower)
+            for y in min(blk_upper ÷ x, x):-1:num_lower
                 tmp = x * y
                 if tmp < blk_lower
                     break
@@ -35,7 +35,7 @@ function solve_0004(n_digits::Int = 3)
         end
     end
 
-    @assert false "Not find"
+    @assert false "Not found"
 end
 
 end #module
