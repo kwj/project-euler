@@ -3,13 +3,13 @@
 
 /*
   This implementation doesn't set an upper limit of prime numbers and examines them until the smallest
-  sum of set is fixed, but it is quite slow. The following is a result on Raspberry Pi 4.
+  sum of set is fixed, but it is quite slow. The following is a result with Deno 1.31.3 on Raspberry Pi 4.
 
   $ ./solve.sh 60
   Task solve deno run --quiet --allow-hrtime --allow-read --allow-net ./main.ts "60"
   [Problem 60]
   Answer: 26033
-  Elapsed time: 55227.6124 msec.
+  Elapsed time: 37327.8826 msec.
 
   It is easy to find a 5-clique, however, it needs time to confirm its sum is the smallest.
 */
