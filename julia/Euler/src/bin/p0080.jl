@@ -13,8 +13,8 @@
 
 module Prob0080
 
-function solve_0080(limit::Int = 100, ndigit::Int = 100)
-    e = (ndigit - 1) * 2
+function solve_0080(limit::Int = 100, n_digits::Int = 100)
+    e = (n_digits - 1) * 2
     sum(sum(digits(isqrt(big(10) ^ e * n))) for n = 1:limit if isqrt(n) ^ 2 != n)
 end
 
