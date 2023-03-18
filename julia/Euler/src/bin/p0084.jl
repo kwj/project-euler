@@ -59,7 +59,14 @@ function solve_0084(nfaces::Int = 4, nsquares::Int = 3)
         stoch_matrix[chest, :] -= stoch_matrix[chest, :] ./ 8
     end
 
+    # Ax = λx
+    #   A: linear transformation  (in this case, sochastic matrix)
+    #   λ: eigenvalue  (in this case, it's one)
+    #   x: eigenvector
+    # Ax = x ⇔ (A-I)x = 0.  (I is a identity matrix)
+    # so, x is a null space of (A - I).
     null_space = nullspace(stoch_matrix - I)
+
     # note: If we want the stationary distribution of 'stoch_matrix', we must normalized 'null_space'.
     # null_space ./= sum(null_space)
 
