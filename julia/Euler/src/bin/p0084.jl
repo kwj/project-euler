@@ -20,10 +20,10 @@ module Prob0084
 import LinearAlgebra: nullspace, I
 
 function solve_0084(nfaces::Int = 4, nsquares::Int = 3)
-    (GO,   A1, CC1, A2,  T1, R1, B1,  CH1, B2, B3,
-     JAIL, C1, U1,  C2,  C3, R2, D1,  CC2, D2, D3,
-     FP,   E1, CH2, E2,  E3, R3, F1,  F2,  U2, F3,
-     G2J,  G1, G2,  CC3, G3, R4, CH3, H1,  T2, H2) = collect(1:40)
+    GO,   A1, CC1, A2,  T1, R1, B1,  CH1, B2, B3,
+    JAIL, C1, U1,  C2,  C3, R2, D1,  CC2, D2, D3,
+    FP,   E1, CH2, E2,  E3, R3, F1,  F2,  U2, F3,
+    G2J,  G1, G2,  CC3, G3, R4, CH3, H1,  T2, H2 = collect(1:40)
 
     dice_prblty = zeros(nfaces * 2)
     for n1 = 1:nfaces, n2 = 1:nfaces
@@ -60,7 +60,7 @@ function solve_0084(nfaces::Int = 4, nsquares::Int = 3)
     end
 
     # Ax = λx
-    #   A: linear transformation  (in this case, sochastic matrix)
+    #   A: linear transformation  (in this case, stochastic matrix)
     #   λ: eigenvalue  (in this case, it's one)
     #   x: eigenvector
     # Ax = x ⇔ (A-I)x = 0.  (I is a identity matrix)
