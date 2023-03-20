@@ -16,7 +16,7 @@ function solve_0019()
     #     Feb 1, 1901 was Firday since ((1 + 365) + 31) mod 7 = 5.
     #     ... and so on
     pushfirst!(days, 1 + 365)
-    length(filter(x -> x % 7 == 0, accumulate(+, days)))
+    count(x -> x % 7 == 0, accumulate(+, days))
 end
 
 end #module
