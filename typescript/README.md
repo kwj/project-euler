@@ -22,16 +22,16 @@ sh solve.sh 31 32 33
 
 Caution: These solutions aren't good examples for programming since I am a JavaScript/TypeScript newbie.
 
-It was confirmed to work with Deno v1.31.3.
+It was confirmed to work with Deno v1.32.1.
 
 ```js
 > Deno.version
-{ deno: "1.31.3", v8: "11.0.226.19", typescript: "4.9.4" }
+{ deno: "1.32.1", v8: "11.2.214.9", typescript: "5.0.2" }
 ```
 
-I used the following libraries/packages in addition to the standard runtime APIs part of Deno v1.31.3.
+I used the following libraries/packages in addition to the standard runtime APIs part of Deno v1.32.1.
 
-- Deno Standard Modules 0.180.0[^2]
+- Deno Standard Modules 0.181.0[^2]
 - Combinatorics 1.1.2[^3]
 
 If you try to run these solutions on newer version of Deno, you should update import map for Deno Standard Modules in the configuration file.
@@ -39,6 +39,6 @@ You can check [versions.json](https://github.com/denoland/dotland/blob/main/vers
 
 [^1]: https://deno.land/
 
-[^2]: https://deno.land/std@0.180.0
+[^2]: https://deno.land/std@0.181.0
 
 [^3]: https://deno.land/x/combinatorics@1.1.2
