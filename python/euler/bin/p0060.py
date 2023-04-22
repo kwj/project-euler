@@ -4,16 +4,16 @@
 '''
 This implementation is slow. The following is a result on Raspberry Pi 4.
 
-$ ./solve.py 60
+% python3
+Python 3.11.2 (main, Mar 13 2023, 12:18:29) [GCC 12.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+% ./solve.py 60
 [Problem 60]
 Answer: 26033
-Elapsed time: 62.858064 sec.
+Elapsed time: 45.732660 sec.
 
 It is easy to find a 5-clique, however, it needs time to confirm its sum is the smallest.
-
-It completed about 22 seconds when I ran this program on Mac mini 2018 (Intel i5-8500).
-If we use other fast programming language, we will also be able to achieve the one-minute
-rule by this algorithm on Raspberry Pi 4.
 '''
 
 from euler.lib.prime import is_probably_prime, prime_generator
