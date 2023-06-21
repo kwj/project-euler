@@ -23,11 +23,11 @@ I used the following libraries/packages in addition to the standard libraries pa
 
 - Str [^1]
 - Zarith 1.12[^2]
-- Core v0.15.1[^3]
+- Core v0.16.0[^3]
 
 I also used the following package for compilation.
 
-- Dune 3.6.1[^4]
+- Dune 3.8.2[^4]
 
 [^1]: It's distributd with OCaml itself.
 
