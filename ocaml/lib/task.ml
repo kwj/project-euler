@@ -24,15 +24,15 @@ let read_data () =
     loop []
 
 let run (fn: unit -> string) =
-  let t1 = Time.now () in
+  let t1 = Time_float.now () in
   let result = fn () in
-  let elapsed_time = Time.diff (Time.now ()) t1 in
+  let elapsed_time = Time_float.diff (Time_float.now ()) t1 in
   print_endline result;
-  printf "Elapsed time: %s\n" (Time.Span.to_string elapsed_time)
+  printf "Elapsed time: %s\n" (Time_float.Span.to_string elapsed_time)
 
 let run_with_data (fn: string list -> string) data =
-  let t1 = Time.now () in
+  let t1 = Time_float.now () in
   let result = fn data in
-  let elapsed_time = Time.diff (Time.now ()) t1 in
+  let elapsed_time = Time_float.diff (Time_float.now ()) t1 in
   print_endline result;
-  printf "Elapsed time: %s\n" (Time.Span.to_string elapsed_time)
+  printf "Elapsed time: %s\n" (Time_float.Span.to_string elapsed_time)
