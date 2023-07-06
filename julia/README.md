@@ -12,6 +12,10 @@ The following are examples.
 julia> solve_0001()
 ```
 
+```console
+julia> @time solve_0002()
+```
+
 ## Notes
 
 It was confirmed to work with Julia 1.9.1.
