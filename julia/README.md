@@ -1,6 +1,6 @@
 # Solutions in Julia
 
-It was confirmed to work with Julia 1.9.0.
+It was confirmed to work with Julia 1.9.1.
 
 I used the following packages and their dependent packages.
 
@@ -9,4 +9,4 @@ I used the following packages and their dependent packages.
 - LinearAlgebra[^1]
 - Primes v0.5.3
 
-[^1]: It's distributd with Julia 1.9.0
+[^1]: It's distributd with Julia 1.9.1
