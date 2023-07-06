@@ -1,5 +1,19 @@
 # Solutions in Julia
 
+## How to run
+
+```console
+sh solve.sh
+```
+
+The following are examples.
+
+```console
+julia> solve_0001()
+```
+
+## Notes
+
 It was confirmed to work with Julia 1.9.1.
 
 I used the following packages and their dependent packages.
