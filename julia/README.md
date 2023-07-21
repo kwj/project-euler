@@ -10,10 +10,14 @@ The following are examples.
 
 ```console
 julia> solve_0001()
+
+julia> @time solve_0002()
 ```
 
+You can run the test suite in the Pkg REPL.
+
 ```console
-julia> @time solve_0002()
+(Euler) pkg> test
 ```
 
 ## Notes
