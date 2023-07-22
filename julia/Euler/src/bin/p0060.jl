@@ -3,7 +3,7 @@
 
 module Prob0060
 
-import Primes: isprime, prime
+import Primes: isprime, nextprime
 import Combinatorics: combinations
 
 function is_pair(x, y)
@@ -36,9 +36,10 @@ function solve_0060(size_of_clique::Int = 5)
     tbl = Dict{Int, Vector{Int}}()
     answer = typemax(Int)
 
-    # start from prime(4) = 7
-    for nth in Iterators.countfrom(4)
-        p = prime(nth)
+    # start from the 4th prime, 7
+    p = 5
+    while true
+        p = nextprime(p + 1)
 
         # break this loop when it has verified the answer is smallest
         if p >= answer
@@ -52,7 +53,7 @@ function solve_0060(size_of_clique::Int = 5)
         # update known prime numbers
         push!(prime_lst[idx], p)
 
-        # if number of connectable primes is larger or equal 4, check if sets of five primes satisfy the condition or not.
+        # if number of connectable primes is less than 'size_of_clique - 1', check the next prime.
         if length(nbr_lst) < size_of_clique - 1
             continue
         end
