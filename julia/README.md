@@ -6,7 +6,7 @@
 sh solve.sh
 ```
 
-The following are examples.
+The following are examples of execution.
 
 ```console
 julia> solve_0001()

@@ -6,7 +6,7 @@
 sh solve.sh <problem_number> [-f data_file]
 ```
 
-The following are examples.
+The following are examples of execution.
 
 ```console
 sh solve.sh 1

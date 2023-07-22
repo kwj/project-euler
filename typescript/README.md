@@ -2,13 +2,13 @@
 
 ## How to run
 
-The Deno[^1] runtime is required.
+The Deno[^1] runtime is required. These solutions will not work with the Node.js runtime.
 
 ```console
 sh solve.sh <problem_number> [problem_number ...]
 ```
 
-The following are examples.
+The following are examples of execution.
 
 ```console
 sh solve.sh 1
@@ -33,8 +33,6 @@ I used the following libraries/packages in addition to the standard runtime APIs
 
 - Deno Standard Modules 0.195.0[^2]
 - Combinatorics 1.1.2[^3]
-
-If you try to run these solutions on newer version of Deno, you should update import map for Deno Standard Modules in the configuration file.
 
 [^1]: https://deno.land/
 

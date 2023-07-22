@@ -6,7 +6,7 @@
 python3 solve.py <problem_number> [problem_number ...]
 ```
 
-The following are examples.
+The following is an example of execution.
 
 ```console
 python3 solve.py 1
