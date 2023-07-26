@@ -9,7 +9,7 @@ export function compute(limit: number): string {
   cache.fill(0);
   cache[1] = 1;
 
-  for (let cur of range(limit - 1, 1, -1)) {
+  for (let cur of range(Math.trunc(limit / 2), limit)) {
     if (cache[cur] !== 0) {
       continue;
     }

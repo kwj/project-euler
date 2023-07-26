@@ -7,7 +7,7 @@ def compute(limit):
     cache = [0] * limit
     cache[1] = 1
 
-    for cur in range(limit - 1, 1, -1):
+    for cur in range(limit // 2, limit):
         if cache[cur] != 0:
             continue
 
