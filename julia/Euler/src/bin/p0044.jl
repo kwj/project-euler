@@ -17,7 +17,7 @@ function solve_0044()
     #  - They are less than 'n'.
     #  - They are congruent to 'n' modulo 3.
     # note: 'n' and '3n-1' are relatively prime.
-    get_divisors(n) = filter(x -> x < n && x % 3 == n % 3, vcat(divisors(n), divisors(3n - 1)))
+    get_divisors(n) = [x * y for (x, y) in Iterators.product(divisors(n), divisors(3n - 1)) if x * y < n && (x * y) % 3 == n % 3]
     pent(n) = (n * (3n - 1)) ÷ 2
 
     for d in Iterators.countfrom(4)
