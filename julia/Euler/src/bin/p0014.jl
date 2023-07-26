@@ -5,18 +5,18 @@ module Prob0014
 
 memo = Dict{Int, Int}(1 => 1)
 
-function get_collatz(n)
+function get_collatz_length(n)
     get!(memo, n) do
         if iseven(n)
-            get_collatz(n ÷ 2) + 1
+            get_collatz_length(n ÷ 2) + 1
         else
-            get_collatz(3n + 1) + 1
+            get_collatz_length(3n + 1) + 1
         end
     end
 end
 
 function solve_0014(limit::Int = 1_000_000)
-    argmax(get_collatz, (limit ÷ 2):(limit - 1))
+    argmax(get_collatz_length, (limit ÷ 2):(limit - 1))
 end
 
 end #module
