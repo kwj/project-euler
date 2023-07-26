@@ -1,12 +1,10 @@
 
 // project euler: problem 15
 
-import { factorial } from "../lib/math.ts";
+import { factorialBigint } from "../lib/math.ts";
 
 export function compute(m: number, n: number): string {
-  const trunc = Math.trunc;
-
-  return String(trunc(trunc(factorial(m + n) / factorial(m)) / factorial(n)));
+  return String(factorialBigint(BigInt(m + n)) / factorialBigint(BigInt(m)) / factorialBigint(BigInt(n)))
 }
 
 export function solve(): void {
