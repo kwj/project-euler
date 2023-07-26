@@ -10,7 +10,7 @@ function get_collatz(n)
         if iseven(n)
             get_collatz(n ÷ 2) + 1
         else
-            get_collatz((3n + 1) ÷ 2) + 2
+            get_collatz(3n + 1) + 1
         end
     end
 end
