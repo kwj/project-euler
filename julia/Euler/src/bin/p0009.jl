@@ -21,7 +21,7 @@ function solve_0009(perim::Int = 1_000)
         end
         x = m + 1 + (m % 2)    # x = m + n, x is odd number
         while x < 2m && x <= (perim ÷ 2) ÷ m
-            if (perim ÷ 2) ÷ m % x == 0
+            if gcd(m, x) == 1 && (perim ÷ 2) ÷ m % x == 0
                 k = (perim ÷ 2) ÷ m ÷ x
                 n = x - m
                 return (k ^ 3) * (m ^ 4 - n ^ 4) * 2 * m * n

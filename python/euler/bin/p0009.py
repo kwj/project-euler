@@ -10,7 +10,7 @@
 #     'm+n' is a divisor to 500/m.
 #     m(m+n) <= 500 --> m <= isqrt(500), m+n <= 500/m
 
-from math import isqrt
+from math import isqrt, gcd
 from time import perf_counter
 
 def compute(perim):
@@ -20,7 +20,7 @@ def compute(perim):
 
         x = m + 1 + (m % 2)     # x = m + n, x is odd number
         while x < 2 * m and x <= (perim // 2) // m:
-            if (perim // 2) // m % x == 0:
+            if gcd(m, x) == 1 and (perim // 2) // m % x == 0:
                 k = (perim // 2) // m // x
                 n = x - m
                 return str(pow(k, 3) * (pow(m, 4) - pow(n, 4)) * 2 * m * n)

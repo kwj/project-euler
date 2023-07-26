@@ -27,7 +27,7 @@ let solve perim =
           if x >= 2 * m || x > (perim / 2) / m then
             loop (pred m)
           else
-            if (perim / 2) / m mod x = 0 then
+            if Euler.Math.gcd m x = 1 && (perim / 2) / m mod x = 0 then
               let k = ((perim / 2) / m) / x and
                   n = x - m in
               (Int.pow k 3) * ((Int.pow m 4) - (Int.pow n 4)) * 2 * m * n

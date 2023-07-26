@@ -12,7 +12,7 @@
        m(m+n) <= 500 --> m <= isqrt(500), m+n <= 500/m
 */
 
-import { isqrt } from "../lib/math.ts";
+import { gcd, isqrt } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
 export function compute(perim: number): string {
@@ -25,7 +25,7 @@ export function compute(perim: number): string {
 
     let x = m + 1 + (m % 2);
     while (x < 2 * m && x <= trunc(trunc(perim / 2) / m)) {
-      if (trunc(trunc(perim / 2) / 2) % x === 0) {
+      if (gcd(m, x) === 1 && trunc(trunc(perim / 2) / 2) % x === 0) {
         const k = trunc(trunc(trunc(perim / 2) / m) / x);
         const n = x - m;
 
