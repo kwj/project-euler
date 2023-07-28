@@ -83,7 +83,7 @@ def get_sigma_tbl(z, upper):
         q = p
         while q <= upper:
             for n in range(2, upper // q + 1):
-                if n % p == 0:
+                if result[n] == 1 or n % p == 0:
                     continue
                 result[q * n] = result[q] * result[n]
             q *= p
