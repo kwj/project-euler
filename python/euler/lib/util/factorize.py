@@ -1,4 +1,5 @@
 
+from ..prime import get_primes
 from math import isqrt
 from itertools import repeat, starmap
 from functools import reduce
@@ -63,3 +64,28 @@ def num_of_divisors(num):
     _, e_iter = zip(*factorize(num))
 
     return reduce(lambda x, y: x * y, map(lambda x: x + 1, e_iter))
+
+# divisor function
+# https://en.wikipedia.org/wiki/Divisor_function
+def get_sigma_tbl(z, upper):
+    p_lst = get_primes(upper)
+    result = [1] * (upper + 1)
+
+    for p in p_lst:
+        q = p
+        x = 0
+        while q <= upper:
+            x += q ** z
+            result[q] += x
+            q *= p
+
+    for p in p_lst:
+        q = p
+        while q <= upper:
+            for n in range(2, upper // q + 1):
+                if n % p == 0:
+                    continue
+                result[q * n] = result[q] * result[n]
+            q *= p
+
+    return result
