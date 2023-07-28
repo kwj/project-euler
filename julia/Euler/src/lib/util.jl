@@ -108,7 +108,7 @@ function get_σ_tbl(z, upper)
         q = p
         while q <= upper
             for n in 2:upper ÷ q
-                if n % p == 0
+                if result[n] == 1 || n % p == 0
                     continue
                 end
                 result[q * n] = result[q] * result[n]
