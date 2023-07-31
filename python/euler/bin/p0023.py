@@ -1,36 +1,31 @@
 
 # project euler: problem 23
 
+from euler.lib.util import get_sigma_tbl
 from time import perf_counter
 
 ULIMIT = 28123
 
-def get_abndnt_nums():
-    # lookup table: sum of its proper divisors
-    sd_tbl = [1] * (ULIMIT + 1)
-    for i in range(2, ULIMIT + 1):
-        for j in range(2 * i, ULIMIT + 1, i):
-            sd_tbl[j] += i
+def get_abndnt_tbl():
+    d_tbl = get_sigma_tbl(1, ULIMIT)
+    for x in range(1, ULIMIT + 1):
+        d_tbl[x] -= x
+    d_tbl[0] = 0
 
-    return list(filter(lambda x: x < sd_tbl[x], range(12, ULIMIT + 1)))
+    return [x < d_tbl[x] for x in range(ULIMIT + 1)]
 
 def compute():
-    def is_sum_of_two_abndnts(n):
-        # n = x + (n-x). x is abundant number.
-        # if (n-x) is abundant number, return True.
-        for x in abndnt_nums:
-            if x > n // 2:
-                break
-            if abndnt_flag[n - x] == True:
-                return True
-        return False
+    abndnt_flag = get_abndnt_tbl()
+    abndnt_lst = []
+    acc = 0
+    for i in range(1, ULIMIT + 1):
+        if i % 2 == 0 and abndnt_flag[i // 2] == True:
+            abndnt_lst.append(i // 2)
+        if any(abndnt_flag[i - x] for x in abndnt_lst):
+            continue
+        acc += i
 
-    abndnt_nums = get_abndnt_nums()
-    abndnt_flag = [False] * (ULIMIT + 1)
-    for idx in abndnt_nums:
-        abndnt_flag[idx] = True
-
-    return str(sum(n for n in range(1, ULIMIT + 1) if is_sum_of_two_abndnts(n) == False))
+    return str(acc)
 
 def solve():
     start = perf_counter()
