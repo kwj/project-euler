@@ -121,6 +121,7 @@
 
     @testset "0026" begin
         @test solve_0026(10) == 7
+        @test solve_0026(300) == 289
         @test solve_0026(1_000) == 983
     end
 
