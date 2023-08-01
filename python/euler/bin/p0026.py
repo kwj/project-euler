@@ -20,7 +20,6 @@ def find_repetend_length(d):
     if (d := pp(d)) == 1:
         return 0
 
-    acc = 1
     for k in divisors(totient(d)):
         if pow(10, k, d) == 1:
             return k
