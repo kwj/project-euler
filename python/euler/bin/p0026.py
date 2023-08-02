@@ -28,16 +28,16 @@ def find_repetend_length(d):
 
 def compute(limit):
     max_length = 0
-    num = 0
+    answer = 0
     for i in range(limit - 1, ((limit // 2) - 1), -1):
         if i <= max_length:
             break
         repetend_length = find_repetend_length(i)
         if repetend_length > max_length:
-            num = pp(i)
+            answer = pp(i)
             max_length = repetend_length
 
-    return str(num)
+    return str(answer)
 
 def solve():
     start = perf_counter()
