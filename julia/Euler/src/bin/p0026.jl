@@ -6,7 +6,8 @@ module Prob0026
 import Primes: factor
 import ..Util: divisors
 
-@inline function pp(n)
+# preprocessing
+function pp(n)
     while n % 2 == 0
         n ÷= 2
     end
