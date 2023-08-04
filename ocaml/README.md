@@ -17,8 +17,9 @@ sh solve.sh 22 -f data/p022_names.txt
 
 ## Notes
 
-It was confirmed to work with OCaml 5.0.0.
+The quality of these programs is low since I'm a newbie of OCaml.
 
+It was confirmed to work with OCaml 5.0.0.
 I used the following libraries/packages in addition to the standard libraries part of OCaml 5.0.
 
 - Str [^1]
