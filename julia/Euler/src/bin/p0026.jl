@@ -25,13 +25,13 @@ function totient(n)
     result
 end
 
-function find_repetend_length(d)
-    d = pp(d)
-    if d == 1
+function find_repetend_length(n)
+    n = pp(n)
+    if n == 1
         return 0
     end
-    for k in divisors(totient(d))
-        if powermod(10, k, d) == 1
+    for k in divisors(totient(n))
+        if powermod(10, k, n) == 1
             return k
         end
     end
@@ -39,18 +39,18 @@ function find_repetend_length(d)
 end
 
 function solve_0026(upper::Int = 1_000)
-    (max_length, idx) = (0, 0)
+    (max_length, answer) = (0, 0)
 
-    for i = (upper - 1):-1:(upper ÷ 2)
-        if i <= max_length
+    for d = (upper - 1):-1:(upper ÷ 2)
+        if d <= max_length
             break
         end
-        repetend_length = find_repetend_length(i)
+        repetend_length = find_repetend_length(d)
         if repetend_length > max_length
-            (max_length, idx) = (repetend_length, pp(i))
+            (max_length, answer) = (repetend_length, pp(d))
         end
     end
-    idx
+    answer
 end
 
 end #module
