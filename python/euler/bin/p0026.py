@@ -2,6 +2,7 @@
 # project euler: problem 26
 
 from functools import reduce
+from math import lcm
 from euler.lib.util import factorize, divisors
 from time import perf_counter
 
@@ -13,14 +14,16 @@ def pp(n):
 
     return n
 
-def totient(n):
-    return reduce(lambda x, y: x * y, map(lambda x: (x[0] - 1) * (x[0] ** (x[1] - 1)), factorize(n)))
+def carmichael(n):
+    # This function is not strictly the correct Carmichael function
+    # because the function assumes that the argument is not a multiple of 2.
+    return reduce(lambda x, y: lcm(x, y), map(lambda x: (x[0] - 1) * (x[0] ** (x[1] - 1)), factorize(n)))
 
 def find_repetend_length(d):
     if (d := pp(d)) == 1:
         return 0
 
-    for k in divisors(totient(d)):
+    for k in divisors(carmichael(d)):
         if pow(10, k, d) == 1:
             return k
 
