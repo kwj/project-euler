@@ -18,11 +18,7 @@ function pp(n)
 end
 
 function totient(n)
-    result = 1
-    for (b, e) in factor(Dict, n)
-        result *= (b - 1) * (b ^ (e - 1))
-    end
-    result
+    reduce(*, map(((b, e),) -> (b - 1) * (b ^ (e - 1)), collect(factor(n))))
 end
 
 function find_repetend_length(n)
