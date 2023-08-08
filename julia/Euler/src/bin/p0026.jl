@@ -17,13 +17,11 @@ function pp(n)
     n
 end
 
-function carmichael(n)
+function find_repetend_length(n)
     # This function is not strictly the correct Carmichael function
     # because the function assumes that the argument is not a multiple of 2.
-    lcm(map(((b, e),) -> (b - 1) * (b ^ (e - 1)), collect(factor(n))))
-end
+    carmichael(n) = lcm(map(((b, e),) -> (b - 1) * (b ^ (e - 1)), collect(factor(n))))
 
-function find_repetend_length(n)
     n = pp(n)
     if n == 1
         return 0
