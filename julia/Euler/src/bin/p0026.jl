@@ -17,8 +17,10 @@ function pp(n)
     n
 end
 
-function totient(n)
-    reduce(*, map(((b, e),) -> (b - 1) * (b ^ (e - 1)), collect(factor(n))))
+function carmichael(n)
+    # This function is not strictly the correct Carmichael function
+    # because the function assumes that the argument is not a multiple of 2.
+    lcm(map(((b, e),) -> (b - 1) * (b ^ (e - 1)), collect(factor(n))))
 end
 
 function find_repetend_length(n)
@@ -26,7 +28,7 @@ function find_repetend_length(n)
     if n == 1
         return 0
     end
-    for k in divisors(totient(n))
+    for k in divisors(carmichael(n))
         if powermod(10, k, n) == 1
             return k
         end
