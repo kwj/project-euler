@@ -12,7 +12,7 @@
   case #2:
     100 <= X <= 333
   case #3:
-    10 <= X <= 33
+    25 <= X <= 33
   case #4:
     X = 1, 9
  *)
@@ -27,7 +27,7 @@ let rec find_candidates start stop =
       match num with
       | x when x = 1 -> Some [1; 2; 3; 4; 5; 6; 7; 8; 9]    (* case #4 *)
       | x when x = 9 -> Some [9; 18; 27; 36; 45]    (* case #4 *)
-      | x when x >= 10 && x <= 33 -> Some [num; num * 2; num * 3; num * 4]    (* case #3 *)
+      | x when x >= 25 && x <= 33 -> Some [num; num * 2; num * 3; num * 4]    (* case #3 *)
       | x when x >= 1000 && x <= 333 -> Some [num; num * 2; num * 3]    (* case #2 *)
       | x when x >= 5000 && x <= 9999 -> Some [num; num * 2]    (* case #1 *)
       | _ -> None
@@ -46,7 +46,7 @@ let rec find_candidates start stop =
     aux start []
 
 let solve () =
-  ((find_candidates 9999 5000) @ (find_candidates 333 100) @ (find_candidates 33 10) @ (find_candidates 9 9) @ (find_candidates 1 1))
+  ((find_candidates 9999 5000) @ (find_candidates 333 100) @ (find_candidates 33 25) @ (find_candidates 9 9) @ (find_candidates 1 1))
   |> List.sort ~compare:(fun (p1, _) (p2, _) -> p2 - p1)
   |> List.hd_exn
 

@@ -14,7 +14,7 @@
   case #2:
     100 <= X <= 333
   case #3:
-    10 <= X <= 33
+    25 <= X <= 33
   case #4:
     X = 1, 9
 """
@@ -24,7 +24,7 @@ from time import perf_counter
 
 def compute():
     lst = []
-    for m, spec in [(2, (5000, 10000)), (3, (100, 334)), (4, (10, 34)), (5, (9, 10)), (9, (1, 2))]:
+    for m, spec in [(2, (5000, 10000)), (3, (100, 334)), (4, (25, 34)), (5, (9, 10)), (9, (1, 2))]:
         for x in range(*spec):
             s = reduce(lambda x, y: x + y, (str(x * k) for k in range(1, m + 1)))
             if ''.join(sorted(s)) == '123456789':

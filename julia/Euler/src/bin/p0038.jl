@@ -14,7 +14,7 @@
   case #2:
     100 <= X <= 333
   case #3:
-    10 <= X <= 33
+    25 <= X <= 33
   case #4:
     X = 1, 9
 =#
@@ -25,7 +25,7 @@ import ..Util: is_pandigital_nz
 
 function solve_0038()
     answer = []
-    for (m, (start, stop)) in [(2, (5_000, 9_999)), (3, (100, 333)), (4, (10, 33)), (5, (9, 9)), (9, (1, 1))]
+    for (m, (start, stop)) in [(2, (5_000, 9_999)), (3, (100, 333)), (4, (25, 33)), (5, (9, 9)), (9, (1, 1))]
         for x = start:stop
             n = parse(Int, reduce(*, string(x * k) for k = 1:m))
             if is_pandigital_nz(n) == true

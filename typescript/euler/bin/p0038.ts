@@ -14,7 +14,7 @@
   case #2:
     100 <= X <= 333
   case #3:
-    10 <= X <= 33
+    25 <= X <= 33
   case #4:
     X = 1, 9
 */
@@ -23,7 +23,7 @@ import { range } from "../lib/util.ts";
 
 export function compute(): string {
   const lst: string[] = [];
-  const specs: [number, [number, number]][] = [[2, [5_000, 10_000]], [3, [100, 334]], [4, [10, 34]], [5, [9, 10]], [9, [1, 2]]];
+  const specs: [number, [number, number]][] = [[2, [5_000, 10_000]], [3, [100, 334]], [4, [25, 34]], [5, [9, 10]], [9, [1, 2]]];
 
   for (const [n, spec] of specs) {
     for (const x of range(...spec)) {
