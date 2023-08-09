@@ -17,20 +17,28 @@
     25 <= X <= 33
   case #4:
     X = 1, 9
+
+  Since we already know the concatenated product of 9 and (1,2,3,4,5) is 918273645,
+  actually, the range of candidates is [9183, 9999].
+
+  Furthermore, multiplicand `9abc` times 2 must be `18xyz` not `19xyz`.
+  It is clear that the range of candidates is only [9183, 9499].
+  Finally, the last digit of numbers is 0, 1, 4, 5, 8 or 9 can be excluded from candidates.
 */
 
 import { range } from "../lib/util.ts";
 
 export function compute(): string {
-  const lst: string[] = [];
-  const specs: [number, [number, number]][] = [[2, [5_000, 10_000]], [3, [100, 334]], [4, [25, 34]], [5, [9, 10]], [9, [1, 2]]];
+  const lst: string[] = ["918273645"];
 
-  for (const [n, spec] of specs) {
-    for (const x of range(...spec)) {
-      const s = range(1, n + 1).map((k) => String(x * k)).reduce((acc, cur) => acc + cur);
-      if (s.split("").sort().join("") === "123456789") {
-        lst.push(s);
-      }
+  for (const x of range(9183, 9500)) {
+    const rem = x % 10
+    if (rem <= 1 || rem >= 8 || rem == 4 || rem == 5) {
+      continue
+    }
+    const s = String(x * (10 ** 5) + x * 2)
+    if (s.split("").sort().join("") === "123456789") {
+      lst.push(s);
     }
   }
 

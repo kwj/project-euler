@@ -17,21 +17,29 @@
     25 <= X <= 33
   case #4:
     X = 1, 9
+
+  Since we already know the concatenated product of 9 and (1,2,3,4,5) is 918273645,
+  actually, the range of candidates is [9183, 9999].
+
+  Furthermore, multiplicand `9abc` times 2 must be `18xyz` not `19xyz`.
+  It is clear that the range of candidates is only [9183, 9499].
+  Finally, the last digit of numbers is 0, 1, 4, 5, 8 or 9 can be excluded from candidates.
 """
 
 from functools import reduce
 from time import perf_counter
 
 def compute():
-    lst = []
-    for m, spec in [(2, (5000, 10000)), (3, (100, 334)), (4, (25, 34)), (5, (9, 10)), (9, (1, 2))]:
-        for x in range(*spec):
-            s = reduce(lambda x, y: x + y, (str(x * k) for k in range(1, m + 1)))
-            if ''.join(sorted(s)) == '123456789':
-                lst.append(s)
-    lst.sort(reverse=True)
+    lst = ['918273645']
+    for x in range(9183, 9500):
+        rem = x % 10
+        if rem <= 1 or rem >= 8 or rem == 4 or rem == 5:
+            continue
+        s = str(x * (10 ** 5) + x * 2)
+        if ''.join(sorted(s)) == '123456789':
+            lst.append(s)
 
-    return lst[0]
+    return lst[-1]
 
 def solve():
     start = perf_counter()

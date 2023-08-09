@@ -17,6 +17,13 @@
     25 <= X <= 33
   case #4:
     X = 1, 9
+
+  Since we already know the concatenated product of 9 and (1,2,3,4,5) is 918273645,
+  actually, the range of candidates is [9183, 9999].
+
+  Furthermore, multiplicand `9abc` times 2 must be `18xyz` not `19xyz`.
+  It is clear that the range of candidates is only [9183, 9499].
+  Finally, the last digit of numbers is 0, 1, 4, 5, 8 or 9 can be excluded from candidates.
 =#
 
 module Prob0038
@@ -24,13 +31,15 @@ module Prob0038
 import ..Util: is_pandigital_nz
 
 function solve_0038()
-    answer = []
-    for (m, (start, stop)) in [(2, (5_000, 9_999)), (3, (100, 333)), (4, (25, 33)), (5, (9, 9)), (9, (1, 1))]
-        for x = start:stop
-            n = parse(Int, reduce(*, string(x * k) for k = 1:m))
-            if is_pandigital_nz(n) == true
-                push!(answer, n)
-            end
+    answer = [918273645]
+    for x = 9183:9499
+        rem = x % 10
+        if rem <= 1 || rem >= 8 || rem == 4 || rem == 5
+            continue
+        end
+        n = x * 10^5 + 2x
+        if is_pandigital_nz(n) == true
+            push!(answer, n)
         end
     end
 
