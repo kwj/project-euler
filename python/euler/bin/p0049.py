@@ -1,34 +1,38 @@
 
 # project euler: problem 49
 
-from itertools import combinations
 from functools import reduce
 from euler.lib.prime import sieve
 from time import perf_counter
 
-def compute(limit):
-    def is_perm(p1, p2, p3):
-        s1 = ''.join(sorted(str(p1)))
-        s2 = ''.join(sorted(str(p2)))
-        s3 = ''.join(sorted(str(p3)))
+def get_prime_tbl(ndigits):
+    p_tbl = {}
 
-        return s1 == s2 and s1 == s3
+    pt = sieve(10 ** (ndigits - 1), 10 ** ndigits)
+    for p in pt.get_primes():
+        key = ''.join(sorted(str(p)))
+        v = p_tbl.get(key, [])
+        v.append(p)
+        p_tbl[key] = v
 
-    result = []
-    pt = sieve(1000, limit)
-    for i, j in combinations(pt.get_primes(), 2):
-        m = (i + j) // 2
-        if pt.is_prime(m) == True and is_perm(i, m, j) == True:
-            result.append([i, m, j])
+    return p_tbl
 
-    result = list(filter(lambda lst: lst[0] != 1487 and lst[2] != 8147, result))
-    assert len(result) == 1, 'too many answers'
+def compute(ndigits):
+    p_tbl = get_prime_tbl(ndigits)
+    for lst in p_tbl.values():
+        if (length := len(lst)) < 3:
+            continue
+        for i in range(length - 2):
+            for j in range(i + 1, length - 1):
+                tmp = lst[j] * 2 - lst[i]    # (x + a) * 2 - x = x + 2a
+                if tmp in lst and lst[i] != 1487 and lst[j] != 4817:
+                    return reduce(lambda x, y: x + y, map(str, [lst[i], lst[j], tmp]))
 
-    return reduce(lambda x, y: x + y, map(str, result[0]))
+    assert False, 'Not Reached'
 
 def solve():
     start = perf_counter()
-    result = compute(9999)
+    result = compute(4)
     elapsed_time = perf_counter() - start
 
     return (result, "{:f}".format(elapsed_time))
