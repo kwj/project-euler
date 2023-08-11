@@ -64,7 +64,7 @@ class Sieve:
             self._end = end
             self._make_prime_tbl()
 
-        return
+        return self
 
     def get_primes(self):
         if self._end != 0:
