@@ -16,7 +16,7 @@ def check_num(n):
     return True
 
 def compute():
-    for ndigits in count(1):
+    for ndigits in count(6):
         lower = 10 ** (ndigits - 1)
         upper = (10 ** ndigits) // 6
         for n in range(lower, upper + 1):

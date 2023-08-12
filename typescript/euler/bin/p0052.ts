@@ -19,7 +19,7 @@ function checkNum(n: number): boolean {
 }
 
 export function compute(): string {
-  let ndigits = 1;
+  let ndigits = 6;
   while (true) {
     const lower = 10 ** (ndigits - 1);
     const upper = Math.trunc((10 ** ndigits) / 6);

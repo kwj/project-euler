@@ -30,6 +30,6 @@ let rec loop d =
   | None -> loop (succ d)
 
 let exec () =
-  Int.to_string (loop 1)
+  Int.to_string (loop 6)
 
 let () = Euler.Task.run exec

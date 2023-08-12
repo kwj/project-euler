@@ -16,7 +16,7 @@ function check_num(num)
 end
 
 function solve_0052()
-    first(n for exp in Iterators.countfrom(1) for n = (10^(exp-1)):(10^exp ÷ 6) if check_num(n) == true)
+    first(n for exp in Iterators.countfrom(6) for n = (10^(exp-1)):(10^exp ÷ 6) if check_num(n) == true)
 end
 
 end #module
