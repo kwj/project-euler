@@ -7,9 +7,6 @@
     --> m < 10
    and
     --> (n - 1)/n <= log10(m)
-    --> 10 ^ (n - 1)/n <= 10 ^ log10(m)
-    --> log10(10 ^ (n - 1)/n) <= log10(m)
-    --> 10 ^ (n - 1)/n <= m
 */
 
 export function compute(): string {
@@ -18,7 +15,8 @@ export function compute(): string {
   let m = 1;
   let n = 1;
   while (m < 10) {
-    while (Math.pow(10, ((n - 1) / n)) <= m) {
+    const upper_m = Math.log10(m);
+    while ((n - 1) / n <= upper_m) {
       n += 1;
       cnt += 1;
     }

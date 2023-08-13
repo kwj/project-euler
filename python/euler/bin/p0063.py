@@ -7,12 +7,9 @@
     --> m < 10
    and
     --> (n - 1)/n <= log10(m)
-    --> 10 ^ (n - 1)/n <= 10 ^ log10(m)
-    --> log10(10 ^ (n - 1)/n) <= log10(m)
-    --> 10 ^ (n - 1)/n <= m
 '''
 
-from itertools import count
+from math import log
 from time import perf_counter
 
 def compute():
@@ -21,7 +18,8 @@ def compute():
     m = 1
     n = 1
     while m < 10:
-        while 10 ** ((n - 1) / n) <= m:
+        upper_m = log(m, 10)
+        while (n - 1) / n <= upper_m:
             n += 1
             cnt += 1
 

@@ -7,9 +7,6 @@
     --> m < 10
    and
     --> (n - 1)/n <= log10(m)
-    --> 10 ^ (n - 1)/n <= 10 ^ log10(m)
-    --> log10(10 ^ (n - 1)/n) <= log10(m)
-    --> 10 ^ (n - 1)/n <= m
 =#
 
 module Prob0063
@@ -20,7 +17,8 @@ function solve_0063()
     m = 1
     n = 1
     while m < 10
-        while 10 ^ ((n - 1) / n) <= m
+        upper_m = log10(m)
+        while (n - 1) / n <= upper_m
             n += 1
             cnt += 1
         end
