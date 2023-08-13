@@ -7,26 +7,22 @@
     --> m < 10
    and
     --> (n - 1)/n <= log10(m)
+    --> n/n - (n -1)/n >= 1 - log10(m)
+    --> 1/n >= 1 - log10(m)
+    --> 1/(1 - log10(m)) >= n
 '''
 
-from math import log
+from math import log10
 from time import perf_counter
 
 def compute():
-    acc = 0
     cnt = 0
     m = 1
-    n = 1
     while m < 10:
-        upper_m = log(m, 10)
-        while (n - 1) / n <= upper_m:
-            n += 1
-            cnt += 1
-
+        cnt += int(1 / (1 - log10(m)))
         m += 1
-        acc += cnt
 
-    return str(acc)
+    return str(cnt)
 
 def solve():
     start = perf_counter()
