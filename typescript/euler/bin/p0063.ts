@@ -12,22 +12,21 @@
     --> 10 ^ (n - 1)/n <= m
 */
 
-import { range } from "../lib/util.ts";
-
 export function compute(): string {
+  let acc = 0;
   let cnt = 0;
-  for (const m of range(1, 9 + 1)) {
-    let n = 0;
-    while (true) {
+  let m = 1;
+  let n = 1;
+  while (m < 10) {
+    while (Math.pow(10, ((n - 1) / n)) <= m) {
       n += 1;
-      if (Math.pow(10, (n - 1) / n) > m) {
-        break;
-      }
       cnt += 1;
     }
+    m += 1;
+    acc += cnt;
   }
 
-  return String(cnt);
+  return String(acc);
 }
 
 export function solve(): void {

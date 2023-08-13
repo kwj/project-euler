@@ -15,16 +15,19 @@
 module Prob0063
 
 function solve_0063()
+    acc = 0
     cnt = 0
-    for m = 1:9
-        for n in Iterators.countfrom(1)
-            if (big(10) ^ (n - 1)) ^ (1 / n) > m
-                break
-            end
+    m = 1
+    n = 1
+    while m < 10
+        while 10 ^ ((n - 1) / n) <= m
+            n += 1
             cnt += 1
         end
+        m += 1
+        acc += cnt
     end
-    cnt
+    acc
 end
 
 end #module

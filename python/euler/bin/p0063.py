@@ -16,14 +16,19 @@ from itertools import count
 from time import perf_counter
 
 def compute():
+    acc = 0
     cnt = 0
-    for m in range(1, 10):
-        for n in count(1):
-            if pow(pow(10, (n - 1)), (1 / n)) > m:
-                break
+    m = 1
+    n = 1
+    while m < 10:
+        while 10 ** ((n - 1) / n) <= m:
+            n += 1
             cnt += 1
 
-    return str(cnt)
+        m += 1
+        acc += cnt
+
+    return str(acc)
 
 def solve():
     start = perf_counter()
