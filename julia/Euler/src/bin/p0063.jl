@@ -7,23 +7,18 @@
     --> m < 10
    and
     --> (n - 1)/n <= log10(m)
+    --> (n - 1)/n <= log10(m)
+    --> n/n - (n -1)/n >= 1 - log10(m)
+    --> 1/n >= 1 - log10(m)
+    --> 1/(1 - log10(m)) >= n
 =#
 
 module Prob0063
 
 function solve_0063()
     acc = 0
-    cnt = 0
-    m = 1
-    n = 1
-    while m < 10
-        upper_m = log10(m)
-        while (n - 1) / n <= upper_m
-            n += 1
-            cnt += 1
-        end
-        m += 1
-        acc += cnt
+    for m in 1:9
+        acc += floor(Int, 1 / (1 - log10(m)))
     end
     acc
 end
