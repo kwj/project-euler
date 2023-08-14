@@ -16,11 +16,7 @@
 module Prob0063
 
 function solve_0063()
-    acc = 0
-    for m in 1:9
-        acc += floor(Int, 1 / (1 - log10(m)))
-    end
-    acc
+    sum(floor(Int, 1 / (1 - log10(m))) for m in 1:9)
 end
 
 end #module
