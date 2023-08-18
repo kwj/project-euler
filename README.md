@@ -5,7 +5,7 @@
 I play around with Project Euler to get a feel for programing languages.
 This repository deals with only the first 100 problems in accordance with the rule[^1].
 
-It may help you in solving problems, but it will not help you in programming.
+I wrote down [my thoughts](./doc/README.md). It might help you understand my programs.
 
 You can use these programs under MIT License unless otherwise stated.
 
