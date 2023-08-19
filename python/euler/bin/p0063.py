@@ -10,14 +10,14 @@
     --> n/n - (n -1)/n >= 1 - log10(m)
     --> 1/n >= 1 - log10(m)
     --> 1/(1 - log10(m)) >= n
-    --> n_{max} = floor(1/(1 - log10(m)))
+    --> n_{max} = floor(1/(1 - log10(m))) = floor( log_{10/m} 10 )
 '''
 
-from math import log10
+from math import log
 from time import perf_counter
 
 def compute():
-    return str(sum(int(1 / (1 - log10(m))) for m in range(1, 10)))
+    return str(sum(int(log(10, 10 / m)) for m in range(1, 10)))
 
 def solve():
     start = perf_counter()

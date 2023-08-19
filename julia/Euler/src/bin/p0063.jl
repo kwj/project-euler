@@ -10,13 +10,13 @@
     --> (n - 1)/n <= log10(m)
     --> n/n - (n -1)/n >= 1 - log10(m)
     --> 1/n >= 1 - log10(m)
-    --> 1/(1 - log10(m)) >= n
+    --> 1/(1 - log10(m)) = log_{10/m} 10 >= n
 =#
 
 module Prob0063
 
 function solve_0063()
-    sum(floor(Int, 1 / (1 - log10(m))) for m in 1:9)
+    sum(floor(Int, log(10 / m, 10)) for m in 1:9)
 end
 
 end #module
