@@ -1,5 +1,7 @@
 # Notes on Project Euler
 
+Japanese version is [here](./README_ja.md).
+
 - 1: [Multiples of 3 or 5](./en/p0001.md)
 - 2: [Even Fibonacci Numbers](./en/p0002.md)
 - 3: [Largest Prime Factor](./en/p0003.md)
