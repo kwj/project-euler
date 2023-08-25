@@ -56,6 +56,10 @@ export function isPrime(num: number): boolean {
     }
   }
 
+  if (num < 2) {
+    return false;
+  }
+
   let d = BigInt(num - 1);
   let s = 0n;
   while (d % 2n === 0n) {
@@ -99,6 +103,10 @@ export function isProbablyPrime(num: bigint): boolean {
       arr.push(randInt(43, Number.MAX_SAFE_INTEGER));
     }
     return arr;
+  }
+
+  if (num < 2n) {
+    return false;
   }
 
   // Number.MAX_SAFE_INTEGER = 9007199254740991

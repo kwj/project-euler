@@ -74,6 +74,9 @@ def _is_prime_more_64bit(d, s, n):
     return True    # probably prime
 
 def is_probably_prime(num):
+    if num < 2:
+        return False
+
     d = num - 1
     s = 0
     while d % 2 == 0:
