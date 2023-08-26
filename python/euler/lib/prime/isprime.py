@@ -33,9 +33,7 @@ def _is_prime_64bit(d, s, n):
         else:
             for i in range(s):
                 x = pow(x, 2, n)
-                if x == 0:
-                    return NumType.PRIME
-                elif x == n - 1:
+                if x == n - 1:
                     return NumType.UNDECIDED
 
             return NumType.COMPOSITE
@@ -74,8 +72,8 @@ def _is_prime_more_64bit(d, s, n):
     return True    # probably prime
 
 def is_probably_prime(num):
-    if num < 2:
-        return False
+    if num < 2 or ((num % 6 != 1) and (num % 6 != 5)):
+        return num == 2 or num == 3
 
     d = num - 1
     s = 0

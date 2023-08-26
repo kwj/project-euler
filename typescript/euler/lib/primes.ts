@@ -46,9 +46,7 @@ export function isPrime(num: number): boolean {
     } else {
       for (let i = 0n; i < s; i = i + 1n) {
         x = modPow(x, 2n, n);
-        if (x === 0n) {
-          return NumType.Prime;
-        } else if (x === n - 1n) {
+        if (x === n - 1n) {
           return NumType.Undecided;
         }
       }
@@ -56,8 +54,8 @@ export function isPrime(num: number): boolean {
     }
   }
 
-  if (num < 2) {
-    return false;
+  if (num < 2 || ((num % 6 != 1) && (num % 6 != 5))) {
+    return num == 2 || num == 3;
   }
 
   let d = BigInt(num - 1);
@@ -105,13 +103,13 @@ export function isProbablyPrime(num: bigint): boolean {
     return arr;
   }
 
-  if (num < 2n) {
-    return false;
-  }
-
   // Number.MAX_SAFE_INTEGER = 9007199254740991
   if (num <= 9007199254740991n) {
     return isPrime(Number(num));
+  }
+
+  if (num < 2n || ((num % 6n != 1n) && (num % 6n != 5n))) {
+    return num == 2n || num == 3n;
   }
 
   let d = num - 1n;
