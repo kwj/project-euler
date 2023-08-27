@@ -46,9 +46,10 @@ function is_family(p, f_size)
                 continue
             end
             cnt = 1
+            p_digits_tmp = copy(p_digits)
             for d = (n + 1):9
-                p_digits[mask] .= d
-                if isprime(undigits(p_digits)) == true
+                p_digits_tmp[mask] .= d
+                if isprime(undigits(p_digits_tmp)) == true
                     cnt += 1
                 end
                 if cnt == f_size
