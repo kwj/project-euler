@@ -22,13 +22,13 @@ You can run the test suite in the Pkg REPL.
 
 ## Notes
 
-It was confirmed to work with Julia 1.9.2.
+It was confirmed to work with Julia v1.9.3.
 
 I used the following packages and their dependent packages.
 
 - Combinatorics v1.0.2
-- DataStructures v0.18.14
+- DataStructures v0.18.15
 - LinearAlgebra[^1]
-- Primes v0.5.3
+- Primes v0.5.4
 
-[^1]: It's distributd with Julia 1.9.2
+[^1]: It's distributd with Julia v1.9.3.
