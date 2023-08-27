@@ -23,7 +23,7 @@ function solve_0049(n_digits::Int = 4)
         if len < 3
             continue
         end
-        sort!(lst)
+
         for i = 1:(len-2), j = (i+1):(len-1)
             tmp = lst[j] * 2 - lst[i]
             if tmp ∈ lst && lst[i] != 1487
