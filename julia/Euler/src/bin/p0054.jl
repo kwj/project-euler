@@ -63,7 +63,7 @@ function make_handinfo(cards::Vector{Tuple{Int, Char}})
 
     if flash == true
         if is_straight(hand_n) == true
-            if hand_c[1] == 14
+            if hand_n[1] == 14
                 return vcat(HAND_RF, hand_n)
             else
                 return vcat(HAND_SF, hand_n)
