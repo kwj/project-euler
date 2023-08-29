@@ -25,7 +25,7 @@ function make_polynum_tbl()
             n = fn(j)
             if n < 1_000 || n % 100 < 10
                 continue
-            elseif n > 10_000
+            elseif n >= 10_000
                 break
             end
             k, v = divrem(n, 100)
