@@ -83,7 +83,7 @@ function dfs(n_gon, idx, num_bittbl, r, e_weight, result)
     return
 end
 
-function solve_with_bt(n_gon)
+function solve_by_backtracking(n_gon)
     ring = Array{Int}(undef, n_gon * 2 + 1)
     result = Array{String}(undef, 0)
 
@@ -102,7 +102,7 @@ function solve_with_bt(n_gon)
 end
 
 function solve_0068(n_gon::Int = 5)
-    solve_with_bt(n_gon)
+    solve_by_backtracking(n_gon)
 end
 
 end #module
