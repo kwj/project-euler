@@ -81,7 +81,7 @@ end
 function solve_0061()
     polynum_tbl = make_polynum_tbl()
 
-    for route in permutations(3:7)
+    for route in permutations(7:-1:3)
         result = find_cycle(polynum_tbl, route)
         if result !== nothing
             # sum(100*x{1} + x{2}, 100*x{2} + x{3}, ..., 100*x{n} + x{1}) = sum(x{1}, x{2}, ..., x{n}) * 101
