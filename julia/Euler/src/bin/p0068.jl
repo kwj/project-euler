@@ -87,8 +87,9 @@ function solve_by_backtracking(n_gon)
     ring = Array{Int}(undef, n_gon * 2 + 1)
     result = Array{String}(undef, 0)
 
-    # Example: if e-gon is 5, minimum: 1 + 2 + 10 = 13 and maximum: 1 + 9 + 10 = 20
-    for e_weight = (1 + 2 + (n_gon * 2)):(1 + (n_gon * 2 - 1) + (n_gon * 2))
+    # The minimum weight of the line on '10' exists is 1 + 2 + (n_gon * 2) = n_gon * 2 + 3.
+    # The maximum weight of the line on '1' exsits is 1 + (n_gon * 2 - 1) + (n_gon * 2) = n_gon * 4.
+    for e_weight = (n_gon * 2 + 3):(n_gon * 4)
         for n = 1:(n_gon * 2)
             ring[1] = ring[end] = n
             dfs(n_gon, 1, (1 << n), ring, e_weight, result)
