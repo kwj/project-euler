@@ -3,7 +3,7 @@
 
 module Prob0062
 
-function solve_0062(num_of_primes::Int = 5)
+function solve_0062(n_perms::Int = 5)
     make_key(n::Int) = mapfoldl(string, *, sort(digits(n)); init = "")
 
     tbl = Dict{String, Vector{Int}}()
@@ -12,7 +12,7 @@ function solve_0062(num_of_primes::Int = 5)
         key = make_key(cube)
         if haskey(tbl, key)
             push!(tbl[key], n)
-            if length(tbl[key]) == num_of_primes
+            if length(tbl[key]) == n_perms
                 return tbl[key][1] ^ 3
             end
         else
