@@ -342,6 +342,7 @@
     end
 
     @testset "0076" begin
+        @test solve_0076(collect(1:4), 5) == 6
         @test solve_0076(collect(1:99), 100) == 190569291
     end
 
