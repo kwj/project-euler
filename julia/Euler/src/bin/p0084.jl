@@ -46,7 +46,7 @@ function solve_0084(nfaces::Int = 4, nsquares::Int = 3)
         if n1 != n2
             dice_prblty_without_dbl[n1 + n2] += 1 / (nfaces ^ 2)
         else
-            dice_prblty_dbl[n1 + n2] += 1 / (nfaces ^ 2)
+            dice_prblty_dbl[n1 + n2] = 1 / (nfaces ^ 2)
         end
     end
 
