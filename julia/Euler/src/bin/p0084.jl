@@ -20,14 +20,14 @@
    S0   |  s00   |  s10   |  s20   |  S1: one doubles occurred
         |        |        |        |  S2: two consecutive dobules occurred
         +--------+--------+--------+
-  Next  |        |        |        | s00: transition probability when no doubles (the next state is S0)
-   S1   |  s01   | s11=0  | s21=0  | s11: transition probability when doubles (the next state is S1)
+  Next  |        |        |        | s00: transition probability if no doubles occurred (the next state is S0)
+   S1   |  s01   | s11=0  | s21=0  | s11: transition probability if fist doubles occurred (the next state is S1)
         |        |        |        |
-        +--------+--------+--------+ s10: transition probability when no doubles (the next state is S0)
-  Next  |        |        |        | s12: transition probability when doubles (the next state is S2)
+        +--------+--------+--------+ s10: transition probability if no doubles occurred (the next state is S0)
+  Next  |        |        |        | s12: transition probability if two consecutive doubles occurred (the next state is S2)
    S2   | s02=0  |  s12   | s22=0  |
-        |        |        |        | s20: transition probability when both doubles and no doubles (the next state is S0)
-        +--------+--------+--------+      note: go to JAIL@S0 when third doubles occurred
+        |        |        |        | s20: transition probability if both doubles and no doubles occurred (the next state is S0)
+        +--------+--------+--------+      Note: go to JAIL@S0 if three consecutive doubles occurred
 =#
 
 module Prob0084
