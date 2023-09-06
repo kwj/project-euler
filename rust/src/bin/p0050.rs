@@ -19,9 +19,9 @@ fn compute(limit: i64) -> i64 {
         let begin = cs_lst[i];
         let lst: Vec<i64> = cs_lst[(i + width)..]
             .iter()
-            .copied()
             .rev()
             .skip_while(|&p| p - begin >= limit || !primes::is_prime(p - begin))
+            .copied()
             .collect();
         if !lst.is_empty() {
             width += lst.len();
