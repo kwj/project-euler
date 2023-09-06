@@ -1,6 +1,6 @@
 # Notes on Project Euler
 
-English version is [here](./README.md).
+英語版は[こちら](./README.md).
 
 - 1: [Multiples of 3 or 5](./ja/p0001.md)
 - 2: [Even Fibonacci Numbers](./ja/p0002.md)
