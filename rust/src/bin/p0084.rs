@@ -165,10 +165,7 @@ fn go_steady(matrix: &[Vec<f64>]) -> Vec<Vec<f64>> {
     assert!(matrix.len() == matrix[0].len(), "It's not a square matrix");
 
     let size = matrix.len();
-    let mut work = matrix
-        .iter()
-        .map(|v| (*v).clone())
-        .collect::<Vec<Vec<f64>>>();
+    let mut work = matrix.to_vec();
 
     // To converge quickly, use property of exponentiation.
     //   M^{n+n} = M^{n} * M^{n}
