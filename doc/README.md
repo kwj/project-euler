@@ -1,5 +1,8 @@
 # Notes on Project Euler
 
+These documents are intended to be read on github.com.
+This is because some of the documents are written using LaTeX format.
+
 Japanese version is [here](./README_ja.md).
 
 - 1: [Multiples of 3 or 5](./en/p0001.md)
