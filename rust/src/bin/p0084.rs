@@ -10,7 +10,7 @@
         |        |        |        |  S2: two consecutive dobules occurred
         +--------+--------+--------+
   Next  |        |        |        | s00: transition probability if no doubles occurred (the next state is S0)
-   S1   |  s01   | s11=0  | s21=0  | s11: transition probability if fist doubles occurred (the next state is S1)
+   S1   |  s01   | s11=0  | s21=0  | s01: transition probability if fist doubles occurred (the next state is S1)
         |        |        |        |
         +--------+--------+--------+ s10: transition probability if no doubles occurred (the next state is S0)
   Next  |        |        |        | s12: transition probability if two consecutive doubles occurred (the next state is S2)
