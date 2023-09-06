@@ -170,11 +170,13 @@ fn go_steady(matrix: &[Vec<f64>]) -> Vec<Vec<f64>> {
         .map(|v| (*v).clone())
         .collect::<Vec<Vec<f64>>>();
 
+    // To converge quickly, use property of exponentiation.
+    //   M^{n+n} = M^{n} * M^{n}
     loop {
         let prev = work.clone();
         for x in 0..size {
             for y in 0..size {
-                work[x][y] = (0..size).map(|i| prev[x][i] * matrix[i][y]).sum();
+                work[x][y] = (0..size).map(|i| prev[x][i] * prev[i][y]).sum();
             }
         }
         if is_steady(&work[0], &prev[0]) {
