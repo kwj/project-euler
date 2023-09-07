@@ -1,7 +1,7 @@
 # Notes on Project Euler
 
 These documents are intended to be read on github.com.
-This is because some of the documents are written using LaTeX format.
+This is because some of the documents are written by LaTeX format to display mathematical expressions by MathJax.
 
 Japanese version is [here](./README_ja.md).
 

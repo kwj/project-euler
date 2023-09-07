@@ -1,7 +1,7 @@
 # Notes on Project Euler
 
 これらの文書は github.com 上で読むことを想定しています。
-ドキュメントの一部で数式を LaTeX フォーマットで記述したのが理由です。
+数式を MathJax で表示するために LaTeX フォーマットで記述しているためです。
 
 英語版は[こちら](./README.md).
 
