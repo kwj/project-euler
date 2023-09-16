@@ -8,7 +8,7 @@ fn solve() -> String {
 
 fn compute() -> i64 {
     for exp in 6_u32.. {
-        for n in 10_i64.pow(exp - 1)..(10_i64.pow(exp) / 6) {
+        for n in 10_i64.pow(exp - 1)..=(10_i64.pow(exp) / 6) {
             if check_num(n) {
                 return n;
             }
