@@ -41,7 +41,6 @@ fn make_dupctr_tbl(upper: usize) -> Vec<i64> {
     let max_exp = math::get_max_exp(upper as i64, 2) as usize;
     let mut dup_ctr = vec![0_i64; max_exp + 1];
 
-    //for x in 2..=max_exp {
     for (x, elm) in dup_ctr.iter_mut().enumerate().take(max_exp + 1).skip(2) {
         let mut dups = vec![0_i64; upper + 1];
         for y in 1..x {
