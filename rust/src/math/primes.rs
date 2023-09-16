@@ -165,6 +165,9 @@ pub fn primes(mut low: i64, high: i64) -> Vec<i64> {
     if low <= 5 && 5 <= high {
         lst.push(5);
     }
+    if high <= 6 {
+        return lst;
+    }
     low = cmp::max(low, 7);
     let w_offset = num_to_index(low);
     for (i, val) in get_sieve(low, high).iter().enumerate() {
