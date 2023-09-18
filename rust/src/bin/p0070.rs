@@ -135,7 +135,7 @@ impl Iterator for PrimeFactorization {
                 if prev_p > b {
                     [&[(prev_p, 1_i64)], lst].concat()
                 } else {
-                    [&[(b, e + 1)], lst].concat()
+                    [&[(b, e + 1)], &lst[1..]].concat()
                 }
             }
         }
