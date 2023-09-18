@@ -16,7 +16,7 @@ clean:
 	@rm -f bin/*~ lib/*~ ./*~
 
 .PHONY: clean-all
-clean-backups:
+clean-all:
 	@dune clean
 	@rm -f bin/*~ lib/*~ ./*~
 
