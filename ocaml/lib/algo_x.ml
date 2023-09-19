@@ -30,7 +30,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  *)
 
- type node = {
+type node = {
     mutable tag : string;
     mutable cnt : int;
     mutable l : node;
