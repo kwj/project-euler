@@ -48,7 +48,7 @@ fn compute(thr: i64) -> i64 {
 
     let mut acc: i64 = 0;
     let mut c: i64 = 3;
-    while acc < thr {
+    while acc <= thr {
         let mut ab = c * 2;
         while ab > 1 {
             let tmp = c * c + ab * ab;
@@ -72,13 +72,8 @@ mod tests {
     use super::compute;
 
     #[test]
-    fn p0086_1975() {
-        assert_eq!(compute(1_975), 99);
-    }
-
-    #[test]
-    fn p0086_2060() {
-        assert_eq!(compute(2_060), 100);
+    fn p0086_2000() {
+        assert_eq!(compute(2_000), 100);
     }
 
     #[test]
