@@ -35,23 +35,26 @@ fn get_consec_counts(lst: &[i32]) -> i32 {
 
 fn make_numbers(lst: &[i32]) -> HashSet<i32> {
     fn aux(lst: &[Ratio<i32>], res: &mut HashSet<i32>) {
-        if lst.len() == 1 && lst[0].is_integer() {
-            res.insert(*lst[0].numer());
-        }
-
-        for (i, d1) in lst.iter().enumerate() {
-            for d2 in lst[(i + 1)..].iter() {
-                let mut next_lst = lst.clone().to_vec();
-                next_lst.retain(|x| *x != *d1 && *x != *d2);
-                aux(&[&next_lst[..], &[*d1 + *d2]].concat(), res);
-                aux(&[&next_lst[..], &[*d1 * *d2]].concat(), res);
-                aux(&[&next_lst[..], &[*d1 - *d2]].concat(), res);
-                aux(&[&next_lst[..], &[*d2 - *d1]].concat(), res);
-                if *d1 != Ratio::new(0, 1) {
-                    aux(&[&next_lst[..], &[*d2 / *d1]].concat(), res);
-                }
-                if *d2 != Ratio::new(0, 1) {
-                    aux(&[&next_lst[..], &[*d1 / *d2]].concat(), res);
+        if lst.len() == 1 {
+            if lst[0].is_integer() {
+                res.insert(*lst[0].numer());
+            }
+        } else {
+            for (i, &d1) in lst.iter().enumerate() {
+                for (j, &d2) in lst[(i + 1)..].iter().enumerate() {
+                    let mut next_lst = lst.to_vec();
+                    next_lst.remove(i);
+                    next_lst.remove(i + j);
+                    aux(&[&[d1 + d2], &next_lst[..]].concat(), res);
+                    aux(&[&[d1 * d2], &next_lst[..]].concat(), res);
+                    aux(&[&[d1 - d2], &next_lst[..]].concat(), res);
+                    aux(&[&[d2 - d1], &next_lst[..]].concat(), res);
+                    if d1 != Ratio::new(0, 1) {
+                        aux(&[&[d2 / d1], &next_lst[..]].concat(), res);
+                    }
+                    if d2 != Ratio::new(0, 1) {
+                        aux(&[&[d1 / d2], &next_lst[..]].concat(), res);
+                    }
                 }
             }
         }

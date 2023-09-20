@@ -15,17 +15,17 @@ function make_numbers(lst)
         end
 
         for (i, d1) in pairs(lst)
-            for d2 in @view lst[i+1:end]
-                next_lst = setdiff(lst, [d1, d2])
-                aux(vcat(next_lst, [d1 + d2]))
-                aux(vcat(next_lst, [d1 * d2]))
-                aux(vcat(next_lst, [d1 - d2]))
-                aux(vcat(next_lst, [d2 - d1]))
+            for (j, d2) in pairs(lst[i+1:end])
+                next_lst = deleteat!(copy(lst), [i, i+j])
+                aux(vcat([d1 + d2], next_lst))
+                aux(vcat([d1 * d2], next_lst))
+                aux(vcat([d1 - d2], next_lst))
+                aux(vcat([d2 - d1], next_lst))
                 if d1 != 0
-                    aux(vcat(next_lst, [d2 / d1]))
+                    aux(vcat([d2 / d1], next_lst))
                 end
                 if d2 != 0
-                    aux(vcat(next_lst, [d1 / d2]))
+                    aux(vcat([d1 / d2], next_lst))
                 end
             end
         end
