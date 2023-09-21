@@ -36,7 +36,7 @@ fn compute(thr: i64) -> i64 {
     let mut x: i64 = 1;
     let mut y: i64 = 1;
 
-    while x < limit {
+    while x <= limit {
         (x, y) = (3 * x + 4 * y, 2 * x + 3 * y);
     }
     (y + 1) / 2

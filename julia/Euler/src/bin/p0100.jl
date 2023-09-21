@@ -30,7 +30,7 @@ module Prob0100
 function solve_0100(thr::Int = 1_000_000_000_000)
     limit = 2 * thr - 1
     x, y = 1, 1
-    while x < limit
+    while x <= limit
         x, y = 3x + 4y, 2x + 3y
     end
     (y + 1) ÷ 2
