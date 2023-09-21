@@ -1,4 +1,6 @@
 
+SUBDIRS = bin src lib
+
 .PHONY: usage
 usage:
 	@echo 'Usage:'
@@ -11,14 +13,24 @@ usage:
 all:
 	@dune build
 
+.PHONY: test
+test:
+	@dune runtest
+
 .PHONY: clean
 clean:
-	@rm -f bin/*~ lib/*~ ./*~
+	@rm -f ./*~
+	@for subdir in $(SUBDIRS); do \
+	  make -C $$subdir clean; \
+	done
 
 .PHONY: clean-all
 clean-all:
 	@dune clean
-	@rm -f bin/*~ lib/*~ ./*~
+	@rm -f ./*~
+	@for subdir in $(SUBDIRS); do \
+	  make -C $$subdir clean; \
+	done
 
 .PHONY: list
 list:

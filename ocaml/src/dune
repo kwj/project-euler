@@ -1,0 +1,6 @@
+(library
+  (name solution)
+  (libraries core zarith str euler)
+  (inline_tests (deps (glob_files ./assets/p*.txt)))
+  (preprocess
+    (pps ppx_inline_test ppx_assert)))

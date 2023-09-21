@@ -1,22 +1,10 @@
 
 val permutation : int -> 'a list -> 'a list list
+val permutation_with_repetition : int -> 'a list -> 'a list list
 val combination : int -> 'a list -> 'a list list
-
-val list_to_num : int list -> int
-val num_of_list : int list -> int
-val num_to_list : int -> int list
-val list_of_num : int -> int list
-
-val int_to_nlst : int -> int list
-val nlst_of_int : int -> int list
-val nlst_to_int : int list -> int
-val int_of_nlst : int list -> int
-
-val cmp_nlst : int list -> int list -> int
-val add_nlst : int list -> int list -> int list
-val sub_nlst : int list -> int list -> int list
-val mul_nlst : int list -> int -> int list
-val trim_zero_nlst : int list -> int list
+val combination_with_repetition : int -> 'a list -> 'a list list
+val powerset : 'a list -> 'a list list
+val findall : ('a -> bool) -> 'a list -> int list
 
 val popcount_64 : int64 -> int
 val popcount_32 : int32 -> int
@@ -34,3 +22,8 @@ val get_NTZ_nativeint : nativeint -> int
 
 val list_to_str : ('a -> string) -> string -> 'a list -> string
 val list_assoc_group : ('a * 'b) list -> ('a * 'b list) list
+
+val digits : ?base:int -> int -> int list
+val undigits : ?base:int -> int list -> int
+val z_digits : ?base:int -> Z.t -> int list
+val z_undigits : ?base:int -> int list -> Z.t

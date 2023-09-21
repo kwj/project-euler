@@ -1,156 +1,76 @@
-
+(*
 let rec permutation n lst =
   let rec insert_elm elm lst =
     match lst with
     | [] -> [[elm]]
     | x :: xs -> (elm :: lst) :: (List.map (fun l -> x :: l) (insert_elm elm xs))
   in
-  if n = 1 then
-    List.map (fun elm -> [elm]) lst
-  else
+  if n = 1
+  then List.map (fun elm -> [elm]) lst
+  else (
     match lst with
     | [] -> []
-    | x :: xs -> List.append
-                   (List.concat (List.map (fun e -> insert_elm x e) (permutation (pred n) xs)))
-                   (permutation n xs)
+    | x :: xs ->
+      List.append
+        (List.concat (List.map (fun e -> insert_elm x e) (permutation (pred n) xs)))
+        (permutation n xs))
+;;
+*)
+
+let rec choose left remaining =
+  match remaining with
+  | x :: xs -> (x, List.rev left @ xs) :: choose (x :: left) xs
+  | [] -> []
+;;
+
+let choose lst = choose [] lst
+
+let rec permutation n lst =
+  match n, lst with
+  | 0, _ -> [[]]
+  | _, [] -> []
+  | n, lst ->
+    List.concat
+      (List.map (fun (x, xs) -> List.map (List.cons x) (permutation (n - 1) xs)) (choose lst))
+;;
+
+let rec permutation_with_repetition n lst =
+  match n, lst with
+  | 0, _ -> [[]]
+  | _, [] -> []
+  | n, lst ->
+    List.concat
+      (List.map (fun (x, _) -> List.map (List.cons x) (permutation_with_repetition (n - 1) lst)) (choose lst))
+;;
 
 let rec combination n lst =
   match n, lst with
   | 0, _ -> [[]]
-  | _, []  -> []
+  | _, [] -> []
   | num, x :: xs -> List.map (List.cons x) (combination (num - 1) xs) @ combination num xs
+;;
 
-(* example: [1;2;3] -> 123 *)
-let list_to_num lst =
-  let rec aux lst result =
-    match lst with
-    | [] -> result
-    | x :: xs -> aux xs (result * 10 + x)
-  in
-  aux lst 0
+let rec combination_with_repetition n lst =
+  match n, lst with
+  | 0, _ -> [[]]
+  | _, [] -> []
+  | num, x :: xs ->
+    List.map (List.cons x) (combination_with_repetition (num - 1) lst)
+    @ combination_with_repetition num xs
+;;
 
-let num_of_list = list_to_num
+let rec powerset = function
+  | [] -> [[]]
+  | x :: xs ->
+    let llst = powerset xs in
+    llst @ List.map (fun lst -> x :: lst) llst
+;;
 
-(* num >= 0; example 123 -> [1;2;3] *)
-let num_to_list num =
-  let rec aux n result =
-    if n = 0 then
-      result
-    else
-      aux (n / 10) ((n mod 10) :: result)
-  in
-  match aux num [] with
-  | [] -> [0]
-  | n -> n
-
-let list_of_num = num_to_list
-
-(* int_to_nlst 123 -> [3; 2; 1] *)
-let int_to_nlst num =
-  List.rev (num_to_list num)
-
-let nlst_of_int = int_to_nlst
-
-(* nlst_to_int [3; 2; 1] -> 123 *)
-let nlst_to_int lst =
-  list_to_num (List.rev lst)
-
-let int_of_nlst = nlst_to_int
-
-(*
-   cmp_nlst [2; 1] [0; 0; 1] -> -1
-   cmp_nlst [2; 1; 1] [0; 0; 1] -> 1
-   cmp_nlst [2; 1; 1] [2; 1; 1] -> 0
- *)
-let rec cmp_nlst l1 l2 =
-  let diff = (List.length l1) - (List.length l2) in
-  if diff = 0 then
-    List.compare (fun e1 e2 -> e1 - e2) (List.rev l1) (List.rev l2)
-  else
-    if diff > 0 then
-      cmp_nlst l1 (l2 @ [0])
-    else
-      cmp_nlst (l1 @ [0]) l2
-
-(* add_nlst [8; 2; 1] [6; 5; 2] -> [4; 8; 3] *)
-let rec add_nlst l1 l2 =
-  let rec aux l1 l2 carry acc =
-    match l1, l2 with
-    | x :: xs, y :: ys ->
-       aux xs ys ((x + y + carry) / 10) (((x + y + carry) mod 10) :: acc)
-    | [], [] when carry > 0 ->
-       List.rev (carry :: acc)
-    | _ ->
-       List.rev acc
-  in
-  let diff = (List.length l1) - (List.length l2) in
-  if diff = 0 then
-    aux l1 l2 0 []
-  else
-    if diff > 0 then
-      add_nlst l1 (l2 @ [0])
-    else
-      add_nlst (l1 @ [0]) l2
-
-(* sub_nlst [4; 8; 3] [6; 5; 2] -> [8; 2; 1] *)
-let rec sub_nlst l1 l2 =
-  let trim_zero lst =
-    let rec loop l =
-      if List.hd l = 0 then
-        loop (List.tl l)
-      else
-        List.rev l
-    in
-    loop (List.rev lst)
-  in
-  (* List.rev l1 > List.rev l2 *)
-  let rec aux l1 l2 carry acc =
-    match l1, l2 with
-    | x :: xs, y :: ys ->
-       let tmp = x - y - carry in
-       if tmp < 0 then
-         aux xs ys (((abs tmp) + 9) / 10) ((abs ((tmp + 10) mod 10)) :: acc)
-       else
-         aux xs ys 0 ((tmp mod 10) :: acc)
-    | [], [] when carry > 0 ->
-       trim_zero (List.rev (carry :: acc))
-    | _ ->
-       trim_zero (List.rev acc)
-    in
-    let diff = (List.length l1) - (List.length l2) in
-    if diff = 0 then
-      if cmp_nlst l1 l2 >= 0 then
-        aux l1 l2 0 []
-      else
-        aux l2 l1 0 []
-    else
-      if diff > 0 then
-        sub_nlst l1 (l2 @ [0])
-      else
-        sub_nlst (l1 @ [0]) l2
-
-(* mul_nlst [1; 4; 2] 3 -> [3; 2; 7] *)
-let mul_nlst lst num =
-  let rec aux lst carry acc =
-    match lst with
-    | x :: xs ->
-       aux xs ((x * num + carry) / 10) (((x * num + carry) mod 10) :: acc)
-    | [] when carry > 0 ->
-       aux [] (carry / 10) ((carry mod 10) :: acc)
-    | _ ->
-       List.rev acc
-  in
-  aux lst 0 []
-
-(* trim_zero_nlst [1; 2; 3; 0; 0] -> [1; 2; 3] *)
-let trim_zero_nlst lst =
-  let rec loop l =
-    if List.hd l = 0 then
-      loop (List.tl l)
-    else
-      List.rev l
-  in
-  loop (List.rev lst)
+let findall f lst =
+  List.mapi (fun idx x -> (idx, x)) lst
+  |> List.filter (fun (_, x) -> f x)
+  |> List.map (fun (idx, _) -> idx)
+;;
 
 (* https://en.wikipedia.org/wiki/Hamming_weight *)
 let popcount_64 n =
@@ -247,14 +167,38 @@ let list_to_str fn gap lst =
 let list_assoc_group tpl_lst =
   let rec group key acc lst result =
     match lst with
-    | x :: xs -> if key = fst x then
-                   group key ((snd x) :: acc) xs result
-                 else
-                   group (fst x) [snd x] xs ((key, acc) :: result)
+    | x :: xs ->
+      if key = fst x
+      then group key ((snd x) :: acc) xs result
+      else group (fst x) [snd x] xs ((key, acc) :: result)
     | [] -> List.rev ((key, acc) :: result)
   in
   let sorted_lst = List.sort (fun (k1, _) (k2, _) -> compare k1 k2) tpl_lst in
   let init_key, init_value = List.hd sorted_lst in
   group init_key [init_value] (List.tl sorted_lst) []
 
-  
+let digits ?(base=10) n =
+  let rec aux n lst =
+    if n = 0
+    then List.rev lst
+    else aux (n / base) (n mod base :: lst)
+  in
+  aux n []
+;;
+
+let undigits ?(base=10) lst =
+  List.rev lst |> List.fold_left (fun acc x -> acc * base + x) 0
+;;
+
+let z_digits ?(base=10) n =
+  let rec aux n lst =
+    if n = Z.zero
+    then List.rev lst
+    else aux Z.(div n ~$base) (Z.(to_int (rem n ~$base)) :: lst)
+  in
+  aux n []
+;;
+
+let z_undigits ?(base=10) lst =
+  List.rev lst |> List.fold_left (fun acc x -> Z.(add (mul acc ~$base) ~$x)) Z.zero
+;;
