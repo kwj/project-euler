@@ -41,6 +41,9 @@ fn parse_data(s: &str) -> Vec<String> {
 }
 
 fn get_max_anagram(words: &[String], tbl: &mut HashMap<usize, Vec<String>>) -> i64 {
+    // It depends on the behavior of HashMap::from_iter() to overwrite the value
+    // in case of duplicate keys. It probably this behavior is made the same as insert(),
+    // but I could not confirm this in the documentation.
     fn get_trans_tbl(w: &str, sq_str: &str) -> HashMap<char, char> {
         HashMap::from_iter(
             (HashMap::from_iter(sq_str.chars().zip(w.chars())) as HashMap<char, char>)
