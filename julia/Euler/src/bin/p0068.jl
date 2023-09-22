@@ -55,32 +55,35 @@ function dfs(n_gon, idx, num_bittbl, r, e_weight, result)
     # num_bittbl: 0x11111111110
     #               ^        ^
     #               10  ...  1
+    start_pos = 2
     if idx == (n_gon * 2 - 1)
         tmp = e_weight - r[1] - r[idx]
-        if (0 < tmp <= n_gon * 2) && (1 << tmp) & num_bittbl == 0
+        if (0 < tmp <= n_gon * 2) && tmp > r[start_pos] && (1 << tmp) & num_bittbl == 0
             r[idx + 1] = tmp
-            if r[2] == minimum(r[2:2:(n_gon * 2)])
-                s = ""
-                while idx > 0
-                    s = string(r[idx + 1]) * string(r[idx]) * string(r[idx + 2]) * s
-                    idx -= 2
-                end
-                push!(result, s)
+            s = ""
+            while idx > 0
+                s = string(r[idx + 1]) * string(r[idx]) * string(r[idx + 2]) * s
+                idx -= 2
+            end
+            push!(result, s)
+        end
+        return
+    else
+        for external_node = 1:(n_gon * 2)
+            internal_node = e_weight - r[idx] - external_node
+            if is_valid(external_node, internal_node, num_bittbl, n_gon) == false
+                continue
+            end
+            r[idx + 1] = external_node
+            r[idx + 2] = internal_node
+
+            # pruning: if starting node is the smallest external node, continue to search
+            if r[start_pos] <= external_node
+                dfs(n_gon, idx + 2, ((1 << external_node) | (1 << internal_node)) | num_bittbl, r, e_weight, result)
             end
         end
         return
     end
-
-    for out_node = 1:(n_gon * 2)
-        in_node = e_weight - r[idx] - out_node
-        if is_valid(out_node, in_node, num_bittbl, n_gon) == false
-            continue
-        end
-        r[idx + 1] = out_node
-        r[idx + 2] = in_node
-        dfs(n_gon, idx + 2, ((1 << out_node) | (1 << in_node)) | num_bittbl, r, e_weight, result)
-    end
-    return
 end
 
 function solve_by_backtracking(n_gon)

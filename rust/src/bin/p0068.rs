@@ -70,45 +70,42 @@ fn dfs(
     total: i64,
     result: &mut Vec<String>,
 ) {
+    let start_pos = 1;
     if idx == n_gon as usize * 2 - 2 {
         let tmp = total - ring[0] - ring[idx];
-        if (0 < tmp && tmp <= n_gon * 2) && ((1 << tmp) & bit_mask == 0) {
+        if (0 < tmp && tmp <= n_gon * 2) && tmp > ring[start_pos] && ((1 << tmp) & bit_mask == 0) {
             ring[idx + 1] = tmp;
-            if ring[1]
-                == (1..(n_gon * 2))
-                    .step_by(2)
-                    .map(|pos| ring[pos as usize])
-                    .min()
-                    .unwrap()
-            {
-                let mut s = String::from("");
-                loop {
-                    s = format!("{}{}{}{}", ring[idx + 1], ring[idx], ring[idx + 2], s);
-                    if idx == 0 {
-                        break;
-                    }
-                    idx -= 2;
+            let mut s = String::from("");
+            loop {
+                s = format!("{}{}{}{}", ring[idx + 1], ring[idx], ring[idx + 2], s);
+                if idx == 0 {
+                    break;
                 }
-                result.push(s);
+                idx -= 2;
             }
+            result.push(s);
         }
     }
 
-    for outer_node in 1..=(n_gon * 2) {
-        let inner_node = total - ring[idx] - outer_node;
-        if !is_valid(outer_node, inner_node, bit_mask, n_gon) {
+    for external_node in 1..=(n_gon * 2) {
+        let internal_node = total - ring[idx] - external_node;
+        if !is_valid(external_node, internal_node, bit_mask, n_gon) {
             continue;
         }
-        ring[idx + 1] = outer_node;
-        ring[idx + 2] = inner_node;
-        dfs(
-            n_gon,
-            idx + 2,
-            (1 << outer_node) | (1 << inner_node) | bit_mask,
-            ring,
-            total,
-            result,
-        );
+        ring[idx + 1] = external_node;
+        ring[idx + 2] = internal_node;
+
+        // pruning: if starting node is the smallest external node, continue to search
+        if ring[start_pos] <= external_node {
+            dfs(
+                n_gon,
+                idx + 2,
+                (1 << external_node) | (1 << internal_node) | bit_mask,
+                ring,
+                total,
+                result,
+            );
+        }
     }
 }
 

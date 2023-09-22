@@ -174,44 +174,49 @@
 open Core
 
 let is_valid x y bit_mask n_gon =
-  0 < x && x <= (n_gon * 2) && 0 < y && y <= (n_gon * 2) && x <> y && ((1 lsl x) lor (1 lsl y)) land bit_mask = 0
+  0 < x
+  && x <= (n_gon * 2)
+  && 0 < y
+  && y <= (n_gon * 2)
+  && x <> y
+  && (1 lsl x) lor (1 lsl y) land bit_mask = 0
 ;;
 
 let rec dfs n_gon idx bit_mask ring total result =
+  let start_pos = 1 in
   if idx = n_gon * 2 - 2
   then (
     let tmp = total - ring.(0) - ring.(idx) in
-    if (0 < tmp && tmp <= n_gon * 2) && ((1 lsl tmp) land bit_mask = 0)
+    if (0 < tmp && tmp <= n_gon * 2)
+       && tmp > ring.(start_pos)
+       && (1 lsl tmp) land bit_mask = 0
     then (
       ring.(idx + 1) <- tmp;
-      (* Confirm ring.(1) is the minimum outer node or not *)
-      if ring.(1)
-        = (List.range 1 (n_gon * 2) ~stop:`exclusive ~stride:2
-           |> List.map ~f:(fun idx -> ring.(idx))
-           |> List.min_elt ~compare:Int.compare
-           |> Option.value_exn)
-      then (
-        let rec aux s idx =
-          let s = Printf.sprintf "%d%d%d%s" ring.(idx + 1) ring.(idx) ring.(idx + 2) s in
-          if idx = 0 then s else aux s (idx - 2)
-        in
-        result := (aux "" idx) :: !result)))
+      let rec aux s idx =
+        let s = Printf.sprintf "%d%d%d%s" ring.(idx + 1) ring.(idx) ring.(idx + 2) s in
+        if idx = 0 then s else aux s (idx - 2)
+      in
+      result := (aux "" idx) :: !result))
   else (
     let rec loop = function
       | [] -> ()
-      | outer_node :: xs ->
-        let inner_node = total - ring.(idx) - outer_node in
-        if is_valid outer_node inner_node bit_mask n_gon
+      | external_node :: xs ->
+        let internal_node = total - ring.(idx) - external_node in
+        if is_valid external_node internal_node bit_mask n_gon
         then (
-          ring.(idx + 1) <- outer_node;
-          ring.(idx + 2) <- inner_node;
-          dfs
-            n_gon
-            (idx + 2)
-            ((1 lsl outer_node) lor (1 lsl inner_node) lor bit_mask)
-            ring
-            total
-            result);
+          ring.(idx + 1) <- external_node;
+          ring.(idx + 2) <- internal_node;
+
+          (* pruning: if starting node is the smallest external node, continue to search *)
+          if ring.(start_pos) <= external_node
+          then
+            dfs
+              n_gon
+              (idx + 2)
+              ((1 lsl external_node) lor (1 lsl internal_node) lor bit_mask)
+              ring
+              total
+              result);
         loop xs
     in
     loop (List.range 1 (n_gon * 2) ~stop:`inclusive)
