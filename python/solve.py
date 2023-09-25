@@ -4,9 +4,9 @@ import sys
 
 import euler
 
-# I use features which introduced in Python 3.10.
+# I use features which introduced in Python 3.11.
 min_major_version = 3
-min_minor_version = 10
+min_minor_version = 11
 
 
 def version_check() -> bool:
