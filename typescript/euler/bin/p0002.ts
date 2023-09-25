@@ -19,19 +19,16 @@
 */
 
 function* evenFibGen() {
-  let a = 8, b = 2;
-  let temp;
+  let a = 2, b = 8;
   while (true) {
-    temp = 4 * a + b;
-    yield temp;
-    b = a;
-    a = temp;
+    yield a;
+    [a, b] = [b, 4 * b + a];
   }
 }
 
 export function compute(limit: number): string {
   const fib_gen = evenFibGen();
-  let result = 8 + 2;
+  let result = 0;
 
   for (const n of fib_gen) {
     if (n > limit) {

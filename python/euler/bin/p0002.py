@@ -20,16 +20,14 @@ from itertools import takewhile
 
 
 def even_fib_gen() -> Generator[int, None, None]:
-    a, b = 8, 2
+    a, b = 2, 8
     while True:
-        a, b = 4 * a + b, a
         yield a
+        a, b = b, 4 * b + a
 
 
 def compute(ulimit: int) -> str:
-    return str(
-        sum(i for i in takewhile(lambda n: n <= ulimit, even_fib_gen())) + (8 + 2)
-    )
+    return str(sum(i for i in takewhile(lambda n: n <= ulimit, even_fib_gen())))
 
 
 def solve() -> str:
