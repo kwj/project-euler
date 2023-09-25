@@ -1,8 +1,10 @@
-
+from collections.abc import Iterable, Iterator
 from itertools import chain, combinations
+from typing import Any
+
 
 # Returns the largest exponent, e, for which base^e does not exceed num.
-def get_max_exp(num, /, base):
+def get_max_exp(num: int, /, base: int) -> int:
     e = 0
     while num >= base:
         num //= base
@@ -10,8 +12,11 @@ def get_max_exp(num, /, base):
 
     return e
 
-def powerset(iter, /, min_len=0, max_len=0):
-    if hasattr(iter, '__iter__') == True:
+
+def powerset(
+    iter: Iterable[Any], /, min_len: int = 0, max_len: int = 0
+) -> Iterator[Any]:
+    if hasattr(iter, '__iter__') is True:
         lst = list(iter)
     else:
         assert False, 'type error'
@@ -19,4 +24,6 @@ def powerset(iter, /, min_len=0, max_len=0):
     if max_len == 0 or max_len > len(lst):
         max_len = len(lst)
 
-    return chain.from_iterable(combinations(lst, r) for r in range(min_len, max_len + 1))
+    return chain.from_iterable(
+        combinations(lst, r) for r in range(min_len, max_len + 1)
+    )

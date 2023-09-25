@@ -1,24 +1,32 @@
 #!/usr/bin/env python3
 
-from functools import reduce
 import sys
+
 import euler
 
 # I use features which introduced in Python 3.10.
 min_major_version = 3
 min_minor_version = 10
 
-def version_check():
+
+def version_check() -> bool:
     if sys.version_info.major < 3:
         return False
-    if sys.version_info.major == min_major_version and sys.version_info.minor < min_minor_version:
+    if (
+        sys.version_info.major == min_major_version
+        and sys.version_info.minor < min_minor_version
+    ):
         return False
 
     return True
 
-if version_check() == False:
-    raise RuntimeError('This solver requires Python {}.{} or later'.format(min_major_version, min_minor_version))
 
+if version_check() is False:
+    raise RuntimeError(
+        'This solver requires Python {}.{} or later'.format(
+            min_major_version, min_minor_version
+        )
+    )
 
 args = sys.argv
 

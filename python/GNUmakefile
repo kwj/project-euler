@@ -18,15 +18,28 @@ test:
 
 .PHONY: clean
 clean:
+	@rm -f ./*~
 	@for subdir in $(SUBDIRS); do \
 	  make -C $$subdir clean; \
 	done
 
 .PHONY: clean-all
 clean-all:
+	@rm -f ./*~
 	@for subdir in $(SUBDIRS); do \
 	  make -C $$subdir clean-all; \
 	done
+
+.PHONY: lint
+lint:
+	flake8 .
+	isort --check --diff .
+	black --check --diff .
+
+.PHONY: format
+format:
+	isort .
+	black .
 
 .PHONY: list
 list:

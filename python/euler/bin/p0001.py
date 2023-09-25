@@ -1,19 +1,19 @@
-
 # project euler: problem 1
 
-from time import perf_counter
 
-def sum_of_divs_by(n, ulimit):
+def sum_of_divs_by(n: int, ulimit: int) -> int:
     upper = ulimit - 1
 
     return (n + (upper - (upper % n))) * (upper // n) // 2
 
-def compute(ulimit):
-    return str(sum_of_divs_by(3, ulimit) + sum_of_divs_by(5, ulimit) - sum_of_divs_by(15, ulimit))
 
-def solve():
-    start = perf_counter()
-    result = compute(1000)
-    elapsed_time = perf_counter() - start
+def compute(ulimit: int) -> str:
+    return str(
+        sum_of_divs_by(3, ulimit)
+        + sum_of_divs_by(5, ulimit)
+        - sum_of_divs_by(15, ulimit)
+    )
 
-    return (result, "{:f}".format(elapsed_time))
+
+def solve() -> str:
+    return compute(1000)

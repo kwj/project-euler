@@ -1,8 +1,8 @@
-
 # project euler: problem 18
 
-from time import perf_counter
+from collections.abc import Callable
 
+# fmt: off
 data = [
     [75],
     [95, 64],
@@ -18,10 +18,12 @@ data = [
     [70, 11, 33, 28, 77, 73, 17, 78, 39, 68, 17, 57],
     [91, 71, 52, 38, 17, 14, 91, 43, 58, 50, 27, 29, 48],
     [63, 66,  4, 68, 89, 53, 67, 30, 73, 16, 69, 87, 40, 31],
-    [ 4, 62, 98, 27, 23,  9, 70, 98, 73, 93, 38, 53, 60,  4, 23]
+    [ 4, 62, 98, 27, 23,  9, 70, 98, 73, 93, 38, 53, 60,  4, 23]  # noqa
 ]
+# fmt: on
 
-def select_leaf(fn, lst):
+
+def select_leaf(fn: Callable[..., int], lst: list[int]) -> list[int]:
     result = []
     prev = lst[0]
     for i in lst:
@@ -30,7 +32,8 @@ def select_leaf(fn, lst):
 
     return result[1:]
 
-def compute(fn, nums):
+
+def compute(fn: Callable[..., int], nums: list[list[int]]) -> str:
     nums.reverse()
     prev = [0] * (len(nums[0]) + 1)
     for lst in nums:
@@ -39,9 +42,6 @@ def compute(fn, nums):
 
     return str(prev[0])
 
-def solve():
-    start = perf_counter()
-    result = compute(max, data)
-    elapsed_time = perf_counter() - start
 
-    return (result, "{:f}".format(elapsed_time))
+def solve() -> str:
+    return compute(max, data)

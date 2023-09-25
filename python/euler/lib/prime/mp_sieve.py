@@ -1,4 +1,3 @@
-
 class MpSieve:
     '''Multipurpose Sieve
 
@@ -28,7 +27,7 @@ class MpSieve:
 
         >>> pt = sieve.sieve(100)
         >>> pt.get_primes()
-        [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
+        [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, ...(snip)..., 71, 73, 79, 83, 89, 97]
         >>> pt.is_prime(87)
         False
         >>> pt.factorize(84)
@@ -36,7 +35,8 @@ class MpSieve:
         >>> pt.divisors(84)
         [1, 2, 3, 4, 6, 7, 12, 14, 21, 28, 42, 84]
     '''
-    def __init__(self, num):
+
+    def __init__(self, num: int):
         self.prime_tbl = [True] * (num + 1)
         self.minfactor_tbl = [-1] * (num + 1)
         self.mobius_tbl = [1] * (num + 1)
@@ -46,7 +46,7 @@ class MpSieve:
         self.minfactor_tbl[1] = 1
 
         for i in range(2, num + 1):
-            if self.prime_tbl[i] == False:
+            if self.prime_tbl[i] is False:
                 continue
             self.minfactor_tbl[i] = i
             self.mobius_tbl[i] = -1
@@ -61,10 +61,10 @@ class MpSieve:
                 else:
                     self.mobius_tbl[j] = -self.mobius_tbl[j]
 
-    def is_prime(self, num):
+    def is_prime(self, num: int) -> bool:
         return self.prime_tbl[num]
 
-    def get_primes(self, ulimit=None):
+    def get_primes(self, ulimit: int | None = None) -> list[int]:
         if ulimit == 2:
             return [2]
         elif ulimit is None:
@@ -73,13 +73,13 @@ class MpSieve:
         result = [2]
         idx = 3
         while idx <= ulimit:
-            if self.prime_tbl[idx] == True:
+            if self.prime_tbl[idx] is True:
                 result.append(idx)
             idx += 2
 
         return result
 
-    def prev_prime(self, num):
+    def prev_prime(self, num: int) -> int:
         match num:
             case n if n > len(self.prime_tbl) - 1:
                 raise ValueError("too large")
@@ -87,11 +87,13 @@ class MpSieve:
                 raise ValueError("too small")
             case _:
                 num -= 1
-                while self.prime_tbl[num] == False:
+                while self.prime_tbl[num] is False:
                     num -= 1
                 return num
 
-    def factorize(self, num):
+        assert False, 'unreachable!'
+
+    def factorize(self, num: int) -> list[tuple[int, int]]:
         result = []
         while num > 1:
             base = self.minfactor_tbl[num]
@@ -100,11 +102,11 @@ class MpSieve:
                 num //= base
                 exp += 1
 
-            result.append((base,exp))
+            result.append((base, exp))
 
         return result
 
-    def divisors(self, num):
+    def divisors(self, num: int) -> list[int]:
         result = [1]
         for base, exp in self.factorize(num):
             r_size = len(result)
@@ -116,5 +118,6 @@ class MpSieve:
 
         return sorted(result)
 
-def mp_sieve(num):
+
+def mp_sieve(num: int) -> MpSieve:
     return MpSieve(num)

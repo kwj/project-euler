@@ -1,16 +1,16 @@
-
 import unittest
+
 from euler.bin.p0019 import compute
+
 
 class TestSolution(unittest.TestCase):
     def test_compute(self):
-        test_patterns = [
-            ((), '171')
-        ]
+        test_patterns = [((), '171')]
 
         for args, expected in test_patterns:
             with self.subTest('NONE'):
                 self.assertEqual(expected, compute(*args))
+
 
 if __name__ == '__main__':
     unittest.main()

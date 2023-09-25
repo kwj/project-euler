@@ -1,10 +1,10 @@
-
 # project euler: problem 67
 
-from euler.lib.resource import asset_file
-from time import perf_counter
+from collections.abc import Callable
+from typing import IO
 
-def select_leaf(fn, lst):
+
+def select_leaf(fn: Callable[..., int], lst: list[int]) -> list[int]:
     result = []
     prev = lst[0]
     for i in lst:
@@ -12,8 +12,9 @@ def select_leaf(fn, lst):
         prev = i
     return result[1:]
 
-def compute(fn, fh):
-    def parse_data(fh):
+
+def compute(fn: Callable[..., int], fh: IO) -> str:
+    def parse_data(fh: IO) -> list[list[int]]:
         return [list(map(int, line.split(' '))) for line in fh.read().splitlines()]
 
     nums = list(reversed(parse_data(fh)))
@@ -24,11 +25,11 @@ def compute(fn, fh):
 
     return str(prev[0])
 
-def solve():
-    fh = asset_file('https://projecteuler.net/project/resources/p067_triangle.txt')
-    start = perf_counter()
-    result = compute(max, fh)
-    elapsed_time = perf_counter() - start
-    fh.close()
 
-    return (result, "{:f}".format(elapsed_time))
+def solve() -> str:
+    from euler.lib.resource import asset_file
+
+    fh = asset_file('https://projecteuler.net/project/resources/p067_triangle.txt')
+    result = compute(max, fh)
+    fh.close()
+    return result

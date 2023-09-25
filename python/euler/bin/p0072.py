@@ -1,14 +1,13 @@
-
 # project euler: problem 72
 
 # https://mathproblems123.wordpress.com/2018/05/10/sum-of-the-euler-totient-function/
 
-from math import isqrt
 from functools import cache
-from time import perf_counter
+from math import isqrt
+
 
 @cache
-def sum_phi(num):
+def sum_phi(num: int) -> int:
     v = num * (num + 1) // 2
     for m in range(2, isqrt(num) + 1):
         v -= sum_phi(num // m)
@@ -17,12 +16,10 @@ def sum_phi(num):
 
     return v
 
-def compute(limit):
+
+def compute(limit: int) -> str:
     return str(sum_phi(limit) - sum_phi(1))
 
-def solve():
-    start = perf_counter()
-    result = compute(1_000_000)
-    elapsed_time = perf_counter() - start
 
-    return (result, "{:f}".format(elapsed_time))
+def solve() -> str:
+    return compute(1_000_000)

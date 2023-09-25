@@ -1,9 +1,7 @@
-
 # project euler: problem 56
 
-from time import perf_counter
 
-def compute():
+def compute() -> str:
     answer = 0
     for a in range(99, 0, -1):
         # assume that x = 10 * n
@@ -12,16 +10,13 @@ def compute():
         if a % 10 == 0:
             continue
         for b in range(99, 0, -1):
-            p = a ** b
+            p = a**b
             if len(p_str := str(p)) * 9 < answer:
                 break
             answer = max(sum(map(int, list(p_str))), answer)
 
     return str(answer)
 
-def solve():
-    start = perf_counter()
-    result = compute()
-    elapsed_time = perf_counter() - start
 
-    return (result, "{:f}".format(elapsed_time))
+def solve() -> str:
+    return compute()

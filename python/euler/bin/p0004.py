@@ -1,12 +1,11 @@
-
 # project euler: problem 4
 
 from euler.lib.util import is_palindrome
-from time import perf_counter
 
-def compute(digits):
+
+def compute(digits: int) -> str:
     assert digits > 0, 'range error'
-    n_upper = (10 ** digits) - 1
+    n_upper = (10**digits) - 1
     n_lower = (10 ** (digits - 1)) - 1
     blk_upper_limit = 10 ** (digits * 2)
     blk_lower_limit = 10 ** ((digits - 1) * 2) if digits > 1 else 0
@@ -24,15 +23,14 @@ def compute(digits):
                 tmp = x * y
                 if tmp < blk_lower:
                     break
-                if is_palindrome(tmp) == True:
+                if is_palindrome(tmp) is True:
                     answer.append(tmp)
 
         if len(answer) != 0:
             return str(max(answer))
 
-def solve():
-    start = perf_counter()
-    result = compute(3)    # 3: 3-digit
-    elapsed_time = perf_counter() - start
+    assert False, 'unreachable!'
 
-    return (result, "{:f}".format(elapsed_time))
+
+def solve() -> str:
+    return compute(3)  # 3-digit

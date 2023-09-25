@@ -1,4 +1,3 @@
-
 # project euler: problem 28
 
 # 21 22 23 24 25
@@ -19,18 +18,14 @@
 #
 # Answer: 1 + sum_{n=1}^{(1001-1)/2} (16n**2 + 4n + 4)
 
-from time import perf_counter
 
-def compute(side_len):
+def compute(side_len: int) -> str:
     result = 1
     for n in range(1, ((side_len - 1) // 2) + 1):
         result += 16 * n * n + 4 * n + 4
 
     return str(result)
 
-def solve():
-    start = perf_counter()
-    result = compute(1_001)
-    elapsed_time = perf_counter() - start
 
-    return (result, "{:f}".format(elapsed_time))
+def solve() -> str:
+    return compute(1_001)

@@ -1,11 +1,11 @@
-
 # project euler: problem 26
 
 from math import lcm
-from euler.lib.util import factorize, divisors
-from time import perf_counter
 
-def pp(n):
+from euler.lib.util import divisors, factorize
+
+
+def pp(n: int) -> int:
     while n % 2 == 0:
         n //= 2
     while n % 5 == 0:
@@ -13,12 +13,14 @@ def pp(n):
 
     return n
 
-def carmichael(n):
+
+def carmichael(n: int) -> int:
     # This function is not strictly the correct Carmichael function
     # because the function assumes that the argument is not a multiple of 2.
     return lcm(*map(lambda x: (x[0] - 1) * (x[0] ** (x[1] - 1)), factorize(n)))
 
-def find_repetend_length(d):
+
+def find_repetend_length(d: int) -> int:
     if (d := pp(d)) == 1:
         return 0
 
@@ -26,9 +28,10 @@ def find_repetend_length(d):
         if pow(10, k, d) == 1:
             return k
 
-    assert False, 'not reached'
+    assert False, 'unreachable!'
 
-def compute(limit):
+
+def compute(limit: int) -> str:
     max_length = 0
     answer = 0
     for i in range(limit - 1, ((limit // 2) - 1), -1):
@@ -41,9 +44,6 @@ def compute(limit):
 
     return str(answer)
 
-def solve():
-    start = perf_counter()
-    result = compute(1_000)
-    elapsed_time = perf_counter() - start
 
-    return (result, "{:f}".format(elapsed_time))
+def solve() -> str:
+    return compute(1_000)

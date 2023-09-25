@@ -1,16 +1,12 @@
-
 # project euler: problem 76
 
-'''
-  another version of problem 31
+#   another version of problem 31
+#
+#   coins: 1, 2, 3, ..., 99
+#   total: 100
 
-  coins: 1, 2, 3, ..., 99
-  total: 100
-'''
 
-from time import perf_counter
-
-def compute(coins, target):
+def compute(coins: list[int], target: int) -> str:
     tbl = [0] * (target + 1)
     tbl[0] = 1
 
@@ -20,9 +16,6 @@ def compute(coins, target):
 
     return str(tbl[target])
 
-def solve():
-    start = perf_counter()
-    result = compute(list(range(1, 100)), 100)
-    elapsed_time = perf_counter() - start
 
-    return (result, "{:f}".format(elapsed_time))
+def solve() -> str:
+    return compute(list(range(1, 100)), 100)

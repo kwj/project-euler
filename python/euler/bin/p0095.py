@@ -1,10 +1,8 @@
-
 # project euler: problem 95
 
-from time import perf_counter
 
-def compute(limit):
-    def check_loop(pos):
+def compute(limit: int) -> str:
+    def check_loop(pos: int) -> tuple[int, int]:
         stop = pos
         min_value = pos
         cnt = 1
@@ -64,9 +62,6 @@ def compute(limit):
 
     return str(answer)
 
-def solve():
-    start = perf_counter()
-    result = compute(1_000_000)
-    elapsed_time = perf_counter() - start
 
-    return (result, "{:f}".format(elapsed_time))
+def solve() -> str:
+    return compute(1_000_000)

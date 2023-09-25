@@ -1,10 +1,9 @@
-
 # project euler: problem 24
 
 from math import factorial
-from time import perf_counter
 
-def make_fact_tbl(num, depth):
+
+def make_fact_tbl(num: int, depth: int) -> list[int]:
     result = []
     i = num - 1
     divisor = factorial(num - depth)
@@ -14,7 +13,8 @@ def make_fact_tbl(num, depth):
 
     return result
 
-def compute(nth, elm_lst, depth):
+
+def compute(nth: int, elm_lst: list[int], depth: int) -> str:
     idx = nth - 1
     result = []
     for n in make_fact_tbl(len(elm_lst), depth):
@@ -23,10 +23,7 @@ def compute(nth, elm_lst, depth):
 
     return ''.join(map(str, result))
 
-def solve():
-    start = perf_counter()
-    lst = list(range(10))
-    result = compute(1_000_000, lst, len(lst))
-    elapsed_time = perf_counter() - start
 
-    return (result, "{:f}".format(elapsed_time))
+def solve() -> str:
+    lst = list(range(10))
+    return compute(1_000_000, lst, len(lst))

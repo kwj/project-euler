@@ -1,9 +1,7 @@
-
 # project euler: problem 25
 
-from time import perf_counter
 
-def compute(digits):
+def compute(digits: int) -> str:
     limit = pow(10, digits - 1)
     nth = 2
     fib1, fib2 = 1, 1
@@ -13,9 +11,6 @@ def compute(digits):
 
     return str(nth)
 
-def solve():
-    start = perf_counter()
-    result = compute(1_000)
-    elapsed_time = perf_counter() - start
 
-    return (result, "{:f}".format(elapsed_time))
+def solve() -> str:
+    return compute(1_000)

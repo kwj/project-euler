@@ -1,17 +1,19 @@
-
 # project euler: problem 77
 
-from euler.lib.prime import prime_generator
-from time import perf_counter
+from collections.abc import Generator
 
-def plst_generator():
+from euler.lib.prime import prime_generator
+
+
+def plst_generator() -> Generator[list[int], None, None]:
     p_gen = prime_generator()
     plst = []
     while True:
         plst.append(next(p_gen))
         yield plst
 
-def compute(boundary):
+
+def compute(boundary: int) -> str:
     plst_gen = plst_generator()
     while True:
         plst = next(plst_gen)
@@ -29,10 +31,6 @@ def compute(boundary):
 
     return str(len(plst))
 
-def solve():
-    start = perf_counter()
-    result = compute(5_000)
-    elapsed_time = perf_counter() - start
 
-    return (result, "{:f}".format(elapsed_time))
-
+def solve() -> str:
+    return compute(5_000)

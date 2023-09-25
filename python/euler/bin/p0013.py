@@ -1,7 +1,4 @@
-
 # project euler: problem 13
-
-from time import perf_counter
 
 nums = [
     37107287533902102798797998220837590246510135740250,
@@ -103,15 +100,13 @@ nums = [
     77158542502016545090413245809786882778948721859617,
     72107838435069186155435662884062257473692284509516,
     20849603980134001723930671666823555245252804609722,
-    53503534226472524250874054075591789781264330331690
+    53503534226472524250874054075591789781264330331690,
 ]
 
-def compute():
+
+def compute() -> str:
     return str(sum(nums))[0:10]
 
-def solve():
-    start = perf_counter()
-    result = compute()
-    elapsed_time = perf_counter() - start
 
-    return (result, "{:f}".format(elapsed_time))
+def solve() -> str:
+    return compute()

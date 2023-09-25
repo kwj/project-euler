@@ -1,9 +1,7 @@
-
 # project euler: problem 31
 
-from time import perf_counter
 
-def compute(coins, target):
+def compute(coins: list[int], target: int) -> str:
     tbl = [0] * (target + 1)
     tbl[0] = 1
 
@@ -13,9 +11,6 @@ def compute(coins, target):
 
     return str(tbl[target])
 
-def solve():
-    start = perf_counter()
-    result = compute([1, 2, 5, 10, 20, 50, 100, 200], 200)
-    elapsed_time = perf_counter() - start
 
-    return (result, "{:f}".format(elapsed_time))
+def solve() -> str:
+    return compute([1, 2, 5, 10, 20, 50, 100, 200], 200)

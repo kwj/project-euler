@@ -1,29 +1,26 @@
-
 # project euler: problem 57
 
-'''
-  use recurrence relation:
-    sqrt(2) = 1 + sqrt(2) - 1
-            = 1 + 1 / ( 1 / (sqrt(2) - 1) )
-            = 1 + 1 / ( (sqrt(2) + 1) / (2 - 1) )
-            = 1 + 1 / (1 + sqrt(2))
-    -->
-    a{1} = 1 + 1/2
-    a{n} = 1 + 1/(1 + a{n-1})    [n>1]
-
-  assume that b{n}/c{n} = a{n}
-    b{1}/c{1} = 1 + 1/2 = 3/2
-    b{n}/c{n} = 1 + 1/(1 + b{n-1}/c{n-1})
-              = 1 + 1/((c{n-1) + b{n-1})/c{n-1})
-              = 1 + c{n-1}/(c{n-1) + b{n-1})
-              = (c{n-1) + b{n-1} + c{n-1))/(c{n-1) + b{n-1})
-              = (2 * c{n-1} + b{n-1}) / (c{n-1) + b{n-1})
-'''
+#  use recurrence relation:
+#    sqrt(2) = 1 + sqrt(2) - 1
+#            = 1 + 1 / ( 1 / (sqrt(2) - 1) )
+#            = 1 + 1 / ( (sqrt(2) + 1) / (2 - 1) )
+#            = 1 + 1 / (1 + sqrt(2))
+#    -->
+#    a{1} = 1 + 1/2
+#    a{n} = 1 + 1/(1 + a{n-1})    [n>1]
+#
+#  assume that b{n}/c{n} = a{n}
+#    b{1}/c{1} = 1 + 1/2 = 3/2
+#    b{n}/c{n} = 1 + 1/(1 + b{n-1}/c{n-1})
+#              = 1 + 1/((c{n-1) + b{n-1})/c{n-1})
+#              = 1 + c{n-1}/(c{n-1) + b{n-1})
+#              = (c{n-1) + b{n-1} + c{n-1))/(c{n-1) + b{n-1})
+#              = (2 * c{n-1} + b{n-1}) / (c{n-1) + b{n-1})
 
 from euler.lib.util import num_of_digits
-from time import perf_counter
 
-def compute(num):
+
+def compute(num: int) -> str:
     answer = 0
     b, c = 1, 1
     for _ in range(num):
@@ -33,9 +30,6 @@ def compute(num):
 
     return str(answer)
 
-def solve():
-    start = perf_counter()
-    result = compute(1_000)
-    elapsed_time = perf_counter() - start
 
-    return (result, "{:f}".format(elapsed_time))
+def solve() -> str:
+    return compute(1_000)

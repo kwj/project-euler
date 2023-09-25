@@ -1,15 +1,16 @@
-
 import hashlib
 import json
 import urllib.request
 from pathlib import Path
+from typing import IO
 
 asset_dir = Path(__file__).parents[2] / 'assets'
 
-def asset_file(url):
-    filename = url[url.rfind('/') + 1:]
+
+def asset_file(url: str) -> IO:
+    filename = url[url.rfind('/') + 1 :]
     asset_file = asset_dir / filename
-    if asset_file.exists() == False:
+    if asset_file.exists() is False:
         download(url, filename)
         with urllib.request.urlopen(url) as fr:
             with open(str(asset_file), 'wb') as fw:
@@ -23,7 +24,8 @@ def asset_file(url):
     f = open(str(asset_file))
     return f
 
-def download(url, filename):
+
+def download(url: str, filename: str):
     with urllib.request.urlopen(url) as fr:
         content = fr.read()
         with open(str(asset_dir / filename), 'wb') as fw:
@@ -32,15 +34,17 @@ def download(url, filename):
     d[filename] = hashlib.sha256(content).hexdigest()
     write_hashdict(d)
 
-def read_hashdict():
+
+def read_hashdict() -> dict[str, str]:
     hash_file = asset_dir / 'hashes.json'
-    if hash_file.exists() == False:
+    if hash_file.exists() is False:
         return {}
     else:
         with open(str(hash_file)) as f:
             return json.load(f)
 
-def write_hashdict(d):
+
+def write_hashdict(d: dict[str, str]):
     hash_file = asset_dir / 'hashes.json'
     with open(str(hash_file), 'w') as f:
         json.dump(d, f, indent=2)

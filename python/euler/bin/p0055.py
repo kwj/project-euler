@@ -1,9 +1,7 @@
-
 # project euler: problem 55
 
-from time import perf_counter
 
-def compute():
+def compute() -> str:
     cnt = 0
     for i in range(10_000):
         for _ in range(50):
@@ -16,9 +14,6 @@ def compute():
 
     return str(cnt)
 
-def solve():
-    start = perf_counter()
-    result = compute()
-    elapsed_time = perf_counter() - start
 
-    return (result, "{:f}".format(elapsed_time))
+def solve() -> str:
+    return compute()

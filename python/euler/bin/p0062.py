@@ -1,14 +1,13 @@
-
 # project euler: problem 62
 
 from itertools import count
-from time import perf_counter
 
-def compute(n_of_perms):
-    def make_key(n):
+
+def compute(n_of_perms: int) -> str:
+    def make_key(n: int) -> str:
         return ''.join(sorted(list(str(n))))
 
-    tbl = dict()
+    tbl: dict[str, list[int]] = dict()
     for n in count(1):
         cube = n * n * n
         match (key := make_key(cube)) in tbl:
@@ -19,9 +18,8 @@ def compute(n_of_perms):
             case _:
                 tbl[key] = [n]
 
-def solve():
-    start = perf_counter()
-    result = compute(5)
-    elapsed_time = perf_counter() - start
+    assert False, 'unreachable!'
 
-    return (result, "{:f}".format(elapsed_time))
+
+def solve() -> str:
+    return compute(5)

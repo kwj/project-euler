@@ -1,11 +1,9 @@
-
 # project euler: problem 74
 
 # naive version
 
-from time import perf_counter
 
-def fact_sum(n):
+def fact_sum(n: int) -> int:
     tbl = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880]
     if n == 0:
         return tbl[0]
@@ -16,7 +14,8 @@ def fact_sum(n):
 
     return acc
 
-def compute(limit, threshold):
+
+def compute(limit: int, threshold: int) -> str:
     chain_tbl = [0] * limit
     cnt = 0
     for n in range(1, limit):
@@ -37,9 +36,6 @@ def compute(limit, threshold):
 
     return str(cnt)
 
-def solve():
-    start = perf_counter()
-    result = compute(1_000_000, 60)
-    elapsed_time = perf_counter() - start
 
-    return (result, "{:f}".format(elapsed_time))
+def solve() -> str:
+    return compute(1_000_000, 60)
