@@ -1,11 +1,13 @@
-
 // project euler: problem 81
 
 import { runningReduce } from "std/collections/running_reduce.ts";
 import { assetData } from "../lib/asset.ts";
 import { range } from "../lib/util.ts";
 
-export function compute(fn: (...valus: number[]) => number, data: string): string {
+export function compute(
+  fn: (...valus: number[]) => number,
+  data: string,
+): string {
   function parseData(data: string): number[][] {
     function splitLines(str: string): string[] {
       const result = str.split(/\r?\n/);
@@ -21,7 +23,9 @@ export function compute(fn: (...valus: number[]) => number, data: string): strin
 
   const matrix = parseData(data);
 
-  let prev = [Number.MAX_SAFE_INTEGER].concat(runningReduce(matrix[0], (acc, cur) => acc + cur, 0));
+  let prev = [Number.MAX_SAFE_INTEGER].concat(
+    runningReduce(matrix[0], (acc, cur) => acc + cur, 0),
+  );
   for (const work of matrix.slice(1)) {
     work.unshift(Number.MAX_SAFE_INTEGER);
     for (const i of range(1, work.length)) {

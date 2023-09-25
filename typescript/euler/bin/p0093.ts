@@ -1,4 +1,3 @@
-
 // project euler: problem 93
 
 /*
@@ -33,7 +32,10 @@ It is slow, but I use Reverse Polish notation and Python's fraction module.
       RPN: x1 x2 x3 x4 OP3 OP2 OP1
 */
 
-import { permutations, permutationsWithReplacement } from "combinatorics/mod.ts";
+import {
+  permutations,
+  permutationsWithReplacement,
+} from "combinatorics/mod.ts";
 import { Rational, rational } from "../lib/rational.ts";
 import { dedupSort } from "../lib/util.ts";
 
@@ -88,12 +90,19 @@ function getMaxConsecNum(x: Rational[], opSets: string[][]): number {
   let acc: Rational[] = [];
   for (const [x1, x2, x3, x4] of permutations(x)) {
     for (const [op1, op2, op3] of opSets) {
-      acc = acc.concat(calcRPN([x1, x2, op1, x3, op2, x4, op3]),
-                       calcRPN([x1, x2, op1, x3, x4, op3, op2]));
+      acc = acc.concat(
+        calcRPN([x1, x2, op1, x3, op2, x4, op3]),
+        calcRPN([x1, x2, op1, x3, x4, op3, op2]),
+      );
     }
   }
-  const nationalNumbers = acc.filter((x) => x!.isInteger() === true && x!.num > 0n) as Rational[];
-  const result = dedupSort(nationalNumbers.map((x) => Number(String(x.num))), (a, b) => a - b);
+  const nationalNumbers = acc.filter((x) =>
+    x!.isInteger() === true && x!.num > 0n
+  ) as Rational[];
+  const result = dedupSort(
+    nationalNumbers.map((x) => Number(String(x.num))),
+    (a, b) => a - b,
+  );
 
   let cnt: number;
   for (cnt = 0; cnt === result[cnt] - 1; cnt++);
@@ -102,7 +111,9 @@ function getMaxConsecNum(x: Rational[], opSets: string[][]): number {
 }
 
 export function compute(): string {
-  const opSets: string[][] = [...permutationsWithReplacement(["+", "-", "*", "/"], 3)];
+  const opSets: string[][] = [
+    ...permutationsWithReplacement(["+", "-", "*", "/"], 3),
+  ];
   const nums_gen = numsGenerator();
 
   let answer: [number, Rational[]] = [0, []];

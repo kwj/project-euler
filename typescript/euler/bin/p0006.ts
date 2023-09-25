@@ -1,4 +1,3 @@
-
 // project euler: problem 6
 
 import { sum } from "../lib/math.ts";

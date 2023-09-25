@@ -1,4 +1,3 @@
-
 // project euler: problem 29
 
 import { getMaxExp, isqrt, lcm, sum } from "../lib/math.ts";
@@ -7,7 +6,7 @@ import { range } from "../lib/util.ts";
 function make_dupctr_tbl(upper: number): number[] {
   const max_exp: number = getMaxExp(upper, 2);
   const dup_ctr: number[] = new Array(max_exp + 1);
-  const dups: number[] = new Array(upper + 1)
+  const dups: number[] = new Array(upper + 1);
 
   for (const x of range(2, max_exp + 1)) {
     dups.fill(0);
@@ -17,7 +16,7 @@ function make_dupctr_tbl(upper: number): number[] {
         dups[i] = 1;
       }
     }
-  dup_ctr[x] = sum(dups);
+    dup_ctr[x] = sum(dups);
   }
 
   return dup_ctr;

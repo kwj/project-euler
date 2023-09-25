@@ -1,8 +1,8 @@
-
 // project euler: problem 18
 
 import { zip } from "std/collections/zip.ts";
 
+// deno-fmt-ignore
 const data = [
   [75],
   [95, 64],
@@ -21,7 +21,10 @@ const data = [
   [ 4, 62, 98, 27, 23,  9, 70, 98, 73, 93, 38, 53, 60,  4, 23],
 ];
 
-function selectLeaf(fn: (...valus: number[]) => number, lst: number[]): number[] {
+function selectLeaf(
+  fn: (...valus: number[]) => number,
+  lst: number[],
+): number[] {
   const result = [];
   let prev = lst[0];
   for (const i of lst) {
@@ -32,7 +35,10 @@ function selectLeaf(fn: (...valus: number[]) => number, lst: number[]): number[]
   return result.slice(1);
 }
 
-export function compute(fn: (...valus: number[]) => number, nums: number[][]): string {
+export function compute(
+  fn: (...valus: number[]) => number,
+  nums: number[][],
+): string {
   nums.reverse();
   let prev = new Array(nums[0].length + 1);
   prev.fill(0);

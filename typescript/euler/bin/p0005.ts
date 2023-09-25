@@ -1,4 +1,3 @@
-
 // project euler: problem 5
 
 import { lcm } from "../lib/math.ts";

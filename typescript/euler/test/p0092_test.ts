@@ -1,9 +1,8 @@
-
 import { assertEquals } from "std/assert/assert_equals.ts";
 import { compute } from "../bin/p0092.ts";
 
 Deno.test("normal case 1", () => {
-  const actual = compute(10)
+  const actual = compute(10);
   const expected = "7";
   assertEquals(actual, expected);
 });

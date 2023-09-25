@@ -1,10 +1,12 @@
-
 // project euler: problem 82
 
 import { assetData } from "../lib/asset.ts";
 import { range } from "../lib/util.ts";
 
-export function compute(fn: (...valus: number[]) => number, data: string): string {
+export function compute(
+  fn: (...valus: number[]) => number,
+  data: string,
+): string {
   function parseData(data: string): number[][] {
     function splitLines(str: string): string[] {
       const result = str.split(/\r?\n/);
@@ -15,7 +17,7 @@ export function compute(fn: (...valus: number[]) => number, data: string): strin
       }
     }
 
-    return splitLines(data).map((x) => x.split(",").map((y) => Number(y)))
+    return splitLines(data).map((x) => x.split(",").map((y) => Number(y)));
   }
 
   function transpose(matrix: number[][]): number[][] {

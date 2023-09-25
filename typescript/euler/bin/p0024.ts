@@ -1,4 +1,3 @@
-
 // project euler: problem 24
 
 import { factorial } from "../lib/math.ts";

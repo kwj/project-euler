@@ -1,4 +1,3 @@
-
 import { unzip } from "std/collections/unzip.ts";
 import { bitLength, highOrderReduce, range } from "./util.ts";
 
@@ -46,7 +45,10 @@ function isqrtNumber(n: number): number {
       return 1;
     } else {
       const k: number = Math.trunc((c - 1) / 2);
-      const a: number = aux(Math.trunc(c / 2), Math.trunc(n / (2 ** (2 * k + 2))));
+      const a: number = aux(
+        Math.trunc(c / 2),
+        Math.trunc(n / (2 ** (2 * k + 2))),
+      );
 
       return (a * (2 ** k)) + Math.trunc(Math.trunc(n / (2 ** (k + 2))) / a);
     }
@@ -163,8 +165,10 @@ export function factorize(n: number): [number, number][] {
 }
 
 export function pflstToNumber(pf_lst: [number, number][]): number {
-  return pf_lst.map((lst) => lst[0] ** lst[1])
-               .reduce((acc, cur) => acc * cur, 1);
+  return pf_lst.map((lst) => lst[0] ** lst[1]).reduce(
+    (acc, cur) => acc * cur,
+    1,
+  );
 }
 
 export function pflstToDivisors(pf_lst: [number, number][]): number[] {
@@ -180,7 +184,9 @@ export function pflstToDivisors(pf_lst: [number, number][]): number[] {
   if (div_lst[1] === 1) {
     return [1];
   } else {
-    return div_lst.sort((a, b) => {return a - b;});
+    return div_lst.sort((a, b) => {
+      return a - b;
+    });
   }
 }
 
@@ -191,7 +197,7 @@ export function divisors(n: number): number[] {
 export function numOfDivisors(n: number): number {
   const [_, e]: [number[], number[]] = unzip(factorize(n));
   return e.map((x) => x + 1)
-          .reduce((acc, cur) => acc * cur, 1);
+    .reduce((acc, cur) => acc * cur, 1);
 }
 
 /*

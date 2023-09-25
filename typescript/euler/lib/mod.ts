@@ -1,4 +1,3 @@
-
 export * from "./asset.ts";
 export * from "./math.ts";
 export * from "./primes.ts";

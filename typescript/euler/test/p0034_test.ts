@@ -1,4 +1,3 @@
-
 import { assertEquals } from "std/assert/assert_equals.ts";
 import { compute } from "../bin/p0034.ts";
 

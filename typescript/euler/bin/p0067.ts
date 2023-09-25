@@ -1,10 +1,12 @@
-
 // project euler: problem 67
 
 import { zip } from "std/collections/zip.ts";
 import { assetData } from "../lib/asset.ts";
 
-function selectLeaf(fn: (...valus: number[]) => number, lst: number[]): number[] {
+function selectLeaf(
+  fn: (...valus: number[]) => number,
+  lst: number[],
+): number[] {
   const result = [];
   let prev = lst[0];
   for (const i of lst) {
@@ -15,7 +17,10 @@ function selectLeaf(fn: (...valus: number[]) => number, lst: number[]): number[]
   return result.slice(1);
 }
 
-export function compute(fn: (...valus: number[]) => number, data: string): string {
+export function compute(
+  fn: (...valus: number[]) => number,
+  data: string,
+): string {
   function parseData(data: string): number[][] {
     function splitLines(str: string): string[] {
       const result = str.split(/\r?\n/);

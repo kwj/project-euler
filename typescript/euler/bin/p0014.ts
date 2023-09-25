@@ -1,4 +1,3 @@
-
 // project euler: problem 14
 
 import { max } from "../lib/math.ts";

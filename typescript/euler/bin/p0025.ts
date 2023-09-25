@@ -1,4 +1,3 @@
-
 // project euler: problem 25
 
 export function compute(digit: number): string {

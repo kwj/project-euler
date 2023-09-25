@@ -1,4 +1,3 @@
-
 // project euler: problem 40
 
 /*
@@ -42,7 +41,9 @@ function d(pos: number): number {
 }
 
 export function compute(): string {
-  return String(d(1) * d(10) * d(100) * d(1_000) * d(10_000) * d(100_000) * d(1_000_000));
+  return String(
+    d(1) * d(10) * d(100) * d(1_000) * d(10_000) * d(100_000) * d(1_000_000),
+  );
 }
 
 export function solve(): void {

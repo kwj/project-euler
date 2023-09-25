@@ -1,4 +1,3 @@
-
 // project euler: problem 98
 
 import { unzip } from "std/collections/unzip.ts";
@@ -13,14 +12,20 @@ function selectKeywords(words: string[]) {
     return word.split("").sort().join("");
   }
 
-  function makeKWinfo(tplLst: [string, string][]): [number, [string, string[]][]] {
+  function makeKWinfo(
+    tplLst: [string, string][],
+  ): [number, [string, string[]][]] {
     const work = assocGroupMap(tplLst);
-    const [keys, _] = unzip([...work.entries()].filter(([_, vLst]) => vLst.length === 1));
+    const [keys, _] = unzip(
+      [...work.entries()].filter(([_, vLst]) => vLst.length === 1),
+    );
     for (const key of keys) {
       work.delete(key);
     }
 
-    const result = [...work.entries()].sort((a, b) => b[0].length - a[0].length);
+    const result = [...work.entries()].sort((a, b) =>
+      b[0].length - a[0].length
+    );
 
     return [result[0][0].length, result];
   }
@@ -28,7 +33,9 @@ function selectKeywords(words: string[]) {
   return makeKWinfo(words.map((x) => [makeKey(x), x]));
 }
 
-function makeSquareTbl(digits: number): [Map<number, string[]>, Map<number, string[]>] {
+function makeSquareTbl(
+  digits: number,
+): [Map<number, string[]>, Map<number, string[]>] {
   const limit = isqrt(10 ** digits - 1);
   const work: [number, string][] = [];
 
@@ -42,7 +49,9 @@ function makeSquareTbl(digits: number): [Map<number, string[]>, Map<number, stri
   const sq_tbl = assocGroupMap(work);
   const sq_uniq_tbl = new Map<number, string[]>();
   for (const [k, vLst] of sq_tbl.entries()) {
-    const uniq_vLst = vLst.filter((x) => x.length === dedupSort(x.split("")).length);
+    const uniq_vLst = vLst.filter((x) =>
+      x.length === dedupSort(x.split("")).length
+    );
     if (uniq_vLst.length !== 0) {
       sq_uniq_tbl.set(k, uniq_vLst);
     }
@@ -63,7 +72,9 @@ function translate(s: string, transMap: Map<string, string[]>): string {
 export function compute(data: string): string {
   function checkPair(w1: string, w2: string): number | undefined {
     const ndigits = w1.length;
-    const tbl = (ndigits === dedupSort(w1.split("")).length) ? sq_uniq_tbl : sq_tbl;
+    const tbl = (ndigits === dedupSort(w1.split("")).length)
+      ? sq_uniq_tbl
+      : sq_tbl;
 
     for (const sq of tbl.get(ndigits)!) {
       const transMap = assocGroupMap(zip(w1.split(""), sq.split("")));

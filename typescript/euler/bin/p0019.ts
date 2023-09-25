@@ -1,4 +1,3 @@
-
 // project euler: problem 19
 
 import { runningReduce } from "std/collections/running_reduce.ts";
@@ -21,7 +20,10 @@ export function compute(): string {
   // --> Jan 1, 1901 was Tuesday since (1 + 365) mod 7 = 2.
   //     Feb 1, 1901 was Firday since ((1 + 365) + 31) mod 7 = 5.
   //     ... and so on
-  return String(runningReduce([1 + 365].concat(days), (sum, current) => sum + current, 0).filter((x) => x % 7 === 0).length);
+  return String(
+    runningReduce([1 + 365].concat(days), (sum, current) => sum + current, 0)
+      .filter((x) => x % 7 === 0).length,
+  );
 }
 
 export function solve(): void {

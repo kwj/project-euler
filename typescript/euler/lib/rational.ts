@@ -1,4 +1,3 @@
-
 // tiny rational class
 
 export interface Rational {
@@ -11,7 +10,6 @@ export interface Rational {
   div(rat: Rat): Rat;
 
   isInteger(): boolean;
-
 }
 
 type RatNumber = number | bigint | string;
@@ -42,21 +40,21 @@ class Rat implements Rational {
   add(rat: Rat): Rat {
     return new Rat(
       this.num * rat.denom + rat.num * this.denom,
-      this.denom * rat.denom
+      this.denom * rat.denom,
     );
   }
 
   sub(rat: Rat): Rat {
     return new Rat(
       this.num * rat.denom - rat.num * this.denom,
-      this.denom * rat.denom
+      this.denom * rat.denom,
     );
   }
 
   mul(rat: Rat): Rat {
     return new Rat(
       this.num * rat.num,
-      this.denom * rat.denom
+      this.denom * rat.denom,
     );
   }
 
@@ -66,7 +64,7 @@ class Rat implements Rational {
     }
     return new Rat(
       this.num * rat.denom,
-      this.denom * rat.num
+      this.denom * rat.num,
     );
   }
 

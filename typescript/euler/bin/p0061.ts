@@ -1,4 +1,3 @@
-
 // project euler: problem 61
 
 import { permutations } from "combinatorics/mod.ts";
@@ -42,7 +41,10 @@ function makePolygonalTbl() {
   return tbl;
 }
 
-function findCycle(polyTbl: Map<number, Map<number, number[]>>, route: number[]): number[] | undefined {
+function findCycle(
+  polyTbl: Map<number, Map<number, number[]>>,
+  route: number[],
+): number[] | undefined {
   function dfs(nextRoute: number[], path: number[]): number[] | undefined {
     if (nextRoute.length === 0) {
       return (path[0] === path.at(-1)) ? path.slice(1) : undefined;

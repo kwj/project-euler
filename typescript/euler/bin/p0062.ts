@@ -1,4 +1,3 @@
-
 // project euler: problem 62
 
 export function compute(numOfPerms: number): string {

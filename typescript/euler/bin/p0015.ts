@@ -1,10 +1,12 @@
-
 // project euler: problem 15
 
 import { factorialBigint } from "../lib/math.ts";
 
 export function compute(m: number, n: number): string {
-  return String(factorialBigint(BigInt(m + n)) / factorialBigint(BigInt(m)) / factorialBigint(BigInt(n)))
+  return String(
+    factorialBigint(BigInt(m + n)) / factorialBigint(BigInt(m)) /
+      factorialBigint(BigInt(n)),
+  );
 }
 
 export function solve(): void {

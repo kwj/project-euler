@@ -1,4 +1,3 @@
-
 // project euler: problem 1
 
 function sumMultiple(n: number, limit: number): number {
@@ -9,7 +8,9 @@ function sumMultiple(n: number, limit: number): number {
 }
 
 export function compute(limit: number): string {
-  return String(sumMultiple(3, limit) + sumMultiple(5, limit) - sumMultiple(15, limit));
+  return String(
+    sumMultiple(3, limit) + sumMultiple(5, limit) - sumMultiple(15, limit),
+  );
 }
 
 export function solve(): void {

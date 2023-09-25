@@ -1,4 +1,3 @@
-
 // project euler: problem 12
 
 /*
@@ -16,17 +15,17 @@ import { numOfDivisors } from "../lib/math.ts";
 export function compute(limit: number): string {
   let n = 1;
   while (true) {
-    if (numOfDivisors(n) * numOfDivisors((n+1) / 2) > limit) {
+    if (numOfDivisors(n) * numOfDivisors((n + 1) / 2) > limit) {
       break;
     }
     n += 1;
-    if (numOfDivisors(n / 2) * numOfDivisors(n+1) > limit) {
+    if (numOfDivisors(n / 2) * numOfDivisors(n + 1) > limit) {
       break;
     }
     n += 1;
   }
 
-  return String(n * (n+1) / 2);
+  return String(n * (n + 1) / 2);
 }
 
 export function solve(): void {

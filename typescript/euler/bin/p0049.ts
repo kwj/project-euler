@@ -1,4 +1,3 @@
-
 // project euler: problem 49
 
 import { combinations } from "combinatorics/mod.ts";

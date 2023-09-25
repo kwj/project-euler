@@ -1,4 +1,3 @@
-
 /*
   Return the number of binary digits.
 
@@ -168,7 +167,10 @@ export function isPalindrome(num: number, base = 10): boolean {
   return num === acc;
 }
 
-export function dedupSort<T>(lst: T[], compareFn?: (a: T, b: T) => number): T[] {
+export function dedupSort<T>(
+  lst: T[],
+  compareFn?: (a: T, b: T) => number,
+): T[] {
   const elms = new Set<T>();
   const result: T[] = [];
 

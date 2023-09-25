@@ -1,4 +1,3 @@
-
 // project euler: problem 80
 
 /*
@@ -22,7 +21,9 @@ export function compute(limit: number, digit: number): string {
     if (isqrt(n) * isqrt(n) === n) {
       continue;
     }
-    acc += sum(String(isqrt((10n ** exp) * BigInt(n))).split("").map((x) => Number(x)));
+    acc += sum(
+      String(isqrt((10n ** exp) * BigInt(n))).split("").map((x) => Number(x)),
+    );
   }
 
   return String(acc);

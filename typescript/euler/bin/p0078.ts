@@ -1,4 +1,3 @@
-
 // project euler: problem 78
 
 /*
@@ -59,10 +58,10 @@ export function compute(denom: number): string {
       }
       sign = -sign;
       k += 1;
-    } while (n2 > 0 && n1 > 0)
+    } while (n2 > 0 && n1 > 0);
 
     p.push(rem);
-  } while (rem !== 0)
+  } while (rem !== 0);
 
   return String(n);
 }

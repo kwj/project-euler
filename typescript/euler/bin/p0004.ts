@@ -1,4 +1,3 @@
-
 // project euler: problem 4
 
 import { max } from "../lib/math.ts";
@@ -22,7 +21,9 @@ export function compute(digits: number): string {
       if (x * x < blk_lower) {
         break;
       }
-      for (const y of range(Math.min(Math.trunc(blk_upper / x), x), nLower, -1)) {
+      for (
+        const y of range(Math.min(Math.trunc(blk_upper / x), x), nLower, -1)
+      ) {
         const tmp = x * y;
         if (tmp < blk_lower) {
           break;

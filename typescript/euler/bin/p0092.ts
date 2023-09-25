@@ -1,4 +1,3 @@
-
 // project euler: problem 92
 
 /*
@@ -80,12 +79,19 @@ function isGroup89(n: number): boolean {
 
 export function compute(limit: number): string {
   if (Number.isInteger(Math.log10(limit)) !== true || limit === 0) {
-    throw new Error("This implementation works correctly only if the limit is a power of 10.");
+    throw new Error(
+      "This implementation works correctly only if the limit is a power of 10.",
+    );
   }
   const ndigits = numOfDigits(limit) - 1;
 
   const subsetInfoLst: number[][] = [];
-  for (const pat of combinationsWithReplacement([0, 1, 4, 9, 16, 25, 36, 49, 64, 81], ndigits)) {
+  for (
+    const pat of combinationsWithReplacement(
+      [0, 1, 4, 9, 16, 25, 36, 49, 64, 81],
+      ndigits,
+    )
+  ) {
     if (isGroup89(sum(pat)) === true) {
       // We need only each size of subsets, the elements of subsets themselves are not required.
       const [_, x] = unzip(Counter(pat));
@@ -93,7 +99,9 @@ export function compute(limit: number): string {
     }
   }
 
-  const denominators = subsetInfoLst.map((x) => prod(x.map((y) => factorial(y))));
+  const denominators = subsetInfoLst.map((x) =>
+    prod(x.map((y) => factorial(y)))
+  );
   const numerator = factorial(ndigits);
 
   return String(sum(denominators.map((d) => numerator / d)));

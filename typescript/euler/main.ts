@@ -1,4 +1,3 @@
-
 // This file is the entry point.
 
 if (Deno.args.length > 0) {

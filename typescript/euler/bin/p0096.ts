@@ -1,4 +1,3 @@
-
 // project euler: problem 96
 
 /*
@@ -44,13 +43,25 @@ const POS = [...cartesianProduct(ROW, COL)].map(([r, c]) => r + c);
 
 const ROW_LST = ROW.map((r) => POS.filter((pos) => pos.includes(r)));
 const COL_LST = COL.map((c) => POS.filter((pos) => pos.includes(c)));
-const BOX_LST = [...cartesianProduct(chunk(ROW, 3), chunk(COL, 3))].map(([rs, cs]) => [...cartesianProduct(rs, cs)]).map((lst) => lst.map(([r, c]) => r + c));
+const BOX_LST = [...cartesianProduct(chunk(ROW, 3), chunk(COL, 3))].map((
+  [rs, cs],
+) => [...cartesianProduct(rs, cs)]).map((lst) => lst.map(([r, c]) => r + c));
 
 /* map of cells and their corresponding row, column and box */
-const groups = new Map(POS.map((pos) => [pos, ROW_LST.concat(COL_LST).concat(BOX_LST).filter((lst) => lst.includes(pos))]));
+const groups = new Map(
+  POS.map((pos) => [
+    pos,
+    ROW_LST.concat(COL_LST).concat(BOX_LST).filter((lst) => lst.includes(pos)),
+  ]),
+);
 
 /* map of cells and their corresponding cells */
-const links = new Map([...groups.entries()].map(([k, v]) => [k, dedupSort(v.flat().filter((x) => x !== k))]));
+const links = new Map(
+  [...groups.entries()].map(([k, v]) => [
+    k,
+    dedupSort(v.flat().filter((x) => x !== k)),
+  ]),
+);
 
 class Grid {
   // We make a grid as Map object which values are primitive data, string.
@@ -75,9 +86,15 @@ class Grid {
   }
 
   // Tentatively determine a number to leave in the cell and remove other numbers
-  decideNum(grid: Map<string, string>, pos: string, num: string): Map<string, string> | boolean {
+  decideNum(
+    grid: Map<string, string>,
+    pos: string,
+    num: string,
+  ): Map<string, string> | boolean {
     const otherNums = grid.get(pos)!.replace(num, "");
-    if (otherNums.split("").every((n) => this.removeNum(grid, pos, n)) === true) {
+    if (
+      otherNums.split("").every((n) => this.removeNum(grid, pos, n)) === true
+    ) {
       return grid;
     } else {
       return false;
@@ -104,7 +121,11 @@ class Grid {
     // If the deletion results only one number is in the cell,
     // remove the number from the linked cells
     if (grid.get(pos)!.length === 1) {
-      if (links.get(pos)?.every((p) => this.removeNum(grid, p, grid.get(pos)!)) !== true) {
+      if (
+        links.get(pos)?.every((p) =>
+          this.removeNum(grid, p, grid.get(pos)!)
+        ) !== true
+      ) {
         return false;
       }
     }
@@ -136,14 +157,19 @@ class Grid {
       return false;
     }
 
-    const cells: [number, string][] = POS.map((p) => [(grid as Map<string, string>).get(p)!.length, p]);
+    const cells: [number, string][] = POS.map((
+      p,
+    ) => [(grid as Map<string, string>).get(p)!.length, p]);
     if (cells.every((c) => c[0] === 1) === true) {
       return grid;
     }
 
-    const [_, pos] = cells.filter((c) => c[0] > 1).sort((a, b) => a[0] - b[0])[0];
+    const [_, pos] =
+      cells.filter((c) => c[0] > 1).sort((a, b) => a[0] - b[0])[0];
     for (const num of (grid as Map<string, string>).get(pos)!) {
-      const result = this._solve(this.decideNum(new Map(grid as Map<string, string>), pos, num));
+      const result = this._solve(
+        this.decideNum(new Map(grid as Map<string, string>), pos, num),
+      );
       if (result !== false) {
         return result;
       }
@@ -164,7 +190,11 @@ class Grid {
   display(grid: Map<string, string>) {
     const values = [...grid.values()];
     const width = max(values.map((s) => s.length)) + 1;
-    const line_sep = ["-".repeat(width * 3), "-".repeat(width * 3), "-".repeat(width * 3)].join("+");
+    const line_sep = [
+      "-".repeat(width * 3),
+      "-".repeat(width * 3),
+      "-".repeat(width * 3),
+    ].join("+");
 
     let sep_flag = 0;
     for (const row of chunk(values.map((x) => x.padStart(width, " ")), 9)) {
@@ -191,7 +221,8 @@ function parseData(data: string): string[] {
   }
 
   function trim(lst: string[]): string {
-    return lst.reduce((acc, cur) => acc + cur).replace(/[^0-9.]/g, "").replaceAll(".", "0");
+    return lst.reduce((acc, cur) => acc + cur).replace(/[^0-9.]/g, "")
+      .replaceAll(".", "0");
   }
 
   let acc: string[] = [];
@@ -223,7 +254,10 @@ export function compute(data: string): string {
   for (const problem of parseData(data)) {
     const grid = new Grid(problem);
     const d = grid.solve();
-    acc += Number(d.get("R0C0") as string + d.get("R0C1") as string + d.get("R0C2") as string);
+    acc += Number(
+      d.get("R0C0") as string + d.get("R0C1") as string +
+      d.get("R0C2") as string,
+    );
   }
 
   return String(acc);

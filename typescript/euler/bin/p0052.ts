@@ -1,4 +1,3 @@
-
 // project euler: problem 52
 
 import { range } from "../lib/util.ts";

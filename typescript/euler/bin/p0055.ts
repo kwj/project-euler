@@ -1,4 +1,3 @@
-
 // project euler: problem 55
 
 import { isPalindrome, range } from "../lib/util.ts";

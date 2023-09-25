@@ -1,4 +1,3 @@
-
 // project euler: problem 68
 
 /*
@@ -172,7 +171,11 @@ import { range } from "../lib/util.ts";
 
 export function compute(): string {
   const result: string[] = [];
-  for (const [a0, a1, a2, a3, a4, a5, a6, a7, a8, a9] of permutations(range(1, 10 + 1))) {
+  for (
+    const [a0, a1, a2, a3, a4, a5, a6, a7, a8, a9] of permutations(
+      range(1, 10 + 1),
+    )
+  ) {
     if (a0 > a3 || a0 > a5 || a0 > a7 || a0 > a9) {
       continue;
     }
@@ -180,6 +183,7 @@ export function compute(): string {
       continue;
     }
 
+    // deno-fmt-ignore
     const ring = [[a0, a1, a2], [a3, a2, a4], [a5, a4, a6], [a7, a6, a8], [a9, a8, a1]];
     const edgeWeights = ring.map((x) => sum(x));
     if (edgeWeights.every((x) => x === edgeWeights[0]) === true) {

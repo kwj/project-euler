@@ -1,4 +1,3 @@
-
 // project euler: problem 59
 
 import { permutationsWithReplacement } from "combinatorics/mod.ts";
@@ -11,7 +10,8 @@ function decode(cipherText: [number, number][], key: number[]): number[] {
 }
 
 function calcScore(lst: number[]): number {
-  const wordLst = lst.map((x) => String.fromCharCode(x)).join("").split(/[,. ]/).map((x) => x.toLocaleLowerCase());
+  const wordLst = lst.map((x) => String.fromCharCode(x)).join("").split(/[,. ]/)
+    .map((x) => x.toLocaleLowerCase());
 
   let cnt = 0;
   for (const word of ["and", "or", "a", "to", "in"]) {
@@ -22,10 +22,18 @@ function calcScore(lst: number[]): number {
 }
 
 export function compute(data: string): string {
-  const cipherText: [number, number][] = data.split(",").map((x, idx) => [Number(x), idx % 3]);
+  const cipherText: [number, number][] = data.split(",").map((
+    x,
+    idx,
+  ) => [Number(x), idx % 3]);
   let maxScore: [number, number[], number[]] = [0, [], []];
 
-  for (const key of permutationsWithReplacement(range("a".charCodeAt(0), "z".charCodeAt(0) + 1), 3)) {
+  for (
+    const key of permutationsWithReplacement(
+      range("a".charCodeAt(0), "z".charCodeAt(0) + 1),
+      3,
+    )
+  ) {
     const plainText = decode(cipherText, key);
     const score = calcScore(plainText);
     if (score > maxScore[0]) {

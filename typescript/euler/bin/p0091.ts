@@ -1,4 +1,3 @@
-
 // project euler: problem 91
 
 /*
@@ -42,7 +41,10 @@ export function compute(xSize: number, ySize: number): string {
     let acc = 0;
     for (const x of range(1, xSize + 1)) {
       for (const y of range(1, ySize + 1)) {
-        acc += Math.min(trunc(y * gcd(x, y) / x), trunc((xSize - x) * gcd(x, y) / y));
+        acc += Math.min(
+          trunc(y * gcd(x, y) / x),
+          trunc((xSize - x) * gcd(x, y) / y),
+        );
       }
     }
 

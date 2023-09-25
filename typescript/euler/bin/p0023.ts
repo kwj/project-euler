@@ -1,4 +1,3 @@
-
 // project euler: problem 23
 
 import { sum } from "../lib/math.ts";
@@ -39,7 +38,9 @@ export function compute(limit: number): string {
     abndntFlags[i] = true;
   }
 
-  return String(sum(range(1, limit + 1).filter((x) => isSumOfTwoAbndnts(x) === false)));
+  return String(
+    sum(range(1, limit + 1).filter((x) => isSumOfTwoAbndnts(x) === false)),
+  );
 }
 
 export function solve(): void {

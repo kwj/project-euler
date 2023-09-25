@@ -1,4 +1,3 @@
-
 // project euler: problem 34
 
 /*
@@ -71,7 +70,12 @@ function searchFromRhs(): number {
   const factTbl = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880];
   let acc = 0;
   for (const ndigits of range(2, 8)) {
-    for (const lst of combinationsWithReplacement(range(0, 10), ndigits) as Generator<number[]>) {
+    for (
+      const lst of combinationsWithReplacement(
+        range(0, 10),
+        ndigits,
+      ) as Generator<number[]>
+    ) {
       const n = sum(lst.map((x) => factTbl[x]));
       if (toDigitLst(n).toString() === lst.toString()) {
         acc += n;

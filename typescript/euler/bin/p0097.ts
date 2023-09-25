@@ -1,4 +1,3 @@
-
 // project euler: problem 97
 
 import { modPow } from "../lib/math.ts";

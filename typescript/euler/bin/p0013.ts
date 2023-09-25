@@ -1,4 +1,3 @@
-
 // project euler: problem 13
 
 import { sumBigint } from "../lib/math.ts";

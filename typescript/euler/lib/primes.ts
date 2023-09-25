@@ -118,7 +118,11 @@ export function isProbablyPrime(num: bigint): boolean {
     d = d / 2n;
     s = s + 1n;
   }
-  for (const a of [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41].concat(rand_arr(20))) {
+  for (
+    const a of [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41].concat(
+      rand_arr(20),
+    )
+  ) {
     const result = distinguish(BigInt(a), d, s, num);
     if (result === NumType.Composite) {
       return false;
@@ -169,7 +173,9 @@ export function getPrimes(limit: number): number[] {
 }
 
 export function getPrimeTbl(limit: number): boolean[] {
-  const prime_tbl: boolean[] = new Array(limit + 1).fill(true).map((x, idx) => idx % 2 === 0 ? false : x);
+  const prime_tbl: boolean[] = new Array(limit + 1).fill(true).map((x, idx) =>
+    idx % 2 === 0 ? false : x
+  );
   prime_tbl[1] = false;
   prime_tbl[2] = true;
 
@@ -185,7 +191,9 @@ export function getPrimeTbl(limit: number): boolean[] {
 }
 
 export function primeTblToPrimes(lst: boolean[]): number[] {
-  const [_, primes] = unzip(zip(lst, range(0, lst.length)).filter((tpl) => tpl[0] === true));
+  const [_, primes] = unzip(
+    zip(lst, range(0, lst.length)).filter((tpl) => tpl[0] === true),
+  );
 
   return primes;
 }
@@ -211,7 +219,9 @@ export class Sieve {
       if (start < 1) {
         throw new RangeError("The start value must be larger than 0.");
       } else if (start > stop) {
-        throw new RangeError("The start value must be smaller than the end value.");
+        throw new RangeError(
+          "The start value must be smaller than the end value.",
+        );
       } else {
         this.#begin = start;
         this.#end = stop;
@@ -246,7 +256,9 @@ export class Sieve {
       }
     }
 
-    this.#mini_primes = this.#mini_primes.concat(this.#mini_tbl.slice(ext_begin).filter((x) => x > 1));
+    this.#mini_primes = this.#mini_primes.concat(
+      this.#mini_tbl.slice(ext_begin).filter((x) => x > 1),
+    );
 
     return;
   }
@@ -294,7 +306,9 @@ export class Sieve {
   update(start: number, stop: number): void {
     if (this.#end != 0) {
       if (start > stop) {
-        throw new RangeError(`The start value must be smaller than the end value. (start=${start}, stop=${stop})`);
+        throw new RangeError(
+          `The start value must be smaller than the end value. (start=${start}, stop=${stop})`,
+        );
       } else if (start < 1) {
         throw new RangeError("The start value must be larger than 0.");
       } else {
@@ -309,7 +323,9 @@ export class Sieve {
       if (start < 1) {
         throw new RangeError("The start value must be larger than 0.");
       } else if (start > stop) {
-        throw new RangeError(`The start value must be smaller than the end value. (start=${start}, stop=${stop})`);
+        throw new RangeError(
+          `The start value must be smaller than the end value. (start=${start}, stop=${stop})`,
+        );
       } else {
         this.#begin = start;
         this.#end = stop;

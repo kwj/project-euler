@@ -1,4 +1,3 @@
-
 // project euler: problem 70
 
 /*
@@ -57,14 +56,20 @@ function prod(pfLst: number[][]): number {
 }
 
 function phi(pfLst: number[][]): number {
-  return pfLst.map((x) => x[0] ** (x[1] - 1) * (x[0] - 1)).reduce((acc, cur) => acc * cur, 1);
+  return pfLst.map((x) => x[0] ** (x[1] - 1) * (x[0] - 1)).reduce(
+    (acc, cur) => acc * cur,
+    1,
+  );
 }
 
 function getRatio(pfLst: number[][]): number {
   return prod(pfLst) / phi(pfLst);
 }
 
-function* pfGenerator(prime_t: Sieve, tpl: [number, number]): Generator<[number, number][], void, unknown> {
+function* pfGenerator(
+  prime_t: Sieve,
+  tpl: [number, number],
+): Generator<[number, number][], void, unknown> {
   // Note:
   //   The internal data 'pf_lst' has the following structure.
   //     [[p_n, e_n], ..., [p2, e2], [p1, e1]]
@@ -86,7 +91,9 @@ function* pfGenerator(prime_t: Sieve, tpl: [number, number]): Generator<[number,
     }
   }
 
-  let pfLst: [number, number][] = (tpl[0] !== tpl[1]) ? [[tpl[1], 1], [tpl[0], 1]] : [[tpl[0], 2]];
+  let pfLst: [number, number][] = (tpl[0] !== tpl[1])
+    ? [[tpl[1], 1], [tpl[0], 1]]
+    : [[tpl[0], 2]];
   while (true) {
     const [b, e] = pfLst[0];
     if (pfLst.length === 1 && e === 1) {
@@ -103,7 +110,9 @@ function* pfGenerator(prime_t: Sieve, tpl: [number, number]): Generator<[number,
       const [b_x, e_x] = pfLst[1];
       if (prev_p === b_x) {
         // [[p_n, 1], [p_{n-1}, e_{n-1}], ...] -> [[p_{n-1}, e_{n-1} + 1], ...]
-        pfLst = aux([[b_x, e_x + 1]].concat(pfLst.slice(2)) as [number, number][]);
+        pfLst = aux(
+          [[b_x, e_x + 1]].concat(pfLst.slice(2)) as [number, number][],
+        );
       } else {
         // [[p_n, 1], [p_{n-1}, e_{n-1}], ...] -> [[prev_prime(p_{n}), 1]; [p_{n-1}, e_{n-1}], ...]
         pfLst = aux([[prev_p, 1]].concat(pfLst.slice(1)) as [number, number][]);
@@ -130,13 +139,19 @@ export function compute(): string {
   pq.push([87109 / 79180, [[11, 1], [7919, 1]]]);
 
   const prime_t = new Sieve(Math.trunc(LIMIT / 11) + 1);
-  const primeLst = takeWhile(dropWhile(prime_t.getPrimes(), (x) => x < 11), (y) => y <= isqrt(LIMIT));
+  const primeLst = takeWhile(
+    dropWhile(prime_t.getPrimes(), (x) => x < 11),
+    (y) => y <= isqrt(LIMIT),
+  );
   for (const p of primeLst.reverse()) {
     if (getRatio([[p, 1]]) > pq.peek()![0]) {
       // pruning: end of search
       break;
     }
-    const pf_gen = pfGenerator(prime_t, [p, prime_t.prev_prime(Math.trunc(LIMIT / p) + 1)]);
+    const pf_gen = pfGenerator(prime_t, [
+      p,
+      prime_t.prev_prime(Math.trunc(LIMIT / p) + 1),
+    ]);
     for (const pfLst of pf_gen) {
       if (getRatio(pfLst.slice(0, 2)) > pq.peek()![0]) {
         // pruning: skip to the next prime smaller than 'p'

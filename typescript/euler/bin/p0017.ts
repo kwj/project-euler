@@ -1,4 +1,3 @@
-
 // project euler: problem 17
 
 import { range } from "../lib/util.ts";
@@ -53,7 +52,8 @@ export function compute(limit: number): string {
       acc += words.get(trunc(n / 100))! + 7 + 3 + words.get(n % 100)!;
     } else {
       /* "xxx" hundred and ... -> "xxx".length + 7 + 3 + ... */
-      acc += words.get(trunc(n / 100))! + 7 + 3 + words.get((n % 100) - (n % 10))! + words.get(n % 10)!;
+      acc += words.get(trunc(n / 100))! + 7 + 3 +
+        words.get((n % 100) - (n % 10))! + words.get(n % 10)!;
     }
   }
 

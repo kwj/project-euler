@@ -1,4 +1,3 @@
-
 // project euler: problem 48
 
 export function compute(exp: bigint): string {

@@ -1,4 +1,3 @@
-
 import { assertEquals } from "std/assert/assert_equals.ts";
 import { compute } from "../bin/p0079.ts";
 import { assetData } from "../lib/asset.ts";

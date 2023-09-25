@@ -1,4 +1,3 @@
-
 // project euler: problem 53
 
 export function compute(num: number, boundary: number): string {
@@ -18,7 +17,7 @@ export function compute(num: number, boundary: number): string {
     x -= 1;
   }
 
-  return String(answer)
+  return String(answer);
 }
 
 export function solve(): void {

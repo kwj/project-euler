@@ -1,4 +1,3 @@
-
 // project euler: problem 84
 
 /*
@@ -9,6 +8,7 @@ import { unzip } from "std/collections/unzip.ts";
 import { zip } from "std/collections/zip.ts";
 import { Counter, range } from "../lib/util.ts";
 
+// deno-fmt-ignore
 enum Square {
   GO = 0,    A1 = 1,   CC1 = 2,  A2 = 3,   T1 = 4,
   R1 = 5,    B1 = 6,   CH1 = 7,  B2 = 8,   B3 = 9,
@@ -17,7 +17,7 @@ enum Square {
   FP = 20,   E1 = 21,  CH2 = 22, E2 = 23,  E3 = 24,
   R3 = 25,   F1 = 26,  F2 = 27,  U2 = 28,  F3 = 29,
   G2J = 30,  G1 = 31,  G2 = 32,  CC3 = 33, G3 = 34,
-  R4 = 35,   CH3 = 36, H1 = 37,  T2 = 38,  H2 = 39
+  R4 = 35,   CH3 = 36, H1 = 37,  T2 = 38,  H2 = 39,
 }
 
 function communityChest(sq: number): number {
@@ -118,12 +118,18 @@ function monteCarlo(dice: () => number, loopCnt: number): string {
     counter[sq] += 1;
   }
 
-  const [result, _] = unzip(zip(range(0, counter.length), counter).sort((a, b) => b[1] - a[1]));
+  const [result, _] = unzip(
+    zip(range(0, counter.length), counter).sort((a, b) => b[1] - a[1]),
+  );
 
   return result.slice(0, 3).map((x) => String(x).padStart(2, "0")).join("");
 }
 
-export function compute(faces: number, nAttempts: number, loopCnt: number): string {
+export function compute(
+  faces: number,
+  nAttempts: number,
+  loopCnt: number,
+): string {
   function makeDice(faces: number): () => number {
     return () => Math.trunc(Math.random() * faces + 1);
   }

@@ -1,4 +1,3 @@
-
 // project euler: problem 77
 
 import { primeGenerator } from "../lib/primes.ts";

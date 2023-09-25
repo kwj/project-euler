@@ -1,4 +1,3 @@
-
 // project euler: problem 54
 
 /*
@@ -42,6 +41,7 @@ import { cmpLst, Counter, range } from "../lib/util.ts";
 
 function getHandRank(hand: string[]): number[] {
   function rankToNum(s: string): number {
+    // deno-fmt-ignore
     const tbl = new Map<string, number>(
       [["2", 2], ["3", 3], ["4", 4], ["5", 5], ["6", 6], ["7", 7], ["8", 8],
        ["9", 9], ["T", 10], ["J", 11], ["Q", 12], ["K", 13], ["A", 14]]
@@ -59,6 +59,7 @@ function getHandRank(hand: string[]): number[] {
   }
 
   function getHand(suitLst: string[], rankLst: number[]): number[] {
+    // deno-fmt-ignore
     enum Hand {
       HC = 0, OP, TP, TK, S, F, FH, FK, SF, RF
     }

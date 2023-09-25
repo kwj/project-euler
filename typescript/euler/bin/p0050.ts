@@ -1,4 +1,3 @@
-
 // project euler: problem 50
 
 import { dropWhile } from "std/collections/drop_while.ts";
@@ -14,7 +13,10 @@ function* cumSumGenerator(): Generator<number, void, void> {
   // not reached
 }
 
-function initCumSumLst(cs_gen: Generator<number, void, void>, limit: number): number[] {
+function initCumSumLst(
+  cs_gen: Generator<number, void, void>,
+  limit: number,
+): number[] {
   const lst = [0];
   while (lst.at(-1)! < limit) {
     lst.push(cs_gen.next().value as number);
@@ -32,7 +34,10 @@ export function compute(limit: number): string {
   let width = 1;
   while (cs_lst[i + width] - cs_lst[i] < limit) {
     const begin = cs_lst[i];
-    const lst = dropWhile(cs_lst.slice(i + width).reverse(), (p) => p - begin >= limit || isPrimeSimple(p - begin) === false);
+    const lst = dropWhile(
+      cs_lst.slice(i + width).reverse(),
+      (p) => p - begin >= limit || isPrimeSimple(p - begin) === false,
+    );
     if (lst.length > 0) {
       width += lst.length;
       ans = lst[0] - begin;

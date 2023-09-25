@@ -1,4 +1,3 @@
-
 // project euler: problem 38
 
 /*
@@ -32,11 +31,11 @@ export function compute(): string {
   const lst: string[] = ["918273645"];
 
   for (const x of range(9183, 9500)) {
-    const rem = x % 10
+    const rem = x % 10;
     if (rem <= 1 || rem >= 8 || rem == 4 || rem == 5) {
-      continue
+      continue;
     }
-    const s = String(x * (10 ** 5) + x * 2)
+    const s = String(x * (10 ** 5) + x * 2);
     if (s.split("").sort().join("") === "123456789") {
       lst.push(s);
     }

@@ -1,4 +1,3 @@
-
 // project euler: problem 8
 
 import { max } from "../lib/math.ts";
@@ -33,9 +32,11 @@ function strProduct(digits: number, s: string): number[] {
     s_lst.push(s.substring(pos, pos + digits));
   }
 
-  return s_lst.map((x) => x.split("")
-              .map((x) => Number(x)))
-              .map((lst) => lst.reduce((acc, cur) => acc * cur), 1);
+  return s_lst.map((x) =>
+    x.split("")
+      .map((x) => Number(x))
+  )
+    .map((lst) => lst.reduce((acc, cur) => acc * cur), 1);
 }
 
 export function compute(limit: number): string {

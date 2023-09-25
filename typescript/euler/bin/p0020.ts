@@ -1,10 +1,11 @@
-
 // project euler: problem 20
 
 import { factorialBigint, sum } from "../lib/math.ts";
 
 export function compute(n: bigint): string {
-  return String(sum(String(factorialBigint(n)).split("").map((x) => Number(x))));
+  return String(
+    sum(String(factorialBigint(n)).split("").map((x) => Number(x))),
+  );
 }
 
 export function solve(): void {

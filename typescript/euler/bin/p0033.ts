@@ -1,4 +1,3 @@
-
 // project euler: problem 33
 
 /*
@@ -57,7 +56,10 @@ function makeCands(): [number, number][] {
 }
 
 export function compute(): string {
-  const [a, b] = makeCands().reduce((acc, cur) => [acc[0] * cur[0], acc[1] * cur[1]]);
+  const [a, b] = makeCands().reduce((
+    acc,
+    cur,
+  ) => [acc[0] * cur[0], acc[1] * cur[1]]);
 
   return String(Math.trunc(b / gcd(a, b)));
 }

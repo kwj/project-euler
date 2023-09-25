@@ -1,4 +1,3 @@
-
 // project euler: problem 21
 
 import { isqrt, sum } from "../lib/math.ts";

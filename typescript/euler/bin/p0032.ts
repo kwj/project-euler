@@ -1,4 +1,3 @@
-
 // project euler: problem 32
 
 /*

@@ -1,7 +1,10 @@
-
 // project euler: problem 90
 
-import { cartesianProduct, combinations, permutationsWithReplacement } from "combinatorics/mod.ts";
+import {
+  cartesianProduct,
+  combinations,
+  permutationsWithReplacement,
+} from "combinatorics/mod.ts";
 import { dedupSort } from "../lib/util.ts";
 
 function proc69(lst: string[]): string[] {
@@ -24,7 +27,12 @@ function makeNumbers(d1: string[], d2: string[]): string[] {
 export function compute(): string {
   const squares = ["01", "04", "09", "16", "25", "36", "49", "64", "81"];
   const faces: string[][] = [];
-  for (const lst of combinations(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], 6)) {
+  for (
+    const lst of combinations(
+      ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+      6,
+    )
+  ) {
     faces.push(proc69(lst));
   }
 

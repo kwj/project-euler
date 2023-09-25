@@ -1,4 +1,3 @@
-
 // project euler: problem 3
 
 import { factorize } from "../lib/math.ts";

@@ -1,4 +1,3 @@
-
 const asset_dir = new URL(".", import.meta.url).pathname + "../assets/";
 
 export function assetData(filename: string) {

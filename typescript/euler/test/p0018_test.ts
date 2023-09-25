@@ -1,8 +1,8 @@
-
 import { assertEquals } from "std/assert/assert_equals.ts";
 import { compute } from "../bin/p0018.ts";
 
 Deno.test("normal case 1", () => {
+  // deno-fmt-ignore
   const data = [
     [3],
     [7, 4],
@@ -15,6 +15,7 @@ Deno.test("normal case 1", () => {
 });
 
 Deno.test("normal case 2", () => {
+  // deno-fmt-ignore
   const data = [
     [75],
     [95, 64],

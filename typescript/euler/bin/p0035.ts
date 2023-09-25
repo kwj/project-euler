@@ -1,4 +1,3 @@
-
 // project euler: problem 35
 
 import { getPrimeTbl, primeTblToPrimes } from "../lib/primes.ts";

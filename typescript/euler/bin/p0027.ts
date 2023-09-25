@@ -1,4 +1,3 @@
-
 // project euler: problem 27
 
 /*
@@ -30,7 +29,11 @@ export function compute(): string {
   let maxLen = 0;
   let maxTpl: [number, number] = [0, 0];
   for (const b of primes.slice(1).filter((x) => x < 1000)) {
-    for (const a of primes.filter((x) => Math.abs(x - b - 1) < 1000).map((x) => x - b - 1)) {
+    for (
+      const a of primes.filter((x) => Math.abs(x - b - 1) < 1000).map((x) =>
+        x - b - 1
+      )
+    ) {
       const len = countConsecutive(a, b);
       if (len > maxLen) {
         maxLen = len;

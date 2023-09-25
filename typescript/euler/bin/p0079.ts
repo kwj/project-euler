@@ -1,9 +1,12 @@
-
 // project euler: problem 79
 
 import { assetData } from "../lib/asset.ts";
 
-function dfs(graph: Map<string, Set<string>>, perm: string[], v: string): string[] {
+function dfs(
+  graph: Map<string, Set<string>>,
+  perm: string[],
+  v: string,
+): string[] {
   function visit(temp: string[], visited: string[], node: string): string[] {
     if (temp.includes(node) === true) {
       throw new Error("cycle path is found");
@@ -35,7 +38,9 @@ function parseData(data: string): string[][] {
     }
   }
 
-  return splitLines(data).map((x) => x.split("")).map((y) => [[y[0], y[1]], [y[0], y[2]], [y[1], y[2]]]).flat();
+  return splitLines(data).map((x) => x.split("")).map((
+    y,
+  ) => [[y[0], y[1]], [y[0], y[2]], [y[1], y[2]]]).flat();
 }
 
 export function compute(data: string): string {

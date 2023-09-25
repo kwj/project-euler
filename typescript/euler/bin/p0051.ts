@@ -1,4 +1,3 @@
-
 // project euler: problem 51
 
 /*
@@ -145,7 +144,9 @@ export function compute(): string {
     // n: number of digits to replace (3, 6, ...)
     for (const n of range(3, ndigits, 3)) {
       // 'i' must be odd number
-      for (const i of range(10 ** (ndigits - n - 1) + 1, 10 ** (ndigits - n), 2)) {
+      for (
+        const i of range(10 ** (ndigits - n - 1) + 1, 10 ** (ndigits - n), 2)
+      ) {
         const [_, patLst] = unzip(patTpls.filter((x) => x[0] === n));
         for (const pat of patLst) {
           if (isProbable(i, pat, ans) === true) {

@@ -1,4 +1,3 @@
-
 // project euler: problem 83
 
 import { ascend, BinaryHeap } from "std/collections/binary_heap.ts";
@@ -14,7 +13,9 @@ function makeNeighborTbl(rows: number, cols: number): [number, number][][][] {
   for (const r of range(0, rows)) {
     for (const c of range(0, cols)) {
       //console.log(  [[r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1]].filter((x) => x[0] >= 0 && x[0] < rows && x[1] >= 0 && x[1] < cols) as [number, number][] );
-      tbl[r][c] = [[r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1]].filter((x) => x[0] >= 0 && x[0] < rows && x[1] >= 0 && x[1] < cols) as [number, number][];
+      tbl[r][c] = [[r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1]].filter((x) =>
+        x[0] >= 0 && x[0] < rows && x[1] >= 0 && x[1] < cols
+      ) as [number, number][];
     }
   }
   return tbl;
@@ -48,7 +49,9 @@ export function compute(data: string): string {
   const distTbl = makeDistanceTbl(matrix.length, matrix[0].length);
   distTbl[0][0] = matrix[0][0];
 
-  const pq = new BinaryHeap<[number, [number, number]]>((a, b) => ascend(a[0], b[0]));
+  const pq = new BinaryHeap<[number, [number, number]]>((a, b) =>
+    ascend(a[0], b[0])
+  );
   pq.push([distTbl[0][0], [0, 0]]);
 
   while (pq.isEmpty() === false) {
@@ -62,7 +65,7 @@ export function compute(data: string): string {
     }
   }
 
-    return String(distTbl.at(-1)!.at(-1));
+  return String(distTbl.at(-1)!.at(-1));
 }
 
 export function solve(): void {
