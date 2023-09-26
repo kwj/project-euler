@@ -1,26 +1,26 @@
 (* Project Euler: Problem 88 *)
 
 (*
-  N(k) = a1 + a2 + ... + ak = a1 * a2 * ... * ak
-  min_N(k): minimal product-sum N(k)
-
-  when k = 2
-    sum {2,2} = prod {2,2}
-  when k > 2 and {a1, a2, a3, ..., ak}
-    min sum = sum {1, 1, ..., 1} = k
-    --> min_N(k) >= k
-  when k > 2 and {a1, a2, a3, ..., ak} = {1, ..., 1, 2, k}
-    for all k>2, there exists Ak = {a1, a2, ..., ak} = {1, 1, ..., 1, 2, k}, prod Ak = sum Ak = N(k) = 2k
-    --> min_N(k) <= 2k
-
-  2 <= k <= 12000
-  --> k <= N(k) <= 24000
-
-    >>> math.log2(24000)
-    14.550746785383243
-    N(2) = {2, 2}
-    N(k) = {a1, a2, ..., an, 1, 1, ..., 1}  [k>=3,n<k]
-      2 <= n <= 14  [a1, ..., an > 1]
+ * N(k) = a1 + a2 + ... + ak = a1 * a2 * ... * ak
+ * min_N(k): minimal product-sum N(k)
+ *
+ * when k = 2
+ *   sum {2,2} = prod {2,2}
+ * when k > 2 and {a1, a2, a3, ..., ak}
+ *   min sum = sum {1, 1, ..., 1} = k
+ *   --> min_N(k) >= k
+ * when k > 2 and {a1, a2, a3, ..., ak} = {1, ..., 1, 2, k}
+ *   for all k>2, there exists Ak = {a1, a2, ..., ak} = {1, 1, ..., 1, 2, k}, prod Ak = sum Ak = N(k) = 2k
+ *   --> min_N(k) <= 2k
+ *
+ * 2 <= k <= 12000
+ * --> k <= N(k) <= 24000
+ *
+ *   >>> math.log2(24000)
+ *   14.550746785383243
+ *   N(2) = {2, 2}
+ *   N(k) = {a1, a2, ..., an, 1, 1, ..., 1}  [k>=3,n<k]
+ *     2 <= n <= 14  [a1, ..., an > 1]
  *)
 
 open Core
@@ -32,7 +32,7 @@ let compute limit =
     if k <= limit
     then (
       if p < tbl.(k) then tbl.(k) <- p;
-      List.range num ((limit * 2) / p) ~stop:`inclusive
+      List.range num (limit * 2 / p) ~stop:`inclusive
       |> List.iter ~f:(fun x -> aux (p * x) (s + x) (succ length) x))
   in
   aux 1 0 0 2;

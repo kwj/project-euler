@@ -16,9 +16,12 @@ let compute str_lst =
   parse_data str_lst |> List.count ~f:(fun n -> Euler.Math.is_triangular n)
 ;;
 
-let solve () = compute (Euler.Task.read_data "./src/assets/p042_words.txt") |> Int.to_string
+let solve () =
+  compute (Euler.Task.read_data "./src/assets/p042_words.txt") |> Int.to_string
+;;
 
 (* Test *)
 
 let%test_unit "p042_words.txt" =
   [%test_eq: int] (compute (Euler.Task.read_file "./assets/p042_words.txt")) 162
+;;

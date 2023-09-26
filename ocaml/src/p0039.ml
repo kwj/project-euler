@@ -26,7 +26,7 @@
 
 open Core
 
-let check_pair p a = (p * p - 2 * a * p) mod (2 * (p - a)) = 0
+let check_pair p a = ((p * p) - (2 * a * p)) mod (2 * (p - a)) = 0
 
 let compute limit =
   let rec perim_loop res = function
@@ -37,13 +37,11 @@ let compute limit =
         | a :: xs ->
           if check_pair p a
           then (
-            let b = (p * p - 2 * a * p) / (2 * (p - a)) in
+            let b = ((p * p) - (2 * a * p)) / (2 * (p - a)) in
             aux ((a, b, p - a - b) :: lst) xs)
           else aux lst xs
       in
-      let lst =
-        aux [] (List.range 1 ((p - 1) / 3) ~stop:`inclusive)
-      in
+      let lst = aux [] (List.range 1 ((p - 1) / 3) ~stop:`inclusive) in
       if List.length lst <> 0
       then perim_loop ((List.length lst, p) :: res) ps
       else perim_loop res ps

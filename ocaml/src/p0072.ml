@@ -10,9 +10,7 @@ open Core
 
 let rec sumphi n tbl =
   let sum_1 n =
-    let rec aux m acc =
-      if m < 2 then acc else aux (pred m) (acc + sumphi (n / m) tbl)
-    in
+    let rec aux m acc = if m < 2 then acc else aux (pred m) (acc + sumphi (n / m) tbl) in
     aux (Euler.Math.isqrt n) 0
   in
   let sum_2 n =

@@ -1,9 +1,9 @@
 (* Project Euler: Problem 48 *)
 
 (*
-  Here is an information about modular exponentiation.
-   - https://en.wikipedia.org/wiki/Modular_exponentiation
-*)
+ * Here is an information about modular exponentiation.
+ *  - https://en.wikipedia.org/wiki/Modular_exponentiation
+ *)
 
 open Core
 

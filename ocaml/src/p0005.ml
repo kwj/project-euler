@@ -2,10 +2,7 @@
 
 open Core
 
-let compute num =
-  List.range 1 num ~stop:`inclusive |> List.fold ~init:1 ~f:Euler.Math.lcm
-;;
-
+let compute num = List.range 1 num ~stop:`inclusive |> List.fold ~init:1 ~f:Euler.Math.lcm
 let solve () = compute 20 |> Int.to_string
 
 (* Test *)

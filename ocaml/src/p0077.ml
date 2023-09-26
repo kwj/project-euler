@@ -33,7 +33,6 @@ let compute thr =
 ;;
 
 let solve () = compute 5_000 |> Int.to_string
-;;
 
 (* Test *)
 

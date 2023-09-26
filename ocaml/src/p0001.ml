@@ -3,8 +3,8 @@
 open Core
 
 let sum_of_mults n limit =
-    let tmp = limit / n in
-    (1 + tmp) * tmp / 2 * n
+  let tmp = limit / n in
+  (1 + tmp) * tmp / 2 * n
 ;;
 
 let compute limit =

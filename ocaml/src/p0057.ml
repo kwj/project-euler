@@ -27,7 +27,7 @@ let compute limit =
     ~init:Z.(~$3, ~$2)
     ~f:(fun (n, d) -> Some ((n, d), Z.((d * ~$2) + n, d + n)))
   |> Fun.flip Sequence.take limit
-  |> Sequence.count ~f:(fun (n, d) -> (z_ndigits n) > (z_ndigits d))
+  |> Sequence.count ~f:(fun (n, d) -> z_ndigits n > z_ndigits d)
 ;;
 
 let solve () = compute 1_000 |> Int.to_string
@@ -36,4 +36,3 @@ let solve () = compute 1_000 |> Int.to_string
 
 let%test_unit "8" = [%test_eq: int] (compute 8) 1
 let%test_unit "1_000" = [%test_eq: int] (compute 1_000) 153
-

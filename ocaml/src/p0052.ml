@@ -12,7 +12,7 @@ let check_num n =
 let compute () =
   Sequence.unfold ~init:6 ~f:(fun n -> Some (n, n + 1))
   |> Sequence.find_map ~f:(fun exp ->
-    Sequence.range (Int.pow 10 (exp - 1)) ((Int.pow 10 (exp)) / 6) ~stop:`inclusive
+    Sequence.range (Int.pow 10 (exp - 1)) (Int.pow 10 exp / 6) ~stop:`inclusive
     |> Sequence.find ~f:check_num)
   |> Option.value_exn
 ;;

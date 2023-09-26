@@ -10,14 +10,13 @@ let compute () =
     let rec loop ans prod cnt =
       if cnt = 0
       then ans
+      else if String.length (Z.to_string prod) * 9 < ans
+      then ans
       else
-        if (String.length (Z.to_string prod)) * 9 < ans
-        then ans
-        else (
-          loop
-            (Int.max (List.sum (module Int) ~f:Fn.id (Euler.Util.z_digits prod)) ans)
-            Z.(prod / a)
-            (pred cnt))
+        loop
+          (Int.max (List.sum (module Int) ~f:Fn.id (Euler.Util.z_digits prod)) ans)
+          Z.(prod / a)
+          (pred cnt)
     in
     loop 0 Z.(pow a 100) 100)
   |> List.max_elt ~compare:Int.compare

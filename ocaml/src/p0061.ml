@@ -5,15 +5,15 @@ open Core
 let make_polygonal_tbl () =
   let make_polygonal_nums i =
     let fn =
-      [| (fun _ -> 0)  (* not used *)
+      [| (fun _ -> 0) (* not used *)
        ; (fun _ -> 1)
        ; (fun n -> n)
-       ; (fun n -> n * (n + 1) / 2)  (* triangular number *)
-       ; (fun n -> n * n)  (* square number *)
-       ; (fun n -> n * ((3 * n) - 1) / 2)  (* pentagonal number *)
-       ; (fun n -> n * ((2 * n) - 1))  (* hexagonal number *)
-       ; (fun n -> n * ((5 * n) - 3) / 2)  (* heptagonal number *)
-       ; (fun n -> n * ((3 * n) - 2))  (* octagonal number *)
+       ; (fun n -> n * (n + 1) / 2) (* triangular number *)
+       ; (fun n -> n * n) (* square number *)
+       ; (fun n -> n * ((3 * n) - 1) / 2) (* pentagonal number *)
+       ; (fun n -> n * ((2 * n) - 1)) (* hexagonal number *)
+       ; (fun n -> n * ((5 * n) - 3) / 2) (* heptagonal number *)
+       ; (fun n -> n * ((3 * n) - 2)) (* octagonal number *)
       |]
     in
     let rec aux n acc =
@@ -29,9 +29,9 @@ let make_polygonal_tbl () =
   let tbl = Array.create ~len:9 [] in
   for i = 3 to 8 do
     tbl.(i)
-      <- make_polygonal_nums i
-         |> List.map ~f:(fun n -> (n / 100, n mod 100))
-         |> List.filter ~f:(fun (_, x) -> x >= 10)
+    <- make_polygonal_nums i
+       |> List.map ~f:(fun n -> (n / 100, n mod 100))
+       |> List.filter ~f:(fun (_, x) -> x >= 10)
   done;
   tbl
 ;;

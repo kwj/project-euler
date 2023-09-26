@@ -23,7 +23,7 @@ let compute () =
        (Sequence.range 10 100 ~stop:`exclusive))
   |> Sequence.filter_map ~f:(fun (a, b) ->
     if a * b < 10_000
-    then Some (a * b, U.undigits(U.digits (a * b) @ U.digits b @ U.digits a))
+    then Some (a * b, U.undigits (U.digits (a * b) @ U.digits b @ U.digits a))
     else None)
   |> Sequence.filter_map ~f:(fun (prod, n) ->
     if Euler.Math.is_pandigital_nz n then Some prod else None)

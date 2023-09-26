@@ -35,7 +35,7 @@ let compute str_lst =
       let plain_text =
         List.mapi cipher_text ~f:(fun idx ch -> Int.bit_xor ch key.(idx mod 3))
       in
-      let score = List.fold plain_text ~init:0 ~f:(fun acc ch -> acc + (calc_score ch)) in
+      let score = List.fold plain_text ~init:0 ~f:(fun acc ch -> acc + calc_score ch) in
       if score > max_score
       then loop score (List.sum (module Int) ~f:Fn.id plain_text) xs
       else loop max_score ans xs
@@ -46,9 +46,12 @@ let compute str_lst =
     (Euler.Util.permutation_with_repetition 3 (List.range 0x61 0x7A ~stop:`inclusive))
 ;;
 
-let solve () = compute (Euler.Task.read_data "./src/assets/p059_cipher.txt") |> Int.to_string
+let solve () =
+  compute (Euler.Task.read_data "./src/assets/p059_cipher.txt") |> Int.to_string
+;;
 
 (* Test *)
 
 let%test_unit "p059_cipher.txt" =
   [%test_eq: int] (compute (Euler.Task.read_file "./assets/p059_cipher.txt")) 129448
+;;

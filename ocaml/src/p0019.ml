@@ -24,7 +24,7 @@ let count_sundays () =
      #     Feb 1, 1901 was Firday since ((1 + 365) + 31) mod 7 = 5.
      #     ... and so on
   *)
-  List.folding_map ((1 + 365) :: days) ~init:0 ~f:(fun x y -> x + y, x + y)
+  List.folding_map ((1 + 365) :: days) ~init:0 ~f:(fun x y -> (x + y, x + y))
   |> List.filter ~f:(fun n -> n mod 7 = 0)
   |> List.length
 ;;

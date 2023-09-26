@@ -45,26 +45,28 @@ let is_family p f_size =
       let p_arr = List.to_array p_digits in
       let rec loop_masks = function
         | [] -> None
-        | mask ::xs ->
+        | mask :: xs ->
           let cnt = ref 1 in
           let rec aux = function
             | [] -> loop_masks xs
             | d :: ds ->
               List.iter mask ~f:(fun idx -> p_arr.(idx) <- d);
-              if Euler.Math.Prime.is_prime (Array.to_list p_arr |> Euler.Util.undigits) then cnt := !cnt + 1;
+              if Euler.Math.Prime.is_prime (Array.to_list p_arr |> Euler.Util.undigits)
+              then cnt := !cnt + 1;
               if !cnt = f_size
               then Some true
-              else if (f_size - !cnt) > (9 - d)
+              else if f_size - !cnt > 9 - d
               then Some false
               else aux ds
           in
           aux (List.range (n + 1) 9 ~stop:`inclusive)
       in
       (match
-        Euler.Util.findall (fun x -> x = n) p_digits
-        |> Euler.Util.powerset
-        |> List.filter ~f:(fun l -> List.length l mod 3 = 0 && List.length l <> 0 && List.hd_exn l <> 0)
-        |> loop_masks
+         Euler.Util.findall (fun x -> x = n) p_digits
+         |> Euler.Util.powerset
+         |> List.filter ~f:(fun l ->
+           List.length l mod 3 = 0 && List.length l <> 0 && List.hd_exn l <> 0)
+         |> loop_masks
        with
        | None -> loop_figures ns
        | Some res -> res)

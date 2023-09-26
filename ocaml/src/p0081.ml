@@ -34,10 +34,11 @@ let compute data =
 ;;
 
 let solve () =
-  compute (Euler.Task.read_data "./src/assets/p081_matrix.txt")
-  |> Int.to_string
+  compute (Euler.Task.read_data "./src/assets/p081_matrix.txt") |> Int.to_string
+;;
 
 (* Test *)
 
 let%test_unit "p081_matrix.txt" =
   [%test_eq: int] (compute (Euler.Task.read_file "./assets/p081_matrix.txt")) 427337
+;;

@@ -1,32 +1,32 @@
 (* Project Euler: Problem 84 *)
 
 (*
-  Stochastic matrix: stoch_matrix
-
-   Current: S0       S1       S2
-        +--------+--------+--------+ State:
-  Next  |        |        |        |  S0: no doubles
-   S0   |  s00   |  s10   |  s20   |  S1: one doubles occurred
-        |        |        |        |  S2: two consecutive dobules occurred
-        +--------+--------+--------+
-  Next  |        |        |        | s00: transition probability if no doubles occurred (the next state is S0)
-   S1   |  s01   | s11=0  | s21=0  | s01: transition probability if fist doubles occurred (the next state is S1)
-        |        |        |        |
-        +--------+--------+--------+ s10: transition probability if no doubles occurred (the next state is S0)
-  Next  |        |        |        | s12: transition probability if two consecutive doubles occurred (the next state is S2)
-   S2   | s02=0  |  s12   | s22=0  |
-        |        |        |        | s20: transition probability if both doubles and no doubles occurred (the next state is S0)
-        +--------+--------+--------+      Note: go to JAIL@S0 if three consecutive doubles occurred
-
-  s##:
-         | GO  A1  CC1 ... [current square]
-    -----+---------------------------
-     GO  | ##  ##  ##  ...
-     A1  | ##  ##  ##  ...
-     CC1 | ##  ##  ##  ...
-      .  |  .   .   .
-  [next square]
-*)
+ * Stochastic matrix: stoch_matrix
+ *
+ *  Current: S0       S1       S2
+ *       +--------+--------+--------+ State:
+ * Next  |        |        |        |  S0: no doubles
+ *  S0   |  s00   |  s10   |  s20   |  S1: one doubles occurred
+ *       |        |        |        |  S2: two consecutive dobules occurred
+ *       +--------+--------+--------+
+ * Next  |        |        |        | s00: transition probability if no doubles occurred (the next state is S0)
+ *  S1   |  s01   | s11=0  | s21=0  | s01: transition probability if fist doubles occurred (the next state is S1)
+ *       |        |        |        |
+ *       +--------+--------+--------+ s10: transition probability if no doubles occurred (the next state is S0)
+ * Next  |        |        |        | s12: transition probability if two consecutive doubles occurred (the next state is S2)
+ *  S2   | s02=0  |  s12   | s22=0  |
+ *       |        |        |        | s20: transition probability if both doubles and no doubles occurred (the next state is S0)
+ *       +--------+--------+--------+      Note: go to JAIL@S0 if three consecutive doubles occurred
+ *
+ * s##:
+ *        | GO  A1  CC1 ... [current square]
+ *   -----+---------------------------
+ *    GO  | ##  ##  ##  ...
+ *    A1  | ##  ##  ##  ...
+ *    CC1 | ##  ##  ##  ...
+ *     .  |  .   .   .
+ * [next square]
+ *)
 
 open Core
 
@@ -75,31 +75,29 @@ let go_steady matrix =
     for x = 0 to size - 1 do
       for y = 0 to size - 1 do
         work.(x).(y)
-          <- List.range 0 (size - 1) ~stop:`inclusive
-             |> List.map ~f:(fun i -> prev.(x).(i) *. prev.(i).(y))
-             |> List.sum (module Float) ~f:Fn.id
+        <- List.range 0 (size - 1) ~stop:`inclusive
+           |> List.map ~f:(fun i -> prev.(x).(i) *. prev.(i).(y))
+           |> List.sum (module Float) ~f:Fn.id
       done
     done;
-    if is_steady work.(0) prev.(0)
-    then work
-    else loop ()
+    if is_steady work.(0) prev.(0) then work else loop ()
   in
   loop ()
 ;;
 
 let compute nfaces nsquares =
-  let dice_prblty_without_dbl = Array.create ~len:(nfaces * 2 + 1) 0. in
-  let dice_prblty_dbl = Array.create ~len:(nfaces * 2 + 1) 0. in
+  let dice_prblty_without_dbl = Array.create ~len:((nfaces * 2) + 1) 0. in
+  let dice_prblty_dbl = Array.create ~len:((nfaces * 2) + 1) 0. in
 
   for n1 = 1 to nfaces do
     for n2 = 1 to nfaces do
       if n1 <> n2
       then
         dice_prblty_without_dbl.(n1 + n2)
-          <- dice_prblty_without_dbl.(n1 + n2) +. (1.0 /. Float.of_int (nfaces * nfaces))
+        <- dice_prblty_without_dbl.(n1 + n2) +. (1.0 /. Float.of_int (nfaces * nfaces))
       else
         dice_prblty_dbl.(n1 + n2)
-          <- dice_prblty_dbl.(n1 + n2) +. (1.0 /. Float.of_int (nfaces * nfaces))
+        <- dice_prblty_dbl.(n1 + n2) +. (1.0 /. Float.of_int (nfaces * nfaces))
     done
   done;
 
@@ -133,7 +131,7 @@ let compute nfaces nsquares =
   List.iter [ 0; 40; 80 ] ~f:(fun offset ->
     for x = 0 to 119 do
       stoch_matrix.(sq_JAIL).(x)
-        <- stoch_matrix.(sq_JAIL).(x) +. stoch_matrix.(sq_G2J + offset).(x);
+      <- stoch_matrix.(sq_JAIL).(x) +. stoch_matrix.(sq_G2J + offset).(x);
       stoch_matrix.(sq_G2J + offset).(x) <- 0.0
     done);
 
@@ -160,30 +158,29 @@ let compute nfaces nsquares =
           ]
           ~f:(fun next_sq ->
             stoch_matrix.(next_sq + offset).(current)
-              <- stoch_matrix.(next_sq + offset).(current) +. (prblty /. 16.));
+            <- stoch_matrix.(next_sq + offset).(current) +. (prblty /. 16.));
         stoch_matrix.(sq_JAIL).(current)
-          <- stoch_matrix.(sq_JAIL).(current) +. (prblty /. 16.);
+        <- stoch_matrix.(sq_JAIL).(current) +. (prblty /. 16.);
         stoch_matrix.(chance).(current)
-          <- stoch_matrix.(chance).(current) -. ((prblty /. 16.) *. 10.))));
+        <- stoch_matrix.(chance).(current) -. (prblty /. 16. *. 10.))));
 
   (* Community Chest *)
   List.iter [ 0; 40; 80 ] ~f:(fun offset ->
     List.iter [ sq_CC1; sq_CC2; sq_CC3 ] ~f:(fun chest ->
       for x = 0 to 119 do
         stoch_matrix.(sq_GO + offset).(x)
-          <- stoch_matrix.(sq_GO + offset).(x)
-             +. (stoch_matrix.(chest + offset).(x) /. 16.0);
+        <- stoch_matrix.(sq_GO + offset).(x) +. (stoch_matrix.(chest + offset).(x) /. 16.0);
         stoch_matrix.(sq_JAIL).(x)
-          <- stoch_matrix.(sq_JAIL).(x) +. (stoch_matrix.(chest + offset).(x) /. 16.0);
+        <- stoch_matrix.(sq_JAIL).(x) +. (stoch_matrix.(chest + offset).(x) /. 16.0);
         stoch_matrix.(chest + offset).(x)
-          <- stoch_matrix.(chest + offset).(x) -. (stoch_matrix.(chest + offset).(x) /. 8.0)
+        <- stoch_matrix.(chest + offset).(x) -. (stoch_matrix.(chest + offset).(x) /. 8.0)
       done));
 
   let steady_state = go_steady stoch_matrix in
   List.range 0 39 ~stop:`inclusive
   |> List.map ~f:(fun i ->
-    (Printf.sprintf "%02d" i,
-     steady_state.(i).(0) +. steady_state.(i + 40).(0) +. steady_state.(i + 80).(0)))
+    ( Printf.sprintf "%02d" i
+    , steady_state.(i).(0) +. steady_state.(i + 40).(0) +. steady_state.(i + 80).(0) ))
   |> List.sort ~compare:(fun (_, f1) (_, f2) -> Float.compare f2 f1)
   |> Fn.flip List.take nsquares
   |> Euler.Util.list_to_str (fun (sq, _) -> sq) ""

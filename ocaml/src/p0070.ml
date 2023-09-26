@@ -1,24 +1,23 @@
 (* Project Euler: Problem 70 *)
 
 (*
-   The answer must be a composite number because prime 'n' is not a permutation of phi(n) = n - 1.
-
-  n = p1^k1 * p2^k2 * p3^k3 * ... * p{r}^k{n}
-  -->
-    phi(N) = N * (1-1/p1) * (1-1/p2) * (1-1/p3) * ... * (1-1/p{n})
-      <-->
-    N/phi(N) = (p1/(p1-1)) * (p2/(p2-1)) * (p3/(p3-1)) * ... * (p{n}/(p{n}-1))
-
-  From the problem statement, 87109/phi(87109) = 87109 / 79180 = 1.1001.
-  11/10 = 1.1 and 7/6 = 1.666..., so 11 <= prime numbers <= 9_999_999 / 11 = 909090.8181...
-
-  The answer N has the following form (p_i are prime numbers)
-
-    N = p1^k1 * p2^k2 * ... * pn^kn  (N < 10^7, n > 1, 11 <= p1 < p2 < ... < pn, k1>2 when n=1)
-*)
+ *  The answer must be a composite number because prime 'n' is not a permutation of phi(n) = n - 1.
+ *
+ * n = p1^k1 * p2^k2 * p3^k3 * ... * p{r}^k{n}
+ * -->
+ *   phi(N) = N * (1-1/p1) * (1-1/p2) * (1-1/p3) * ... * (1-1/p{n})
+ *     <-->
+ *   N/phi(N) = (p1/(p1-1)) * (p2/(p2-1)) * (p3/(p3-1)) * ... * (p{n}/(p{n}-1))
+ *
+ * From the problem statement, 87109/phi(87109) = 87109 / 79180 = 1.1001.
+ * 11/10 = 1.1 and 7/6 = 1.666..., so 11 <= prime numbers <= 9_999_999 / 11 = 909090.8181...
+ *
+ * The answer N has the following form (p_i are prime numbers)
+ *
+ *   N = p1^k1 * p2^k2 * ... * pn^kn  (N < 10^7, n > 1, 11 <= p1 < p2 < ... < pn, k1>2 when n=1)
+ *)
 
 open Core
-
 module Prime = Euler.Math.Prime
 
 let prod pf_lst =
@@ -33,12 +32,12 @@ let phi pf_lst =
 let get_phi_ratio pf_lst = Float.(of_int (prod pf_lst) /. of_int (phi pf_lst))
 
 (*
-  Note:
-    The internal data 'pf_lst' has the following structure.
-      [(p_n, e_n); ...; (p2, e2); (p1, e1)]
-    In contrast, the function 'next' returns its reversed list.
-      [(p1, e1); (p2, e2); ...; (p_n, e_n)]
-*)
+ * Note:
+ *   The internal data 'pf_lst' has the following structure.
+ *     [(p_n, e_n); ...; (p2, e2); (p1, e1)]
+ *   In contrast, the function 'next' returns its reversed list.
+ *     [(p1, e1); (p2, e2); ...; (p_n, e_n)]
+ *)
 let pf_generator tpl limit =
   let pf_lst =
     ref (if fst tpl = snd tpl then [ (fst tpl, 2) ] else [ (snd tpl, 1); (fst tpl, 1) ])
@@ -61,17 +60,19 @@ let pf_generator tpl limit =
     else (
       let result = List.rev !pf_lst in
       if e > 1
-      then pf_lst := (b, e - 1) :: List.tl_exn !pf_lst (* [(_, e); ...] --> [(_, e - 1); ...] *)
+      then
+        (* [(_, e); ...] --> [(_, e - 1); ...] *)
+        pf_lst := (b, e - 1) :: List.tl_exn !pf_lst
       else (
         let b_2nd, e_2nd = List.nth_exn !pf_lst 1 in
         let next_small_p = Prime.prev_prime b in
         if next_small_p = b_2nd
-        then (
+        then
           (* [(_, 1); (p_{n-1}, e_{n-1}); ...] --> [(p_{n-1}, e_{n-1} + 1); ...] *)
-          pf_lst := aux ((b_2nd, e_2nd + 1) :: List.tl_exn (List.tl_exn !pf_lst)))
-        else (
+          pf_lst := aux ((b_2nd, e_2nd + 1) :: List.tl_exn (List.tl_exn !pf_lst))
+        else
           (* [(_, 1); (p_{n-1}, e_{n-1}); ...] --> [(prev_prime(p_{n}), 1); (p_{n-1}, e_{n-1}; ...] *)
-          pf_lst := aux ((next_small_p, 1) :: List.tl_exn !pf_lst)));
+          pf_lst := aux ((next_small_p, 1) :: List.tl_exn !pf_lst));
       Some result)
   in
   next
@@ -104,7 +105,7 @@ let compute limit =
   in
   ignore
     (Prime.primes 11 (Euler.Math.isqrt limit)
-     |> List.rev_map ~f:(fun p -> (p, Prime.prev_prime (limit / p + 1)))
+     |> List.rev_map ~f:(fun p -> (p, Prime.prev_prime ((limit / p) + 1)))
      |> List.for_all ~f:(fun tpl ->
        if Float.(get_phi_ratio [ (fst tpl, 1) ] > fst (PQ.peek pq))
        then false (* pruning: no further searching is needed. *)

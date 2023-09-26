@@ -1,21 +1,21 @@
 (* Project Euler: Problem 80 *)
 
 (*
-  This program needs the Zarith module.
-
-  when n < 100,
-
-    i <= 10^99 * sqrt(n) < i + 1
-   -->
-    i^2 <= 10^198 * n < (i + 1)^2
-
-  'i' is the 100-digit number we want.
+ * This program needs the Zarith module.
+ *
+ * when n < 100,
+ *
+ *   i <= 10^99 * sqrt(n) < i + 1
+ *  -->
+ *   i^2 <= 10^198 * n < (i + 1)^2
+ *
+ * 'i' is the 100-digit number we want.
  *)
 
 open Core
 
 let compute upper =
-  let const_10_198 = Z.(pow (~$10) 198) in
+  let const_10_198 = Z.(pow ~$10 198) in
   List.range 1 upper ~stop:`inclusive
   |> List.map ~f:(fun n ->
     if Int.pow (Euler.Math.isqrt n) 2 = n

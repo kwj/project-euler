@@ -1,7 +1,6 @@
 (* Project Euler: Problem 26 *)
 
 open Core
-
 module M = Euler.Math
 
 (* preprocessing *)
@@ -13,12 +12,12 @@ let pp n =
 ;;
 
 (*
-  This function is not correct Carmichael function
-  because the function assumes that the argument is not a multiple of 2.
+   This function is not correct Carmichael function
+   because the function assumes that the argument is not a multiple of 2.
 *)
 let carmichael n =
   M.factorize n
-  |> List.map ~f:(fun (b, e) -> (b - 1) * (Int.pow b (e - 1)))
+  |> List.map ~f:(fun (b, e) -> (b - 1) * Int.pow b (e - 1))
   |> List.fold ~init:1 ~f:M.lcm
 ;;
 
@@ -40,6 +39,7 @@ let compute upper =
         if cycle > max_len then aux (pp x) cycle xs else aux ans max_len xs)
   in
   aux 0 0 (List.range upper (upper / 2) ~start:`exclusive ~stop:`inclusive ~stride:(-1))
+;;
 
 let solve () = compute 1_000 |> Int.to_string
 

@@ -30,31 +30,33 @@ let words =
   ; (70, String.length "seventy")
   ; (80, String.length "eighty")
   ; (90, String.length "ninety")
-  ; (0, 0)    (* special data *)
+  ; (0, 0) (* special data *)
   ]
 ;;
 
 let count_letters num =
   match num with
-  | 1000 -> 11    (* one thousand *)
+  | 1000 -> 11 (* one thousand *)
   | n when n < 20 -> List.Assoc.find_exn words n ~equal
   | n when n < 100 ->
-      List.Assoc.find_exn words (n - (n mod 10)) ~equal
-      + List.Assoc.find_exn words (n mod 10) ~equal
+    List.Assoc.find_exn words (n - (n mod 10)) ~equal
+    + List.Assoc.find_exn words (n mod 10) ~equal
   | n when n mod 100 = 0 ->
-      (* X00 hundred *)
-      List.Assoc.find_exn words (n / 100) ~equal + 7
+    (* X00 hundred *)
+    List.Assoc.find_exn words (n / 100) ~equal + 7
   | n when n mod 100 < 20 ->
-      (* X hundred and YZ (YZ < 20) *)
-      List.Assoc.find_exn words (n / 100) ~equal
-      + 7 + 3
-      + List.Assoc.find_exn words (n mod 100) ~equal
+    (* X hundred and YZ (YZ < 20) *)
+    List.Assoc.find_exn words (n / 100) ~equal
+    + 7
+    + 3
+    + List.Assoc.find_exn words (n mod 100) ~equal
   | n ->
-      (* X hundred and YZ (20 <= YZ <= 99) *)
-      List.Assoc.find_exn words (n / 100) ~equal
-      + 7 + 3
-      + List.Assoc.find_exn words ((n mod 100) - (n mod 10)) ~equal
-      + List.Assoc.find_exn words (n mod 10) ~equal
+    (* X hundred and YZ (20 <= YZ <= 99) *)
+    List.Assoc.find_exn words (n / 100) ~equal
+    + 7
+    + 3
+    + List.Assoc.find_exn words ((n mod 100) - (n mod 10)) ~equal
+    + List.Assoc.find_exn words (n mod 10) ~equal
 ;;
 
 let compute limit =

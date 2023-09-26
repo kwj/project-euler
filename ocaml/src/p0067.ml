@@ -25,9 +25,12 @@ let parse_data data =
 
 let compute str_lst = parse_data str_lst |> calc_from_bottom
 
-let solve () = compute (Euler.Task.read_data "./src/assets/p067_triangle.txt") |> Int.to_string
+let solve () =
+  compute (Euler.Task.read_data "./src/assets/p067_triangle.txt") |> Int.to_string
+;;
 
 (* Test *)
 
 let%test_unit "p067_triangle.txt" =
   [%test_eq: int] (compute (Euler.Task.read_file "./assets/p067_triangle.txt")) 7273
+;;

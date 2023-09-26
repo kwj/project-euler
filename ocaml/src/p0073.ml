@@ -26,7 +26,7 @@ let make_mobius_tbl limit =
 
 let f x =
   List.range 1 x ~stop:`inclusive
-  |> List.map ~f:(fun j -> (j - 1) / 2 - (j / 3))
+  |> List.map ~f:(fun j -> ((j - 1) / 2) - (j / 3))
   |> List.sum (module Int) ~f:Fn.id
 ;;
 
@@ -38,7 +38,6 @@ let g limit =
 ;;
 
 let compute limit = g limit
-
 let solve () = compute 12_000 |> Int.to_string
 
 (* Test *)

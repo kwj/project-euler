@@ -14,10 +14,12 @@ let parse_data data =
 ;;
 
 let compute str_lst =
-  parse_data str_lst |> List.foldi ~init:0 ~f:(fun idx acc n -> acc + (idx + 1) * n)
+  parse_data str_lst |> List.foldi ~init:0 ~f:(fun idx acc n -> acc + ((idx + 1) * n))
 ;;
 
-let solve () = compute (Euler.Task.read_data "./src/assets/p022_names.txt") |> Int.to_string
+let solve () =
+  compute (Euler.Task.read_data "./src/assets/p022_names.txt") |> Int.to_string
+;;
 
 (* Test *)
 

@@ -21,9 +21,9 @@ let make_neighbor_tbl x_size y_size =
   for x = 0 to x_size - 1 do
     for y = 0 to y_size - 1 do
       tbl.(x).(y)
-        <- [ (x - 1, y); (x + 1, y); (x, y - 1); (x, y + 1) ]
-           |> List.filter ~f:(fun (x, _) -> x >= 0 && x < x_size)
-           |> List.filter ~f:(fun (_, y) -> y >= 0 && y < y_size)
+      <- [ (x - 1, y); (x + 1, y); (x, y - 1); (x, y + 1) ]
+         |> List.filter ~f:(fun (x, _) -> x >= 0 && x < x_size)
+         |> List.filter ~f:(fun (_, y) -> y >= 0 && y < y_size)
     done
   done;
   tbl
@@ -73,10 +73,11 @@ let compute data =
 ;;
 
 let solve () =
-  compute (Euler.Task.read_data "./src/assets/p083_matrix.txt")
-  |> Int.to_string
+  compute (Euler.Task.read_data "./src/assets/p083_matrix.txt") |> Int.to_string
+;;
 
 (* Test *)
 
 let%test_unit "p083_matrix.txt" =
   [%test_eq: int] (compute (Euler.Task.read_file "./assets/p083_matrix.txt")) 425185
+;;

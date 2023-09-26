@@ -13,15 +13,15 @@ let make_numbers lst =
       let length = List.length lst in
       for i = 0 to length - 1 do
         for j = i + 1 to length - 1 do
-            let next_lst = List.filteri ~f:(fun idx _ -> idx <> i && idx <> j) lst in
-            let d1 = List.nth_exn lst i in
-            let d2 = List.nth_exn lst j in
-            aux (Q.(d1 + d2) :: next_lst);
-            aux (Q.(d1 * d2) :: next_lst);
-            aux (Q.(d1 - d2) :: next_lst);
-            aux (Q.(d2 - d1) :: next_lst);
-            if Q.(d1 <> zero) then aux (Q.(d2 / d1) :: next_lst);
-            if Q.(d2 <> zero) then aux (Q.(d1 / d2) :: next_lst)
+          let next_lst = List.filteri ~f:(fun idx _ -> idx <> i && idx <> j) lst in
+          let d1 = List.nth_exn lst i in
+          let d2 = List.nth_exn lst j in
+          aux (Q.(d1 + d2) :: next_lst);
+          aux (Q.(d1 * d2) :: next_lst);
+          aux (Q.(d1 - d2) :: next_lst);
+          aux (Q.(d2 - d1) :: next_lst);
+          if Q.(d1 <> zero) then aux (Q.(d2 / d1) :: next_lst);
+          if Q.(d2 <> zero) then aux (Q.(d1 / d2) :: next_lst)
         done
       done)
   in

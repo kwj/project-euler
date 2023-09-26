@@ -23,13 +23,13 @@ let compute limit =
   let cs_lst = init_cumsum_lst cs_gen limit in
   let begin_pos = List.length cs_lst - 1 in
   let rec aux cs_lst width ans =
-    if (List.nth_exn cs_lst (begin_pos - width)) - (List.nth_exn cs_lst begin_pos) >= limit
+    if List.nth_exn cs_lst (begin_pos - width) - List.nth_exn cs_lst begin_pos >= limit
     then ans
     else (
       let lst = List.slice cs_lst 0 (begin_pos - width + 1) in
       match
         List.drop_while lst ~f:(fun n ->
-          let x = n - (List.nth_exn cs_lst begin_pos) in
+          let x = n - List.nth_exn cs_lst begin_pos in
           x >= limit || Bool.(Euler.Math.Prime.is_prime x = false))
       with
       | [] -> aux (cs_gen () :: cs_lst) width ans

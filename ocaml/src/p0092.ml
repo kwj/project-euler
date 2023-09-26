@@ -6,24 +6,21 @@ let rec is_group89 n =
   if n <> 89 && n > 1
   then (
     let rec aux n acc =
-      if n <> 0
-      then aux (n / 10) (acc + Int.pow (n mod 10) 2)
-      else acc
+      if n <> 0 then aux (n / 10) (acc + Int.pow (n mod 10) 2) else acc
     in
     is_group89 (aux n 0))
   else n = 89
 ;;
 
-let rec factorial n =
-  if n > 1 then n * factorial (n - 1) else 1
-;;
+let rec factorial n = if n > 1 then n * factorial (n - 1) else 1
 
 let countmap t lst =
   let ret = Hashtbl.create t in
-  List.iter lst ~f:(fun elm -> Hashtbl.update ret elm ~f:(fun v ->
-    match v with
-    | None -> 1
-    | Some n -> n + 1));
+  List.iter lst ~f:(fun elm ->
+    Hashtbl.update ret elm ~f:(fun v ->
+      match v with
+      | None -> 1
+      | Some n -> n + 1));
   ret
 ;;
 
@@ -37,7 +34,10 @@ let compute limit =
   |> Euler.Util.combination_with_repetition n_digits
   |> List.filter ~f:(fun lst -> is_group89 (List.sum (module Int) ~f:Fn.id lst))
   |> List.map ~f:(fun lst ->
-    Hashtbl.fold (countmap (module Int) lst) ~init:1 ~f:(fun ~key:_ ~data:v acc -> acc * (factorial v)))
+    Hashtbl.fold
+      (countmap (module Int) lst)
+      ~init:1
+      ~f:(fun ~key:_ ~data:v acc -> acc * factorial v))
   |> List.map ~f:(fun denom -> numer / denom)
   |> List.sum (module Int) ~f:Fn.id
 ;;

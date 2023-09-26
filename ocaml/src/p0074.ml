@@ -27,9 +27,13 @@ let compute limit =
   let limit = limit - 1 in
   let chain_tbl = Array.create ~len:(limit + 1) 0 in
   chain_tbl.(145) <- 1;
-  chain_tbl.(169) <- 3; chain_tbl.(363601) <- 3; chain_tbl.(1454) <- 3;
-  chain_tbl.(871) <- 2; chain_tbl.(45361) <- 2;
-  chain_tbl.(872) <- 2; chain_tbl.(45362) <- 2;
+  chain_tbl.(169) <- 3;
+  chain_tbl.(363601) <- 3;
+  chain_tbl.(1454) <- 3;
+  chain_tbl.(871) <- 2;
+  chain_tbl.(45361) <- 2;
+  chain_tbl.(872) <- 2;
+  chain_tbl.(45362) <- 2;
 
   let rec aux idx lst =
     let next_idx = fact_sum idx in
@@ -43,7 +47,7 @@ let compute limit =
   in
 
   Sequence.range limit 1 ~stop:`inclusive ~stride:(-1)
-  |> Sequence.map ~f:(fun n -> aux n [n])
+  |> Sequence.map ~f:(fun n -> aux n [ n ])
   |> Sequence.sum (module Int) ~f:Fn.id
 ;;
 

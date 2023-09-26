@@ -49,10 +49,14 @@ let compute str_lst =
   let graph = parse_data str_lst in
   List.fold ~init:[] ~f:(fun perm (v, _) -> dfs graph perm v) graph
   |> Euler.Util.list_to_str Int.to_string ""
+;;
 
 let solve () = compute (Euler.Task.read_data "./src/assets/p079_keylog.txt")
 
 (* Test *)
 
 let%test_unit "p079_keylog.txt" =
-  [%test_eq: string] (compute (Euler.Task.read_file "./assets/p079_keylog.txt")) "73162890"
+  [%test_eq: string]
+    (compute (Euler.Task.read_file "./assets/p079_keylog.txt"))
+    "73162890"
+;;

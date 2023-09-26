@@ -4,8 +4,7 @@ open Core
 
 let compute num =
   let sum_of_sq =
-    List.range 1 num ~stop:`inclusive
-    |> List.sum (module Int) ~f:(fun x -> x * x)
+    List.range 1 num ~stop:`inclusive |> List.sum (module Int) ~f:(fun x -> x * x)
   in
   let sq_of_sum =
     List.range 1 num ~stop:`inclusive

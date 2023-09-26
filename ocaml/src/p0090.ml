@@ -12,7 +12,8 @@ let squares =
   ; [ (6, 4); (4, 6) ]
   (* ; [ (4, 6); (6, 4) ] *)  (* 8^2 = 64, 7^2 = 49 -> 46.  So this check can be omitted. *)
   ; [ (1, 8); (8, 1) ]
-  ]
+  ] [@ocamlformat "disable"]
+;;
 
 let check_pair two_dice pair =
   List.mem (List.nth_exn two_dice 0) (fst pair) ~equal

@@ -9,7 +9,7 @@ let parse_data data =
 
 let compute str_lst =
   parse_data str_lst
-  |> List.mapi ~f:(fun idx (b, e) -> (Float.(e *. (log10 b)), idx + 1))
+  |> List.mapi ~f:(fun idx (b, e) -> (Float.(e *. log10 b), idx + 1))
   |> List.max_elt ~compare:(fun (f1, _) (f2, _) -> Float.compare f1 f2)
   |> Option.value_exn
   |> snd
@@ -17,8 +17,10 @@ let compute str_lst =
 
 let solve () =
   compute (Euler.Task.read_data "./src/assets/p099_base_exp.txt") |> Int.to_string
+;;
 
 (* Test *)
 
 let%test_unit "p099_base_exp.txt" =
   [%test_eq: int] (compute (Euler.Task.read_file "./assets/p099_base_exp.txt")) 709
+;;

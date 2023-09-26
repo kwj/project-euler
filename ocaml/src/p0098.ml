@@ -13,8 +13,8 @@ let get_squares tbl n_digits =
   | None ->
     let lst =
       List.range
-        (Euler.Math.isqrt ((Int.pow 10 (n_digits - 1)) - 1) + 1)
-        (Euler.Math.isqrt ((Int.pow 10 n_digits) - 1))
+        (Euler.Math.isqrt (Int.pow 10 (n_digits - 1) - 1) + 1)
+        (Euler.Math.isqrt (Int.pow 10 n_digits - 1))
         ~stop:`inclusive
       |> List.map ~f:(fun n -> Int.to_string (n * n))
     in
@@ -45,7 +45,7 @@ let get_max_anagram words sq_tbl =
   let trans trans_tbl s =
     String.to_list s
     |> List.map ~f:(fun ch ->
-      match (Hashtbl.find trans_tbl ch) with
+      match Hashtbl.find trans_tbl ch with
       | None -> ch
       | Some x -> x)
     |> String.of_list
@@ -61,9 +61,8 @@ let get_max_anagram words sq_tbl =
         else (
           let tmp = trans trans_tbl w2 in
           if List.exists squares ~f:(fun sq -> String.(sq = tmp))
-          then (loop (Int.max res (Int.max (Int.of_string x) (Int.of_string tmp))) xs)
-          else loop res xs
-        )
+          then loop (Int.max res (Int.max (Int.of_string x) (Int.of_string tmp))) xs
+          else loop res xs)
     in
     loop 0 squares
   in
@@ -80,7 +79,7 @@ let compute str_lst =
     let key = String.to_list s |> List.sort ~compare:Char.compare |> String.of_list in
     Hashtbl.update word_tbl key ~f:(fun v ->
       match v with
-      | None -> [s]
+      | None -> [ s ]
       | Some lst -> s :: lst));
 
   let sq_tbl = Hashtbl.create (module Int) in
@@ -91,9 +90,12 @@ let compute str_lst =
   |> Option.value_exn
 ;;
 
-let solve () = compute (Euler.Task.read_data "./src/assets/p098_words.txt") |> Int.to_string
+let solve () =
+  compute (Euler.Task.read_data "./src/assets/p098_words.txt") |> Int.to_string
+;;
 
 (* Test *)
 
 let%test_unit "p098_words.txt" =
   [%test_eq: int] (compute (Euler.Task.read_file "./assets/p098_words.txt")) 18769
+;;

@@ -5,7 +5,7 @@ open Core
 let fibs a b =
   Sequence.unfold
     ~init:(Z.of_int a, Z.of_int b, 1)
-    ~f:(fun (a, b, idx) -> Some ((idx, a), (b, Z.(a + b), (succ idx))))
+    ~f:(fun (a, b, idx) -> Some ((idx, a), (b, Z.(a + b), succ idx)))
 ;;
 
 let compute n_digits =

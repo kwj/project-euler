@@ -7,10 +7,11 @@ let compute qty =
   let tbl = Hashtbl.create (module Int) in
   let rec loop n =
     let cube = Int.pow n 3 in
-    let cube_lst = Hashtbl.update_and_return tbl (make_key cube) ~f:(fun v ->
-      match v with
-      | None -> [cube]
-      | Some lst -> cube :: lst)
+    let cube_lst =
+      Hashtbl.update_and_return tbl (make_key cube) ~f:(fun v ->
+        match v with
+        | None -> [ cube ]
+        | Some lst -> cube :: lst)
     in
     if List.length cube_lst = qty then List.last_exn cube_lst else loop (succ n)
   in
