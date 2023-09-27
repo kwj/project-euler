@@ -14,8 +14,8 @@
 module Prob0080
 
 function solve_0080(limit::Int = 100, n_digits::Int = 100)
-    e = (n_digits - 1) * 2
-    sum(sum(digits(isqrt(big(10) ^ e * n))) for n = 1:limit if isqrt(n) ^ 2 != n)
+    const_pow_of_10 = big(10) ^ ((n_digits - 1) * 2)
+    sum(sum(digits(isqrt(const_pow_of_10 * n))) for n = 1:limit if isqrt(n) ^ 2 != n)
 end
 
 end #module

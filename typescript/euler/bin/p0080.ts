@@ -14,15 +14,15 @@ import { isqrt, sum } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
 export function compute(limit: number, digit: number): string {
-  const exp = BigInt((digit - 1) * 2);
+  const const_pow_of_10 = 10n ** BigInt((digit - 1) * 2);
 
   let acc = 0;
   for (const n of range(1, limit + 1)) {
-    if (isqrt(n) * isqrt(n) === n) {
+    if (isqrt(n) ** 2 === n) {
       continue;
     }
     acc += sum(
-      String(isqrt((10n ** exp) * BigInt(n))).split("").map((x) => Number(x)),
+      String(isqrt(const_pow_of_10 * BigInt(n))).split("").map((x) => Number(x)),
     );
   }
 

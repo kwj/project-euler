@@ -14,21 +14,21 @@
 
 open Core
 
-let compute upper =
-  let const_10_198 = Z.(pow ~$10 198) in
+let compute upper n_digit =
+  let const_pow_of_10 = Z.pow (Z.of_int 10) ((n_digit - 1) * 2) in
   List.range 1 upper ~stop:`inclusive
   |> List.map ~f:(fun n ->
     if Int.pow (Euler.Math.isqrt n) 2 = n
     then 0
     else
-      Z.(sqrt (const_10_198 * ~$n))
+      Z.(sqrt (const_pow_of_10 * ~$n))
       |> Euler.Util.z_digits
       |> List.sum (module Int) ~f:Fn.id)
   |> List.sum (module Int) ~f:Fn.id
 ;;
 
-let solve () = compute 100 |> Int.to_string
+let solve () = compute 100 100 |> Int.to_string
 
 (* Test *)
 
-let%test_unit "100" = [%test_eq: int] (compute 100) 40886
+let%test_unit "100" = [%test_eq: int] (compute 100 100) 40886
