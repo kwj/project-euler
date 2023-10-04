@@ -18,8 +18,8 @@ def compute(fn: Callable[..., int], fh: IO) -> str:
         return [list(map(int, line.split(' '))) for line in fh.read().splitlines()]
 
     nums = list(reversed(parse_data(fh)))
-    prev = [0] * (len(nums[0]) + 1)
-    for lst in nums:
+    prev = nums[0]
+    for lst in nums[1:]:
         selected = select_leaf(fn, prev)
         prev = [x + y for (x, y) in zip(lst, selected)]
 

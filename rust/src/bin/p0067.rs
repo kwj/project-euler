@@ -19,11 +19,11 @@ fn compute(fname: &str) -> i64 {
         Err(error) => panic!("Problem parsing the file {}: {:?}", fname, error),
     };
 
-    let mut prev = vec![0_i64; triangle[0].len() + 1];
-    for lst in triangle {
+    let mut prev = triangle[0].clone();
+    for lst in &triangle[1..] {
         let selected = select_leaf(&prev);
         prev = lst
-            .into_iter()
+            .iter()
             .zip(selected.into_iter())
             .map(|(x, y)| x + y)
             .collect();

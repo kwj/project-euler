@@ -30,9 +30,9 @@ let rec select_leaf lst =
 
 let calc_from_bottom l_lst =
   List.fold_right
-    l_lst
+    (List.drop_last_exn l_lst)
     ~f:(fun a b -> List.map2_exn a (select_leaf b) ~f:( + ))
-    ~init:(List.init ((List.last_exn l_lst |> List.length) + 1) ~f:(fun _ -> 0))
+    ~init:(List.last_exn l_lst)
   |> List.hd_exn
 ;;
 

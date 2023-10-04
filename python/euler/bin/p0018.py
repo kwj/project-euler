@@ -35,8 +35,8 @@ def select_leaf(fn: Callable[..., int], lst: list[int]) -> list[int]:
 
 def compute(fn: Callable[..., int], nums: list[list[int]]) -> str:
     nums.reverse()
-    prev = [0] * (len(nums[0]) + 1)
-    for lst in nums:
+    prev = nums[0]
+    for lst in nums[1:]:
         selected = select_leaf(fn, prev)
         prev = [x + y for (x, y) in zip(lst, selected)]
 

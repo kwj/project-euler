@@ -40,10 +40,8 @@ export function compute(
   nums: number[][],
 ): string {
   nums.reverse();
-  let prev = new Array(nums[0].length + 1);
-  prev.fill(0);
-
-  for (const lst of nums) {
+  let prev = nums[0];
+  for (const lst of nums.slice(1)) {
     prev = zip(lst, selectLeaf(fn, prev)).map((tpl) => tpl[0] + tpl[1]);
   }
 

@@ -32,8 +32,8 @@ function select_leaf(fn, lst)
 end
 
 function solve_0018(fn::Function = max)
-    prev = zeros(Int, length(data[1]) + 1)
-    for lst in data
+    prev = data[1]
+    for lst in data[2:end]
         selected = select_leaf(fn, prev)
         prev = map(+, lst, selected)
     end
