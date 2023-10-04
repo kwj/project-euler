@@ -24,8 +24,8 @@ fn compute(fname: &str) -> i64 {
         let selected = select_leaf(&prev);
         prev = lst
             .iter()
-            .zip(selected.into_iter())
-            .map(|(x, y)| x + y)
+            .zip(selected.iter())
+            .map(|(&x, &y)| x + y)
             .collect();
     }
     prev[0]
