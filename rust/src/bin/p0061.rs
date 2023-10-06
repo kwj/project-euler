@@ -98,7 +98,7 @@ fn make_polynum_tbl() -> HashMap<i64, HashMap<i64, Vec<i64>>> {
             } else if n >= 10_000 {
                 break;
             }
-            x.entry(n / 100).or_insert(vec![]).push(n % 100);
+            x.entry(n / 100).or_default().push(n % 100);
         }
         tbl.insert(i, x);
     }

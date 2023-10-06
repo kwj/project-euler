@@ -86,15 +86,15 @@ struct Ratio {
 
 impl Eq for Ratio {}
 
-impl PartialOrd for Ratio {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        other.priority.partial_cmp(&self.priority)
-    }
-}
-
 impl Ord for Ratio {
     fn cmp(&self, other: &Self) -> Ordering {
         other.priority.partial_cmp(&self.priority).unwrap()
+    }
+}
+
+impl PartialOrd for Ratio {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
     }
 }
 

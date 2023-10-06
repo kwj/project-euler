@@ -49,10 +49,8 @@ fn parse_data(it: Lines<BufReader<File>>) -> Result<HashMap<i64, Vec<i64>>, std:
             .chars()
             .map(|ch| ch.to_digit(10).unwrap() as i64)
             .collect::<Vec<i64>>();
-        ret.entry(v[0])
-            .or_insert(Vec::new())
-            .extend(vec![v[1], v[2]]);
-        ret.entry(v[1]).or_insert(Vec::new()).push(v[2]);
+        ret.entry(v[0]).or_default().extend(vec![v[1], v[2]]);
+        ret.entry(v[1]).or_default().push(v[2]);
     }
     Ok(ret)
 }

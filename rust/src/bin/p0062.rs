@@ -20,7 +20,7 @@ fn compute(n_perms: usize) -> i64 {
     for n in 1_i64.. {
         let cube = n.pow(3);
         let key = make_key(cube);
-        tbl.entry(key).or_insert(vec![]).push(cube);
+        tbl.entry(key).or_default().push(cube);
         let tmp = tbl.get(&key).unwrap();
         if tmp.len() == n_perms {
             return tmp[0];

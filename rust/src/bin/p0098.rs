@@ -20,7 +20,7 @@ fn compute(fname: &str) -> i64 {
         let mut tmp: Vec<_> = w.chars().collect();
         tmp.sort();
         let key: String = tmp.into_iter().collect();
-        word_tbl.entry(key).or_insert(Vec::new()).push(w);
+        word_tbl.entry(key).or_default().push(w);
     }
 
     let mut ans: i64 = 0;
