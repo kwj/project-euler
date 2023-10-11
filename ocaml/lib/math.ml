@@ -8,7 +8,7 @@ let rec gcd m n =
 let lcm m n =
   match (m, n) with
   | 0, _ | _, 0 -> 0
-  | m, n -> abs (m * n) / gcd m n
+  | m, n -> abs m * (abs n / gcd m n)
 ;;
 
 let binomial n k =
