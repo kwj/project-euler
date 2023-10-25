@@ -82,6 +82,11 @@ mod tests {
     }
 
     #[test]
+    fn p0050_10000() {
+        assert_eq!(compute(10_000), 9521);
+    }
+
+    #[test]
     fn p0050_1000000() {
         assert_eq!(compute(1_000_000), 997651);
     }

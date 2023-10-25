@@ -48,4 +48,5 @@ let solve () = compute 1_000_000 |> Int.to_string
 
 let%test_unit "100" = [%test_eq: int] (compute 100) 41
 let%test_unit "1_000" = [%test_eq: int] (compute 1_000) 953
+let%test_unit "10_000" = [%test_eq: int] (compute 10_000) 9521
 let%test_unit "1_000_000" = [%test_eq: int] (compute 1_000_000) 997651
