@@ -40,6 +40,11 @@ mod tests {
     use super::compute;
 
     #[test]
+    fn p0002_under_100() {
+        assert_eq!(compute(100), 44);
+    }
+
+    #[test]
     fn p0002_under_four_million() {
         assert_eq!(compute(4_000_000), 4613732);
     }
