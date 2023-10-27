@@ -44,7 +44,7 @@ fn compute(limit: i64) -> i64 {
     let mut acc: usize = 0;
     for n in 1..=limit {
         if n == 1_000 {
-            // one thouthand (3 + 8)
+            // one thousand (3 + 8)
             acc += 11;
         } else if n < 20 {
             acc += words.get(&n).unwrap();

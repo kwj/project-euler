@@ -38,7 +38,7 @@ def compute(limit: int) -> str:
     cnt = 0
     for n in range(1, limit + 1):
         if n == 1000:
-            # one thouthand (3 + 8)
+            # one thousand (3 + 8)
             cnt += 11
         elif n < 20:
             cnt += words[n]

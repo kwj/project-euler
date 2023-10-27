@@ -38,7 +38,7 @@ function solve_0017(limit::Int = 1_000)
     acc = 0
     for n = 1:limit
         if n == 1_000
-            # one thouthand (3 + 8)
+            # one thousand (3 + 8)
             acc += 11
         elseif n < 20
             acc += words[n]
