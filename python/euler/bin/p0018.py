@@ -23,21 +23,15 @@ data = [
 # fmt: on
 
 
-def select_leaf(fn: Callable[..., int], lst: list[int]) -> list[int]:
-    result = []
-    prev = lst[0]
-    for i in lst:
-        result.append(fn(prev, i))
-        prev = i
-
-    return result[1:]
+def select_item(fn: Callable[..., int], lst: list[int]) -> list[int]:
+    return map(fn, lst, lst[1:])
 
 
 def compute(fn: Callable[..., int], nums: list[list[int]]) -> str:
     nums.reverse()
     prev = nums[0]
     for lst in nums[1:]:
-        selected = select_leaf(fn, prev)
+        selected = select_item(fn, prev)
         prev = [x + y for (x, y) in zip(lst, selected)]
 
     return str(prev[0])

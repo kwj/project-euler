@@ -4,13 +4,8 @@ from collections.abc import Callable
 from typing import IO
 
 
-def select_leaf(fn: Callable[..., int], lst: list[int]) -> list[int]:
-    result = []
-    prev = lst[0]
-    for i in lst:
-        result.append(fn(prev, i))
-        prev = i
-    return result[1:]
+def select_item(fn: Callable[..., int], lst: list[int]) -> list[int]:
+    return map(fn, lst, lst[1:])
 
 
 def compute(fn: Callable[..., int], fh: IO) -> str:
@@ -20,7 +15,7 @@ def compute(fn: Callable[..., int], fh: IO) -> str:
     nums = list(reversed(parse_data(fh)))
     prev = nums[0]
     for lst in nums[1:]:
-        selected = select_leaf(fn, prev)
+        selected = select_item(fn, prev)
         prev = [x + y for (x, y) in zip(lst, selected)]
 
     return str(prev[0])
