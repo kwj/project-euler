@@ -1,6 +1,8 @@
 # project euler: problem 18
 
 from collections.abc import Callable
+from functools import reduce
+from operator import add
 
 # fmt: off
 data = [
@@ -28,13 +30,9 @@ def select_item(fn: Callable[..., int], lst: list[int]) -> list[int]:
 
 
 def compute(fn: Callable[..., int], nums: list[list[int]]) -> str:
-    nums.reverse()
-    prev = nums[0]
-    for lst in nums[1:]:
-        selected = select_item(fn, prev)
-        prev = [x + y for (x, y) in zip(lst, selected)]
+    result = reduce(lambda x, y: list(map(add, select_item(fn, x), y)), reversed(nums))
 
-    return str(prev[0])
+    return str(result[0])
 
 
 def solve() -> str:

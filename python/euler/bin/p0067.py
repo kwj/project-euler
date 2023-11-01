@@ -1,6 +1,8 @@
 # project euler: problem 67
 
 from collections.abc import Callable
+from functools import reduce
+from operator import add
 from typing import IO
 
 
@@ -12,13 +14,9 @@ def compute(fn: Callable[..., int], fh: IO) -> str:
     def parse_data(fh: IO) -> list[list[int]]:
         return [list(map(int, line.split(' '))) for line in fh.read().splitlines()]
 
-    nums = list(reversed(parse_data(fh)))
-    prev = nums[0]
-    for lst in nums[1:]:
-        selected = select_item(fn, prev)
-        prev = [x + y for (x, y) in zip(lst, selected)]
+    result = reduce(lambda x, y: list(map(add, select_item(fn, x), y)), reversed(parse_data(fh)))
 
-    return str(prev[0])
+    return str(result[0])
 
 
 def solve() -> str:
