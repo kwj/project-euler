@@ -42,11 +42,11 @@ let is_family p f_size =
   let rec loop_figures = function
     | [] -> false
     | n :: ns ->
-      let p_arr = List.to_array p_digits in
       let rec loop_masks = function
         | [] -> None
         | mask :: xs ->
           let cnt = ref 1 in
+          let p_arr = List.to_array p_digits in
           let rec aux = function
             | [] -> loop_masks xs
             | d :: ds ->
