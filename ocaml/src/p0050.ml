@@ -26,7 +26,7 @@ let compute limit =
     if List.nth_exn cs_lst (begin_pos - width) - List.nth_exn cs_lst begin_pos >= limit
     then ans
     else (
-      let lst = List.slice cs_lst 0 (begin_pos - width + 1) in
+      let lst = List.slice cs_lst 0 (begin_pos - width) in
       match
         List.drop_while lst ~f:(fun n ->
           let x = n - List.nth_exn cs_lst begin_pos in
@@ -39,13 +39,14 @@ let compute limit =
           (width + List.length l)
           (List.nth_exn l 0 - List.nth_exn cs_lst begin_pos))
   in
-  aux cs_lst 1 0
+  aux cs_lst 0 0
 ;;
 
 let solve () = compute 1_000_000 |> Int.to_string
 
 (* Test *)
 
+let%test_unit "10" = [%test_eq: int] (compute 10) 5
 let%test_unit "100" = [%test_eq: int] (compute 100) 41
 let%test_unit "1_000" = [%test_eq: int] (compute 1_000) 953
 let%test_unit "10_000" = [%test_eq: int] (compute 10_000) 9521
