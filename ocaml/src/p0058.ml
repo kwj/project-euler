@@ -39,7 +39,7 @@ let compute () =
       + is_prime_wrapper (acc + (4 * n))
       + is_prime_wrapper (acc + (6 * n))
     in
-    if Float.(of_int nprimes / of_int Int.((4 * n) + 1) <= 0.1)
+    if Float.(of_int nprimes / of_int Int.((4 * n) + 1) < 0.1)
     then (2 * n) + 1
     else aux (succ n) nprimes (acc + (8 * n))
   in
