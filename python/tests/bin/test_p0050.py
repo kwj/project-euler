@@ -7,6 +7,7 @@ class TestSolution(unittest.TestCase):
     def test_compute(self):
         test_patterns = [
             ((100,), '41'),
+            ((500,), '499'),
             ((1_000,), '953'),
             ((10_000,), '9521'),
             ((1_000_000,), '997651'),

@@ -225,6 +225,7 @@
 
     @testset "0050" begin
         @test solve_0050(100) == 41
+        @test solve_0050(500) == 499
         @test solve_0050(1_000) == 953
         @test solve_0050(10_000) == 9521
         @test solve_0050(1_000_000) == 997651
