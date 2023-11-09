@@ -62,7 +62,7 @@ def compute(group_size: int) -> str:
     _ = next(p_gen)
     _ = next(p_gen)
 
-    # Grouping by modulus of 3, but exclude 3. prime_set[0] isn't used.
+    # Grouping by modulus of 3, but exclude 3. Note: prime_groups[0] isn't used.
     prime_groups: list[list[int]] = [
         [],
         [3],
