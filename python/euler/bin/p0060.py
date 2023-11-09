@@ -69,7 +69,7 @@ def compute(group_size: int) -> str:
         [3],
         [3],
     ]
-    tbl: dict[int, set[int]] = {3: set()}
+    tbl: dict[int, set[int]] = {}
     size = group_size - 1
     answer = sys.maxsize
 
