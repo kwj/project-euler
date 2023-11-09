@@ -25,7 +25,7 @@ data = [
 # fmt: on
 
 
-def select_item(fn: Callable[..., int], lst: list[int]) -> list[int]:
+def select_item(fn: Callable[..., int], lst: list[int]) -> map[int]:
     return map(fn, lst, lst[1:])
 
 
