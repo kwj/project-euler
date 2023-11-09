@@ -14,7 +14,9 @@ def compute(fn: Callable[..., int], fh: IO) -> str:
     def parse_data(fh: IO) -> list[list[int]]:
         return [list(map(int, line.split(' '))) for line in fh.read().splitlines()]
 
-    result = reduce(lambda x, y: list(map(add, select_item(fn, x), y)), reversed(parse_data(fh)))
+    result = reduce(
+        lambda x, y: list(map(add, select_item(fn, x), y)), reversed(parse_data(fh))
+    )
 
     return str(result[0])
 
