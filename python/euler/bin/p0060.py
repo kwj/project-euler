@@ -56,13 +56,14 @@ def find_cliques(
 
 
 def compute(group_size: int) -> str:
-    # discard 2, 3 and 5
+    # Discard 2, 3 and 5
     p_gen = prime_generator()
     _ = next(p_gen)
     _ = next(p_gen)
     _ = next(p_gen)
 
-    # Grouping by modulus of 3, but exclude 3. Note: prime_groups[0] isn't used.
+    # Group prime numbers by the remainder divided by 3 (except 3).
+    # Note: prime_groups[0] isn't used.
     prime_groups: list[list[int]] = [
         [],
         [3],
