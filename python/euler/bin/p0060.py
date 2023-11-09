@@ -1,77 +1,90 @@
 # project euler: problem 60
 
-# This implementation is slow. The following is a result on Raspberry Pi 4.
+# This implementation is slow. The following is a result on Ubuntu 23.10 / Raspberry Pi 4.
 #
 # % python3
-# Python 3.11.2 (main, Mar 13 2023, 12:18:29) [GCC 12.2.0] on linux
+# Python 3.11.6 (main, Oct  8 2023, 05:06:43) [GCC 13.2.0] on linux
 # Type "help", "copyright", "credits" or "license" for more information.
 # >>>
 # % ./solve.py 60
 # [Problem 60]
 # Answer: 26033
-# Elapsed time: 45.732660 sec.
+# Elapsed time: 24.747444 sec.
 #
 # It is easy to find a 5-clique, however, it needs time to confirm its sum is the smallest.
 
 import sys
-from itertools import combinations
 
 from euler.lib.prime import is_probably_prime, prime_generator
+from euler.lib.util import num_of_digits
 
 
-def is_pair(x: int, y: int) -> bool:
-    def concat_num(a: int, b: int) -> int:
-        n = 10
-        while b > n:
-            n = n * 10
-        return a * n + b
+def get_pairable_primes(x: int, asc_ps: list[int], limit: int) -> list[int]:
+    def is_prime_pair(a: int, upper_a: int, b: int, upper_b: int) -> bool:
+        return is_probably_prime(a * upper_b + b) and is_probably_prime(b * upper_a + a)
 
-    return is_probably_prime(concat_num(x, y)) and is_probably_prime(concat_num(y, x))
+    upper_x = 10 ** num_of_digits(x)
+    upper_p = 10
+    result = []
+    for p in asc_ps:
+        if p > upper_p:
+            upper_p *= 10
+
+        if x + p < limit and is_prime_pair(x, upper_x, p, upper_p):
+            result.append(p)
+
+    result.reverse()
+
+    return result
 
 
-def find_nbrs(prime: int, prime_set: set[int], limit: int) -> set[int]:
-    return {x for x in prime_set if x + prime < limit and is_pair(x, prime) is True}
-
-
-def is_clique(lst: list[int], tbl: dict[int, set[int]]) -> bool:
-    for idx in range(len(lst) - 1):
-        if tbl[lst[idx]] >= set(lst[idx + 1 :]):
-            continue
+def find_cliques(
+    desc_ps: list[int], size: int, tbl: dict[int, set[int]]
+) -> list[list[int]]:
+    def aux(group: list[int], ps: list[int], depth: int) -> None:
+        if depth == 0:
+            result.append(group)
         else:
-            return False
-    return True
+            for offset in range(0, len(ps) - depth + 1):
+                if len(group) == 0 or all(ps[offset] in tbl[x] for x in group):
+                    aux(group + [ps[offset]], ps[offset + 1 :], depth - 1)
+
+    result = []
+    aux([], desc_ps, size)
+
+    return result
 
 
-def compute() -> str:
+def compute(group_size: int) -> str:
     # discard 2, 3 and 5
     p_gen = prime_generator()
     _ = next(p_gen)
     _ = next(p_gen)
     _ = next(p_gen)
 
+    # Grouping by modulus of 3, but exclude 3. prime_set[0] isn't used.
+    prime_groups: list[list[int]] = [
+        [],
+        [3],
+        [3],
+    ]
     tbl: dict[int, set[int]] = {3: set()}
-    prime_set: list[set[int]] = [
-        set(),
-        {3},
-        {3},
-    ]  # Grouping by modulus of 3, but exclude 3. prime_set[0] isn't used.
+    size = group_size - 1
     answer = sys.maxsize
 
-    while (prime := next(p_gen)) < answer - 792:  # 792 = sum([3, 7, 109, 673])
+    while (prime := next(p_gen)) < answer:
         grp = prime % 3
-        tbl[prime] = (nbr_set := find_nbrs(prime, prime_set[grp], answer))
-        prime_set[grp].add(prime)
-        if len(nbr_set) < 4:
+        tbl[prime] = set(nbrs := get_pairable_primes(prime, prime_groups[grp], answer))
+        prime_groups[grp].append(prime)
+        if len(nbrs) < size:
             continue
 
-        for prime_grp in combinations(sorted(list(nbr_set), reverse=True), 4):
-            if prime + sum(prime_grp) > answer:
-                continue
-            if is_clique(list(prime_grp), tbl) is True:
-                answer = min(prime + sum(prime_grp), answer)
+        cliques = find_cliques(nbrs, size, tbl)
+        if len(cliques) > 0:
+            answer = min(answer, min(map(lambda x: prime + sum(x), cliques)))
 
     return str(answer)
 
 
 def solve() -> str:
-    return compute()
+    return compute(5)
