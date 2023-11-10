@@ -23,7 +23,7 @@ function get_pairable_primes(x, asc_prime_lst, limit)
     reverse(result)
 end
 
-function find_cliques(desc_ps_lst, size, tbl)
+function find_cliques(desc_prime_lst, size, tbl)
     function aux(group, ps, depth)
         if depth == 0
             push!(result, group)
@@ -37,7 +37,7 @@ function find_cliques(desc_ps_lst, size, tbl)
     end
 
     result = []
-    aux([], desc_ps_lst, size)
+    aux([], desc_prime_lst, size)
     result
 end
 
