@@ -4,36 +4,47 @@
 module Prob0060
 
 import Primes: isprime, nextprime
-import Combinatorics: combinations
 
-function is_pair(x, y)
-    function concat(a, b)
-        n = 10
-        while b > n
-            n *= 10
-        end
-        a * n + b
+function get_pairable_primes(x, asc_prime_lst, limit)
+    function is_pair(x, upper_x, y, upper_y)
+        isprime(x * upper_y + y) && isprime(y * upper_x + x)
     end
-    isprime(concat(x, y)) && isprime(concat(y, x))
-end
-
-function find_nbrs(prime, prime_lst, limit)
-    filter(p -> p + prime < limit && is_pair(prime, p) == true, prime_lst)
-end
-
-function is_clique(prime_grp, tbl)
-    for idx = 1:(length(prime_grp) - 1)
-        if all(x -> in(prime_grp[idx], tbl[x]), prime_grp[idx + 1:end]) == false
-            return false
+    upper_x = 10 ^ ndigits(x)
+    upper_p = 10
+    result = []
+    for p in asc_prime_lst
+        if p > upper_p
+            upper_p *= 10
+        end
+        if x + p < limit && is_pair(x, upper_x, p, upper_p) == true
+            push!(result, p)
         end
     end
-    return true
+    reverse(result)
+end
+
+function find_cliques(desc_ps_lst, size, tbl)
+    function aux(group, ps, depth)
+        if depth == 0
+            push!(result, group)
+        else
+            for offset in 1:(length(ps) - depth + 1)
+                if isempty(group) || all(x -> in(ps[offset], tbl[x]), group)
+                    aux(push!(copy(group), ps[offset]), ps[(offset + 1):end], depth - 1)
+                end
+            end
+        end
+    end
+
+    result = []
+    aux([], desc_ps_lst, size)
+    result
 end
 
 function solve_0060(size_of_clique::Int = 5)
     @assert size_of_clique > 1 "invalid parameter"
-    prime_lst = [[3], [3]]    # grouping by mod(prime, 3)  [excluding 3]
-    tbl = Dict{Int, Vector{Int}}()
+    prime_lst = [[3], [3]]    # Group prime numbers by the remainder divided by 3 (but include 3).
+    tbl = Dict{Int, Set{Int}}()
     answer = typemax(Int)
 
     # start from the 4th prime, 7
@@ -48,8 +59,8 @@ function solve_0060(size_of_clique::Int = 5)
 
         # find all prime numbers smaller than 'p' that can be paired with 'p'
         idx = p % 3
-        nbr_lst = find_nbrs(p, prime_lst[idx], answer)
-        tbl[p] = nbr_lst
+        nbr_lst = get_pairable_primes(p, prime_lst[idx], answer)
+        tbl[p] = Set(nbr_lst)
         # update known prime numbers
         push!(prime_lst[idx], p)
 
@@ -57,14 +68,10 @@ function solve_0060(size_of_clique::Int = 5)
         if length(nbr_lst) < size_of_clique - 1
             continue
         end
-        for prime_grp in combinations(nbr_lst, size_of_clique - 1)
-            tmp = sum(prime_grp) + p
-            if tmp >= answer
-                continue
-            end
-            if is_clique(prime_grp, tbl) == true
-                answer = min(tmp, answer)
-            end
+
+        cliques = find_cliques(nbr_lst, size_of_clique - 1, tbl)
+        if isempty(cliques) == false
+            answer = min(answer, minimum(map(x -> p + sum(x), cliques)))
         end
     end
     answer
