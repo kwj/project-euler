@@ -63,9 +63,7 @@ def compute(group_size: int) -> str:
     _ = next(p_gen)
 
     # Group prime numbers by the remainder divided by 3 (except 3).
-    # Note: prime_groups[0] isn't used.
     prime_groups: list[list[int]] = [
-        [],
         [3],
         [3],
     ]
@@ -74,7 +72,7 @@ def compute(group_size: int) -> str:
     answer = sys.maxsize
 
     while (prime := next(p_gen)) < answer:
-        grp = prime % 3
+        grp = (prime + 2) % 3
         tbl[prime] = set(nbrs := get_pairable_primes(prime, prime_groups[grp], answer))
         prime_groups[grp].append(prime)
         if len(nbrs) < size:
