@@ -39,7 +39,7 @@
 def compute(boundary: int) -> str:
     acc = 0
     c = 3
-    while acc < boundary:
+    while acc <= boundary:
         ab = c * 2
         while ab > 1:
             if (((c * c) + (ab * ab)) ** 0.5).is_integer() is True:

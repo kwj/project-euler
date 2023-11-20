@@ -43,7 +43,7 @@ module Prob0086
 function solve_0086(thr::Int = 1_000_000)
     acc = 0
     c = 3
-    while acc < thr
+    while acc <= thr
         ab = c * 2
         while ab > 1
             tmp = c ^ 2 + ab ^ 2

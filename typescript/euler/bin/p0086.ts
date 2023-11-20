@@ -42,7 +42,7 @@ import { isqrt } from "../lib/math.ts";
 export function compute(boundary: number): string {
   let acc = 0;
   let c = 3;
-  while (acc < boundary) {
+  while (acc <= boundary) {
     let ab = c * 2;
     while (ab > 1) {
       const tmp = (c * c) + (ab * ab);
