@@ -1,7 +1,7 @@
 // Project Euler: Problem 96
 
 /*
-  This solution uses simple backtracking algorithm.
+  This solution uses a simple backtracking algorithm.
 
       C0 C1 C2 C3 C4 C5 C6 C7 C8
      +--------+--------+--------+    R: Row
@@ -220,7 +220,7 @@ fn check_data(pazzles: &[Vec<usize>]) -> Vec<Vec<u128>> {
         for (pos, &num) in data.iter().enumerate() {
             if num != 0 && grid[num] & ADJACENT_CELLS[pos] != 0 {
                 println!(
-                    "[Warning] there is same number in the adjacent cells [Grid: {}] (Ignored)\n{:?}",
+                    "[Warning] there is a same number in the adjacent cells [Grid: {}] (Ignored)\n{:?}",
                     seq + 1,
                     data
                 );
