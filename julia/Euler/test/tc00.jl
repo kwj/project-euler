@@ -388,8 +388,7 @@
     end
 
     @testset "0086" begin
-        @test solve_0086(1_975) == 99
-        @test solve_0086(2_060) == 100
+        @test solve_0086(1_975) == 100
         @test solve_0086(1_000_000) == 1818
     end
 

@@ -64,5 +64,5 @@ let solve () = compute 1_000_000 |> Int.to_string
 
 (* Test *)
 
-let%test_unit "over 2_000" = [%test_eq: int] (compute 2_000) 100
+let%test_unit "over 2_000" = [%test_eq: int] (compute 1_975) 100
 let%test_unit "over 1_000_000" = [%test_eq: int] (compute 1_000_000) 1818

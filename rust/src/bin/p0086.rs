@@ -73,7 +73,7 @@ mod tests {
 
     #[test]
     fn p0086_2000() {
-        assert_eq!(compute(2_000), 100);
+        assert_eq!(compute(1_975), 100);
     }
 
     #[test]
