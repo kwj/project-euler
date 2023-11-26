@@ -5,7 +5,7 @@ SUBDIRS = bin src lib
 usage:
 	@echo 'Usage:'
 	@echo '  make clean'
-	@echo '    remove backup files only'
+	@echo '    remove backup files'
 	@echo '  make clean-all'
 	@echo '    remove build files and backup files'
 
@@ -19,18 +19,12 @@ test:
 
 .PHONY: clean
 clean:
-	@rm -f ./*~
-	@for subdir in $(SUBDIRS); do \
-	  make -C $$subdir clean; \
-	done
+	@find . -name '*~' -o -name '#*' | xargs -r rm
 
 .PHONY: clean-all
 clean-all:
 	@dune clean
-	@rm -f ./*~
-	@for subdir in $(SUBDIRS); do \
-	  make -C $$subdir clean; \
-	done
+	@find . -name '*~' -o -name '#*' | xargs -r rm
 
 .PHONY: list
 list:
