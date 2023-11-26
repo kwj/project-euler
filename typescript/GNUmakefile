@@ -7,7 +7,7 @@ usage:
 	@echo '  make test'
 	@echo '    run all regression tests'
 	@echo '  make clean'
-	@echo '    remove backup files only'
+	@echo '    remove backup files'
 
 .PHONY: test
 test:
@@ -15,9 +15,7 @@ test:
 
 .PHONY: clean
 clean:
-	@for subdir in $(SUBDIRS); do \
-	  make -C $$subdir clean; \
-	done
+	@find . -name '*~' -o -name '#*' | xargs -r rm
 
 .PHONY: list
 list:
