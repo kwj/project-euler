@@ -9,7 +9,7 @@ usage:
 	@echo '  make test'
 	@echo '    run all regression tests (with the release profile)'
 	@echo '  make clean'
-	@echo '    remove backup files only'
+	@echo '    remove backup files'
 	@echo '  make clean-all'
 	@echo '    remove the target directory and backup files'
 
@@ -21,15 +21,15 @@ build:
 test:
 	@cargo test --release --package euler tests
 
+.PHONY: lint
+lint:
+	@cargo clippy
+
 .PHONY: clean
 clean:
-	@for subdir in $(SUBDIRS); do \
-	  make -C $$subdir clean; \
-	done
+	@find . -name '*~' -o -name '#*' | xargs -r rm
 
 .PHONY: clean-all
 clean-all:
 	@cargo clean
-	@for subdir in $(SUBDIRS); do \
-	  make -C $$subdir clean; \
-	done
+	@find . -name '*~' -o -name '#*' | xargs -r rm
