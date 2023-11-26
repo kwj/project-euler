@@ -5,13 +5,11 @@ SUBDIRS = Euler
 usage:
 	@echo 'Usage:'
 	@echo '  make clean'
-	@echo '    remove backup files only'
+	@echo '    remove backup files'
 
 .PHONY: clean
 clean:
-	@for subdir in $(SUBDIRS); do \
-	  make -C $$subdir clean; \
-	done
+	@find . -name '*~' -o -name '#*' | xargs -r rm
 
 .PHONY: list
 list:
