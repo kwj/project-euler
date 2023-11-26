@@ -18,17 +18,12 @@ test:
 
 .PHONY: clean
 clean:
-	@rm -f ./*~
-	@for subdir in $(SUBDIRS); do \
-	  make -C $$subdir clean; \
-	done
+	@find . -name '*~' -o -name '#*' | xargs -r rm
 
 .PHONY: clean-all
 clean-all:
-	@rm -f ./*~
-	@for subdir in $(SUBDIRS); do \
-	  make -C $$subdir clean-all; \
-	done
+	@find . -name '*~' -o -name '#*' | xargs -r rm
+	@find . -path '.*/__pycache__/*.py[co]' | xargs -r rm
 
 .PHONY: lint
 lint:
