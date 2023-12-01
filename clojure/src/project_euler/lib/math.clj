@@ -7,7 +7,7 @@
 
 (defn gcd
   "Compute the greatest common divisor by using Binary method (based on Knuth's TAOCP)."
-  [^long a ^long b]
+  ^long [^long a ^long b]
   {:pre [(and (int? a) (not= a Long/MIN_VALUE))
          (and (int? b) (not= b Long/MIN_VALUE))]}
   (let [a (abs a) b (abs b)]
@@ -35,7 +35,7 @@
   (cond
     (zero? a) 0
     (zero? b) 0
-    :else (* (abs a) (/ (abs b) (gcd a b)))))
+    :else (* (abs a) (quot (abs b) (gcd a b)))))
 
 ;;; GCD by using Extended Euclidean Algorithm
 
@@ -155,7 +155,7 @@
   [^long n]
   {:pre [(pos? n)]}
   (let [tmp-sqrt (isqrt n)]
-    (= (pow tmp-sqrt 2) n)))
+    (= (* tmp-sqrt tmp-sqrt) n)))
 
 (defn pentagonal?
   "Check if a number `n` is pentagonal number."
@@ -194,7 +194,7 @@
 (defn binomial
   "Binomial coefficient."
   [^long n ^long k]
-  {:pre [(pos? n) (pos? k) (>= n k)]}
+  {:pre [(not (neg? n)) (not (neg? k)) (>= n k)]}
   (reduce #(quot (* %1 (get %2 0)) (get %2 1))
           1
           (map vector (range (inc (- n k)) (inc n)) (iterate inc 1))))

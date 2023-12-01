@@ -7,7 +7,7 @@
 ;;;  [Miller–Rabin primality test](https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test)
 ;;;  [Deterministic variants of the Miller-Rabin primality test](http://miller-rabin.appspot.com/)
 ;;;
-;;; prime?
+;;; prime? simple-prime?
 
 (defn- prime?-init
   [^long n]
@@ -42,6 +42,19 @@
             ::Composite false
             ::Undeceided (recur (rest xs)))
           true)))))
+
+(defn simple-prime?
+  [^long n]
+  (cond
+    (= n 2) true
+    (< n 2) false
+    (even? n) false
+    :else (loop [xs (range 3 (inc (math/isqrt n)) 2)]
+            (if-let [x (first xs)]
+              (if (zero? (mod n x))
+                false
+                (recur (next xs)))
+              true))))
 
 ;;; Lazy sequence of prime numbers
 ;;; https://en.wikipedia.org/wiki/Wheel_factorization
@@ -254,38 +267,36 @@
 (defn- factorize-aux
   [^long n ^long b]
   {:pre [(pos? n) (pos? b)]}
-  (loop [n n
-         e 0]
+  (loop [n (quot n b)
+         e 1]
     (if (zero? (mod n b))
       (recur (quot n b) (inc e))
-      (if (zero? e)
-        [n []]
-        [n [b e]]))))
+      [n [b e]])))
 
 (defn factorize
-  "Return a sequence of prime factorization of `n`.
+  "Return a vector of prime factorization of `n`.
   Each element is a vector of base and exponent.
 
   => (factorize 168)
-  ([2 3] [3 1] [7 1])
+  [[2 3] [3 1] [7 1]]
   => (factorize 97)
-  ([97 1])"
+  [[97 1]]"
   [^long n]
   {:pre [(pos? n)]}
   (if (== n 1)
-    (seq [[1 1]])
-    (let [limit (math/isqrt n)
-          v (transient [])]
+    [[1 1]]
+    (let [limit (math/isqrt n)]
       (loop [n n
-             bs (take-while #(<= % limit) (concat [2 3 5 7] (make-prime-candidates 11 spacing-candidates)))]
+             bs (take-while #(<= % limit) prime-numbers)
+             v (transient [])]
         (if (== n 1)
-          (seq (persistent! v))
+          (persistent! v)
           (if-let [b (first bs)]
-            (let [[next-n pair] (factorize-aux n b)]
-              (when (seq pair)
-                (conj! v pair))
-              (recur (long next-n) (rest bs)))
-            (seq (conj (persistent! v) [n 1]))))))))
+            (if (zero? (mod n b))
+              (let [[next-n pair] (factorize-aux n b)]
+                (recur (long next-n) (rest bs) (conj! v pair)))
+              (recur n (rest bs) v))
+            (persistent! (conj! v [n 1]))))))))
 
 (defn divisors-from-pf
   "Make a sequence of divisors in ascending order from prime factorization.
