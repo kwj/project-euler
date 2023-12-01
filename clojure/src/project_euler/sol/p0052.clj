@@ -6,15 +6,13 @@
 (defn- six-permuted-multiples?
   [n]
   (letfn [(make-key [x] (sort (util/digits x)))]
-    (->> (range 1 7)
-         (map #(make-key (* n %)))
-         (apply =))))
+    (let [key (make-key n)]
+      (every? #(= key (make-key (* n %))) (range 2 7)))))
 
 (defn solve
   []
   (->> (iterate inc 6)
-       (map #(range (math/pow 10 (dec %)) (inc (quot (math/pow 10 %) 6))))
+       (map #(range (long (math/pow 10 (dec %))) (inc (quot (long (math/pow 10 %)) 6))))
        (flatten)
-       (drop-while #(not (six-permuted-multiples? %)))
-       (first)
-       (long)))
+       (filter #(six-permuted-multiples? %))
+       (first)))
