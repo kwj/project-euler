@@ -1,15 +1,14 @@
 (ns project-euler.sol.p0012
   (:require [project-euler.lib.math.prime :as prime]))
 
-(defn- ndivs
-  "Return the number of divisors of `n`."
-  [n]
-  {:pre [(pos? n)]}
-  (if (= n 1)
-    1
-    (->> (prime/factorize n)
-         (map #(inc (second %)))
-         (apply *))))
+(def ^:private ndivs
+  ;; "Return the number of divisors of `n`."
+  (memoize (fn [n]
+             (if (= n 1)
+               1
+               (->> (prime/factorize n)
+                    (map #(inc (second %)))
+                    (apply *))))))
 
 (defn- ndivs-of-triangle
   "Return the number of divisors of the `i`-th triangular number."
