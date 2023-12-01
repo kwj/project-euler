@@ -1,11 +1,10 @@
 (ns project-euler.sol.p0001)
 
 (defn- sum-of-multiples
-  "Return the sum of multiples of `n` less than `upper`."
+  "Return the sum of multiples of `n` that each multiple is less than `upper`."
   [n upper]
-  (let [upper (dec upper)
-        aux #(quot (* (+ % 1) %) 2)]
-    (* (aux (quot upper n)) n)))
+  (letfn [(aux [x] (quot (* (inc x) x) 2))]
+    (* (aux (quot (dec upper) n)) n)))
 
 (defn solve
   ([]
