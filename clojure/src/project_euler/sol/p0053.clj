@@ -5,7 +5,11 @@
    (solve 100 1000000))
   ([n thr]
    {:pre [(pos? n) (pos? thr)]}
-   (loop [n n, x n, c n, r 1, ans 0]
+   (loop [n n
+          x n
+          c n
+          r 1
+          ans 0]
      (if (<= r (quot n 2))
        (if (> c thr)
          (recur (dec n) (dec x) (quot (* c (dec x)) n) r (long (- (+ ans n 1) (* r 2))))
