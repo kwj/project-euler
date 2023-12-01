@@ -1,6 +1,5 @@
 (ns project-euler.sol.p0086
-  (:require
-   [clojure.math]))
+  (:require [project-euler.lib.math :as math]))
 
 (defn- aux
   ^long [^long c]
@@ -8,7 +7,7 @@
          acc 0]
     (if (> ab 1)
       (let [tmp (+ (* c c) (* ab ab))
-            tmp-isqrt (long (clojure.math/floor (clojure.math/sqrt tmp)))]
+            tmp-isqrt (math/isqrt-long tmp)]
         (if (= (* tmp-isqrt tmp-isqrt) tmp)
           (cond
             (<= ab c) (recur (dec ab) (+ acc (quot ab 2)))

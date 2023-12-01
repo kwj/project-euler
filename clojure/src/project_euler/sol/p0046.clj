@@ -6,7 +6,7 @@
 (defn- twice-square?
   [n]
   (and (even? n)
-       (= (math/pow (math/isqrt (quot n 2)) 2) (quot n 2))))
+       (= (math/pow (math/isqrt-long (quot n 2)) 2) (quot n 2))))
 
 (defn solve
   []

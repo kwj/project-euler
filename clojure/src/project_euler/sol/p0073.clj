@@ -5,7 +5,7 @@
   [limit]
   (let [p-tbl (long-array (range (inc limit)))
         mu-tbl (long-array (repeat (inc limit) 0))]
-    (loop [is (range 2 (inc (math/isqrt limit)))]
+    (loop [is (range 2 (inc (math/isqrt-long limit)))]
       (when-first [i is]
         (when (= (aget p-tbl i) i)
           (loop [js (range (* i i) (inc limit) i)]

@@ -8,7 +8,7 @@
   ([]
    (solve 50000000))
   ([limit]
-   (let [nums (for [x (take-while #(<= % (math/isqrt (- limit (math/pow 2 3) (math/pow 2 4))))
+   (let [nums (for [x (take-while #(<= % (math/isqrt-long (- limit (math/pow 2 3) (math/pow 2 4))))
                                   prime/prime-numbers)
                     y (take-while #(<= % (math/floor (clojure.math/pow (double limit) (/ 1.0 3.0))))
                                   prime/prime-numbers)

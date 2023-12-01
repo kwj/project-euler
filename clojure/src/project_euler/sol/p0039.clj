@@ -15,7 +15,7 @@
   ([limit]
    ;; the smallest right triangle with integral lengths is the 3-4-5 right triangle.
    {:pre [(>= limit 12)]}
-   (->> (for [m (range 3 (inc (math/isqrt limit)) 2)
+   (->> (for [m (range 3 (inc (math/isqrt-long limit)) 2)
               n (range 1 m 2)
               :let [p (* m (+ m n))]
               :when (and (= (math/gcd m n) 1) (<= p limit))]

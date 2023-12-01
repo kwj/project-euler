@@ -10,7 +10,7 @@
    (let [pow10 (math/pow 10 (* (dec n-digit) 2))]
      (->> (range 1 (inc upper))
           (filter #(not (math/square? %)))
-          (map #(math/isqrt (* % pow10)))
+          (map #(math/isqrt (* % pow10))) ; Use math/isqrt because bigint value.
           (map #(util/digits %))
           (map #(apply + %))
           (apply +)))))

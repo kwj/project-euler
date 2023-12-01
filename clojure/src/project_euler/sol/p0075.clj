@@ -6,7 +6,7 @@
    (solve 1500000))
   ([perim]
    (let [tbl (long-array (repeat (inc perim) 0))]
-     (doseq [m (range 2 (inc (math/isqrt (quot perim 2))))]
+     (doseq [m (range 2 (inc (math/isqrt-long (quot perim 2))))]
        (doseq [n (range (inc (mod m 2)) (inc m) 2)]
          (when (= (math/gcd m n) 1)
            (let [p (* 2 m (+ m n))]

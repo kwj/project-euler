@@ -96,8 +96,15 @@
                 (recur ret (long (mod (*' base base) m)) (bit-shift-right e 1)))))))
 
 ;;; Interger square root
-;;;
-;;; Port the implementation of the following URL.
+
+;;; Use clojure.math/sqrt
+
+(defn isqrt-long
+  "Integer square root for a long integer."
+  ^long [^long n]
+  (long (clojure.math/floor (clojure.math/sqrt n))))
+
+;;; Porting from the implementation of the following URL.
 ;;;   https://github.com/mdickinson/snippets/blob/master/proofs/isqrt/src/isqrt.lean
 
 (defn- isqrt-bit-length

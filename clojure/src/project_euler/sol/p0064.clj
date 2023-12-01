@@ -3,7 +3,7 @@
 
 (defn- get-cont-fraction
   [n]
-  (let [isqrt-n (math/isqrt n)
+  (let [isqrt-n (math/isqrt-long n)
         stop-condition (* isqrt-n 2)]
     (if (= (* isqrt-n isqrt-n) n)
       [isqrt-n, []]

@@ -8,7 +8,7 @@
 (defn- get-diff
   [m target]
   (let [n (first (drop-while #(< (lhs m %) target)
-                             (iterate inc (dec (math/isqrt (quot target (* m (inc m))))))))]
+                             (iterate inc (dec (math/isqrt-long (quot target (* m (inc m))))))))]
     (if (< m n)
       (let [d1 (abs (- target (lhs m (dec n))))
             d2 (abs (- target (lhs m n)))]

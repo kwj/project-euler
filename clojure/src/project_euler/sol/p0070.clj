@@ -68,7 +68,7 @@
                                                 (< (get x 0) (get y 0)) -1
                                                 :else 0))))]
      (.add pq [(/ 87109 79180) 87109])
-     (loop [tpls (->> (prime/primes 11 (math/isqrt limit))
+     (loop [tpls (->> (prime/primes 11 (math/isqrt-long limit))
                       (reverse)
                       (map #(vector % (prime/prev-prime (inc (quot limit %))))))]
        (when-first [[p1 p2] tpls]
