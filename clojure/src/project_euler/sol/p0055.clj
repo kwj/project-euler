@@ -6,7 +6,9 @@
 (defn- rychrel?
   [n]
   (letfn [(reverse-num [n] (-> (util/digits n) (reverse) (util/undigits)))]
-    (loop [n n, tmp (reverse-num n), cnt 50]
+    (loop [n n
+           tmp (reverse-num n)
+           cnt 50]
       (if (zero? cnt)
         true
         (let [next-n (+' n tmp)]
