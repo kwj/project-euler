@@ -24,7 +24,7 @@
 (defn permutation
   ([lst]
    (permutation (count lst) lst))
-  ([n lst]
+  ([^long n lst]
    (cond
      (zero? n) '(())
      (zero? (count lst)) '()
@@ -34,7 +34,7 @@
 (defn permutation-with-repetition
   ([lst]
    (permutation-with-repetition (count lst) lst))
-  ([n lst]
+  ([^long n lst]
    (cond
      (zero? n) '(())
      (zero? (count lst)) '()
@@ -44,7 +44,7 @@
 (defn combination
   ([lst]
    (combination (count lst) lst))
-  ([n lst]
+  ([^long n lst]
    (cond
      (zero? n) '(())
      (zero? (count lst)) '()
@@ -54,7 +54,7 @@
 (defn combination-with-repetition
   ([lst]
    (combination-with-repetition (count lst) lst))
-  ([n lst]
+  ([^long n lst]
    (cond
      (zero? n) '(())
      (zero? (count lst)) '()
@@ -83,16 +83,16 @@
 
 (defn get-ntz
   "Return a number of trailing zero bits to the right of the lowest order set bit."
-  [n]
+  ^long [n]
   (Long/numberOfTrailingZeros n))
 
 (defn digits
   "Return a lazy sequence of the digits of `n` in the given `base`."
   ([n]
    (digits n 10 1))
-  ([n base]
+  ([n ^long base]
    (digits n base 1))
-  ([n base pad]
+  ([n ^long base ^long pad]
    (loop [v (list (int (rem n base)))
           n (quot n base)]
      (if (= n 0)
@@ -103,7 +103,7 @@
   "Return an original number of the collection created by `digits`."
   ([v]
    (undigits v 10))
-  ([v base]
+  ([v ^long base]
    (reduce #(+' (*' %1 base) %2) 0 (reverse v))))
 
 (defn powerset
