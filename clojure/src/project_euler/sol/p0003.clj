@@ -6,6 +6,6 @@
    (solve 600851475143))
   ([n]
    (->> (prime/factorize n)
-        (last)
+        (peek)
         (first))))
 
