@@ -5,21 +5,25 @@
 (defn- make-abundant-tbl
   [upper]
   (->> (prime/make-sigma-tbl 1 upper)
-       (map-indexed #(< %1 (- %2 %1)))
+       (map-indexed #(if (< %1 (- %2 %1)) %1 nil))
        (vec)))
 
 (defn solve
   ([]
    (solve 28123))
   ([upper]
-   (let [tbl (make-abundant-tbl upper)
-         abundant-set (atom #{})]
-     (loop [i 1, acc 0]
-       (if (<= i upper)
-         (do (when (and (even? i) (get tbl (quot i 2)))
-               (swap! abundant-set conj (quot i 2)))
-             (if (some #(get tbl (- i %)) @abundant-set)
-               (recur (inc i) acc)
-               (recur (inc i) (+ acc i))))
+   (let [tbl (make-abundant-tbl upper)]
+     (loop [xs (range 1 (inc upper))
+            ab-lst '()
+            acc 0]
+       (if-let [x (first xs)]
+         (let [ab-cand (quot x 2)]
+           (if (and (even? x) (nth tbl ab-cand))
+             (if (some #(nth tbl (- x %)) (conj ab-lst ab-cand))
+               (recur (next xs) (conj ab-lst ab-cand) acc)
+               (recur (next xs) (conj ab-lst ab-cand) (long (+ acc x))))
+             (if (some #(nth tbl (- x %)) ab-lst)
+               (recur (next xs) ab-lst acc)
+               (recur (next xs) ab-lst (long (+ acc x))))))
          acc)))))
 

@@ -2,8 +2,9 @@
 
 (defn- get-collatz-length
   "Return the length of the Collatz sequence of `n`."
-  [n]
-  (loop [n n, cnt 1]
+  [^long n]
+  (loop [n n
+         cnt 1]
     (cond
       (= n 1) cnt
       (even? n) (recur (quot n 2) (inc cnt))

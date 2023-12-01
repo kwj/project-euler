@@ -19,9 +19,11 @@
   (cond
     (= n 1000) (+ (nth under-20 1) nchars-1000)
     (< n 20) (nth under-20 n)
-    (< n 100) (let [q (quot n 10), r (mod n 10)]
+    (< n 100) (let [q (quot n 10)
+                    r (mod n 10)]
                 (+ (nth mults-10 q) (nth under-20 r)))
-    :else (let [q (quot n 100), r (mod n 100)]
+    :else (let [q (quot n 100)
+                r (mod n 100)]
             (+ (+ (nth under-20 q) nchars-100)
                (if (zero? r)
                  0
