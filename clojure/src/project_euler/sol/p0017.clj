@@ -16,6 +16,7 @@
 
 (defn- count-letters
   [n]
+  {:pre [(pos? n) (<= n 1000)]}
   (cond
     (= n 1000) (+ (nth under-20 1) nchars-1000)
     (< n 20) (nth under-20 n)
