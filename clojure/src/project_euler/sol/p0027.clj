@@ -16,7 +16,7 @@
                        a (map #(- % b 1) p-lst)
                        :when (< (abs a) 1000)]
                    [[a b] (count-consec-times a b)])]
-    (let [[x y] (->> (apply max-key second pairs-ab)
-                     (first))]
-      (* x y))))
+    (->> (apply max-key second pairs-ab)
+         (first)
+         ((fn [[a b]] (* a b))))))
 
