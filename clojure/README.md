@@ -1,8 +1,5 @@
 # Solutions in Clojure
 
-CAUTION: These solutions are work in progress and require further improvement.
-Some programs are very slow to complete.
-
 ## How to use
 
 ### REPL
@@ -10,10 +7,11 @@ Some programs are very slow to complete.
 You can try out solutions in a REPL.
 Please start a REPL session according to the environment you are using.
 
-- [Clojure CLI] `clj -X:repl`
+- [Clojure CLI] `clj -A:dev`
 - [Leiningen] `lein repl`
 
 The `project-euler.core/solve` function can run each solution.
+The following example shows how to run the solution program for Problem 1.
 
 ```console
 project-euler.core=> (solve 1)

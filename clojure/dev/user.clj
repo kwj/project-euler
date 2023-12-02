@@ -3,9 +3,11 @@
    [clojure.main :as main]
    [project-euler.core]))
 
-(defn dev-repl
+(defn euler
   [& _]
   (set! *warn-on-reflection* true)
-  (println "Usage: (solve <problem number>)\n  example: (solve 1)")
   (in-ns 'project-euler.core)
-  (main/repl))
+  (require '[project-euler.lib.math :as math])
+  (require '[project-euler.lib.math.prime :as prime])
+  (require '[project-euler.lib.util :as util])
+  (println "Usage: (solve <problem number>)\n  example: (solve 1)"))
