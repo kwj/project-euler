@@ -1,5 +1,10 @@
 (ns project-euler.sol.p0076)
 
+;;;; Another version of problem 31
+;;;;
+;;;;   coins: 1, 2, 3, ..., 99
+;;;;   total: 100
+
 (defn solve
   ([]
    (solve (range 1 100) 100))

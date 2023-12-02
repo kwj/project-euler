@@ -1,5 +1,7 @@
 (ns project-euler.sol.p0053)
 
+;;;; Use Pascal's triangle
+
 (defn solve
   ([]
    (solve 100 1000000))

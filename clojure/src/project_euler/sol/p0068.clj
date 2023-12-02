@@ -1,5 +1,25 @@
 (ns project-euler.sol.p0068)
 
+;;;;  ring: long array
+;;;;
+;;;;          r1
+;;;;            \
+;;;;            r0  [r6 <- r0]
+;;;;           /  \
+;;;;         r4---r2-r3
+;;;;         /
+;;;;       r5
+;;;;
+;;;;          r1
+;;;;            \  [r10 <- r0]
+;;;;            r0  r3
+;;;;           /  \ /
+;;;;         r8   r2
+;;;;         /\   /
+;;;;      r9 r6-r4-r5
+;;;;            \
+;;;;             r7
+
 (def ^:private n-gon 5)
 
 (def ^:private ring-work-size 11)
@@ -20,6 +40,13 @@
       s
       (recur (- idx 2) (str (get ring (+ idx 1)) (get ring idx) (get ring (+ idx 2)) s)))))
 
+;;; bit-mask: 1: used number, 0: unused number
+;;;
+;;; [when n-gon is equal to 5]
+;;;
+;;;  0x11111111110
+;;;    ^        ^
+;;;    10  ...  1
 (defn- search-ring
   []
   (let [result (transient [])

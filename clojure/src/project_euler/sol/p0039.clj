@@ -1,14 +1,15 @@
 (ns project-euler.sol.p0039
   (:require [project-euler.lib.math :as math]))
 
-;;; Primitive Pythagorean triples (variant type)
-;;;   https://en.wikipedia.org/wiki/Pythagorean_triple#A_variant
-;;;
-;;; `m` > `n` > 0.
-;;; `m` and `n` are both odd and coprime.
-;;;    hypotenuse: (m^2 + n^2) / 2
-;;;    catheti: mn, (m^2 - n^2) / 2
-;;;    perimeter: mn + (m^2 - n^2) / 2 + (m^2 + n^2) / 2 = m(m + n)
+;;;; Primitive Pythagorean triples (variant type)
+;;;;   https://en.wikipedia.org/wiki/Pythagorean_triple#A_variant
+;;;;
+;;;; `m` > `n` > 0.
+;;;; `m` and `n` are both odd and coprime.
+;;;;    hypotenuse: (m^2 + n^2) / 2
+;;;;    catheti: mn, (m^2 - n^2) / 2
+;;;;    perimeter: mn + (m^2 - n^2) / 2 + (m^2 + n^2) / 2 = m(m + n)
+
 (defn solve
   ([]
    (solve 1000))

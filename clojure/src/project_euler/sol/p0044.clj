@@ -6,6 +6,13 @@
   [n]
   (quot (* n (dec (* 3 n))) 2))
 
+;;; Assume that k > j and x = k - j:
+;;;
+;;; Pd = P{k} - P{j}
+;;;    = P{x+j} - P{j}
+;;;    = 3jx + P{x}
+;;;
+;;; j = (P{d} - P{x}) / 3x
 (defn solve
   []
   (loop [d 4]

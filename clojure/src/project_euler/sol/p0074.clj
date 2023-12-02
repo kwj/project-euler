@@ -1,6 +1,6 @@
-;;; Note
-;;;   This implementation cuts corners on processing for looping numbers.
-;;;   It therefore doesn't work well for all chains.
+;;;; Note
+;;;;   This implementation cuts corners on processing for looping numbers.
+;;;;   It therefore doesn't work well for all chains.
 
 (ns project-euler.sol.p0074
   (:require

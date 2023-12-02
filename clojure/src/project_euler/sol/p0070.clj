@@ -4,6 +4,21 @@
    [project-euler.lib.math.prime :as prime]
    [project-euler.lib.util :as util]))
 
+;;;;   The answer must be a composite number because prime 'n' is not a permutation of phi(n) = n - 1.
+;;;;
+;;;;   n = p1^k1 * p2^k2 * p3^k3 * ... * p{r}^k{n}
+;;;;   -->
+;;;;     phi(N) = N * (1-1/p1) * (1-1/p2) * (1-1/p3) * ... * (1-1/p{n})
+;;;;       <-->
+;;;;     N/phi(N) = (p1/(p1-1)) * (p2/(p2-1)) * (p3/(p3-1)) * ... * (p{n}/(p{n}-1))
+;;;;
+;;;;   From the problem statement, 87109/phi(87109) = 87109 / 79180 = 1.1001.
+;;;;   11/10 = 1.1 and 7/6 = 1.666..., so 11 <= prime numbers <= 9_999_999 / 11 = 909090.8181...
+;;;;
+;;;;   The answer N has the following form (p_i are prime numbers)
+;;;;
+;;;;     N = p1^k1 * p2^k2 * ... * pn^kn  (N < 10^7, n > 1, 11 <= p1 < p2 < ... < pn, k1>2 when n=1)
+
 (def ^:private limit (dec (long (math/pow 10 7))))
 
 (defn- prod

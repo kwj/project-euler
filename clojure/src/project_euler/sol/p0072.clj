@@ -1,6 +1,8 @@
 (ns project-euler.sol.p0072
   (:require [project-euler.lib.math :as math]))
 
+;;; Please see the following URL.
+;;;   https://mathproblems123.wordpress.com/2018/05/10/sum-of-the-euler-totient-function/
 (def sum-phi
   (memoize (fn [n]
              (let [v (quot (* n (inc n)) 2)

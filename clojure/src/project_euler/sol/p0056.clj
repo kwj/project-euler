@@ -16,12 +16,15 @@
                (quot prod n)
                (dec cnt))))))
 
+;;; assume that x = 10 * n
+;;;   x^y = (10 * n)^y = 10^y * n^y, so sum_of_digits(x^y) = sum_of_digits(n^y)
+;;;   we can skip to check multiples of ten in this problem.
 (defn solve
   ([]
    (solve 100))
   ([upper]
    {:pre [(> upper 1)]}
    (->> (range upper 1 -1)
-        (filter #(pos? (mod % 10)))
+        (filter #(pos? (mod % 10))) ; Skip when multiple of ten.
         (map #(aux % upper))
         (apply max))))
