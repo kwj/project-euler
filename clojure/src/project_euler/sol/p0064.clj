@@ -21,7 +21,6 @@
 ;;;;
 ;;;;      b{0} = 0, c{0} = 1, a{0} = sqrt(N)
 
-
 (defn- get-cont-fraction
   [n]
   (let [isqrt-n (math/isqrt-long n)
