@@ -26,16 +26,16 @@ These solutions were confirmed to work in the following version.
 
 ```js
 > Deno.version
-{ deno: "1.39.0", v8: "12.0.267.8", typescript: "5.3.3" }
+{ deno: "1.40.2", v8: "12.1.285.6", typescript: "5.3.3" }
 ```
 
 I used the following libraries/packages in addition to the standard runtime APIs part of Deno.
 
-- Deno Standard Modules 0.209.0[^2]
+- Deno Standard Modules 0.213.0[^2]
 - Combinatorics 1.1.2[^3]
 
 [^1]: https://deno.land/
 
-[^2]: https://deno.land/std@0.209.0
+[^2]: https://deno.land/std@0.213.0
 
 [^3]: https://deno.land/x/combinatorics@1.1.2
