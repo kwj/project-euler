@@ -1,8 +1,9 @@
 // Project Euler: Problem 60
 
 use euler::math::primes;
-use itertools::Itertools;
-use std::collections::HashMap;
+use std::cmp;
+use std::collections::{HashMap, HashSet};
+use std::iter::FromIterator;
 
 euler::run_solver!(60);
 
@@ -12,7 +13,7 @@ fn solve() -> String {
 
 fn compute(size_of_clique: usize) -> i64 {
     let mut prime_lst: Vec<Vec<i64>> = vec![vec![3], vec![3]];
-    let mut tbl: HashMap<i64, Vec<i64>> = HashMap::new();
+    let mut tbl: HashMap<i64, HashSet<i64>> = HashMap::new();
     let mut ans = i64::MAX;
 
     // start from the 4th prime, 7
@@ -27,25 +28,25 @@ fn compute(size_of_clique: usize) -> i64 {
         // find all prime numbers smaller than 'p' that can be paired with 'p'
         let idx = ((p + 2) % 3) as usize;
         let nbr_lst = find_nbrs(p, &prime_lst[idx], ans);
-        tbl.insert(p, nbr_lst.clone());
+        tbl.insert(p, HashSet::from_iter(nbr_lst.clone()));
         // update known prime numbers
-        prime_lst[idx].insert(0, p);
+        prime_lst[idx].push(p);
 
         // if number of connectable primes is less than 'size_of_clique - 1', check the next prime.
         if nbr_lst.len() < size_of_clique - 1 {
             continue;
         }
 
-        // I feel that it probably slows down at this loop since combination() is used.
-        // Note: I haven't run profiling, so it is just a guess.
-        for prime_grp in nbr_lst.into_iter().combinations(size_of_clique - 1) {
-            let tmp = p + prime_grp.iter().copied().sum::<i64>();
-            if tmp >= ans {
-                continue;
-            }
-            if is_clique(&prime_grp, &tbl) {
-                ans = std::cmp::min(tmp, ans);
-            }
+        let cliques = find_cliques(&nbr_lst, size_of_clique - 1, &tbl);
+        if !cliques.is_empty() {
+            ans = cmp::min(
+                ans,
+                cliques
+                    .into_iter()
+                    .map(|v| v.iter().sum::<i64>() + p)
+                    .min()
+                    .unwrap(),
+            );
         }
     }
     ans
@@ -66,22 +67,43 @@ fn is_pair(x: i64, y: i64) -> bool {
 fn find_nbrs(p: i64, p_lst: &[i64], limit: i64) -> Vec<i64> {
     p_lst
         .iter()
+        .rev()
         .filter(|&x| *x + p < limit && is_pair(*x, p))
         .copied()
         .collect::<Vec<_>>()
 }
 
-fn is_clique(p_grp: &[i64], tbl: &HashMap<i64, Vec<i64>>) -> bool {
-    fn is_subset(a: &[i64], b: &[i64]) -> bool {
-        a.iter().all(|x| b.contains(x))
-    }
-
-    for idx in 0..(p_grp.len() - 1) {
-        if !is_subset(&p_grp[(idx + 1)..], tbl.get(&p_grp[idx]).unwrap()) {
-            return false;
+fn find_cliques(
+    desc_ps_lst: &[i64],
+    size: usize,
+    tbl: &HashMap<i64, HashSet<i64>>,
+) -> Vec<Vec<i64>> {
+    fn aux(
+        group: &[i64],
+        ps: &[i64],
+        depth: usize,
+        tbl: &HashMap<i64, HashSet<i64>>,
+        result: &mut Vec<Vec<i64>>,
+    ) {
+        if depth == 0 {
+            result.push(group.to_vec());
+        } else {
+            for offset in 0..=(ps.len() - depth) {
+                if group.is_empty()
+                    || group
+                        .iter()
+                        .all(|x| tbl.get(x).unwrap().contains(&ps[offset]))
+                {
+                    let mut next_group = group.to_vec();
+                    next_group.push(ps[offset]);
+                    aux(&next_group, &ps[(offset + 1)..], depth - 1, tbl, result);
+                }
+            }
         }
     }
-    true
+    let mut result: Vec<Vec<i64>> = Vec::new();
+    aux(&Vec::new(), desc_ps_lst, size, tbl, &mut result);
+    result
 }
 
 #[cfg(test)]
