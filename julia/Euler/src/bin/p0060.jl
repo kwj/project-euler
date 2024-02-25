@@ -20,7 +20,7 @@ function get_pairable_primes(x, asc_prime_lst, limit)
             push!(result, p)
         end
     end
-    reverse(result)
+    result
 end
 
 function find_cliques(desc_prime_lst, size, tbl)
@@ -69,7 +69,7 @@ function solve_0060(size_of_clique::Int = 5)
             continue
         end
 
-        cliques = find_cliques(nbr_lst, size_of_clique - 1, tbl)
+        cliques = find_cliques(reverse(nbr_lst), size_of_clique - 1, tbl)
         if isempty(cliques) == false
             answer = min(answer, minimum(map(x -> p + sum(x), cliques)))
         end
