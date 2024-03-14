@@ -1,6 +1,70 @@
 
 # project euler: problem 60
 
+#=
+
+size of clique | primes
+---------------+--------------------------------------
+       4       | 3, 7, 109, 673
+       5       | 13, 5197, 5701, 6733, 8389
+       6       | 25819, 29569, 209623, 234781, 422089, 452041
+
+
+Below are results on Raspberry Pi 4 and Mac mini 2018 (i5-8500B/3GHz).
+
+# Raspberry Pi 4
+
+julia> versioninfo()
+Julia Version 1.10.2
+Commit bd47eca2c8a (2024-03-01 10:14 UTC)
+Build Info:
+  Official https://julialang.org/ release
+Platform Info:
+  OS: Linux (aarch64-linux-gnu)
+  CPU: 4 × Cortex-A72
+  WORD_SIZE: 64
+  LIBM: libopenlibm
+  LLVM: libLLVM-15.0.7 (ORCJIT, cortex-a72)
+Threads: 1 default, 0 interactive, 1 GC (on 4 virtual cores)
+
+julia> @time solve_0060(5)
+  1.773687 seconds (213.62 k allocations: 20.006 MiB)
+26033
+
+julia> @time solve_0060(4)
+  0.004076 seconds (2.37 k allocations: 171.531 KiB)
+792
+
+
+# Mac mini 2018
+
+julia> versioninfo()
+Julia Version 1.10.2
+Commit bd47eca2c8a (2024-03-01 10:14 UTC)
+Build Info:
+  Official https://julialang.org/ release
+Platform Info:
+  OS: macOS (x86_64-apple-darwin22.4.0)
+  CPU: 6 × Intel(R) Core(TM) i5-8500B CPU @ 3.00GHz
+  WORD_SIZE: 64
+  LIBM: libopenlibm
+  LLVM: libLLVM-15.0.7 (ORCJIT, skylake)
+Threads: 1 default, 0 interactive, 1 GC (on 6 virtual cores)
+
+julia> @time solve_0060(6)
+3664.240035 seconds (789.74 M allocations: 420.874 GiB, 1.30% gc time)
+1373922
+
+julia> @time solve_0060(5)
+  0.568392 seconds (213.62 k allocations: 20.006 MiB)
+26033
+
+julia> @time solve_0060(4)
+  0.001313 seconds (2.37 k allocations: 171.531 KiB)
+792
+
+=#
+
 module Prob0060
 
 import Primes: isprime, nextprime
