@@ -1,12 +1,12 @@
 # project euler: problem 67
 
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from functools import reduce
 from operator import add
 from typing import IO
 
 
-def select_item(fn: Callable[..., int], lst: list[int]) -> map[int]:
+def select_item(fn: Callable[..., int], lst: list[int]) -> Iterator[int]:
     return map(fn, lst, lst[1:])
 
 
