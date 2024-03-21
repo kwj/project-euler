@@ -93,7 +93,7 @@ function find_cliques(desc_prime_lst, size, tbl)
             push!(result, group)
         else
             for offset in 1:(length(ps) - depth + 1)
-                if isempty(group) || all(x -> in(ps[offset], tbl[x]), group)
+                if all(x -> in(ps[offset], tbl[x]), group)
                     aux(push!(copy(group), ps[offset]), ps[(offset + 1):end], depth - 1)
                 end
             end
