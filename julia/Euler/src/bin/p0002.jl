@@ -17,18 +17,28 @@
          = 4f(k-3) - f(k-4) + (f(k-5) + f(k-6)) + f(k-6)
          = 4f(k-3) - f(k-4) + f(k-4) + f(k-6)
          = 4f(k-3) + f(k-6)
+
+    -->
+    E(0) = 0, E(1) = 2, E(2) = 8, ...
+
+    E(n) = 4*E(n-1) + E(n-2)
+    E(n+1) = 4*E(n) + E(n-1)
+    -->
+    E(n) = (E(n+1) - E(n-1)) / 4
+    S_{n=1}^{n}(E(n)) = 1/4 * ( S_{n=1}^{n}(E(n+1)) - S_{n=1}^{n}(E(n-1)) )
+                      = 1/4 * ( S_{n=2}^{n+1}(E(n)) - S_{n=0}^{n-1}(E(n)) )
+                      = 1/4 * ( E(n+1) + E(n) - E(1) - E(0) )
+                      = 1/4 * ( E(n+1) + E(n) - 2)
 =#
 
 module Prob0002
 
 function solve_0002(limit::Int = 4_000_000)
-    fₙ = 8; fₙ₋₁ = 2
-    acc = fₙ₋₁
-    while fₙ <= limit
-        acc += fₙ
-        (fₙ, fₙ₋₁) = (4fₙ + fₙ₋₁, fₙ)
+    Eₙ = 2; Eₙ₋₁ = 0
+    while Eₙ <= limit
+        (Eₙ, Eₙ₋₁) = (4Eₙ + Eₙ₋₁, Eₙ)
     end
-    acc
+    div(Eₙ + Eₙ₋₁ - 2, 4)
 end
 
 end #module
