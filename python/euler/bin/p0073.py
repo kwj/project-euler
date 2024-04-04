@@ -58,7 +58,26 @@
 #   g(n) = sigma{k=1, ..., n}μ(k)f(n//k)      [möbius inversion formula, μ(): möbius function]
 #        = sigma{k=1, ..., n}μ(k)sigma{j=1, ..., n//k}((j-1)//2 - j//3)
 
-from euler.lib.prime import mp_sieve
+from math import isqrt
+
+
+def mobius_tbl(limit: int) -> list[int]:
+    p_tbl = list(range(limit + 1))
+    for i in range(2, isqrt(limit) + 1):
+        if p_tbl[i] == i:
+            k = i * i
+            for j in range(k, limit + 1, i):
+                p_tbl[j] = i
+            for j in range(k, limit + 1, k):
+                p_tbl[j] = 0
+
+    tbl = [0] * (limit + 1)
+    tbl[1] = 1
+    for i in range(2, limit + 1):
+        if p_tbl[i] != 0:
+            tbl[i] = -tbl[i // p_tbl[i]]
+
+    return tbl
 
 
 def f(x: int) -> int:
@@ -66,7 +85,7 @@ def f(x: int) -> int:
 
 
 def g(N: int) -> int:
-    mb_tbl = mp_sieve(N).mobius_tbl
+    mb_tbl = mobius_tbl(N)
     return sum(mb_tbl[k] * f(N // k) for k in range(1, N + 1))
 
 
