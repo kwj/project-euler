@@ -40,18 +40,15 @@
 #
 #     length of edge = 2n + 1 = m
 #     sum of numbers lying along both diagonals = 4n + 1 = 2m - 1
-#
-#   Use Miller-Rabin primality test since it's slow by trial division method in this problem.
-#   It's about seven times faster by Miller-Rabin method in my environment.
 
 from itertools import count
 
-from euler.lib.prime import is_probably_prime
+from euler.lib.prime import is_prime
 
 
 def compute() -> str:
     def wrapper(n: int) -> int:
-        if is_probably_prime(n) is True:
+        if is_prime(n) is True:
             return 1
         else:
             return 0

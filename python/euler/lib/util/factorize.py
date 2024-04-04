@@ -2,7 +2,7 @@ from functools import reduce
 from itertools import repeat, starmap
 from math import isqrt
 
-from ..prime import get_primes
+from ..prime import primes
 
 
 def factorize(n: int) -> list[tuple[int, int]]:
@@ -74,7 +74,7 @@ def num_of_divisors(num: int) -> int:
 # divisor function
 # https://en.wikipedia.org/wiki/Divisor_function
 def get_sigma_tbl(z: int, upper: int) -> list[int]:
-    p_lst = get_primes(upper)
+    p_lst = primes(upper)
     result = [1] * (upper + 1)
 
     for p in p_lst:

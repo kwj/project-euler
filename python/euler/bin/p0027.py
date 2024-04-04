@@ -13,7 +13,7 @@
 # when 'n' is a odd number:
 #   'n^2 + b' is a even number. so 'a' must be a odd number.
 
-from euler.lib.prime import get_primes, is_prime
+from euler.lib.prime import is_prime, primes
 
 
 def count_consecutive(a: int, b: int) -> int:
@@ -25,12 +25,12 @@ def count_consecutive(a: int, b: int) -> int:
 
 
 def compute() -> str:
-    primes = get_primes(2000)
+    p_lst = primes(2000)
     max_len = 0
     max_tpl = (0, 0)
-    for b in filter(lambda x: x < 1000, primes[1:]):
+    for b in filter(lambda x: x < 1000, p_lst[1:]):
         for a in map(
-            lambda x: x - b - 1, filter(lambda x: abs(x - b - 1) < 1000, primes)
+            lambda x: x - b - 1, filter(lambda x: abs(x - b - 1) < 1000, p_lst)
         ):
             if (length := count_consecutive(a, b)) > max_len:
                 max_len = length

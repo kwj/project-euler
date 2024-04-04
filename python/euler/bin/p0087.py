@@ -10,11 +10,11 @@
 from itertools import takewhile
 from math import floor, isqrt
 
-from euler.lib.prime import get_primes
+from euler.lib.prime import primes
 
 
 def compute(limit: int) -> str:
-    sq_plst = get_primes(isqrt(limit - 2**3 - 2**4))
+    sq_plst = primes(isqrt(limit - 2**3 - 2**4))
     cb_plst = list(takewhile(lambda n: n <= floor(limit ** (1 / 3)), sq_plst))
     fth_plst = list(takewhile(lambda n: n <= floor(limit ** (1 / 4)), sq_plst))
 

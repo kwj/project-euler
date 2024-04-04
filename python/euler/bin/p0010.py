@@ -1,10 +1,10 @@
 # project euler: problem 10
 
-from euler.lib.prime import get_primes
+from euler.lib.prime import primes
 
 
 def compute(num: int) -> str:
-    return str(sum(get_primes(num)))
+    return str(sum(primes(num)))
 
 
 def solve() -> str:

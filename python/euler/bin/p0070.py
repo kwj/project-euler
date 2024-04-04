@@ -17,36 +17,13 @@
 
 from collections.abc import Callable, Generator
 from functools import reduce
-from itertools import dropwhile, takewhile
 from math import isqrt
 from operator import mul
 
-from euler.lib.prime import get_prime_tbl, tbl_to_primes
+from euler.lib.prime import prev_prime, primes
 from euler.lib.util import HeapQueue
 
 LIMIT = 10**7 - 1
-
-
-class Sieve:
-    def __init__(self, limit: int) -> None:
-        self.__prime_tbl = get_prime_tbl(limit)
-
-    def get_primes(self) -> list[int]:
-        return tbl_to_primes(self.__prime_tbl)
-
-    def prev_prime(self, num: int) -> int:
-        match num:
-            case n if n > len(self.__prime_tbl) - 1:
-                raise ValueError("too large")
-            case n if n <= 2:
-                raise ValueError("too small")
-            case _:
-                num -= 1
-                while self.__prime_tbl[num] is False:
-                    num -= 1
-                return num
-
-        assert False, 'unreachable!'
 
 
 def prod(pf_lst: list[tuple[int, int]]) -> int:
@@ -62,7 +39,7 @@ def get_ratio(pf_lst: list[tuple[int, int]]) -> float:
 
 
 def pf_generator(
-    prime_t: Sieve, tpl: tuple[int, int]
+    tpl: tuple[int, int]
 ) -> Callable[[], Generator[list[tuple[int, int]], None, None]]:
     # Note:
     #   The internal data 'pf_lst' has the following structure.
@@ -74,7 +51,7 @@ def pf_generator(
         if (tmp := LIMIT // prod(pf_lst)) < b:
             return pf_lst
         else:
-            if (prev_p := prime_t.prev_prime(tmp + 1)) > b:
+            if (prev_p := prev_prime(tmp + 1)) > b:
                 return [(prev_p, 1)] + pf_lst
             else:
                 return [(b, e + 1)] + pf_lst[1:]
@@ -95,7 +72,7 @@ def pf_generator(
                 #   --> [(p_n, e_n - 1), ...]
                 pf_lst[0] = (b, e - 1)
             else:
-                prev_p = prime_t.prev_prime(b)
+                prev_p = prev_prime(b)
                 b_x, e_x = pf_lst[1]
                 if prev_p == b_x:
                     # [(p_n, 1), (p_{n-1}, e_{n-1}), ...]
@@ -123,18 +100,12 @@ def compute() -> str:
     pq = HeapQueue()
     pq.insert((87109 / 79180, [(11, 1), (7919, 1)]))
 
-    prime_t = Sieve((LIMIT // 11) + 1)
-    prime_lst = list(
-        takewhile(
-            lambda n: n <= isqrt(LIMIT),
-            dropwhile(lambda n: n < 11, prime_t.get_primes()),
-        )
-    )
+    prime_lst = primes(11, isqrt(LIMIT))
     for p in reversed(prime_lst):
         if get_ratio([(p, 1)]) > pq.peek()[0]:
             # pruning: end of search
             break
-        pf_gen = pf_generator(prime_t, (p, prime_t.prev_prime((LIMIT // p) + 1)))
+        pf_gen = pf_generator((p, prev_prime((LIMIT // p) + 1)))
         for pf_lst in pf_gen():
             if get_ratio(pf_lst[:2]) > pq.peek()[0]:
                 # pruning: skip to the next prime smaller than 'p'

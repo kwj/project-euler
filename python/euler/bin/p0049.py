@@ -2,14 +2,13 @@
 
 from functools import reduce
 
-from euler.lib.prime import sieve
+from euler.lib.prime import primes
 
 
-def get_prime_tbl(ndigits: int) -> dict[str, list[int]]:
+def make_prime_tbl(ndigits: int) -> dict[str, list[int]]:
     p_tbl: dict[str, list[int]] = {}
 
-    pt = sieve(10 ** (ndigits - 1), 10**ndigits)
-    for p in pt.get_primes():
+    for p in primes(10 ** (ndigits - 1), 10**ndigits):
         key = ''.join(sorted(str(p)))
         v = p_tbl.get(key, [])
         v.append(p)
@@ -19,7 +18,7 @@ def get_prime_tbl(ndigits: int) -> dict[str, list[int]]:
 
 
 def compute(ndigits: int) -> str:
-    p_tbl = get_prime_tbl(ndigits)
+    p_tbl = make_prime_tbl(ndigits)
     for lst in p_tbl.values():
         if (length := len(lst)) < 3:
             continue

@@ -9,19 +9,19 @@
 # % ./solve.py 60
 # [Problem 60]
 # Answer: 26033
-# Elapsed time: 24.747444 sec.
+# Elapsed time: 11.703278 sec.
 #
 # It is easy to find a 5-clique, however, it needs time to confirm its sum is the smallest.
 
 import sys
 
-from euler.lib.prime import is_probably_prime, prime_generator
+from euler.lib.prime import is_prime, prime_generator
 from euler.lib.util import num_of_digits
 
 
 def get_pairable_primes(x: int, asc_ps: list[int], limit: int) -> list[int]:
     def is_prime_pair(a: int, upper_a: int, b: int, upper_b: int) -> bool:
-        return is_probably_prime(a * upper_b + b) and is_probably_prime(b * upper_a + a)
+        return is_prime(a * upper_b + b) and is_prime(b * upper_a + a)
 
     upper_x = 10 ** num_of_digits(x)
     upper_p = 10
@@ -56,11 +56,8 @@ def find_cliques(
 
 
 def compute(group_size: int) -> str:
-    # Discard 2, 3 and 5
-    p_gen = prime_generator()
-    _ = next(p_gen)
-    _ = next(p_gen)
-    _ = next(p_gen)
+    # Skip 2, 3 and 5
+    p_gen = prime_generator(7)
 
     # Group prime numbers by the remainder divided by 3 (except 3).
     prime_groups: list[list[int]] = [
