@@ -80,7 +80,10 @@ function get_pairable_primes(x, asc_prime_lst, limit)
         if p > upper_p
             upper_p *= 10
         end
-        if x + p < limit && is_pair(x, upper_x, p, upper_p) == true
+        if x + p >= limit
+            break
+        end
+        if is_pair(x, upper_x, p, upper_p) == true
             push!(result, p)
         end
     end
