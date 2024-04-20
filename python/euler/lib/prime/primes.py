@@ -1297,7 +1297,7 @@ def lucas_test(n: int) -> bool:
 # case n:
 #   <= UINT16: Lookup table
 #   <= UINT32: Trial division and Miller-Rabin primality test [deterministic variant using hash function]
-#   > UINT32: Trial division and Bellie-PSW primality test
+#   > UINT32: Trial division and Baillie-PSW primality test
 def is_prime(n: int) -> bool:
     if n & 1 == 0:
         return n == 2
