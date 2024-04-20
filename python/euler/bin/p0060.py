@@ -71,7 +71,7 @@ def compute(group_size: int) -> str:
     answer = sys.maxsize
 
     while (prime := next(p_gen)) < answer:
-        grp = (prime + 2) % 3
+        grp = (prime % 3) - 1
         tbl[prime] = set(nbrs := get_pairable_primes(prime, prime_groups[grp], answer))
         prime_groups[grp].append(prime)
         if len(nbrs) < size:
