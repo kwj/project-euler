@@ -61,7 +61,7 @@ def compute(group_size: int) -> str:
     # Skip 2, 3 and 5
     p_gen = prime_generator(7)
 
-    # Group prime numbers by the remainder divided by 3 (except 3).
+    # Group of prime numbers by remainder divided by 3 (except 3).
     prime_groups: list[list[int]] = [
         [3],
         [3],
