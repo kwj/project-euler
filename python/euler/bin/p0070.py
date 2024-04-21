@@ -15,7 +15,7 @@
 #
 #     N = p1^k1 * p2^k2 * ... * pn^kn  (N < 10^7, n > 1, 11 <= p1 < p2 < ... < pn, k1>2 when n=1)
 
-from collections.abc import Callable, Generator
+from collections.abc import Generator
 from functools import reduce
 from math import isqrt
 from operator import mul
@@ -38,9 +38,7 @@ def get_ratio(pf_lst: list[tuple[int, int]]) -> float:
     return prod(pf_lst) / phi(pf_lst)
 
 
-def pf_generator(
-    tpl: tuple[int, int]
-) -> Callable[[], Generator[list[tuple[int, int]], None, None]]:
+def pf_generator(tpl: tuple[int, int]) -> Generator[list[tuple[int, int]], None, None]:
     # Note:
     #   The internal data 'pf_lst' has the following structure.
     #     [(p_n, e_n), ..., (p2, e2), (p1, e1)]
@@ -57,35 +55,30 @@ def pf_generator(
                 return [(b, e + 1)] + pf_lst[1:]
 
     pf_lst = [(tpl[1], 1), (tpl[0], 1)] if tpl[0] != tpl[1] else [(tpl[0], 2)]
+    while True:
+        b, e = pf_lst[0]
+        if len(pf_lst) == 1 and e == 1:
+            # [(p_1, 1)] ->  go to the next prime smaller than p_1
+            break
 
-    def pf_next() -> Generator[list[tuple[int, int]], None, None]:
-        nonlocal pf_lst
-        while True:
-            b, e = pf_lst[0]
-            if len(pf_lst) == 1 and e == 1:
-                # [(p_1, 1)] ->  go to the next prime smaller than p_1
-                break
-
-            result = list(reversed(pf_lst))
-            if e > 1:
-                # [(p_n, e_n), ...]
-                #   --> [(p_n, e_n - 1), ...]
-                pf_lst[0] = (b, e - 1)
+        result = list(reversed(pf_lst))
+        if e > 1:
+            # [(p_n, e_n), ...]
+            #   --> [(p_n, e_n - 1), ...]
+            pf_lst[0] = (b, e - 1)
+        else:
+            prev_p = prev_prime(b)
+            b_x, e_x = pf_lst[1]
+            if prev_p == b_x:
+                # [(p_n, 1), (p_{n-1}, e_{n-1}), ...]
+                #   -> [(p_{n-1}, e_{n-1} + 1), ...]
+                pf_lst = aux([(b_x, e_x + 1)] + pf_lst[2:])
             else:
-                prev_p = prev_prime(b)
-                b_x, e_x = pf_lst[1]
-                if prev_p == b_x:
-                    # [(p_n, 1), (p_{n-1}, e_{n-1}), ...]
-                    #   -> [(p_{n-1}, e_{n-1} + 1), ...]
-                    pf_lst = aux([(b_x, e_x + 1)] + pf_lst[2:])
-                else:
-                    # [(p_n, 1), (p_{n-1}, e_{n-1}), ...]
-                    #   -> [(prev_prime(p_{n}), 1); (p_{n-1}, e_{n-1}; ...]
-                    pf_lst = aux([(prev_p, 1)] + pf_lst[1:])
+                # [(p_n, 1), (p_{n-1}, e_{n-1}), ...]
+                #   -> [(prev_prime(p_{n}), 1); (p_{n-1}, e_{n-1}; ...]
+                pf_lst = aux([(prev_p, 1)] + pf_lst[1:])
 
-            yield result
-
-    return pf_next
+        yield result
 
 
 def is_perm(x: int, y: int) -> bool:
@@ -105,8 +98,7 @@ def compute() -> str:
         if get_ratio([(p, 1)]) > pq.peek()[0]:
             # pruning: end of search
             break
-        pf_gen = pf_generator((p, prev_prime((LIMIT // p) + 1)))
-        for pf_lst in pf_gen():
+        for pf_lst in pf_generator((p, prev_prime((LIMIT // p) + 1))):
             if get_ratio(pf_lst[:2]) > pq.peek()[0]:
                 # pruning: skip to the next prime smaller than 'p'
                 break
