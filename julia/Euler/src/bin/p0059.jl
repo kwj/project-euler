@@ -17,7 +17,7 @@ function calc_score(c)
     return 0
 end
 
-function solve_0059(fname::String = "p059_cipher.txt")
+function solve_0059(fname::String = "0059_cipher.txt")
     cipher_data = [parse(Int, x) for x in split(readline(joinpath((@__DIR__), "../../assets", fname)), ",")]
 
     score, max_score = 0, 0

@@ -39,7 +39,7 @@ function dfs(graph, perm, v)
     visit(Vector{Char}(), perm, v)
 end
 
-function solve_0079(fname::String = "p079_keylog.txt")
+function solve_0079(fname::String = "0079_keylog.txt")
     graph = Dict{Char, Set{Char}}()
     for code in readlines(joinpath((@__DIR__), "../../assets", fname))
         v1 = get!(graph, code[1], Set{Char}())

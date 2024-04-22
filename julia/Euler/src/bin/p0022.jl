@@ -3,7 +3,7 @@
 
 module Prob0022
 
-function solve_0022(fname::String = "p022_names.txt")
+function solve_0022(fname::String = "0022_names.txt")
     worth(word) = sum(Int(x) - Int('A') + 1 for x in word)
     data = readline(joinpath((@__DIR__), "../../assets", fname))
 

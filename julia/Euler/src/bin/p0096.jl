@@ -102,7 +102,7 @@ function parse_data(fname)
     filter((x) -> length(x) == 81, result)
 end
 
-function solve_0096(fname::String = "p096_sudoku.txt")
+function solve_0096(fname::String = "0096_sudoku.txt")
     pickup_num(s::Vector{String}) = foldl((acc, i) -> 10 * acc + i, map(x -> parse(Int, x[end]), s))
 
     answer = 0

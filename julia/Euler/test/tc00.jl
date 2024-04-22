@@ -103,7 +103,7 @@
     end
 
     @testset "0022" begin
-        @test solve_0022("p022_names.txt") == 871198282
+        @test solve_0022("0022_names.txt") == 871198282
     end
 
     @testset "0023" begin
@@ -189,7 +189,7 @@
     end
 
     @testset "0042" begin
-        @test solve_0042("p042_words.txt") == 162
+        @test solve_0042("0042_words.txt") == 162
     end
 
     @testset "0043" begin
@@ -245,7 +245,7 @@
     end
 
     @testset "0054" begin
-        @test solve_0054("p054_poker.txt") == 376
+        @test solve_0054("0054_poker.txt") == 376
     end
 
     @testset "0055" begin
@@ -266,7 +266,7 @@
     end
 
     @testset "0059" begin
-        @test solve_0059("p059_cipher.txt") == 129448
+        @test solve_0059("0059_cipher.txt") == 129448
     end
 
     @testset "0060" begin
@@ -303,7 +303,7 @@
     end
 
     @testset "0067" begin
-        @test solve_0067("p067_triangle.txt", max) == 7273
+        @test solve_0067("0067_triangle.txt", max) == 7273
     end
 
     @testset "0068" begin
@@ -358,7 +358,7 @@
     end
 
     @testset "0079" begin
-        @test solve_0079("p079_keylog.txt") == 73162890
+        @test solve_0079("0079_keylog.txt") == 73162890
     end
 
     @testset "0080" begin
@@ -367,15 +367,15 @@
     end
 
     @testset "0081" begin
-        @test solve_0081("p081_matrix.txt", min) == 427337
+        @test solve_0081("0081_matrix.txt", min) == 427337
     end
 
     @testset "0082" begin
-        @test solve_0082("p082_matrix.txt", min) == 260324
+        @test solve_0082("0082_matrix.txt", min) == 260324
     end
 
     @testset "0083" begin
-        @test solve_0083("p083_matrix.txt") == 425185
+        @test solve_0083("0083_matrix.txt") == 425185
     end
 
     @testset "0084" begin
@@ -404,7 +404,7 @@
     end
 
     @testset "0089" begin
-        @test solve_0089("p089_roman.txt") == 743
+        @test solve_0089("0089_roman.txt") == 743
     end
 
     @testset "0090" begin
@@ -434,7 +434,7 @@
     end
 
     @testset "0096" begin
-        @test solve_0096("p096_sudoku.txt") == 24702
+        @test solve_0096("0096_sudoku.txt") == 24702
     end
 
     @testset "0097" begin
@@ -442,11 +442,11 @@
     end
 
     @testset "0098" begin
-        @test solve_0098("p098_words.txt") == 18769
+        @test solve_0098("0098_words.txt") == 18769
     end
 
     @testset "0099" begin
-        @test solve_0099("p099_base_exp.txt") == 709
+        @test solve_0099("0099_base_exp.txt") == 709
     end
 
     @testset "0100" begin

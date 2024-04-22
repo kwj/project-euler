@@ -32,7 +32,7 @@ function replace_numbers(line)
                   r"IIII|XXXX|CCCC" => "##")
 end
 
-function solve_0089(fname = "p089_roman.txt")
+function solve_0089(fname = "0089_roman.txt")
     data = readlines(joinpath((@__DIR__), "../../assets", fname))
 
     acc = 0

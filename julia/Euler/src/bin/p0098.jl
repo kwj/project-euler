@@ -40,7 +40,7 @@ function check_anagram(words, squares)
     result
 end
 
-function solve_0098(fname::String = "p098_words.txt")
+function solve_0098(fname::String = "0098_words.txt")
     word_tbl = Dict{String, Vector{String}}()
     for w in split(replace(readline(joinpath((@__DIR__), "../../assets", fname)), "\"" => ""), ",")
         key = join(sort(collect(w)))

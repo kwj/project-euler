@@ -13,7 +13,7 @@ function select_leaf(fn, lst)
     result[2:end]
 end
 
-function solve_0067(fname::String = "p067_triangle.txt", fn::Function = max)
+function solve_0067(fname::String = "0067_triangle.txt", fn::Function = max)
     data = reverse(map.(x -> parse(Int, x), split.(readlines(joinpath((@__DIR__), "../../assets", fname)), " ")))
 
     prev = data[1]

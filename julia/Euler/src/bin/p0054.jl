@@ -109,7 +109,7 @@ function judge(p1::Vector{Int}, p2::Vector{Int})
     end
 end
 
-function solve_0054(fname::String = "p054_poker.txt")
+function solve_0054(fname::String = "0054_poker.txt")
     rank_tbl = Dict([('2', 2), ('3', 3), ('4', 4), ('5', 5), ('6', 6), ('7', 7), ('8', 8),
                      ('9', 9), ('T', 10), ('J', 11), ('Q', 12), ('K', 13), ('A', 14)])
 
