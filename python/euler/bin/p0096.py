@@ -176,7 +176,7 @@ def compute(fh: IO) -> str:
 def solve() -> str:
     from euler.lib.resource import asset_file
 
-    fh = asset_file('https://projecteuler.net/project/resources/p096_sudoku.txt')
+    fh = asset_file('p096_sudoku.txt')
     result = compute(fh)
     fh.close()
     return result

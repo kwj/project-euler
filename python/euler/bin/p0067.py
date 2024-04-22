@@ -24,7 +24,7 @@ def compute(fn: Callable[..., int], fh: IO) -> str:
 def solve() -> str:
     from euler.lib.resource import asset_file
 
-    fh = asset_file('https://projecteuler.net/project/resources/p067_triangle.txt')
+    fh = asset_file('p067_triangle.txt')
     result = compute(max, fh)
     fh.close()
     return result

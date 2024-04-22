@@ -8,7 +8,7 @@ class TestSolution(unittest.TestCase):
     def test_compute(self):
         test_patterns = [((), '425185')]
 
-        fh = asset_file('https://projecteuler.net/project/resources/p083_matrix.txt')
+        fh = asset_file('p083_matrix.txt')
         for args, expected in test_patterns:
             with self.subTest('data file: p083_matrix.txt'):
                 self.assertEqual(expected, compute(fh))

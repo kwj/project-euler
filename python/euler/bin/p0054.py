@@ -150,7 +150,7 @@ def compute(fh: IO) -> str:
 def solve() -> str:
     from euler.lib.resource import asset_file
 
-    fh = asset_file('https://projecteuler.net/project/resources/p054_poker.txt')
+    fh = asset_file('p054_poker.txt')
     result = compute(fh)
     fh.close()
     return result

@@ -58,7 +58,7 @@ def compute(fh: IO) -> str:
 def solve() -> str:
     from euler.lib.resource import asset_file
 
-    fh = asset_file('https://projecteuler.net/project/resources/p079_keylog.txt')
+    fh = asset_file('p079_keylog.txt')
     result = compute(fh)
     fh.close()
     return result

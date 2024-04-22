@@ -57,7 +57,7 @@ def compute(fh: IO) -> str:
 def solve() -> str:
     from euler.lib.resource import asset_file
 
-    fh = asset_file('https://projecteuler.net/project/resources/p083_matrix.txt')
+    fh = asset_file('p083_matrix.txt')
     result = compute(fh)
     fh.close()
     return result
