@@ -15,8 +15,12 @@ module Prob0012
 
 import Primes: factor
 
+memo = Dict{Int, Int}()
+
 function num_of_divs(n)
-    prod(map(x -> x + 1, values(factor(Dict, n))))
+    get!(memo, n) do
+        prod(map(x -> x + 1, values(factor(Dict, n))))
+    end
 end
 
 function solve_0012(thr::Int = 500)
