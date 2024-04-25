@@ -28,11 +28,11 @@ Platform Info:
 Threads: 1 default, 0 interactive, 1 GC (on 4 virtual cores)
 
 julia> @time solve_0060(5)
-  1.773687 seconds (213.62 k allocations: 20.006 MiB)
+  1.770793 seconds (159.93 k allocations: 12.773 MiB)
 26033
 
 julia> @time solve_0060(4)
-  0.004076 seconds (2.37 k allocations: 171.531 KiB)
+  0.004136 seconds (2.12 k allocations: 151.422 KiB)
 792
 
 
@@ -52,15 +52,15 @@ Platform Info:
 Threads: 1 default, 0 interactive, 1 GC (on 6 virtual cores)
 
 julia> @time solve_0060(6)
-3664.240035 seconds (789.74 M allocations: 420.874 GiB, 1.30% gc time)
+3443.381419 seconds (565.45 M allocations: 38.210 GiB, 0.12% gc time)
 1373922
 
 julia> @time solve_0060(5)
-  0.568392 seconds (213.62 k allocations: 20.006 MiB)
+  0.580957 seconds (159.93 k allocations: 12.773 MiB)
 26033
 
 julia> @time solve_0060(4)
-  0.001313 seconds (2.37 k allocations: 171.531 KiB)
+  0.001300 seconds (2.12 k allocations: 151.422 KiB)
 792
 
 =#
@@ -91,20 +91,20 @@ function get_pairable_primes(x, asc_prime_lst, limit)
 end
 
 function find_cliques(desc_prime_lst, size, tbl)
-    function aux(group, ps, depth)
+    function aux(group, offset, depth)
         if depth == 0
             push!(result, group)
         else
-            for offset in 1:(length(ps) - depth + 1)
-                if all(x -> in(ps[offset], tbl[x]), group)
-                    aux(push!(copy(group), ps[offset]), ps[(offset + 1):end], depth - 1)
+            for idx in offset:(length(desc_prime_lst) - depth + 1)
+                if all(x -> in(desc_prime_lst[idx], tbl[x]), group)
+                    aux(push!(copy(group), desc_prime_lst[idx]), idx + 1, depth - 1)
                 end
             end
         end
     end
 
     result::Vector{Vector{Int}} = []
-    aux(Array{Int,1}(undef,0), desc_prime_lst, size)
+    aux(Array{Int,1}(undef,0), 1, size)
     result
 end
 
