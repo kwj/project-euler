@@ -9,7 +9,7 @@
 # % ./solve.py 60
 # [Problem 60]
 # Answer: 26033
-# Elapsed time: 11.703278 sec.
+# Elapsed time: 7.719348 sec.
 #
 # It is easy to find a 5-clique, however, it needs time to confirm its sum is the smallest.
 
@@ -20,8 +20,12 @@ from euler.lib.util import num_of_digits
 
 
 def get_pairable_primes(x: int, asc_ps: list[int], limit: int) -> list[int]:
-    def is_prime_pair(a: int, upper_a: int, b: int, upper_b: int) -> bool:
-        return is_prime(a * upper_b + b) and is_prime(b * upper_a + a)
+    def fermat_primality_test(n: int) -> bool:
+        # Note: 'n' must be an odd number.
+        return pow(2, n - 1, n) == 1
+
+    def is_probably_pair(a: int, upper_a: int, b: int, upper_b: int) -> bool:
+        return fermat_primality_test(a * upper_b + b) and fermat_primality_test(b * upper_a + a)  # fmt: skip
 
     upper_x = 10 ** num_of_digits(x)
     upper_p = 10
@@ -31,27 +35,37 @@ def get_pairable_primes(x: int, asc_ps: list[int], limit: int) -> list[int]:
             break
         while p > upper_p:
             upper_p *= 10
-        if is_prime_pair(x, upper_x, p, upper_p):
+        if is_probably_pair(x, upper_x, p, upper_p):
             result.append(p)
-
-    result.reverse()
 
     return result
 
 
 def find_cliques(
-    desc_ps: list[int], size: int, tbl: dict[int, set[int]]
+    p: int, asc_ps: list[int], size: int, tbl: dict[int, set[int]]
 ) -> list[list[int]]:
-    def aux(group: list[int], ps: list[int], depth: int) -> None:
-        if depth == 0:
+    def check_concatenating(hd: int, tl: list[int]) -> bool:
+        if len(tl) == 0:
+            return True
+        else:
+            if all(
+                is_prime(int(str(hd) + str(x))) and is_prime(int(str(x) + str(hd)))
+                for x in tl
+            ):
+                return check_concatenating(tl[0], tl[1:])
+            else:
+                return False
+
+    def aux(group: list[int], desc_ps: list[int], depth: int) -> None:
+        if depth == 0 and check_concatenating(p, group) is True:
             result.append(group)
         else:
-            for offset in range(0, len(ps) - depth + 1):
-                if len(group) == 0 or all(ps[offset] in tbl[x] for x in group):
-                    aux(group + [ps[offset]], ps[offset + 1 :], depth - 1)
+            for offset in range(0, len(desc_ps) - depth + 1):
+                if len(group) == 0 or all(desc_ps[offset] in tbl[x] for x in group):
+                    aux(group + [desc_ps[offset]], desc_ps[offset + 1 :], depth - 1)
 
     result: list[list[int]] = []
-    aux([], desc_ps, size)
+    aux([], list(reversed(asc_ps)), size)
 
     return result
 
@@ -61,10 +75,7 @@ def compute(group_size: int) -> str:
     p_gen = prime_generator(7)
 
     # Group of prime numbers by remainder divided by 3 (except 3).
-    prime_groups: list[list[int]] = [
-        [3],
-        [3],
-    ]
+    prime_groups: list[list[int]] = [[3], [3]]
     tbl: dict[int, set[int]] = {}
     size = group_size - 1
     answer = sys.maxsize
@@ -76,7 +87,7 @@ def compute(group_size: int) -> str:
         if len(nbrs) < size:
             continue
 
-        cliques = find_cliques(nbrs, size, tbl)
+        cliques = find_cliques(prime, nbrs, size, tbl)
         if len(cliques) > 0:
             answer = min(answer, min(map(lambda x: prime + sum(x), cliques)))
 
