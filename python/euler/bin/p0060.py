@@ -29,8 +29,7 @@ def get_pairable_primes(x: int, asc_ps: list[int], limit: int) -> list[int]:
     for p in asc_ps:
         if x + p >= limit:
             break
-
-        if p > upper_p:
+        while p > upper_p:
             upper_p *= 10
         if is_prime_pair(x, upper_x, p, upper_p):
             result.append(p)

@@ -77,11 +77,11 @@ function get_pairable_primes(x, asc_prime_lst, limit)
     upper_p = 10
     result::Vector{Int} = []
     for p in asc_prime_lst
-        if p > upper_p
-            upper_p *= 10
-        end
         if x + p >= limit
             break
+        end
+        while p > upper_p
+            upper_p *= 10
         end
         if is_pair(x, upper_x, p, upper_p) == true
             push!(result, p)
