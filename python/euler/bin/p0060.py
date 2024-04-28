@@ -25,7 +25,10 @@ def get_pairable_primes(x: int, asc_ps: list[int], limit: int) -> list[int]:
         return pow(2, n - 1, n) == 1
 
     def is_probably_pair(a: int, upper_a: int, b: int, upper_b: int) -> bool:
-        return fermat_primality_test(a * upper_b + b) and fermat_primality_test(b * upper_a + a)  # fmt: skip
+        return (
+            fermat_primality_test(a * upper_b + b) is True
+            and fermat_primality_test(b * upper_a + a) is True
+        )
 
     upper_x = 10 ** num_of_digits(x)
     upper_p = 10
@@ -35,7 +38,7 @@ def get_pairable_primes(x: int, asc_ps: list[int], limit: int) -> list[int]:
             break
         while p > upper_p:
             upper_p *= 10
-        if is_probably_pair(x, upper_x, p, upper_p):
+        if is_probably_pair(x, upper_x, p, upper_p) is True:
             result.append(p)
 
     return result
