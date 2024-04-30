@@ -14,20 +14,27 @@
 #         = 4f(k-3) - f(k-4) + (f(k-5) + f(k-6)) + f(k-6)
 #         = 4f(k-3) - f(k-4) + f(k-4) + f(k-6)
 #         = 4f(k-3) + f(k-6)
-
-from collections.abc import Generator
-from itertools import takewhile
-
-
-def even_fib_gen() -> Generator[int, None, None]:
-    a, b = 2, 8
-    while True:
-        yield a
-        a, b = b, 4 * b + a
+# -->
+# E(n) = 4*E(n-1) + E(n-2)
+# -->
+# E(n+1) = 4*E(n) + E(n-1)
+# E(n) = (E(n+1) - E(n-1)) / 4
+# -->
+# E(0) = 0, E(1) = 2, E(2) = 8, ...
+#
+# S_{n=1}^{n}(E(n)) = 1/4 * ( S_{n=1}^{n}(E(n+1)) - S_{n=1}^{n}(E(n-1)) )
+#                   = 1/4 * ( S_{n=2}^{n+1}(E(n)) - S_{n=0}^{n-1}(E(n)) )
+#                   = 1/4 * ( E(n+1) + E(n) - E(1) - E(0) )
+#                   = 1/4 * ( E(n+1) + E(n) - 2)
 
 
 def compute(ulimit: int) -> str:
-    return str(sum(i for i in takewhile(lambda n: n <= ulimit, even_fib_gen())))
+    x = 2
+    y = 0
+    while x <= ulimit:
+        x, y = 4 * x + y, x
+
+    return str((x + y - 2) // 4)
 
 
 def solve() -> str:
