@@ -35,7 +35,7 @@ fn compute(fname: &str) -> i64 {
         for i in 1..((*work).len()) {
             work[i] += cmp::min(work[i - 1], prev[i]);
         }
-        prev = work.clone();
+        prev.clone_from(work);
     }
     *prev.last().unwrap()
 }
