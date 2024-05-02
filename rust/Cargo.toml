@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-regex = "1.10.3"
-itertools = "0.11.0"
+regex = "1.10.4"
+itertools = "0.12.1"
 num-bigint = "0.4.4"
 num-rational = "0.4.1"
