@@ -24,7 +24,7 @@ function makeNumbers(d1: string[], d2: string[]): string[] {
   return result;
 }
 
-export function compute(): string {
+export const compute = (): string => {
   const squares = ["01", "04", "09", "16", "25", "36", "49", "64", "81"];
   const faces: string[][] = [];
   for (
@@ -45,16 +45,6 @@ export function compute(): string {
   }
 
   return String(Math.trunc(acc / 2));
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute();
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute();

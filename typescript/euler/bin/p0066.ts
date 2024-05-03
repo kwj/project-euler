@@ -122,7 +122,7 @@ function getNumerator(a0: number, repLst: number[]): number {
   return x_n1;
 }
 
-export function compute(limit: number): string {
+export const compute = (limit: number): string => {
   let answer: [number, number] = [0, 0];
   for (const i of range(1, limit + 1)) {
     const cf = getCountFraction(i);
@@ -142,16 +142,6 @@ export function compute(limit: number): string {
   }
 
   return String(answer[1]);
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(1_000);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(1_000);

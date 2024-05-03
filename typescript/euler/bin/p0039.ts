@@ -26,7 +26,7 @@
 
 import { range } from "../lib/util.ts";
 
-export function compute(limit: number): string {
+export const compute = (limit: number): string => {
   function checkPair(p: number, a: number): boolean {
     return (p * p - 2 * a * p) % (2 * (p - a)) === 0;
   }
@@ -48,16 +48,6 @@ export function compute(limit: number): string {
   result.sort((x, y) => y[0] - x[0]);
 
   return String(result[0][1]);
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(1_000);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(1_000);

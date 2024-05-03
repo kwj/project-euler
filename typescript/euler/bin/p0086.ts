@@ -39,7 +39,7 @@
 
 import { isqrt } from "../lib/math.ts";
 
-export function compute(boundary: number): string {
+export const compute = (boundary: number): string => {
   let acc = 0;
   let c = 3;
   while (acc <= boundary) {
@@ -60,16 +60,6 @@ export function compute(boundary: number): string {
   }
 
   return String(c - 1);
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(1_000_000);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(1_000_000);

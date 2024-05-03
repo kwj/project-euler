@@ -17,7 +17,7 @@ function makeFactTbl(n: number, depth: number): number[] {
   return result;
 }
 
-export function compute(nth: number, elmLst: number[]): string {
+export const compute = (nth: number, elmLst: number[]): string => {
   const depth = elmLst.length;
   let idx = nth - 1;
   const result: number[] = [];
@@ -28,16 +28,6 @@ export function compute(nth: number, elmLst: number[]): string {
   }
 
   return result.map((x) => String(x)).join("");
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(1_000_000, range(0, 10));
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(1_000_000, range(0, 10));

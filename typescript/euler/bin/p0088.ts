@@ -109,7 +109,7 @@ function* kvGenerator(upper: number): Generator<number[], void, unknown> {
   }
 }
 
-export function compute(limit: number): string {
+export const compute = (limit: number): string => {
   const tbl = new Map<number, number>();
   const kv_gen = kvGenerator(limit * 2);
   for (const [k, v] of kv_gen) {
@@ -119,16 +119,6 @@ export function compute(limit: number): string {
   }
 
   return String(sum([...(new Set<number>(tbl.values())).values()]));
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(12_000);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(12_000);

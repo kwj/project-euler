@@ -39,7 +39,7 @@ function makeCands(): [number, number][] {
   return acc;
 }
 
-export function compute(): string {
+export const compute = (): string => {
   const n_set = new Set();
   for (const [n, prod] of makeCands()) {
     if (isPandigitalNZ(n) === true) {
@@ -48,16 +48,6 @@ export function compute(): string {
   }
 
   return String(sum(Array.from(n_set) as number[]));
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute();
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute();

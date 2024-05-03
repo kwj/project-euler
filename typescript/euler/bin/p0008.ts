@@ -39,7 +39,7 @@ function strProduct(digits: number, s: string): number[] {
     .map((lst) => lst.reduce((acc, cur) => acc * cur), 1);
 }
 
-export function compute(limit: number): string {
+export const compute = (limit: number): string => {
   let acc: number[] = [];
   for (const s of data.split("0").filter((x) => x.length >= limit)) {
     acc = acc.concat(strProduct(limit, s));
@@ -50,16 +50,6 @@ export function compute(limit: number): string {
   } else {
     throw new Error("no result");
   }
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(13);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(13);

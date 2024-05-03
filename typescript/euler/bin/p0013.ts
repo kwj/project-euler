@@ -105,18 +105,6 @@ const data = [
   53503534226472524250874054075591789781264330331690n,
 ];
 
-export function compute(): string {
-  return String(sumBigint(data)).substring(0, 10);
-}
+export const compute = (): string => String(sumBigint(data)).substring(0, 10);
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute();
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute();

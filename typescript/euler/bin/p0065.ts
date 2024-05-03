@@ -39,23 +39,13 @@ function c(i: number): bigint {
   return (i % 3 !== 0) ? 1n : (2n * BigInt(i)) / 3n;
 }
 
-export function compute(nth: number): string {
+export const compute = (nth: number): string => {
   let n_i1 = 3n, n_i2 = 2n;
   for (const i of range(3, nth + 1)) {
     [n_i1, n_i2] = [n_i1 * c(i) + n_i2, n_i1];
   }
 
   return String(sum(String(n_i1).split("").map((x) => Number(x))));
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(100);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(100);

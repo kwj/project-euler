@@ -4,7 +4,7 @@ import { zip } from "std/collections/zip.ts";
 import { assetData } from "../lib/asset.ts";
 import { range } from "../lib/util.ts";
 
-export function compute(data: string): string {
+export const compute = (data: string): string => {
   function parseData(data: string): [number, number][] {
     function splitLines(str: string): string[] {
       const result = str.split(/\r?\n/);
@@ -27,22 +27,9 @@ export function compute(data: string): string {
       Number(b[1]) - Number(a[1])
     )[0][0],
   );
-}
+};
 
-export function solve(): void {
-  try {
-    const data = new TextDecoder().decode(assetData("p099_base_exp.txt"));
-
-    const t0 = performance.now();
-    const result = compute(data);
-    const t1 = performance.now();
-    const duration_ms = (t1 - t0).toFixed(4);
-
-    console.log(`Answer: ${result}`);
-    console.log(`Elapsed time: ${duration_ms} msec.`);
-  } catch (err) {
-    console.error(err.message);
-  }
-
-  return;
-}
+export const solve = (): string => {
+  const data = new TextDecoder().decode(assetData("p099_base_exp.txt"));
+  return compute(data);
+};

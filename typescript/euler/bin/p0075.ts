@@ -22,7 +22,7 @@
 import { gcd, isqrt } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-export function compute(L: number): string {
+export const compute = (L: number): string => {
   const limit = isqrt(Math.trunc(L / 2));
   const counter: number[] = new Array(L + 1).fill(0);
 
@@ -41,16 +41,6 @@ export function compute(L: number): string {
   }
 
   return String(counter.filter((x) => x === 1).length);
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(1_500_000);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(1_500_000);

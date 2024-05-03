@@ -135,7 +135,7 @@ function findPrime(i: number, pat: number[]): number | undefined {
   return (lst.length === 8) ? lst[0] : undefined;
 }
 
-export function compute(): string {
+export const compute = (): string => {
   let ndigits = 4;
   while (true) {
     let ans = 10 ** ndigits;
@@ -164,16 +164,6 @@ export function compute(): string {
     }
     ndigits += 1;
   }
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute();
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute();

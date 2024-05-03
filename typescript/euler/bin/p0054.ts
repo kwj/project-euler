@@ -128,7 +128,7 @@ function getHandRank(hand: string[]): number[] {
   return getHand(suitLst, rankLst);
 }
 
-export function compute(data: string): string {
+export const compute = (data: string): string => {
   function parseData(data: string): string[][][] {
     function splitLines(str: string): string[] {
       const result = str.split(/\r?\n/);
@@ -163,22 +163,9 @@ export function compute(data: string): string {
   }
 
   return String(p1);
-}
+};
 
-export function solve(): void {
-  try {
-    const data = new TextDecoder().decode(assetData("p054_poker.txt"));
-
-    const t0 = performance.now();
-    const result = compute(data);
-    const t1 = performance.now();
-    const duration_ms = (t1 - t0).toFixed(4);
-
-    console.log(`Answer: ${result}`);
-    console.log(`Elapsed time: ${duration_ms} msec.`);
-  } catch (err) {
-    console.error(err.message);
-  }
-
-  return;
-}
+export const solve = (): string => {
+  const data = new TextDecoder().decode(assetData("p054_poker.txt"));
+  return compute(data);
+};

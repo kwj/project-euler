@@ -3,7 +3,7 @@
 import { max } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-export function compute(limit: number): string {
+export const compute = (limit: number): string => {
   const cache = new Array(limit);
   cache.fill(0);
   cache[1] = 1;
@@ -34,16 +34,6 @@ export function compute(limit: number): string {
   }
 
   return String(cache.indexOf(max(cache)));
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(1_000_000);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(1_000_000);

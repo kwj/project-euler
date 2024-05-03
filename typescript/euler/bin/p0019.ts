@@ -3,7 +3,7 @@
 import { runningReduce } from "std/collections/running_reduce.ts";
 import { range } from "../lib/util.ts";
 
-export function compute(): string {
+export const compute = (): string => {
   const commonYear = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const leapYear = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
@@ -24,16 +24,6 @@ export function compute(): string {
     runningReduce([1 + 365].concat(days), (sum, current) => sum + current, 0)
       .filter((x) => x % 7 === 0).length,
   );
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute();
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute();

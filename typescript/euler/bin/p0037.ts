@@ -42,7 +42,7 @@ function pickupPrimes(lst: number[]): number[] {
   return addPrefix([2, 3, 5, 7], lst).filter((x) => isTruncablePrime(x));
 }
 
-export function compute(): string {
+export const compute = (): string => {
   let result: number[] = [];
   let lst = [3, 7];
   while (result.length < 11) {
@@ -51,16 +51,6 @@ export function compute(): string {
   }
 
   return String(sum(result));
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute();
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute();

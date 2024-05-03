@@ -3,7 +3,7 @@
 import { getPrimeTbl, primeTblToPrimes } from "../lib/primes.ts";
 import { range } from "../lib/util.ts";
 
-export function compute(limit: number): string {
+export const compute = (limit: number): string => {
   function checkRotNum(n: number): boolean {
     const s = String(n) + String(n);
     const m = Math.trunc(s.length / 2);
@@ -27,16 +27,6 @@ export function compute(limit: number): string {
   }
 
   return String(acc);
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(1_000_000);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(1_000_000);

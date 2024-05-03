@@ -12,7 +12,7 @@
 import { takeWhile } from "std/collections/take_while.ts";
 import { getPrimes } from "../lib/primes.ts";
 
-export function compute(limit: number): string {
+export const compute = (limit: number): string => {
   const sqPlst = getPrimes(Math.pow(limit - 2 ** 3 - 2 ** 4, 1 / 2));
   const cbPlst = takeWhile(sqPlst, (x) => x <= Math.pow(limit, 1 / 3));
   const fthPlst = takeWhile(sqPlst, (x) => x <= Math.pow(limit, 1 / 4));
@@ -30,16 +30,6 @@ export function compute(limit: number): string {
   }
 
   return String(result.size);
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(50_000_000);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(50_000_000);

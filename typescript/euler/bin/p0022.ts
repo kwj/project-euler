@@ -18,27 +18,14 @@ function calcScore(words: string[]): number {
   return acc;
 }
 
-export function compute(data: string): string {
+export const compute = (data: string): string => {
   const keywords = data.replaceAll('"', "").split(",");
   keywords.sort();
 
   return String(calcScore(keywords));
-}
+};
 
-export function solve(): void {
-  try {
-    const data = new TextDecoder().decode(assetData("p022_names.txt"));
-
-    const t0 = performance.now();
-    const result = compute(data);
-    const t1 = performance.now();
-    const duration_ms = (t1 - t0).toFixed(4);
-
-    console.log(`Answer: ${result}`);
-    console.log(`Elapsed time: ${duration_ms} msec.`);
-  } catch (err) {
-    console.error(err.message);
-  }
-
-  return;
-}
+export const solve = (): string => {
+  const data = new TextDecoder().decode(assetData("p022_names.txt"));
+  return compute(data);
+};

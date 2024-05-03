@@ -79,7 +79,7 @@ function findCycle(
 }
 
 // Assume that octagonal numbers are the start/goal positions on cycle
-export function compute(): string {
+export const compute = (): string => {
   const polyTbl = makePolygonalTbl();
 
   // There is only one cycle path exist, so it terminates immediately if a cycle found
@@ -92,16 +92,6 @@ export function compute(): string {
   }
 
   throw new Error("not found");
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute();
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute();

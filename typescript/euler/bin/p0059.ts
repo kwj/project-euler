@@ -21,7 +21,7 @@ function calcScore(lst: number[]): number {
   return cnt;
 }
 
-export function compute(data: string): string {
+export const compute = (data: string): string => {
   const cipherText: [number, number][] = data.split(",").map((
     x,
     idx,
@@ -41,22 +41,9 @@ export function compute(data: string): string {
     }
   }
   return String(sum(maxScore[2]));
-}
+};
 
-export function solve(): void {
-  try {
-    const data = new TextDecoder().decode(assetData("p059_cipher.txt"));
-
-    const t0 = performance.now();
-    const result = compute(data);
-    const t1 = performance.now();
-    const duration_ms = (t1 - t0).toFixed(4);
-
-    console.log(`Answer: ${result}`);
-    console.log(`Elapsed time: ${duration_ms} msec.`);
-  } catch (err) {
-    console.error(err.message);
-  }
-
-  return;
-}
+export const solve = (): string => {
+  const data = new TextDecoder().decode(assetData("p059_cipher.txt"));
+  return compute(data);
+};

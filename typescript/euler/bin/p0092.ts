@@ -77,7 +77,7 @@ function isGroup89(n: number): boolean {
   return n === 89;
 }
 
-export function compute(limit: number): string {
+export const compute = (limit: number): string => {
   if (Number.isInteger(Math.log10(limit)) !== true || limit === 0) {
     throw new Error(
       "This implementation works correctly only if the limit is a power of 10.",
@@ -105,16 +105,6 @@ export function compute(limit: number): string {
   const numerator = factorial(ndigits);
 
   return String(sum(denominators.map((d) => numerator / d)));
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(10_000_000);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(10_000_000);

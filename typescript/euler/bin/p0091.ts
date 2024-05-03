@@ -35,7 +35,7 @@
 import { gcd } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-export function compute(xSize: number, ySize: number): string {
+export const compute = (xSize: number, ySize: number): string => {
   function case2(): number {
     const trunc = Math.trunc;
     let acc = 0;
@@ -52,16 +52,6 @@ export function compute(xSize: number, ySize: number): string {
   }
 
   return String((xSize * ySize) * 3 + case2());
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(50, 50);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(50, 50);

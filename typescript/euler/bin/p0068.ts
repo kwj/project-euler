@@ -169,7 +169,7 @@ import { permutations } from "combinatorics/mod.ts";
 import { sum } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-export function compute(): string {
+export const compute = (): string => {
   const result: string[] = [];
   for (
     const [a0, a1, a2, a3, a4, a5, a6, a7, a8, a9] of permutations(
@@ -192,16 +192,6 @@ export function compute(): string {
   }
 
   return result.reverse()[0];
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute();
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute();

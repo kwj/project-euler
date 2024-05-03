@@ -15,7 +15,7 @@ function getAbndntNums(limit: number): number[] {
   return range(12, limit + 1).filter((x) => x < sd_tbl[x]);
 }
 
-export function compute(limit: number): string {
+export const compute = (limit: number): string => {
   function isSumOfTwoAbndnts(n: number): boolean {
     // n = x + (n-x). x is abundant number.
     // if (n-x) is abundant number, return True.
@@ -41,16 +41,6 @@ export function compute(limit: number): string {
   return String(
     sum(range(1, limit + 1).filter((x) => isSumOfTwoAbndnts(x) === false)),
   );
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(28123);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(28123);

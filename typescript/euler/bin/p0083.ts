@@ -30,7 +30,7 @@ function makeDistanceTbl(rows: number, cols: number): number[][] {
   return tbl;
 }
 
-export function compute(data: string): string {
+export const compute = (data: string): string => {
   function parseData(data: string): number[][] {
     function splitLines(str: string): string[] {
       const result = str.split(/\r?\n/);
@@ -66,22 +66,9 @@ export function compute(data: string): string {
   }
 
   return String(distTbl.at(-1)!.at(-1));
-}
+};
 
-export function solve(): void {
-  try {
-    const data = new TextDecoder().decode(assetData("p083_matrix.txt"));
-
-    const t0 = performance.now();
-    const result = compute(data);
-    const t1 = performance.now();
-    const duration_ms = (t1 - t0).toFixed(4);
-
-    console.log(`Answer: ${result}`);
-    console.log(`Elapsed time: ${duration_ms} msec.`);
-  } catch (err) {
-    console.error(err.message);
-  }
-
-  return;
-}
+export const solve = (): string => {
+  const data = new TextDecoder().decode(assetData("p083_matrix.txt"));
+  return compute(data);
+};

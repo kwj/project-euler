@@ -3,7 +3,7 @@
 import { combinations } from "combinatorics/mod.ts";
 import { Sieve } from "../lib/primes.ts";
 
-export function compute(limit: number): string {
+export const compute = (limit: number): string => {
   function isPerm(p1: number, p2: number, p3: number): boolean {
     const s1 = String(p1).split("").sort().join("");
     const s2 = String(p2).split("").sort().join("");
@@ -24,16 +24,6 @@ export function compute(limit: number): string {
   }
 
   throw new Error("not reached");
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(9_999);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(9_999);

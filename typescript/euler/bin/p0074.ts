@@ -17,7 +17,7 @@ function factSum(n: number): number {
   return acc;
 }
 
-export function compute(limit: number, threshold: number): string {
+export const compute = (limit: number, threshold: number): string => {
   const chain_tbl: number[] = new Array(limit).fill(0);
   let cnt = 0;
   for (const n of range(1, limit)) {
@@ -41,16 +41,6 @@ export function compute(limit: number, threshold: number): string {
   }
 
   return String(cnt);
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(1_000_000, 60);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(1_000_000, 60);

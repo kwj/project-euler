@@ -24,7 +24,7 @@
               if both x{1}, y{1} are odd, all x{n}, y{n} are odd too.
 */
 
-export function compute(boundary: number): string {
+export const compute = (boundary: number): string => {
   // x = 2b - 1
   const border = 2 * boundary - 1;
 
@@ -34,16 +34,6 @@ export function compute(boundary: number): string {
   }
 
   return String(Math.trunc((y + 1) / 2));
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(1_000_000_000_000);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(1_000_000_000_000);

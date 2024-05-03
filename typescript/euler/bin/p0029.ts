@@ -22,7 +22,7 @@ function make_dupctr_tbl(upper: number): number[] {
   return dup_ctr;
 }
 
-export function compute(upper: number): string {
+export const compute = (upper: number): string => {
   const dup_ctr: number[] = make_dupctr_tbl(upper);
   const base_limit: number = isqrt(upper);
   const skip_flag: boolean[] = new Array(base_limit + 1);
@@ -43,16 +43,6 @@ export function compute(upper: number): string {
   }
 
   return String(ans);
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(100);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(100);

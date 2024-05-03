@@ -14,7 +14,7 @@
 import { gcd, isqrt } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-export function compute(perim: number): string {
+export const compute = (perim: number): string => {
   const trunc = Math.trunc;
 
   for (const m of range(2, isqrt(trunc(perim / 2)) + 1)) {
@@ -36,16 +36,6 @@ export function compute(perim: number): string {
 
   // not found (NOT REACHED when perimeter = 1000)
   return String(0);
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(1_000);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(1_000);

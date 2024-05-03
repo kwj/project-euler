@@ -3,7 +3,7 @@
 import { max } from "../lib/math.ts";
 import { isPalindrome, range } from "../lib/util.ts";
 
-export function compute(digits: number): string {
+export const compute = (digits: number): string => {
   if (digits <= 0) {
     throw new Error("range error");
   }
@@ -39,16 +39,6 @@ export function compute(digits: number): string {
   }
 
   return answer.length !== 0 ? String(max(answer)) : "0";
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(3); // 3-digit
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(3); // 3-digit

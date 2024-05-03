@@ -22,22 +22,12 @@
 
 import { range } from "../lib/util.ts";
 
-export function compute(len: number): string {
+export const compute = (len: number): string => {
   let result = 1;
   for (const n of range(1, Math.trunc((len - 1) / 2) + 1)) {
     result += 16 * n * n + 4 * n + 4;
   }
   return String(result);
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(1_001);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(1_001);

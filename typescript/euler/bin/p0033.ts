@@ -55,23 +55,13 @@ function makeCands(): [number, number][] {
   return acc;
 }
 
-export function compute(): string {
+export const compute = (): string => {
   const [a, b] = makeCands().reduce((
     acc,
     cur,
   ) => [acc[0] * cur[0], acc[1] * cur[1]]);
 
   return String(Math.trunc(b / gcd(a, b)));
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute();
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute();

@@ -60,7 +60,7 @@ function product(row: number, col: number, dir: Dir) {
   return acc;
 }
 
-export function compute(): string {
+export const compute = (): string => {
   let result = 0;
   for (const row of range(0, ROW_SIZE)) {
     for (const col of range(0, COL_SIZE)) {
@@ -80,16 +80,6 @@ export function compute(): string {
   }
 
   return String(result);
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute();
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute();

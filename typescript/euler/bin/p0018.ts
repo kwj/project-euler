@@ -35,10 +35,10 @@ function selectLeaf(
   return result.slice(1);
 }
 
-export function compute(
+export const compute = (
   fn: (...valus: number[]) => number,
   nums: number[][],
-): string {
+): string => {
   nums.reverse();
   let prev = nums[0];
   for (const lst of nums.slice(1)) {
@@ -46,16 +46,6 @@ export function compute(
   }
 
   return String(prev[0]);
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(Math.max, data);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(Math.max, data);

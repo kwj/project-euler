@@ -17,7 +17,7 @@ import { isPandigitalNZ, range } from "../lib/util.ts";
 
 // This implementation depends on the permutation lists are emitted in lexicographic ordering
 // according to the order of the input *iterable*.
-export function compute(): string {
+export const compute = (): string => {
   for (const digits of [range(7, 0, -1), range(4, 0, -1)]) {
     for (const nLst of permutations(digits)) {
       const n = nLst.reduce((x, y) => 10 * x + y);
@@ -28,16 +28,6 @@ export function compute(): string {
   }
 
   throw new Error("Not reached");
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute();
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute();

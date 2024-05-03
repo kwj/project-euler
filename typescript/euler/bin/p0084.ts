@@ -125,11 +125,11 @@ function monteCarlo(dice: () => number, loopCnt: number): string {
   return result.slice(0, 3).map((x) => String(x).padStart(2, "0")).join("");
 }
 
-export function compute(
+export const compute = (
   faces: number,
   nAttempts: number,
   loopCnt: number,
-): string {
+): string => {
   function makeDice(faces: number): () => number {
     return () => Math.trunc(Math.random() * faces + 1);
   }
@@ -141,16 +141,6 @@ export function compute(
   }
 
   return Counter(result).sort((a, b) => b[1] - a[1])[0][0];
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(4, 1000, 10_000);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(4, 1000, 10_000);

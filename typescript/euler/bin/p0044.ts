@@ -20,7 +20,7 @@ function getDivisors(n: number): number[] {
 //   lhs: d(3d-1)
 //   rhs: (k-j) * (3(k+j)-1) = r1 * r2 [r1=k-j, r2=3(k+j)-1]
 //      0 < (k-j) < d, d % 3 == (k-j) % 3
-export function compute(): string {
+export const compute = (): string => {
   function pent(n: number): number {
     return trunc((n * (3 * n - 1)) / 2);
   }
@@ -46,16 +46,6 @@ export function compute(): string {
     }
     d += 1;
   }
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute();
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute();

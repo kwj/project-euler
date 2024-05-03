@@ -69,7 +69,7 @@ function translate(s: string, transMap: Map<string, string[]>): string {
   return result.join("");
 }
 
-export function compute(data: string): string {
+export const compute = (data: string): string => {
   function checkPair(w1: string, w2: string): number | undefined {
     const ndigits = w1.length;
     const tbl = (ndigits === dedupSort(w1.split("")).length)
@@ -104,22 +104,9 @@ export function compute(data: string): string {
   }
 
   throw new Error("not reached");
-}
+};
 
-export function solve(): void {
-  try {
-    const data = new TextDecoder().decode(assetData("p098_words.txt"));
-
-    const t0 = performance.now();
-    const result = compute(data);
-    const t1 = performance.now();
-    const duration_ms = (t1 - t0).toFixed(4);
-
-    console.log(`Answer: ${result}`);
-    console.log(`Elapsed time: ${duration_ms} msec.`);
-  } catch (err) {
-    console.error(err.message);
-  }
-
-  return;
-}
+export const solve = (): string => {
+  const data = new TextDecoder().decode(assetData("p098_words.txt"));
+  return compute(data);
+};

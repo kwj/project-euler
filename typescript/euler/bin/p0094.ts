@@ -49,7 +49,7 @@
             ...
 */
 
-export function compute(limit: number): string {
+export const compute = (limit: number): string => {
   // a{1}, b{1}
   let a = 2, b = 1;
   let p = 0;
@@ -76,16 +76,6 @@ export function compute(limit: number): string {
   }
 
   return String(result);
-}
+};
 
-export function solve(): void {
-  const t0 = performance.now();
-  const result = compute(1_000_000_000);
-  const t1 = performance.now();
-  const duration_ms = (t1 - t0).toFixed(4);
-
-  console.log(`Answer: ${result}`);
-  console.log(`Elapsed time: ${duration_ms} msec.`);
-
-  return;
-}
+export const solve = (): string => compute(1_000_000_000);
