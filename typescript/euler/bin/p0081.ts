@@ -8,18 +8,18 @@ export const compute = (
   fn: (...valus: number[]) => number,
   data: string,
 ): string => {
-  function parseData(data: string): number[][] {
-    function splitLines(str: string): string[] {
+  const parseData = (data: string): number[][] => {
+    const splitLines = (str: string): string[] => {
       const result = str.split(/\r?\n/);
       if (result.at(-1) === "") {
         return result.slice(0, -1);
       } else {
         return result;
       }
-    }
+    };
 
     return splitLines(data).map((x) => x.split(",").map((y) => Number(y)));
-  }
+  };
 
   const matrix = parseData(data);
 

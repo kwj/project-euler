@@ -3,7 +3,7 @@
 import { getMaxExp, isqrt, lcm, sum } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-function make_dupctr_tbl(upper: number): number[] {
+const make_dupctr_tbl = (upper: number): number[] => {
   const max_exp: number = getMaxExp(upper, 2);
   const dup_ctr: number[] = new Array(max_exp + 1);
   const dups: number[] = new Array(upper + 1);
@@ -20,7 +20,7 @@ function make_dupctr_tbl(upper: number): number[] {
   }
 
   return dup_ctr;
-}
+};
 
 export const compute = (upper: number): string => {
   const dup_ctr: number[] = make_dupctr_tbl(upper);

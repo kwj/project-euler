@@ -7,9 +7,7 @@
 import { isPentagonal } from "../lib/math.ts";
 
 export const compute = (): string => {
-  function hexNum(n: number): number {
-    return n * (2 * n - 1);
-  }
+  const hexNum = (n: number): number => n * (2 * n - 1);
 
   let d = 144;
   while (true) {

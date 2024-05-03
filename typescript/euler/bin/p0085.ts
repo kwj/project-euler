@@ -24,12 +24,10 @@
 import { ascend, BinaryHeap } from "std/data_structures/mod.ts";
 import { isqrt } from "../lib/math.ts";
 
-function getDiff(m: number, target: number): [number, number] | undefined {
+const getDiff = (m: number, target: number): [number, number] | undefined => {
   const abs = Math.abs;
 
-  function lhs(m: number, n: number): number {
-    return m * (m + 1) * n * (n + 1);
-  }
+  const lhs = (m: number, n: number): number => m * (m + 1) * n * (n + 1);
 
   let n = isqrt(Math.trunc(target / (m * (m + 1)))) - 1;
   while (lhs(m, n) < target) {
@@ -46,7 +44,7 @@ function getDiff(m: number, target: number): [number, number] | undefined {
   } else {
     return [r2, n];
   }
-}
+};
 
 export const compute = (target: number): string => {
   const pq = new BinaryHeap<[number, number]>((a, b) => ascend(a[0], b[0]));

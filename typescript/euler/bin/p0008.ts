@@ -26,7 +26,7 @@ const data = `
 71636269561882670428252483600823257530420752963450
 `.replaceAll("\n", "");
 
-function strProduct(digits: number, s: string): number[] {
+const strProduct = (digits: number, s: string): number[] => {
   const s_lst = [];
   for (const pos of range(0, s.length - digits + 1)) {
     s_lst.push(s.substring(pos, pos + digits));
@@ -37,7 +37,7 @@ function strProduct(digits: number, s: string): number[] {
       .map((x) => Number(x))
   )
     .map((lst) => lst.reduce((acc, cur) => acc * cur), 1);
-}
+};
 
 export const compute = (limit: number): string => {
   let acc: number[] = [];

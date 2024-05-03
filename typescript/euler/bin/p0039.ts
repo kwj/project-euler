@@ -27,9 +27,8 @@
 import { range } from "../lib/util.ts";
 
 export const compute = (limit: number): string => {
-  function checkPair(p: number, a: number): boolean {
-    return (p * p - 2 * a * p) % (2 * (p - a)) === 0;
-  }
+  const checkPair = (p: number, a: number): boolean =>
+    (p * p - 2 * a * p) % (2 * (p - a)) === 0;
 
   const trunc = Math.trunc;
   const result: [number, number][] = [];

@@ -3,7 +3,7 @@
 import { isqrt, sum } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-function d(n: number): number {
+const d = (n: number): number => {
   const lst: number[] = [];
   for (const i of range(1, isqrt(n) + 1)) {
     if (n % i !== 0) {
@@ -17,7 +17,7 @@ function d(n: number): number {
   }
 
   return sum(lst) - n;
-}
+};
 
 export const compute = (n: number): string => {
   const n_set = new Set();

@@ -4,7 +4,7 @@ import { getPrimeTbl, primeTblToPrimes } from "../lib/primes.ts";
 import { range } from "../lib/util.ts";
 
 export const compute = (limit: number): string => {
-  function checkRotNum(n: number): boolean {
+  const checkRotNum = (n: number): boolean => {
     const s = String(n) + String(n);
     const m = Math.trunc(s.length / 2);
 
@@ -15,7 +15,7 @@ export const compute = (limit: number): string => {
     }
 
     return true;
-  }
+  };
 
   const primeTbl = getPrimeTbl(limit);
 

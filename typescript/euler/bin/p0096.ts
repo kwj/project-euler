@@ -210,20 +210,20 @@ class Grid {
   }
 }
 
-function parseData(data: string): string[] {
-  function splitLines(str: string): string[] {
+const parseData = (data: string): string[] => {
+  const splitLines = (str: string): string[] => {
     const result = str.split(/\r?\n/);
     if (result.at(-1) === "") {
       return result.slice(0, -1);
     } else {
       return result;
     }
-  }
+  };
 
-  function trim(lst: string[]): string {
-    return lst.reduce((acc, cur) => acc + cur).replace(/[^0-9.]/g, "")
+  const trim = (lst: string[]): string =>
+    lst.reduce((acc, cur) => acc + cur)
+      .replace(/[^0-9.]/g, "")
       .replaceAll(".", "0");
-  }
 
   let acc: string[] = [];
   const result: string[] = [];
@@ -247,7 +247,7 @@ function parseData(data: string): string[] {
   }
 
   return result;
-}
+};
 
 export const compute = (data: string): string => {
   let acc = 0;

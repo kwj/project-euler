@@ -5,18 +5,16 @@ import { assetData } from "../lib/asset.ts";
 import { isTriangle, sum } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-function calcScore(words: string[]): number[] {
-  function score(word: string): number {
-    return sum(word.split("").map((x) => tbl.get(x) as number));
-  }
+const calcScore = (words: string[]): number[] => {
+  const score = (word: string): number =>
+    sum(word.split("").map((x) => tbl.get(x) as number));
 
-  const AtoZ = range("A".charCodeAt(0), "Z".charCodeAt(0) + 1).map((x) =>
-    String.fromCharCode(x)
-  );
+  const AtoZ = range("A".charCodeAt(0), "Z".charCodeAt(0) + 1)
+    .map((x) => String.fromCharCode(x));
   const tbl = new Map<string, number>(zip(AtoZ, range(1, AtoZ.length + 1)));
 
   return words.map((x) => score(x));
-}
+};
 
 export const compute = (data: string): string => {
   const keywords = data.replaceAll('"', "").split(",");

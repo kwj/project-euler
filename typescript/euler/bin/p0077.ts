@@ -3,14 +3,14 @@
 import { primeGenerator } from "../lib/primes.ts";
 import { range } from "../lib/util.ts";
 
-function* plstGenerator(): Generator<number[], void, unknown> {
+const plstGenerator = function* (): Generator<number[], void, unknown> {
   const p_gen = primeGenerator();
   const plst: number[] = [];
   while (true) {
     plst.push(p_gen.next().value as number);
     yield plst;
   }
-}
+};
 
 export const compute = (boundary: number): string => {
   const plst_gen = plstGenerator();

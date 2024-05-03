@@ -3,12 +3,12 @@
 import { assetData } from "../lib/asset.ts";
 import { sum } from "../lib/math.ts";
 
-function calcScore(words: string[]): number {
-  function score(word: string): number {
+const calcScore = (words: string[]): number => {
+  const score = (word: string): number => {
     return sum(
       word.split("").map((x) => x.charCodeAt(0) - "A".charCodeAt(0) + 1),
     );
-  }
+  };
 
   let acc = 0;
   for (const [idx, word] of words.entries()) {
@@ -16,7 +16,7 @@ function calcScore(words: string[]): number {
   }
 
   return acc;
-}
+};
 
 export const compute = (data: string): string => {
   const keywords = data.replaceAll('"', "").split(",");

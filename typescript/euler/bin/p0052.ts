@@ -2,10 +2,8 @@
 
 import { range } from "../lib/util.ts";
 
-function checkNum(n: number): boolean {
-  function getKey(n: number): string {
-    return String(n).split("").sort().join("");
-  }
+const checkNum = (n: number): boolean => {
+  const getKey = (n: number): string => String(n).split("").sort().join("");
 
   const keyId = getKey(n);
   for (const mult of range(2, 7)) {
@@ -15,7 +13,7 @@ function checkNum(n: number): boolean {
   }
 
   return true;
-}
+};
 
 export const compute = (): string => {
   let ndigits = 6;

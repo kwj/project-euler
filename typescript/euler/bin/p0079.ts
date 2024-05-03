@@ -2,12 +2,12 @@
 
 import { assetData } from "../lib/asset.ts";
 
-function dfs(
+const dfs = (
   graph: Map<string, Set<string>>,
   perm: string[],
   v: string,
-): string[] {
-  function visit(temp: string[], visited: string[], node: string): string[] {
+): string[] => {
+  const visit = (temp: string[], visited: string[], node: string): string[] => {
     if (temp.includes(node) === true) {
       throw new Error("cycle path is found");
     }
@@ -23,25 +23,25 @@ function dfs(
     } else {
       return [node];
     }
-  }
+  };
 
   return visit([], perm, v);
-}
+};
 
-function parseData(data: string): string[][] {
-  function splitLines(str: string): string[] {
+const parseData = (data: string): string[][] => {
+  const splitLines = (str: string): string[] => {
     const result = str.split(/\r?\n/);
     if (result.at(-1) === "") {
       return result.slice(0, -1);
     } else {
       return result;
     }
-  }
+  };
 
-  return splitLines(data).map((x) => x.split("")).map((
-    y,
-  ) => [[y[0], y[1]], [y[0], y[2]], [y[1], y[2]]]).flat();
-}
+  return splitLines(data)
+    .map((x) => x.split(""))
+    .map((y) => [[y[0], y[1]], [y[0], y[2]], [y[1], y[2]]]).flat();
+};
 
 export const compute = (data: string): string => {
   const graph = new Map<string, Set<string>>();

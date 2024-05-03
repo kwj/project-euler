@@ -25,7 +25,7 @@
 import { isqrt } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-function getCountFraction(n: number): [number, number[]] {
+const getCountFraction = (n: number): [number, number[]] => {
   const trunc = Math.trunc;
 
   const isqrt_n = isqrt(n);
@@ -48,7 +48,7 @@ function getCountFraction(n: number): [number, number[]] {
       return [isqrt_n, rep];
     }
   }
-}
+};
 
 export const compute = (limit: number): string => {
   let cnt = 0;

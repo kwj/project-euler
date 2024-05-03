@@ -3,10 +3,10 @@
 import { zip } from "std/collections/zip.ts";
 import { assetData } from "../lib/asset.ts";
 
-function selectLeaf(
+const selectLeaf = (
   fn: (...valus: number[]) => number,
   lst: number[],
-): number[] {
+): number[] => {
   const result = [];
   let prev = lst[0];
   for (const i of lst) {
@@ -15,24 +15,24 @@ function selectLeaf(
   }
 
   return result.slice(1);
-}
+};
 
 export const compute = (
   fn: (...valus: number[]) => number,
   data: string,
 ): string => {
-  function parseData(data: string): number[][] {
-    function splitLines(str: string): string[] {
+  const parseData = (data: string): number[][] => {
+    const splitLines = (str: string): string[] => {
       const result = str.split(/\r?\n/);
       if (result.at(-1) === "") {
         return result.slice(0, -1);
       } else {
         return result;
       }
-    }
+    };
 
     return splitLines(data).map((x) => x.split(" ").map((y) => Number(y)));
-  }
+  };
 
   const nums = parseData(data);
   nums.reverse();

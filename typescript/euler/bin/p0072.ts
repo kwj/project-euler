@@ -7,7 +7,7 @@
 import { isqrt } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-function sumPhi(n: number, memo?: Record<string, number>): number {
+const sumPhi = (n: number, memo?: Record<string, number>): number => {
   const trunc = Math.trunc;
 
   const key = String(n);
@@ -28,7 +28,7 @@ function sumPhi(n: number, memo?: Record<string, number>): number {
   }
 
   return cache[key] = v;
-}
+};
 
 export const compute = (limit: number): string =>
   String(sumPhi(limit) - sumPhi(1));

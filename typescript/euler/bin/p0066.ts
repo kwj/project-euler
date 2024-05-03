@@ -88,7 +88,7 @@
 import { isqrt } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-function getCountFraction(n: number): [number, number[]] {
+const getCountFraction = (n: number): [number, number[]] => {
   const trunc = Math.trunc;
 
   const isqrt_n = isqrt(n);
@@ -111,16 +111,16 @@ function getCountFraction(n: number): [number, number[]] {
       return [isqrt_n, rep];
     }
   }
-}
+};
 
-function getNumerator(a0: number, repLst: number[]): number {
+const getNumerator = (a0: number, repLst: number[]): number => {
   let x_n1 = a0, x_n2 = 1;
   for (const a of repLst) {
     [x_n1, x_n2] = [a * x_n1 + x_n2, x_n1];
   }
 
   return x_n1;
-}
+};
 
 export const compute = (limit: number): string => {
   let answer: [number, number] = [0, 0];

@@ -40,18 +40,18 @@ import { combinationsWithReplacement } from "combinatorics/mod.ts";
 import { sum } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-function searchFromRhs(): number {
-  function toDigitLst(n: number): number[] {
-    function aux(n: number): number[] {
+const searchFromRhs = (): number => {
+  const toDigitLst = (n: number): number[] => {
+    const aux = (n: number): number[] => {
       if (n >= 10) {
         return aux(Math.trunc(n / 10)).concat(n % 10);
       } else {
         return [n];
       }
-    }
+    };
 
     return aux(n).sort();
-  }
+  };
 
   const powTbl = [0, 1, 32, 243, 1024, 3125, 7776, 16807, 32768, 59049];
   let acc = 0;
@@ -70,7 +70,7 @@ function searchFromRhs(): number {
   }
 
   return acc;
-}
+};
 
 export const compute = (): string => String(searchFromRhs());
 

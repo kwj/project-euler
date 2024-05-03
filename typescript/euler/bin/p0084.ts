@@ -20,7 +20,7 @@ enum Square {
   R4 = 35,   CH3 = 36, H1 = 37,  T2 = 38,  H2 = 39,
 }
 
-function communityChest(sq: number): number {
+const communityChest = (sq: number): number => {
   switch (Math.trunc(Math.random() * 16)) {
     case 0:
       return Square.GO;
@@ -29,10 +29,10 @@ function communityChest(sq: number): number {
     default:
       return sq;
   }
-}
+};
 
-function chanceCard(sq: number): number {
-  function nextR(sq: number): number {
+const chanceCard = (sq: number): number => {
+  const nextR = (sq: number): number => {
     switch (sq) {
       case Square.CH1:
         return Square.R2;
@@ -43,9 +43,9 @@ function chanceCard(sq: number): number {
       default:
         throw new RangeError(`invalid square: ${sq}`);
     }
-  }
+  };
 
-  function nextU(sq: number): number {
+  const nextU = (sq: number): number => {
     switch (sq) {
       case Square.CH1:
         return Square.U1;
@@ -56,7 +56,7 @@ function chanceCard(sq: number): number {
       default:
         throw new RangeError(`invalid square: ${sq}`);
     }
-  }
+  };
 
   switch (Math.trunc(Math.random() * 16)) {
     case 0:
@@ -83,9 +83,9 @@ function chanceCard(sq: number): number {
       // nop
       return sq;
   }
-}
+};
 
-function monteCarlo(dice: () => number, loopCnt: number): string {
+const monteCarlo = (dice: () => number, loopCnt: number): string => {
   const counter: number[] = new Array(40).fill(0);
   let sq = Square.GO;
   let double = 0;
@@ -123,16 +123,16 @@ function monteCarlo(dice: () => number, loopCnt: number): string {
   );
 
   return result.slice(0, 3).map((x) => String(x).padStart(2, "0")).join("");
-}
+};
 
 export const compute = (
   faces: number,
   nAttempts: number,
   loopCnt: number,
 ): string => {
-  function makeDice(faces: number): () => number {
+  const makeDice = (faces: number): () => number => {
     return () => Math.trunc(Math.random() * faces + 1);
-  }
+  };
 
   const dice = makeDice(faces);
   const result: string[] = [];

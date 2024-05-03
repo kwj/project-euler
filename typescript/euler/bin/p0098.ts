@@ -7,14 +7,12 @@ import { assetData } from "../lib/asset.ts";
 import { isqrt, max } from "../lib/math.ts";
 import { assocGroupMap, dedupSort, numOfDigits } from "../lib/util.ts";
 
-function selectKeywords(words: string[]) {
-  function makeKey(word: string): string {
-    return word.split("").sort().join("");
-  }
+const selectKeywords = (words: string[]) => {
+  const makeKey = (word: string): string => word.split("").sort().join("");
 
-  function makeKWinfo(
+  const makeKWinfo = (
     tplLst: [string, string][],
-  ): [number, [string, string[]][]] {
+  ): [number, [string, string[]][]] => {
     const work = assocGroupMap(tplLst);
     const [keys, _] = unzip(
       [...work.entries()].filter(([_, vLst]) => vLst.length === 1),
@@ -28,14 +26,14 @@ function selectKeywords(words: string[]) {
     );
 
     return [result[0][0].length, result];
-  }
+  };
 
   return makeKWinfo(words.map((x) => [makeKey(x), x]));
-}
+};
 
-function makeSquareTbl(
+const makeSquareTbl = (
   digits: number,
-): [Map<number, string[]>, Map<number, string[]>] {
+): [Map<number, string[]>, Map<number, string[]>] => {
   const limit = isqrt(10 ** digits - 1);
   const work: [number, string][] = [];
 
@@ -58,19 +56,19 @@ function makeSquareTbl(
   }
 
   return [sq_tbl, sq_uniq_tbl];
-}
+};
 
-function translate(s: string, transMap: Map<string, string[]>): string {
+const translate = (s: string, transMap: Map<string, string[]>): string => {
   const result: string[] = [];
   for (const ch of s.split("")) {
     result.push(transMap.get(ch)![0]);
   }
 
   return result.join("");
-}
+};
 
 export const compute = (data: string): string => {
-  function checkPair(w1: string, w2: string): number | undefined {
+  const checkPair = (w1: string, w2: string): number | undefined => {
     const ndigits = w1.length;
     const tbl = (ndigits === dedupSort(w1.split("")).length)
       ? sq_uniq_tbl
@@ -87,7 +85,7 @@ export const compute = (data: string): string => {
     }
 
     return undefined;
-  }
+  };
 
   const words = data.replaceAll('"', "").split(",");
   const [maxDigits, kw] = selectKeywords(words);

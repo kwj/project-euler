@@ -38,7 +38,7 @@ const QTY = 4;
 const ROW_SIZE = grid.length;
 const COL_SIZE = grid[0].length;
 
-function product(row: number, col: number, dir: Dir) {
+const product = (row: number, col: number, dir: Dir) => {
   let acc = 1;
   for (const i of range(0, QTY)) {
     switch (dir) {
@@ -58,7 +58,7 @@ function product(row: number, col: number, dir: Dir) {
   }
 
   return acc;
-}
+};
 
 export const compute = (): string => {
   let result = 0;

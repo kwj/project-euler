@@ -1,11 +1,11 @@
 // project euler: problem 1
 
-function sumMultiple(n: number, limit: number): number {
+const sumMultiple = (n: number, limit: number): number => {
   const trunc = Math.trunc;
   const upper = limit - 1;
 
   return trunc((n + (upper - (upper % n))) * trunc(upper / n) / 2);
-}
+};
 
 export const compute = (limit: number): string =>
   String(

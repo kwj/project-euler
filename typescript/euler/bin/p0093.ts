@@ -41,7 +41,7 @@ import { dedupSort } from "../lib/util.ts";
 
 type RPNelm = string | Rational;
 
-function calcRPN(rpn: RPNelm[]): Rational {
+const calcRPN = (rpn: RPNelm[]): Rational => {
   const stack: Rational[] = [];
   for (const elm of rpn) {
     if (typeof elm !== "string") {
@@ -72,9 +72,9 @@ function calcRPN(rpn: RPNelm[]): Rational {
   }
 
   return stack[0];
-}
+};
 
-function* numsGenerator(): Generator<Rational[], void, unknown> {
+const numsGenerator = function* (): Generator<Rational[], void, unknown> {
   for (let a = 0; a < 10; a++) {
     for (let b = a + 1; b < 10; b++) {
       for (let c = b + 1; c < 10; c++) {
@@ -84,9 +84,9 @@ function* numsGenerator(): Generator<Rational[], void, unknown> {
       }
     }
   }
-}
+};
 
-function getMaxConsecNum(x: Rational[], opSets: string[][]): number {
+const getMaxConsecNum = (x: Rational[], opSets: string[][]): number => {
   let acc: Rational[] = [];
   for (const [x1, x2, x3, x4] of permutations(x)) {
     for (const [op1, op2, op3] of opSets) {
@@ -108,7 +108,7 @@ function getMaxConsecNum(x: Rational[], opSets: string[][]): number {
   for (cnt = 0; cnt === result[cnt] - 1; cnt++);
 
   return cnt;
-}
+};
 
 export const compute = (): string => {
   const opSets: string[][] = [

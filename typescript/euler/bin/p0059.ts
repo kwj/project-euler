@@ -5,11 +5,10 @@ import { assetData } from "../lib/asset.ts";
 import { sum } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-function decode(cipherText: [number, number][], key: number[]): number[] {
-  return cipherText.map(([e, i]) => e ^ key[i]);
-}
+const decode = (cipherText: [number, number][], key: number[]): number[] =>
+  cipherText.map(([e, i]) => e ^ key[i]);
 
-function calcScore(lst: number[]): number {
+const calcScore = (lst: number[]): number => {
   const wordLst = lst.map((x) => String.fromCharCode(x)).join("").split(/[,. ]/)
     .map((x) => x.toLocaleLowerCase());
 
@@ -19,7 +18,7 @@ function calcScore(lst: number[]): number {
   }
 
   return cnt;
-}
+};
 
 export const compute = (data: string): string => {
   const cipherText: [number, number][] = data.split(",").map((

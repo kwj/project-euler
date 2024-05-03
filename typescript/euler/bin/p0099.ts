@@ -5,20 +5,20 @@ import { assetData } from "../lib/asset.ts";
 import { range } from "../lib/util.ts";
 
 export const compute = (data: string): string => {
-  function parseData(data: string): [number, number][] {
-    function splitLines(str: string): string[] {
+  const parseData = (data: string): [number, number][] => {
+    const splitLines = (str: string): string[] => {
       const result = str.split(/\r?\n/);
       if (result.at(-1) === "") {
         return result.slice(0, -1);
       } else {
         return result;
       }
-    }
+    };
 
     return splitLines(data).map((x) => x.split(",")).map((
       x,
     ) => [Number(x[0]), Number(x[1])]);
-  }
+  };
 
   const calc_result = parseData(data).map((tpl) => tpl[1] * Math.log10(tpl[0]));
 

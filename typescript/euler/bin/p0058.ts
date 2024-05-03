@@ -48,13 +48,13 @@
 import { isPrime } from "../lib/primes.ts";
 
 export const compute = (): string => {
-  function wrapper(n: number): number {
+  const wrapper = (n: number): number => {
     if (isPrime(n) === true) {
       return 1;
     } else {
       return 0;
     }
-  }
+  };
 
   let nPrimes = 0;
   let m = 3;

@@ -3,7 +3,7 @@
 import { dropWhile } from "std/collections/drop_while.ts";
 import { isPrimeSimple, primeGenerator } from "../lib/primes.ts";
 
-function* cumSumGenerator(): Generator<number, void, void> {
+const cumSumGenerator = function* (): Generator<number, void, void> {
   let acc = 0;
   const p_gen = primeGenerator();
   while (true) {
@@ -11,19 +11,19 @@ function* cumSumGenerator(): Generator<number, void, void> {
     yield acc;
   }
   // not reached
-}
+};
 
-function initCumSumLst(
+const initCumSumLst = (
   cs_gen: Generator<number, void, void>,
   limit: number,
-): number[] {
+): number[] => {
   const lst = [0];
   while (lst.at(-1)! < limit) {
     lst.push(cs_gen.next().value as number);
   }
 
   return lst;
-}
+};
 
 export const compute = (limit: number): string => {
   const cs_gen = cumSumGenerator();

@@ -67,8 +67,8 @@ import { range } from "../lib/util.ts";
    (3, [0, 0, 1, 0, 0, 1, 1]), (3, [0, 0, 0, 1, 1, 1, 0]), (3, [0, 0, 0, 1, 1, 0, 1]),
    (3, [0, 0, 0, 1, 0, 1, 1]), (3, [0, 0, 0, 0, 1, 1, 1]), (6, [0, 1, 1, 1, 1, 1, 1])]
 */
-function makePatterns(ndigits: number): [number, number[]][] {
-  function selectPos(): [number, number[]][] {
+const makePatterns = (ndigits: number): [number, number[]][] => {
+  const selectPos = (): [number, number[]][] => {
     const result: [number, number[]][] = [];
     const positions = range(1, ndigits);
     for (const n of range(3, ndigits, 3)) {
@@ -79,9 +79,9 @@ function makePatterns(ndigits: number): [number, number[]][] {
     }
 
     return result;
-  }
+  };
 
-  function flipBits(posLst: [number, number[]]): [number, number[]] {
+  const flipBits = (posLst: [number, number[]]): [number, number[]] => {
     const result: number[] = Array(ndigits);
     result.fill(0);
     for (const idx of posLst[1]) {
@@ -89,14 +89,14 @@ function makePatterns(ndigits: number): [number, number[]][] {
     }
 
     return [posLst[0], result];
-  }
+  };
 
   return selectPos().map((x) => flipBits(x));
-}
+};
 
 // assemble_num(231, [0, 1, 1, 1, 0, 0], 7)
 //   --> 237771
-function assembleNum(i: number, pat: number[], r: number): number {
+const assembleNum = (i: number, pat: number[], r: number): number => {
   const lst: number[] = [];
   for (const flag of pat) {
     if (flag === 0) {
@@ -108,18 +108,18 @@ function assembleNum(i: number, pat: number[], r: number): number {
   }
 
   return lst.reverse().reduce((x, y) => 10 * x + y);
-}
+};
 
-function isProbable(i: number, pat: number[], currentMin: number): boolean {
+const isProbable = (i: number, pat: number[], currentMin: number): boolean => {
   if (pat.at(-1) === 1) {
     return assembleNum(i, pat, 1) < currentMin;
   } else {
     return assembleNum(i, pat, 0) < currentMin;
   }
-}
+};
 
 // check all cases
-function findPrime(i: number, pat: number[]): number | undefined {
+const findPrime = (i: number, pat: number[]): number | undefined => {
   // If MSB is target digit to replace, '0' is not applicable.
   const start = pat.at(-1) === 1 ? 1 : 0;
 
@@ -133,7 +133,7 @@ function findPrime(i: number, pat: number[]): number | undefined {
 
   // if there are eight primes by this pattern, return the smallest one.
   return (lst.length === 8) ? lst[0] : undefined;
-}
+};
 
 export const compute = (): string => {
   let ndigits = 4;

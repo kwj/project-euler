@@ -2,7 +2,7 @@
 
 import { range } from "../lib/util.ts";
 
-function divLoop(a: number, b: number): number {
+const divLoop = (a: number, b: number): number => {
   const rems = new Map<number, number>();
   let cnt = 0;
   while (true) {
@@ -17,7 +17,7 @@ function divLoop(a: number, b: number): number {
       cnt += 1;
     }
   }
-}
+};
 
 export const compute = (limit: number): string => {
   let maxCycle = 0;

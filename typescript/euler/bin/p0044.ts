@@ -10,20 +10,18 @@ import { factorize, isPentagonal, pflstToDivisors } from "../lib/math.ts";
 //  - They are less than 'n'.
 //  - They are congruent to 'n' modulo 3.
 // note: 'n' and '3n-1' are co-prime numbers.
-function getDivisors(n: number): number[] {
+const getDivisors = (n: number): number[] => {
   const divisors = pflstToDivisors([...factorize(n), ...factorize(3 * n - 1)]);
 
   return divisors.filter((x) => x < n && x % 3 === n % 3);
-}
+};
 
 // d(3d-1) = (k-j)(3(k+j)-1)
 //   lhs: d(3d-1)
 //   rhs: (k-j) * (3(k+j)-1) = r1 * r2 [r1=k-j, r2=3(k+j)-1]
 //      0 < (k-j) < d, d % 3 == (k-j) % 3
 export const compute = (): string => {
-  function pent(n: number): number {
-    return trunc((n * (3 * n - 1)) / 2);
-  }
+  const pent = (n: number): number => trunc((n * (3 * n - 1)) / 2);
 
   const trunc = Math.trunc;
   let d = 4;

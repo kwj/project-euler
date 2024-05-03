@@ -75,8 +75,10 @@
 
 import { prod, sum } from "../lib/math.ts";
 
-function* kvGenerator(upper: number): Generator<number[], void, unknown> {
-  function makeNextTerms(lst: number[]): number[] {
+const kvGenerator = function* (
+  upper: number,
+): Generator<number[], void, unknown> {
+  const makeNextTerms = (lst: number[]): number[] => {
     const len = lst.length;
     let tmp = lst.concat(lst[len - 1]);
     if (prod(tmp) <= upper) {
@@ -91,11 +93,11 @@ function* kvGenerator(upper: number): Generator<number[], void, unknown> {
     } else {
       return lst.slice(0, len - 2).concat(lst[len - 2] + 1);
     }
-  }
+  };
 
-  function makeKV(lst: number[]): number[] {
-    return [prod(lst) - (sum(lst) - lst.length), prod(lst)];
-  }
+  const makeKV = (
+    lst: number[],
+  ): number[] => [prod(lst) - (sum(lst) - lst.length), prod(lst)];
 
   let terms = [2, 2];
   while (true) {
@@ -107,7 +109,7 @@ function* kvGenerator(upper: number): Generator<number[], void, unknown> {
       yield result;
     }
   }
-}
+};
 
 export const compute = (limit: number): string => {
   const tbl = new Map<number, number>();

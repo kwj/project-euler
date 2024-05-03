@@ -4,13 +4,13 @@ import { combinations } from "combinatorics/mod.ts";
 import { Sieve } from "../lib/primes.ts";
 
 export const compute = (limit: number): string => {
-  function isPerm(p1: number, p2: number, p3: number): boolean {
+  const isPerm = (p1: number, p2: number, p3: number): boolean => {
     const s1 = String(p1).split("").sort().join("");
     const s2 = String(p2).split("").sort().join("");
     const s3 = String(p3).split("").sort().join("");
 
     return s1 === s2 && s1 === s3;
-  }
+  };
 
   const pt = new Sieve(1000, limit);
   for (const [i, j] of combinations(pt.getPrimes(), 2)) {

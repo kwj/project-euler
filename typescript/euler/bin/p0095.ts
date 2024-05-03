@@ -3,7 +3,7 @@
 import { range } from "../lib/util.ts";
 
 export const compute = (limit: number): string => {
-  function checkLoop(pos: number): [number, number] {
+  const checkLoop = (pos: number): [number, number] => {
     const stop = pos;
     let minValue = pos;
     let cnt = 1;
@@ -15,7 +15,7 @@ export const compute = (limit: number): string => {
     }
 
     return [cnt, minValue];
-  }
+  };
 
   // lookup table: sum of divisors
   const sdTbl: number[] = Array(limit + 1).fill(1);

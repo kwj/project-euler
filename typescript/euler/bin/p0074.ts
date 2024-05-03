@@ -2,7 +2,7 @@
 
 import { range } from "../lib/util.ts";
 
-function factSum(n: number): number {
+const factSum = (n: number): number => {
   const tbl = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880];
   if (n === 0) {
     return tbl[0];
@@ -15,7 +15,7 @@ function factSum(n: number): number {
   }
 
   return acc;
-}
+};
 
 export const compute = (limit: number, threshold: number): string => {
   const chain_tbl: number[] = new Array(limit).fill(0);

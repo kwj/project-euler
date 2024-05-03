@@ -18,24 +18,23 @@ import { sum } from "../lib/math.ts";
 import { isPrime, primeGenerator } from "../lib/primes.ts";
 import { range } from "../lib/util.ts";
 
-function isPair(x: number, y: number): boolean {
-  function concatNum(a: number, b: number): number {
+const isPair = (x: number, y: number): boolean => {
+  const concatNum = (a: number, b: number): number => {
     let n = 10;
     while (b > n) {
       n *= 10;
     }
 
     return a * n + b;
-  }
+  };
 
   return isPrime(concatNum(x, y)) && isPrime(concatNum(y, x));
-}
+};
 
-function findNbrs(prime: number, primeLst: number[], limit: number): number[] {
-  return primeLst.filter((x) => x + prime < limit && isPair(x, prime));
-}
+const findNbrs = (prime: number, primeLst: number[], limit: number): number[] =>
+  primeLst.filter((x) => x + prime < limit && isPair(x, prime));
 
-function isClique(lst: number[], tbl: Map<number, Set<number>>): boolean {
+const isClique = (lst: number[], tbl: Map<number, Set<number>>): boolean => {
   // The elements in the array 'lst' must be in descending order.
   for (const i of range(0, lst.length - 1)) {
     const nbrs = tbl.get(lst[i]) as Set<number>;
@@ -48,7 +47,7 @@ function isClique(lst: number[], tbl: Map<number, Set<number>>): boolean {
   }
 
   return true;
-}
+};
 
 export const compute = (): string => {
   // discard 2, 3 and 5

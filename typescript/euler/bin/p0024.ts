@@ -5,7 +5,7 @@ import { range } from "../lib/util.ts";
 
 const trunc = Math.trunc;
 
-function makeFactTbl(n: number, depth: number): number[] {
+const makeFactTbl = (n: number, depth: number): number[] => {
   const result: number[] = [];
   let i = n - 1;
   const divisor = factorial(n - depth);
@@ -15,7 +15,7 @@ function makeFactTbl(n: number, depth: number): number[] {
   }
 
   return result;
-}
+};
 
 export const compute = (nth: number, elmLst: number[]): string => {
   const depth = elmLst.length;

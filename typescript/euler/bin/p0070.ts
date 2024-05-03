@@ -51,20 +51,14 @@ class Sieve {
   }
 }
 
-function prod(pfLst: number[][]): number {
-  return pfLst.map((x) => x[0] ** x[1]).reduce((acc, cur) => acc * cur, 1);
-}
+const prod = (pfLst: number[][]): number =>
+  pfLst.map((x) => x[0] ** x[1]).reduce((acc, cur) => acc * cur, 1);
 
-function phi(pfLst: number[][]): number {
-  return pfLst.map((x) => x[0] ** (x[1] - 1) * (x[0] - 1)).reduce(
-    (acc, cur) => acc * cur,
-    1,
-  );
-}
+const phi = (pfLst: number[][]): number =>
+  pfLst.map((x) => x[0] ** (x[1] - 1) * (x[0] - 1))
+    .reduce((acc, cur) => acc * cur, 1);
 
-function getRatio(pfLst: number[][]): number {
-  return prod(pfLst) / phi(pfLst);
-}
+const getRatio = (pfLst: number[][]): number => prod(pfLst) / phi(pfLst);
 
 function* pfGenerator(
   prime_t: Sieve,
@@ -76,7 +70,7 @@ function* pfGenerator(
   //   In contrast, the function 'next' returns its reversed list.
   //     [[p1, e1], [p2, e2], ..., [p_n, e_n]]
 
-  function aux(pfLst: [number, number][]): [number, number][] {
+  const aux = (pfLst: [number, number][]): [number, number][] => {
     const [b, e] = pfLst[0];
     const tmp = Math.trunc(LIMIT / prod(pfLst));
     if (tmp < b) {
@@ -89,7 +83,7 @@ function* pfGenerator(
         return [[b, e + 1]].concat(pfLst.slice(1)) as [number, number][];
       }
     }
-  }
+  };
 
   let pfLst: [number, number][] = (tpl[0] !== tpl[1])
     ? [[tpl[1], 1], [tpl[0], 1]]
@@ -123,12 +117,12 @@ function* pfGenerator(
   }
 }
 
-function isPerm(p1: number, p2: number): boolean {
+const isPerm = (p1: number, p2: number): boolean => {
   const s1 = String(p1).split("").sort().join("");
   const s2 = String(p2).split("").sort().join("");
 
   return s1 === s2;
-}
+};
 
 export const compute = (): string => {
   // priority queue:

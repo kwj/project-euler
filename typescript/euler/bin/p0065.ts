@@ -35,9 +35,7 @@
 import { sum } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-function c(i: number): bigint {
-  return (i % 3 !== 0) ? 1n : (2n * BigInt(i)) / 3n;
-}
+const c = (i: number): bigint => (i % 3 !== 0) ? 1n : (2n * BigInt(i)) / 3n;
 
 export const compute = (nth: number): string => {
   let n_i1 = 3n, n_i2 = 2n;

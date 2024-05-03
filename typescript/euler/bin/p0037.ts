@@ -9,7 +9,7 @@ import { sum } from "../lib/math.ts";
 import { isPrime } from "../lib/primes.ts";
 import { numOfDigits } from "../lib/util.ts";
 
-function addPrefix(prefixes: number[], lst: number[]): number[] {
+const addPrefix = (prefixes: number[], lst: number[]): number[] => {
   const acc: number[] = [];
   for (const n of lst) {
     for (const p of prefixes) {
@@ -18,14 +18,13 @@ function addPrefix(prefixes: number[], lst: number[]): number[] {
   }
 
   return acc;
-}
+};
 
-function makeNextLst(lst: number[]): number[] {
-  return addPrefix([1, 3, 7, 9], lst).filter((x) => isPrime(x));
-}
+const makeNextLst = (lst: number[]): number[] =>
+  addPrefix([1, 3, 7, 9], lst).filter((x) => isPrime(x));
 
-function pickupPrimes(lst: number[]): number[] {
-  function isTruncablePrime(n: number): boolean {
+const pickupPrimes = (lst: number[]): number[] => {
+  const isTruncablePrime = (n: number): boolean => {
     if (n === 0) {
       return false;
     }
@@ -37,10 +36,10 @@ function pickupPrimes(lst: number[]): number[] {
     }
 
     return true;
-  }
+  };
 
   return addPrefix([2, 3, 5, 7], lst).filter((x) => isTruncablePrime(x));
-}
+};
 
 export const compute = (): string => {
   let result: number[] = [];

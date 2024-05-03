@@ -21,10 +21,10 @@ const data = [
   [ 4, 62, 98, 27, 23,  9, 70, 98, 73, 93, 38, 53, 60,  4, 23],
 ];
 
-function selectLeaf(
+const selectLeaf = (
   fn: (...valus: number[]) => number,
   lst: number[],
-): number[] {
+): number[] => {
   const result = [];
   let prev = lst[0];
   for (const i of lst) {
@@ -33,7 +33,7 @@ function selectLeaf(
   }
 
   return result.slice(1);
-}
+};
 
 export const compute = (
   fn: (...valus: number[]) => number,

@@ -7,23 +7,22 @@ export const compute = (
   fn: (...valus: number[]) => number,
   data: string,
 ): string => {
-  function parseData(data: string): number[][] {
-    function splitLines(str: string): string[] {
+  const parseData = (data: string): number[][] => {
+    const splitLines = (str: string): string[] => {
       const result = str.split(/\r?\n/);
       if (result.at(-1) === "") {
         return result.slice(0, -1);
       } else {
         return result;
       }
-    }
+    };
 
     return splitLines(data).map((x) => x.split(",").map((y) => Number(y)));
-  }
+  };
 
-  function transpose(matrix: number[][]): number[][] {
-    // Add a check process for square matrix if necessary
-    return matrix[0].map((_, idx) => matrix.map((row) => row[idx]));
-  }
+  // Add a check process for square matrix if necessary
+  const transpose = (matrix: number[][]): number[][] =>
+    matrix[0].map((_, idx) => matrix.map((row) => row[idx]));
 
   const matrix = transpose(parseData(data));
   const work = matrix[0];

@@ -18,7 +18,7 @@ import { range } from "../lib/util.ts";
 
 const trunc = Math.trunc;
 
-function makeMobiusTbl(limit: number): number[] {
+const makeMobiusTbl = (limit: number): number[] => {
   const p_tbl = range(0, limit + 1);
   for (const i of range(2, isqrt(limit) + 1)) {
     if (p_tbl[i] === i) {
@@ -40,16 +40,15 @@ function makeMobiusTbl(limit: number): number[] {
   }
 
   return mu_tbl;
-}
+};
 
-function f(x: number): number {
-  return sum(range(1, x + 1).map((j) => trunc((j - 1) / 2) - trunc(j / 3)));
-}
+const f = (x: number): number =>
+  sum(range(1, x + 1).map((j) => trunc((j - 1) / 2) - trunc(j / 3)));
 
-function g(N: number): number {
+const g = (N: number): number => {
   const mu_tbl = makeMobiusTbl(N);
   return sum(range(1, N + 1).map((k) => mu_tbl[k] * f(trunc(N / k))));
-}
+};
 
 export const compute = (upper: number): string => String(g(upper));
 

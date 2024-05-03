@@ -36,7 +36,7 @@ import { gcd } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
 export const compute = (xSize: number, ySize: number): string => {
-  function case2(): number {
+  const case2 = (): number => {
     const trunc = Math.trunc;
     let acc = 0;
     for (const x of range(1, xSize + 1)) {
@@ -49,7 +49,7 @@ export const compute = (xSize: number, ySize: number): string => {
     }
 
     return acc * 2;
-  }
+  };
 
   return String((xSize * ySize) * 3 + case2());
 };

@@ -13,7 +13,7 @@
 import { sum } from "../lib/math.ts";
 import { isPandigitalNZ, range } from "../lib/util.ts";
 
-function makeCands(): [number, number][] {
+const makeCands = (): [number, number][] => {
   const acc: [number, number][] = [];
 
   // 4-digits/1-digit/4-digits
@@ -37,7 +37,7 @@ function makeCands(): [number, number][] {
   }
 
   return acc;
-}
+};
 
 export const compute = (): string => {
   const n_set = new Set();

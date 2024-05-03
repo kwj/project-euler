@@ -27,7 +27,7 @@
 
 import { assetData } from "../lib/asset.ts";
 
-function replaceNumbers(line: string): string {
+const replaceNumbers = (line: string): string => {
   // step 1, 2, 3 and 4
   let s = line.replace(/IIIIIIIII|XXXXXXXXX|CCCCCCCCC/g, "##");
   s = s.replace(/VIIII|LXXXX|DCCCC/g, "##");
@@ -35,21 +35,21 @@ function replaceNumbers(line: string): string {
   s = s.replace(/IIII|XXXX|CCCC/g, "##");
 
   return s;
-}
+};
 
 export const compute = (data: string): string => {
-  function parseData(data: string): string[] {
-    function splitLines(str: string): string[] {
+  const parseData = (data: string): string[] => {
+    const splitLines = (str: string): string[] => {
       const result = str.split(/\r?\n/);
       if (result.at(-1) === "") {
         return result.slice(0, -1);
       } else {
         return result;
       }
-    }
+    };
 
     return splitLines(data);
-  }
+  };
 
   let acc = 0;
   for (const line of parseData(data)) {

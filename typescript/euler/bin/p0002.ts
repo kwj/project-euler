@@ -17,13 +17,13 @@
          = 4f(k-3) + f(k-6)
 */
 
-function* evenFibGen() {
+const evenFibGen = function* (): Generator<number, void, void> {
   let a = 2, b = 8;
   while (true) {
     yield a;
     [a, b] = [b, 4 * b + a];
   }
-}
+};
 
 export const compute = (limit: number): string => {
   const fib_gen = evenFibGen();

@@ -3,12 +3,12 @@
 import { isqrt } from "../lib/math.ts";
 import { isPrimeSimple } from "../lib/primes.ts";
 
-function isTwiceSquare(n: number): boolean {
+const isTwiceSquare = (n: number): boolean => {
   const tmp = Math.trunc(n / 2);
   const tmp_isqrt = isqrt(tmp);
 
   return n % 2 === 0 && tmp_isqrt * tmp_isqrt === tmp;
-}
+};
 
 export const compute = (): string => {
   // '2' is not an odd prime number

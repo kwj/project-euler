@@ -15,14 +15,14 @@
 
 import { getPrimes, isPrimeSimple } from "../lib/primes.ts";
 
-function countConsecutive(a: number, b: number): number {
+const countConsecutive = (a: number, b: number): number => {
   let n = 0;
   while (isPrimeSimple(n * n + a * n + b) === true) {
     n += 1;
   }
 
   return n;
-}
+};
 
 export const compute = (): string => {
   const primes = getPrimes(2000);

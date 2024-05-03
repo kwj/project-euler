@@ -64,7 +64,7 @@ import { combinationsWithReplacement } from "combinatorics/mod.ts";
 import { factorial, prod, sum } from "../lib/math.ts";
 import { Counter, numOfDigits } from "../lib/util.ts";
 
-function isGroup89(n: number): boolean {
+const isGroup89 = (n: number): boolean => {
   while (n !== 89 && n > 1) {
     let acc = 0;
     while (n !== 0) {
@@ -75,7 +75,7 @@ function isGroup89(n: number): boolean {
   }
 
   return n === 89;
-}
+};
 
 export const compute = (limit: number): string => {
   if (Number.isInteger(Math.log10(limit)) !== true || limit === 0) {

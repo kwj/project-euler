@@ -39,32 +39,31 @@ import { unzip } from "std/collections/unzip.ts";
 import { assetData } from "../lib/asset.ts";
 import { cmpLst, Counter, range } from "../lib/util.ts";
 
-function getHandRank(hand: string[]): number[] {
-  function rankToNum(s: string): number {
+const getHandRank = (hand: string[]): number[] => {
+  const rankToNum = (s: string): number => {
     // deno-fmt-ignore
     const tbl = new Map<string, number>(
       [["2", 2], ["3", 3], ["4", 4], ["5", 5], ["6", 6], ["7", 7], ["8", 8],
        ["9", 9], ["T", 10], ["J", 11], ["Q", 12], ["K", 13], ["A", 14]]
     )
     return tbl.get(s) as number;
-  }
+  };
 
-  function isStraight(lst: number[]): boolean {
-    return cmpLst(lst, range(lst[0], lst[0] - 5, -1)) === 0;
-  }
+  const isStraight = (lst: number[]): boolean =>
+    cmpLst(lst, range(lst[0], lst[0] - 5, -1)) === 0;
 
-  function getDetail(handInfo: [string, number][]): number[] {
+  const getDetail = (handInfo: [string, number][]): number[] => {
     const [detail, _] = unzip(handInfo);
     return detail.map((x) => Number(x));
-  }
+  };
 
-  function getHand(suitLst: string[], rankLst: number[]): number[] {
+  const getHand = (suitLst: string[], rankLst: number[]): number[] => {
     // deno-fmt-ignore
     enum Hand {
       HC = 0, OP, TP, TK, S, F, FH, FK, SF, RF
     }
 
-    function cmpDetail(a: [string, number], b: [string, number]): number {
+    const cmpDetail = (a: [string, number], b: [string, number]): number => {
       const tmp = b[1] - a[1];
       if (tmp !== 0) {
         return tmp;
@@ -79,7 +78,7 @@ function getHandRank(hand: string[]): number[] {
       } else {
         return 0;
       }
-    }
+    };
 
     const handInfo = Counter(rankLst).sort(cmpDetail);
 
@@ -120,31 +119,30 @@ function getHandRank(hand: string[]): number[] {
           throw new Error("not reached");
       }
     }
-  }
+  };
 
   const [rankLst, suitLst] = unzip(hand.map((x) => [rankToNum(x[0]), x[1]]));
   rankLst.sort().reverse();
 
   return getHand(suitLst, rankLst);
-}
+};
 
 export const compute = (data: string): string => {
-  function parseData(data: string): string[][][] {
-    function splitLines(str: string): string[] {
+  const parseData = (data: string): string[][][] => {
+    const splitLines = (str: string): string[] => {
       const result = str.split(/\r?\n/);
       if (result.at(-1) === "") {
         return result.slice(0, -1);
       } else {
         return result;
       }
-    }
+    };
 
     return splitLines(data).map((x) => chunk(x.split(" "), 5));
-  }
+  };
 
-  function judge(lst: string[][]): number {
-    return cmpLst(getHandRank(lst[0]), getHandRank(lst[1]));
-  }
+  const judge = (lst: string[][]): number =>
+    cmpLst(getHandRank(lst[0]), getHandRank(lst[1]));
 
   const handLst = parseData(data);
   let p1 = 0, p2 = 0, draw = 0;

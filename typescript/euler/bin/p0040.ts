@@ -26,7 +26,7 @@
 //    d[15] = num / (10 ** (2 - r - 1)) % 10
 //          = 12 / (10 ** 0) % 10
 //          = 2
-function d(pos: number): number {
+const d = (pos: number): number => {
   const trunc = Math.trunc;
   let nDigits = 1;
   while (pos > nDigits * 9 * (10 ** (nDigits - 1))) {
@@ -38,7 +38,7 @@ function d(pos: number): number {
   const num = 10 ** (nDigits - 1) + q;
 
   return trunc(num / (10 ** (nDigits - r - 1))) % 10;
-}
+};
 
 export const compute = (): string =>
   String(

@@ -2,9 +2,8 @@
 
 import { isPalindrome, range } from "../lib/util.ts";
 
-function isBothPalindrome(n: number): boolean {
-  return isPalindrome(n) === true && isPalindrome(n, 2) === true;
-}
+const isBothPalindrome = (n: number): boolean =>
+  isPalindrome(n) === true && isPalindrome(n, 2) === true;
 
 export const compute = (limit: number): string => {
   let acc = 0;

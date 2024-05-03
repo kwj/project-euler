@@ -4,7 +4,10 @@ import { ascend, BinaryHeap } from "std/data_structures/mod.ts";
 import { assetData } from "../lib/asset.ts";
 import { range } from "../lib/util.ts";
 
-function makeNeighborTbl(rows: number, cols: number): [number, number][][][] {
+const makeNeighborTbl = (
+  rows: number,
+  cols: number,
+): [number, number][][][] => {
   let tbl: [number, number][][][] = [];
   for (const _ of range(0, rows)) {
     tbl = tbl.concat([new Array(cols).fill([])]);
@@ -19,30 +22,30 @@ function makeNeighborTbl(rows: number, cols: number): [number, number][][][] {
     }
   }
   return tbl;
-}
+};
 
-function makeDistanceTbl(rows: number, cols: number): number[][] {
+const makeDistanceTbl = (rows: number, cols: number): number[][] => {
   let tbl: number[][] = [];
   for (const _ of range(0, rows)) {
     tbl = tbl.concat([new Array(cols).fill(Number.MAX_SAFE_INTEGER)]);
   }
 
   return tbl;
-}
+};
 
 export const compute = (data: string): string => {
-  function parseData(data: string): number[][] {
-    function splitLines(str: string): string[] {
+  const parseData = (data: string): number[][] => {
+    const splitLines = (str: string): string[] => {
       const result = str.split(/\r?\n/);
       if (result.at(-1) === "") {
         return result.slice(0, -1);
       } else {
         return result;
       }
-    }
+    };
 
     return splitLines(data).map((x) => x.split(",").map((y) => Number(y)));
-  }
+  };
 
   const matrix = parseData(data);
   const nbrTbl = makeNeighborTbl(matrix.length, matrix[0].length);

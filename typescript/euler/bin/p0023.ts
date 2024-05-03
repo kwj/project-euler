@@ -3,7 +3,7 @@
 import { sum } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-function getAbndntNums(limit: number): number[] {
+const getAbndntNums = (limit: number): number[] => {
   const sd_tbl = new Array(limit + 1);
   sd_tbl.fill(1);
   for (const i of range(2, limit + 1)) {
@@ -13,10 +13,10 @@ function getAbndntNums(limit: number): number[] {
   }
 
   return range(12, limit + 1).filter((x) => x < sd_tbl[x]);
-}
+};
 
 export const compute = (limit: number): string => {
-  function isSumOfTwoAbndnts(n: number): boolean {
+  const isSumOfTwoAbndnts = (n: number): boolean => {
     // n = x + (n-x). x is abundant number.
     // if (n-x) is abundant number, return True.
     for (const x of abndntNums) {
@@ -29,7 +29,7 @@ export const compute = (limit: number): string => {
     }
 
     return false;
-  }
+  };
 
   const abndntNums = getAbndntNums(limit);
   const abndntFlags: boolean[] = new Array(limit + 1);

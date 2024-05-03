@@ -4,7 +4,7 @@ import { permutations } from "combinatorics/mod.ts";
 import { sum } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-function makePolygonalTbl() {
+const makePolygonalTbl = () => {
   const trunc = Math.trunc;
   const fn = new Map<number, (n: number) => number>([
     [3, (n) => trunc(n * (n + 1) / 2)],
@@ -39,13 +39,13 @@ function makePolygonalTbl() {
   }
 
   return tbl;
-}
+};
 
-function findCycle(
+const findCycle = (
   polyTbl: Map<number, Map<number, number[]>>,
   route: number[],
-): number[] | undefined {
-  function dfs(nextRoute: number[], path: number[]): number[] | undefined {
+): number[] | undefined => {
+  const dfs = (nextRoute: number[], path: number[]): number[] | undefined => {
     if (nextRoute.length === 0) {
       return (path[0] === path.at(-1)) ? path.slice(1) : undefined;
     }
@@ -63,7 +63,7 @@ function findCycle(
     }
 
     return undefined;
-  }
+  };
 
   // Start searching from octagonal numbers
   for (const [k, v] of polyTbl.get(8)!.entries()) {
@@ -76,7 +76,7 @@ function findCycle(
   }
 
   return undefined;
-}
+};
 
 // Assume that octagonal numbers are the start/goal positions on cycle
 export const compute = (): string => {
