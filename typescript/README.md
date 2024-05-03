@@ -24,18 +24,20 @@ Caution: These solutions aren't good examples for programming because I'm a Java
 
 These solutions were confirmed to work in the following version.
 
-```js
-> Deno.version
-{ deno: "1.40.2", v8: "12.1.285.6", typescript: "5.3.3" }
+```console
+$ deno --version
+deno 1.43.1 (release, aarch64-unknown-linux-gnu)
+v8 12.4.254.12
+typescript 5.4.3
 ```
 
 I used the following libraries/packages in addition to the standard runtime APIs part of Deno.
 
-- Deno Standard Modules 0.213.0[^2]
+- Deno Standard Modules 0.224.0[^2]
 - Combinatorics 1.1.2[^3]
 
 [^1]: https://deno.land/
 
-[^2]: https://deno.land/std@0.213.0
+[^2]: https://deno.land/std@0.224.0
 
 [^3]: https://deno.land/x/combinatorics@1.1.2
