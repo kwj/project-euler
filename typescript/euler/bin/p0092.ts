@@ -59,7 +59,7 @@
     https://en.wikipedia.org/wiki/Permutation#Permutations_of_multisets
 */
 
-import { unzip } from "std/collections/unzip.ts";
+import { unzip } from "@std/collections";
 import { combinationsWithReplacement } from "combinatorics/mod.ts";
 import { factorial, prod, sum } from "../lib/math.ts";
 import { Counter, numOfDigits } from "../lib/util.ts";

@@ -2,8 +2,7 @@
  *  Prime functions
  */
 
-import { unzip } from "std/collections/unzip.ts";
-import { zip } from "std/collections/zip.ts";
+import { unzip, zip } from "@std/collections";
 import { isqrt, modPow } from "./math.ts";
 import { randInt, range } from "./util.ts";
 

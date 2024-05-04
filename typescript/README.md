@@ -36,8 +36,8 @@ I used the following libraries/packages in addition to the standard runtime APIs
 - Deno Standard Modules 0.224.0[^2]
 - Combinatorics 1.1.2[^3]
 
-[^1]: https://deno.land/
+[^1]: https://deno.com/
 
-[^2]: https://deno.land/std@0.224.0
+[^2]: https://jsr.io/@std
 
 [^3]: https://deno.land/x/combinatorics@1.1.2

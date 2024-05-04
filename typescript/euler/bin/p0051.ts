@@ -35,7 +35,7 @@
   4) There are at least same three numbers other than last digit.
 */
 
-import { unzip } from "std/collections/unzip.ts";
+import { unzip } from "@std/collections";
 import { combinations } from "combinatorics/mod.ts";
 import { isPrimeSimple } from "../lib/primes.ts";
 import { range } from "../lib/util.ts";

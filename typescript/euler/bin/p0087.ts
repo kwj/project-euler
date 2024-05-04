@@ -9,7 +9,7 @@
   84.08964152537145
 */
 
-import { takeWhile } from "std/collections/take_while.ts";
+import { takeWhile } from "@std/collections";
 import { getPrimes } from "../lib/primes.ts";
 
 export const compute = (limit: number): string => {

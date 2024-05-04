@@ -1,6 +1,6 @@
 // project euler: problem 18
 
-import { zip } from "std/collections/zip.ts";
+import { zip } from "@std/collections";
 
 // deno-fmt-ignore
 const data = [

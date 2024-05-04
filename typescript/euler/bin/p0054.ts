@@ -34,8 +34,7 @@
         AH JH TH QH KH -> [9, 14, 13, 12, 11, 10]  - RF: Royal Flush [9; 14; 13; 12; 11; 10]
 */
 
-import { chunk } from "std/collections/chunk.ts";
-import { unzip } from "std/collections/unzip.ts";
+import { chunk, unzip } from "@std/collections";
 import { assetData } from "../lib/asset.ts";
 import { cmpLst, Counter, range } from "../lib/util.ts";
 

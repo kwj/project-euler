@@ -4,8 +4,7 @@
   Monte Carlo method
 */
 
-import { unzip } from "std/collections/unzip.ts";
-import { zip } from "std/collections/zip.ts";
+import { unzip, zip } from "@std/collections";
 import { Counter, range } from "../lib/util.ts";
 
 // deno-fmt-ignore

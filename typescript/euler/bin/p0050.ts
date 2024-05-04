@@ -1,6 +1,6 @@
 // project euler: problem 50
 
-import { dropWhile } from "std/collections/drop_while.ts";
+import { dropWhile } from "@std/collections";
 import { isPrimeSimple, primeGenerator } from "../lib/primes.ts";
 
 const cumSumGenerator = function* (): Generator<number, void, void> {

@@ -1,4 +1,4 @@
-import { assertEquals } from "std/assert/assert_equals.ts";
+import { assertEquals } from "@std/assert";
 import { compute } from "../bin/p0024.ts";
 import { range } from "../lib/util.ts";
 

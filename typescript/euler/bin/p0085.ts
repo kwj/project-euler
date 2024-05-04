@@ -21,7 +21,7 @@
   --> m(m+1)*n(n+1) (\approx) 8_000_000
 */
 
-import { ascend, BinaryHeap } from "std/data_structures/mod.ts";
+import { ascend, BinaryHeap } from "@std/data-structures";
 import { isqrt } from "../lib/math.ts";
 
 const getDiff = (m: number, target: number): [number, number] | undefined => {

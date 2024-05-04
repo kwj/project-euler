@@ -1,7 +1,6 @@
 // project euler: problem 98
 
-import { unzip } from "std/collections/unzip.ts";
-import { zip } from "std/collections/zip.ts";
+import { unzip, zip } from "@std/collections";
 import { combinations } from "combinatorics/mod.ts";
 import { assetData } from "../lib/asset.ts";
 import { isqrt, max } from "../lib/math.ts";

@@ -1,6 +1,6 @@
 // project euler: problem 19
 
-import { runningReduce } from "std/collections/running_reduce.ts";
+import { runningReduce } from "@std/collections";
 import { range } from "../lib/util.ts";
 
 export const compute = (): string => {

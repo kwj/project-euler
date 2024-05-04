@@ -1,6 +1,6 @@
 // project euler: problem 67
 
-import { zip } from "std/collections/zip.ts";
+import { zip } from "@std/collections";
 import { assetData } from "../lib/asset.ts";
 
 const selectLeaf = (

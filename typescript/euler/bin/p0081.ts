@@ -1,6 +1,6 @@
 // project euler: problem 81
 
-import { runningReduce } from "std/collections/running_reduce.ts";
+import { runningReduce } from "@std/collections";
 import { assetData } from "../lib/asset.ts";
 import { range } from "../lib/util.ts";
 

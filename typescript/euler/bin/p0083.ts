@@ -1,6 +1,6 @@
 // project euler: problem 83
 
-import { ascend, BinaryHeap } from "std/data_structures/mod.ts";
+import { ascend, BinaryHeap } from "@std/data-structures";
 import { assetData } from "../lib/asset.ts";
 import { range } from "../lib/util.ts";
 

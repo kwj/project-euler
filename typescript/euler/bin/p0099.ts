@@ -1,6 +1,6 @@
 // project euler: problem 99
 
-import { zip } from "std/collections/zip.ts";
+import { zip } from "@std/collections";
 import { assetData } from "../lib/asset.ts";
 import { range } from "../lib/util.ts";
 

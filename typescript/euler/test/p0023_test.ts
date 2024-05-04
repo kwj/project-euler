@@ -1,4 +1,4 @@
-import { assertEquals } from "std/assert/assert_equals.ts";
+import { assertEquals } from "@std/assert";
 import { compute } from "../bin/p0023.ts";
 
 Deno.test("normal case 1", () => {

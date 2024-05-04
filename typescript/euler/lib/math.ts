@@ -1,4 +1,4 @@
-import { unzip } from "std/collections/unzip.ts";
+import { unzip } from "@std/collections";
 import { bitLength, highOrderReduce, range } from "./util.ts";
 
 /*

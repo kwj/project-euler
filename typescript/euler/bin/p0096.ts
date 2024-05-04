@@ -21,8 +21,7 @@
     - https://projecteuler.net/project/resources/p096_sudoku.txt
 */
 
-import { chunk } from "std/collections/chunk.ts";
-import { zip } from "std/collections/zip.ts";
+import { chunk, zip } from "@std/collections";
 import { cartesianProduct } from "combinatorics/mod.ts";
 import { assetData } from "../lib/asset.ts";
 import { max } from "../lib/math.ts";

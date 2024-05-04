@@ -17,9 +17,8 @@
     N = p1^k1 * p2^k2 * ... * pn^kn  (N < 10^7, n > 1, 11 <= p1 < p2 < ... < pn, k1>2 when n=1)
 */
 
-import { ascend, BinaryHeap } from "std/data_structures/mod.ts";
-import { dropWhile } from "std/collections/drop_while.ts";
-import { takeWhile } from "std/collections/take_while.ts";
+import { ascend, BinaryHeap } from "@std/data-structures";
+import { dropWhile, takeWhile } from "@std/collections";
 import { isqrt } from "../lib/math.ts";
 import { getPrimeTbl, primeTblToPrimes } from "../lib/primes.ts";
 

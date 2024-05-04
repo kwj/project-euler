@@ -1,4 +1,4 @@
-import { assertEquals } from "std/assert/assert_equals.ts";
+import { assertEquals } from "@std/assert";
 import { compute } from "../bin/p0083.ts";
 import { assetData } from "../lib/asset.ts";
 
