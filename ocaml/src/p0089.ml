@@ -45,8 +45,8 @@ let compute str_lst =
   loop 0 str_lst
 ;;
 
-let solve () =
-  compute (Euler.Task.read_data "./src/assets/p089_roman.txt") |> Int.to_string
+let solve fname =
+  compute (Euler.Task.read_file fname) |> Int.to_string
 ;;
 
 (* Test *)

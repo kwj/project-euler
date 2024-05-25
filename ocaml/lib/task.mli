@@ -1,3 +1,3 @@
-val run : (unit -> string) -> int -> unit
+val run : (unit -> string) -> (string * string)
+val run_with_file : (string -> string) -> string -> (string * string)
 val read_file : string -> string list
-val read_data : string -> string list

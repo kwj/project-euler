@@ -137,8 +137,8 @@ let compute str_lst =
   p1
 ;;
 
-let solve () =
-  compute (Euler.Task.read_data "./src/assets/p054_poker.txt") |> Int.to_string
+let solve fname =
+  compute (Euler.Task.read_file fname) |> Int.to_string
 ;;
 
 (* Test *)

@@ -15,8 +15,8 @@ let compute str_lst =
   |> snd
 ;;
 
-let solve () =
-  compute (Euler.Task.read_data "./src/assets/p099_base_exp.txt") |> Int.to_string
+let solve fname =
+  compute (Euler.Task.read_file fname) |> Int.to_string
 ;;
 
 (* Test *)

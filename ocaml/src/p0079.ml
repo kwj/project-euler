@@ -51,7 +51,7 @@ let compute str_lst =
   |> Euler.Util.list_to_str Int.to_string ""
 ;;
 
-let solve () = compute (Euler.Task.read_data "./src/assets/p079_keylog.txt")
+let solve fname = compute (Euler.Task.read_file fname)
 
 (* Test *)
 

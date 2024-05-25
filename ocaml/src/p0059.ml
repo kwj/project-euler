@@ -46,8 +46,8 @@ let compute str_lst =
     (Euler.Util.permutation_with_repetition 3 (List.range 0x61 0x7A ~stop:`inclusive))
 ;;
 
-let solve () =
-  compute (Euler.Task.read_data "./src/assets/p059_cipher.txt") |> Int.to_string
+let solve fname =
+  compute (Euler.Task.read_file fname) |> Int.to_string
 ;;
 
 (* Test *)

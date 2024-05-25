@@ -25,8 +25,8 @@ let parse_data data =
 
 let compute str_lst = parse_data str_lst |> calc_from_bottom
 
-let solve () =
-  compute (Euler.Task.read_data "./src/assets/p067_triangle.txt") |> Int.to_string
+let solve fname =
+  compute (Euler.Task.read_file fname) |> Int.to_string
 ;;
 
 (* Test *)
