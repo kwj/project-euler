@@ -1,7 +1,8 @@
 # project euler: problem 60
 
-# This implementation is slow. The following is a result on Ubuntu 23.10 / Raspberry Pi 4.
+# This implementation is slow. The following is a result on Raspberry Pi 4.
 #
+# [Ubuntu 23.10]
 # % python3
 # Python 3.11.6 (main, Oct  8 2023, 05:06:43) [GCC 13.2.0] on linux
 # Type "help", "copyright", "credits" or "license" for more information.
@@ -11,7 +12,17 @@
 # Answer: 26033
 # Elapsed time: 7.719348 sec.
 #
-# It is easy to find a 5-clique, however, it needs time to confirm its sum is the smallest.
+# [Ubuntu 24.04]
+# % python3
+# Python 3.12.3 (main, Apr 10 2024, 05:33:47) [GCC 13.2.0] on linux
+# Type "help", "copyright", "credits" or "license" for more information.
+# >>>
+# % ./solve.py 60
+# [Problem 60]
+# Answer: 26033
+# Elapsed time: 10.614437 sec.
+#
+# It is 30~40% slower than Python 3.11 on Ubuntu 23.10.
 
 import sys
 
