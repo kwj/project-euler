@@ -13,8 +13,6 @@
 
 open Core
 
-exception Failure of string
-
 let compute perim =
   let rec loop m =
     if m < 2
