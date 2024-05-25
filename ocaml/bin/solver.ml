@@ -170,8 +170,8 @@ let () =
             Euler.Task.run_with_file Solution.P0099.solve "./src/assets/p099_base_exp.txt"
           else Euler.Task.run_with_file Solution.P0099.solve !data_file
         | 100 -> Euler.Task.run Solution.P0100.solve
-        | _ -> raise (Invalid_argument "No solution exists for this problem number.")
+        | _ -> invalid_arg "No solution exists for this problem number."
       in
       print_result n result elapsed_time
-    | None -> raise (Invalid_argument "It is not a problem number."))
+    | None -> invalid_arg "It is not a problem number.")
 ;;
