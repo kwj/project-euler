@@ -9,8 +9,8 @@ fn solve() -> String {
 }
 
 fn compute(limit: i64) -> i64 {
-    let mut cs_gen = CumSumPrime::new();
-    let mut cs_lst = init_cumsum_lst(&mut cs_gen, limit);
+    let mut cs_gen: CumSumPrime = Default::default();
+    let mut cs_lst: Vec<i64> = cs_gen.get_initial_lst(limit);
 
     let mut ans: i64 = 0;
     let mut i: usize = 0;
@@ -20,7 +20,7 @@ fn compute(limit: i64) -> i64 {
         let lst: Vec<i64> = cs_lst[(i + width)..]
             .iter()
             .rev()
-            .skip_while(|&p| p - begin >= limit || !primes::is_prime(p - begin))
+            .skip_while(|&&p| p - begin >= limit || !primes::is_prime(p - begin))
             .copied()
             .collect();
         if !lst.is_empty() {
@@ -33,15 +33,7 @@ fn compute(limit: i64) -> i64 {
     ans
 }
 
-fn init_cumsum_lst(cs_gen: &mut CumSumPrime, limit: i64) -> Vec<i64> {
-    let mut lst: Vec<i64> = vec![0];
-
-    while *(lst.last().unwrap()) < limit {
-        lst.push(cs_gen.next().unwrap());
-    }
-    lst
-}
-
+#[derive(Default)]
 struct CumSumPrime {
     cumsum: i64,
     prime: i64,
@@ -59,11 +51,13 @@ impl Iterator for CumSumPrime {
 }
 
 impl CumSumPrime {
-    fn new() -> CumSumPrime {
-        CumSumPrime {
-            cumsum: 0,
-            prime: 0,
+    fn get_initial_lst(&mut self, limit: i64) -> Vec<i64> {
+        let mut lst: Vec<i64> = vec![0];
+
+        while *(lst.last().unwrap()) < limit {
+            lst.push(self.next().unwrap());
         }
+        lst
     }
 }
 
