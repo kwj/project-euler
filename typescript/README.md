@@ -2,7 +2,7 @@
 
 ## How to run
 
-The Deno[^1] runtime is required. These solutions will not work with the Node.js runtime.
+The [Deno](https://deno.com) runtime is required. These solutions will not work with the Node.js runtime.
 
 ```console
 sh solve.sh <problem_number> [problem_number ...]
@@ -26,18 +26,14 @@ These solutions were confirmed to work in the following version.
 
 ```console
 $ deno --version
-deno 1.43.1 (release, aarch64-unknown-linux-gnu)
-v8 12.4.254.12
-typescript 5.4.3
+deno 1.44.0 (release, aarch64-unknown-linux-gnu)
+v8 12.6.228.3
+typescript 5.4.5
 ```
 
-I used the following libraries/packages in addition to the standard runtime APIs part of Deno.
+I used the following libraries/packages in addition to the runtime APIs part of Deno.
 
-- Deno Standard Modules 0.224.0[^2]
-- Combinatorics 1.1.2[^3]
+- [Deno Standard Library](https://jsr.io/@std)
+- [Combinatorics](https://deno.land/x/combinatorics)
 
-[^1]: https://deno.com/
-
-[^2]: https://jsr.io/@std
-
-[^3]: https://deno.land/x/combinatorics@1.1.2
+See `deno.json` for details.
