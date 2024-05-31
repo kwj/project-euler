@@ -21,10 +21,10 @@ I used the following libraries/packages in addition to the standard libraries pa
 
 - Str [^1]
 - [Zarith](https://opam.ocaml.org/packages/zarith/) 1.13
-- [Core](https://opam.ocaml.org/packages/core/) v0.16.2
+- [Core](https://opam.ocaml.org/packages/core/) v0.17.1
 
 I also used the following package for compilation.
 
-- [Dune](https://opam.ocaml.org/packages/dune/) 3.15.2
+- [Dune](https://opam.ocaml.org/packages/dune/) 3.15.3
 
 [^1]: It's distributd with OCaml itself.
