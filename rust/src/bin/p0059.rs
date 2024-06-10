@@ -42,7 +42,7 @@ fn parse_data(s: &str) -> Vec<u8> {
     0x20 (space): 3
     0x41 - 0x5A (uppercase letters, 'A' - 'Z'): 5
     0x61 - 0x7A (lowercase letters, 'a' - 'z'): 3
-    0x21 - 0x7E exclude leters: 1
+    0x21 - 0x7E (printable characters except alphabet letters): 1
     others: 0
 */
 fn calc_score(ch: u8) -> i64 {
