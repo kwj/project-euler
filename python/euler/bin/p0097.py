@@ -11,22 +11,22 @@
 #   Note: Similar to problem 48.
 
 
-def powm(base: int, exp: int, modulas: int) -> int:
+def powm(base: int, exp: int, modulo: int) -> int:
     result = 1
-    base %= modulas
+    base %= modulo
     while exp > 0:
         if exp % 2 == 1:
-            result = (result * base) % modulas
-        base = (base * base) % modulas
+            result = (result * base) % modulo
+        base = (base * base) % modulo
         exp //= 2
 
     return result
 
 
 def compute() -> str:
-    modulas = 10_000_000_000
+    modulo = 10_000_000_000
 
-    return str((28433 * powm(2, 7830457, modulas) + 1) % modulas)
+    return str((28433 * powm(2, 7830457, modulo) + 1) % modulo)
 
 
 def solve() -> str:

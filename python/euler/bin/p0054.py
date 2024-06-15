@@ -1,4 +1,4 @@
-# project euler: problem 22
+# project euler: problem 54
 
 #   We'll need the following file to run this program.
 #     - https://projecteuler.net/project/resources/p054_poker.txt
