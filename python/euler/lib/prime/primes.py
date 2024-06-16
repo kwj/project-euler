@@ -1139,7 +1139,7 @@ def sprp_base(n: int) -> int:
     ]
     # fmt: on
 
-    h = n & 0xffffffffffffffff
+    h = n & 0xffffffffffffffff  # fmt: skip
     h = (((h >> 16) ^ h) * 0x45d9f3b) & 0xffffffffffffffff  # fmt: skip
     h = (((h >> 16) ^ h) * 0x45d9f3b) & 0xffffffffffffffff  # fmt: skip
     h = ((h >> 16) ^ h) & 255
