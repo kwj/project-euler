@@ -1,45 +1,110 @@
 package p0093
 
+/*
+combination of numberes:
+  nCk = C(n,k) = C(9,4) = 9*8*7*6 / 4*3*2*1 = 126
+
+arithmetic operations (fourOps):
+  commutative:
+    addition: X + Y
+    multiplication: X * Y
+  no-commutative:
+    subtraction:  X - Y, Y - X
+    division: X / Y, Y / X
+
+patterns:
+  A, B, C, D: numbers
+    4! = 24
+
+  [1] ((A op B) op C) op D
+       ^^^^^^^^
+  [2] (A op B) op (C op D)
+      ^^^^^^^^    ^^^^^^^^
+	  ^^^^^^^^^^^^^^^^^^^^
+
+  ^^^: The order of the two terms is irrelevant
+       because fourOps() also considers the reverse order.
+*/
+
 import (
 	"math/big"
-	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
 )
 
+var ratZero = big.NewRat(0, 1)
+
+func fourOps(x1, x2 *big.Rat) []*big.Rat {
+	result := make([]*big.Rat, 0)
+
+	result = append(result, new(big.Rat).Add(x1, x2))
+	result = append(result, new(big.Rat).Mul(x1, x2))
+	result = append(result, new(big.Rat).Sub(x1, x2))
+	result = append(result, new(big.Rat).Sub(x2, x1))
+	if x1.Cmp(ratZero) != 0 {
+		result = append(result, new(big.Rat).Mul(x2, new(big.Rat).Inv(x1)))
+	}
+	if x2.Cmp(ratZero) != 0 {
+		result = append(result, new(big.Rat).Mul(x1, new(big.Rat).Inv(x2)))
+	}
+
+	return result
+}
+
+func case1(d1, d2 *big.Rat, rest []*big.Rat) []*big.Rat {
+	result := make([]*big.Rat, 0)
+	for _, ab := range fourOps(d1, d2) {
+		// c: rest[0], d: rest[1]
+		for _, abc := range fourOps(ab, rest[0]) {
+			result = append(result, fourOps(abc, rest[1])...)
+		}
+		// c: rest[1], d: rest[0]
+		for _, abc := range fourOps(ab, rest[1]) {
+			result = append(result, fourOps(abc, rest[0])...)
+		}
+	}
+
+	return result
+}
+
+func case2(d1, d2 *big.Rat, rest []*big.Rat) []*big.Rat {
+	result := make([]*big.Rat, 0)
+	ab := fourOps(d1, d2)
+	cd := fourOps(rest[0], rest[1])
+
+	ch := mylib.CartesianProduct(ab, cd)
+	for pair := range ch {
+		result = append(result, fourOps(pair[0], pair[1])...)
+	}
+
+	return result
+}
+
 func makeNumbers(lst []*big.Rat) map[int]struct{} {
 	nSet := map[int]struct{}{}
-	ratZero := big.NewRat(0, 1)
 
-	var aux func([]*big.Rat)
-	aux = func(lst []*big.Rat) {
-		if len(lst) == 1 {
-			if lst[0].IsInt() {
-				nSet[int(lst[0].Num().Int64())] = struct{}{}
-			}
-			return
-		}
-
-		for i, d1 := range lst {
-			for j, d2 := range lst[i+1:] {
-				nextLst := slices.Delete(slices.Clone(lst), (i+1)+j, (i+1)+j+1)
-				nextLst = slices.Delete(nextLst, i, i+1)
-				aux(slices.Concat([]*big.Rat{new(big.Rat).Add(d1, d2)}, nextLst))
-				aux(slices.Concat([]*big.Rat{new(big.Rat).Mul(d1, d2)}, nextLst))
-				aux(slices.Concat([]*big.Rat{new(big.Rat).Sub(d1, d2)}, nextLst))
-				aux(slices.Concat([]*big.Rat{new(big.Rat).Sub(d2, d1)}, nextLst))
-				if d1.Cmp(ratZero) != 0 {
-					aux(slices.Concat([]*big.Rat{new(big.Rat).Mul(d2, new(big.Rat).Inv(d1))}, nextLst))
+	for i := 0; i < len(lst); i++ {
+		for j := i + 1; j < len(lst); j++ {
+			rest := make([]*big.Rat, 0, 2)
+			for k := 0; k < len(lst); k++ {
+				if k != i && k != j {
+					rest = append(rest, lst[k])
 				}
-				if d2.Cmp(ratZero) != 0 {
-					aux(slices.Concat([]*big.Rat{new(big.Rat).Mul(d1, new(big.Rat).Inv(d2))}, nextLst))
+			}
+
+			for _, x := range case1(lst[i], lst[j], rest) {
+				if x.IsInt() {
+					nSet[int(x.Num().Int64())] = struct{}{}
+				}
+			}
+			for _, x := range case2(lst[i], lst[j], rest) {
+				if x.IsInt() {
+					nSet[int(x.Num().Int64())] = struct{}{}
 				}
 			}
 		}
 	}
-
-	aux(lst)
 
 	return nSet
 }
