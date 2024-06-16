@@ -1,114 +1,103 @@
 # project euler: problem 93
 
-# It is very slow, however I wanted to use Reverse Polish notation and Python's fraction module.
+# combination of numberes:
+#   nCk = C(n,k) = C(9,4) = 9*8*7*6 / 4*3*2*1 = 126
 #
-#   Infix notation and Reverse Polish notation
+# arithmetic operations (four_ops):
+#   commutative:
+#     addition: X + Y
+#     multiplication: X * Y
+#   no-commutative:
+#     subtraction:  X - Y, Y - X
+#     division: X / Y, Y / X
 #
-#     case 1:
-#        IN: ((x1 OP1 x2) OP2 x3) OP3 x4
-#       RPN: x1 x2 OP1 x3 OP2 x4 OP3
+# patterns:
+#   A, B, C, D: numbers
+#     4! = 24
 #
-#     case 2:
-#        IN: (x1 OP1 (x2 OP2 x3)) OP3 x4
-#       RPN: x1 x2 x3 OP2 OP1 x4 OP3
+#   [1] ((A op B) op C) op D
+#        ^^^^^^^^
+#   [2] (A op B) op (C op D)
+#       ^^^^^^^^    ^^^^^^^^
+#       ^^^^^^^^^^^^^^^^^^^^
 #
-#     case 3:
-#        IN: (x1 OP1 x2) OP2 (x3 OP3 x4)
-#       RPN: x1 x2 OP1 x3 x4 OP3 OP2
-#
-#     # The following cases can be ignored since the following reasons
-#     #   - they are symmetrical with the above cases
-#     #   - numbers(x{n}) are provided as permutations
-#     #   - operators(OP{n}) are provided as permutations with repetition
-#
-#     case 4:   (it is symmetrical with case 2)
-#        IN: x1 OP1 ((x2 OP2 x3) OP3 x4)
-#       RPN: x1 x2 x3 OP2 x4 OP3 OP1
-#
-#     case 5:   (it is symmetrical with case 1)
-#        IN: x1 OP1 (x2 OP2 (x3 OP3 x4))
-#       RPN: x1 x2 x3 x4 OP3 OP2 OP1
+#   ^^^: The order of the two terms is irrelevant
+#        because four_ops() also considers the reverse order.
 
-from collections import deque
-from collections.abc import Callable, Generator
 from fractions import Fraction
-from itertools import permutations, product
-from operator import add, mul, sub, truediv
-
-from euler.lib.util import HeapQueue, flatten
+from itertools import combinations, count, product
 
 
-def calc_rpn(
-    rpn: list[Fraction | Callable[[Fraction, Fraction], Fraction]]
-) -> Fraction:
-    stack: deque[Fraction] = deque()
-    for elt in rpn:
-        if callable(elt):
-            t2 = stack.pop()
-            t1 = stack.pop()
-            if t2 == 0:
-                return Fraction(0)  # skip if zero divide occurs
-            stack.append(elt(t1, t2))
-        else:
-            stack.append(elt)
+def four_ops(x1: Fraction, x2: Fraction) -> list[Fraction]:
+    result = []
 
-    return stack[0]
+    result.append(x1 + x2)
+    result.append(x1 * x2)
+    result.append(x1 - x2)
+    result.append(x2 - x1)
+    if x1 != 0:
+        result.append(x2 / x1)
+    if x2 != 0:
+        result.append(x1 / x2)
+
+    return result
 
 
-def gen_num_tpl() -> Generator[tuple[Fraction, ...], None, None]:
+def case_1(a: Fraction, b: Fraction, lst: list[Fraction]) -> list[Fraction]:
+    result = []
+    for ab in four_ops(a, b):
+        # c: lst[0], d:lst[1]
+        for abc in four_ops(ab, lst[0]):
+            result += four_ops(abc, lst[1])
+        # c: lst[1], d:lst[0]
+        for abc in four_ops(ab, lst[1]):
+            result += four_ops(abc, lst[0])
+
+    return result
+
+
+def case_2(a: Fraction, b: Fraction, lst: list[Fraction]) -> list[Fraction]:
+    result = []
+    ab = four_ops(a, b)
+    cd = four_ops(lst[0], lst[1])
+
+    for tpl in product(ab, cd):
+        result += four_ops(tpl[0], tpl[1])
+
+    return result
+
+
+def make_numbers(tpl: tuple[Fraction, Fraction, Fraction, Fraction]) -> set[int]:
     lst = []
-    for i in range(1, 10):
-        lst.append(Fraction(i))
+    for i in range(len(tpl)):
+        for j in range(i + 1, len(tpl)):
+            rest = []
+            for k in range(len(tpl)):
+                if k != i and k != j:
+                    rest.append(tpl[k])
 
-    for x in (
-        tpl
-        for tpl in permutations(lst, r=4)
-        if tpl[0] < tpl[1] and tpl[1] < tpl[2] and tpl[2] < tpl[3]
-    ):
-        yield x
+            lst += case_1(tpl[i], tpl[j], rest)
+            lst += case_2(tpl[i], tpl[j], rest)
 
-
-def make_result(
-    num_tpl: tuple[Fraction, ...],
-    op_tpl_lst: list[tuple[Callable[[Fraction, Fraction], Fraction], ...]],
-) -> list[int]:
-    # case 1,2 and 3
-    result = (
-        [
-            calc_rpn([x1, x2, op1, x3, op2, x4, op3]),
-            calc_rpn([x1, x2, x3, op2, op1, x4, op3]),
-            calc_rpn([x1, x2, op1, x3, x4, op3, op2]),
-        ]
-        for x1, x2, x3, x4 in permutations(num_tpl)
-        for op1, op2, op3 in op_tpl_lst
-    )
-
-    return sorted(
-        list(
-            set(
-                frac.numerator
-                for frac in flatten(result)
-                if frac.denominator == 1 and frac.numerator > 0
-            )
-        )
-    )
+    return set(x.numerator for x in lst if x.denominator == 1)
 
 
-def get_consecutive_length(lst: list[int]) -> int:
-    for i, elt in enumerate(lst):
-        if i + 1 != elt:
-            return i
+def get_consecutive_length(tpl: tuple[Fraction, Fraction, Fraction, Fraction]) -> int:
+    nums = make_numbers(tpl)
+    for cnt in count(1):
+        if cnt not in nums:
+            break
 
-    assert False, 'unreachable!'
+    return cnt - 1
 
 
 def compute() -> str:
-    op_tpl_lst = list(product((add, sub, mul, truediv), repeat=3))
-    pq = HeapQueue(desc=True)
-    for num_tpl in gen_num_tpl():
-        pq.insert((get_consecutive_length(make_result(num_tpl, op_tpl_lst)), num_tpl))
+    max_length = 0
+    for tpl in combinations([Fraction(i) for i in range(1, 10)], 4):
+        if (tmp := get_consecutive_length(tpl)) > max_length:
+            answer = tpl
+            max_length = tmp
 
-    _, answer = pq.peek()
     return ''.join(str(frac.numerator) for frac in answer)
 
 
