@@ -50,7 +50,7 @@ func findCliques(ascPrimes []int, size int, tbl map[int]intSet) [][]int {
 		} else {
 			for idx, p := range descPrimes[:len(descPrimes)-depth+1] {
 				if len(group) == 0 || isAllPair(p, group) {
-					aux(append(slices.Clip(group), p), descPrimes[idx+1:], depth-1)
+					aux(append(group, p), descPrimes[idx+1:], depth-1)
 				}
 			}
 		}
