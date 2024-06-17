@@ -19,7 +19,7 @@ package p0051
      8       n       8n   8n mod 3 = 2n mod 3
      9       n       9n   9n mod 3 = 0
 
-3) because of 2), prime numbers are larger than 1000.
+3) because of 1) and 2), prime numbers are larger than 1000.
 */
 
 import (
