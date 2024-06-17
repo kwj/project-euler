@@ -19,7 +19,10 @@ func getDivisors(n int) []int {
 
 	lst := slices.Concat(mylib.PrimeFactorization(n), mylib.PrimeFactorization(3*n-1))
 	for _, x := range mylib.PfactorsToDivisors(lst) {
-		if x < n && x%3 == n%3 {
+		if x >= n {
+			break
+		}
+		if x%3 == n%3 {
 			result = append(result, x)
 		}
 	}
