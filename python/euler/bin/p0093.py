@@ -13,28 +13,29 @@
 #
 # patterns:
 #   A, B, C, D: numbers
-#     4! = 24
 #
-#   [1] ((A op B) op C) op D
-#        ^^^^^^^^
-#   [2] (A op B) op (C op D)
-#       ^^^^^^^^    ^^^^^^^^
-#       ^^^^^^^^^^^^^^^^^^^^
+#   [1] ((A op B) op C) op D  [C(4,2)*2 = 12]
+#        ^^^--^^^
+#       ^^^^^^^^^^--^^^
+#       ^^^^^^^^^^^^^^^^--^^
+#   [2] (A op B) op (C op D)  [C(4,2) = 6]
+#       ^^^--^^^    ^^^--^^^
+#       ^^^^^^^^^--^^^^^^^^^
 #
-#   ^^^: The order of the two terms is irrelevant
-#        because four_ops() also considers the reverse order.
+#   ^-^: We can ignore the order of the two terms because
+#        four_ops() considers no-commutative operations.
+#
+# total(?):
+#     C(9,4) * 6^3 [three arithmetic operattions] * (C(4,2)*2 + C(4,2))
+#   = 126 * 216 * 18
+#   = 489888
 
 from fractions import Fraction
 from itertools import combinations, count, product
 
 
 def four_ops(x1: Fraction, x2: Fraction) -> list[Fraction]:
-    result = []
-
-    result.append(x1 + x2)
-    result.append(x1 * x2)
-    result.append(x1 - x2)
-    result.append(x2 - x1)
+    result = [x1 + x2, x1 * x2, x1 - x2, x2 - x1]
     if x1 != 0:
         result.append(x2 / x1)
     if x2 != 0:
@@ -44,12 +45,13 @@ def four_ops(x1: Fraction, x2: Fraction) -> list[Fraction]:
 
 
 def case_1(a: Fraction, b: Fraction, lst: list[Fraction]) -> list[Fraction]:
+    # ((A op B) op C) op D
     result = []
     for ab in four_ops(a, b):
-        # c: lst[0], d:lst[1]
+        # C: lst[0], D: lst[1]
         for abc in four_ops(ab, lst[0]):
             result += four_ops(abc, lst[1])
-        # c: lst[1], d:lst[0]
+        # C: lst[1], D: lst[0]
         for abc in four_ops(ab, lst[1]):
             result += four_ops(abc, lst[0])
 
@@ -57,6 +59,7 @@ def case_1(a: Fraction, b: Fraction, lst: list[Fraction]) -> list[Fraction]:
 
 
 def case_2(a: Fraction, b: Fraction, lst: list[Fraction]) -> list[Fraction]:
+    # (A op B) op (C op D)
     result = []
     ab = four_ops(a, b)
     cd = four_ops(lst[0], lst[1])
