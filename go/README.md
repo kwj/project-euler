@@ -3,7 +3,7 @@
 ## How to run
 
 ```console
-sh solve.sh <problem_number>
+sh solve.sh <problem_number ...>
 ```
 
 The following is ane examples of execution.
@@ -13,6 +13,11 @@ sh solve.sh 1
 ```
 
 It can also build and run an executable file.
+
+```console
+go build .
+./pe-solver 1
+```
 
 ## Notes
 
