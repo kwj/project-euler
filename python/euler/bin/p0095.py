@@ -1,66 +1,43 @@
 # project euler: problem 95
 
+from euler.lib.util import get_sigma_tbl
+
 
 def compute(limit: int) -> str:
-    def check_loop(pos: int) -> tuple[int, int]:
-        stop = pos
-        min_value = pos
-        cnt = 1
-        while (pos := sd_tbl[pos]) != stop:
-            cnt += 1
-            if pos < min_value:
-                min_value = pos
-        return cnt, min_value
+    def update_chain_tbl(indices: list[int], v: int):
+        for i in indices:
+            chain_tbl[i] = v
 
-    # lookup table: sum of divisors
-    sd_tbl = [1] * (limit + 1)
-    for i in range(2, limit + 1):
-        for j in range(2 * i, limit + 1, i):
-            sd_tbl[j] += i
+    next_tbl = get_sigma_tbl(1, limit)
+    for i in range(limit + 1):
+        next_tbl[i] -= i
 
-    # chain table
     chain_tbl = [0] * (limit + 1)
-    chain_tbl[1] = 1
+    max_length = 0
 
-    answer = 0
-    max_chains = 0
-
-    for idx in range(2, limit + 1):
-        # already checked
-        if chain_tbl[idx] != 0:
+    for n in range(2, limit + 1):
+        if chain_tbl[n] != 0:
             continue
 
-        flag = idx
-        chain_tbl[idx] = flag
-        while True:
-            next_idx = sd_tbl[idx]
-
-            # outside the range
-            if next_idx > limit:
+        pos = n
+        chain = []
+        while chain_tbl[pos] == 0:
+            chain.append(pos)
+            pos = next_tbl[pos]
+            if not (1 <= pos <= limit) or pos in chain:
                 break
 
-            # found a loop
-            if chain_tbl[next_idx] == flag:
-                # perfect number
-                if next_idx == idx:
-                    break
-                # amicable pair
-                if sd_tbl[next_idx] == idx:
-                    break
-                # amicable chain
-                chains, min_value = check_loop(next_idx)
-                if chains > max_chains:
-                    max_chains = chains
-                    answer = min_value
+        if not (1 <= pos <= limit) or chain_tbl[pos] != 0:
+            update_chain_tbl(chain, -1)
+            continue
 
-            # arrive at a known chain
-            if chain_tbl[next_idx] != 0:
-                break
+        i = chain.index(pos)
+        length = len(chain) - i + 1
+        update_chain_tbl(chain[:i], -1)
+        update_chain_tbl(chain[i:], length)
+        max_length = max(max_length, length)
 
-            chain_tbl[next_idx] = flag
-            idx = next_idx
-
-    return str(answer)
+    return str(chain_tbl.index(max_length))
 
 
 def solve() -> str:

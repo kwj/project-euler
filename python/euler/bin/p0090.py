@@ -1,37 +1,36 @@
 # project euler: problem 90
 
-from itertools import combinations, product
+from itertools import combinations, combinations_with_replacement
 
-from euler.lib.util import flatten
+SQUARES = [
+    (0, 1),
+    (0, 4),
+    (0, 6),
+    (1, 6),
+    (2, 5),
+    (3, 6),
+    (4, 6),
+    (8, 1),
+]
 
 
-def proc_69(tpl: tuple[str, ...]) -> tuple[str, ...]:
-    if '6' in tpl or '9' in tpl:
-        return tuple(sorted(set(('6', '9', *tpl))))
-    else:
-        return tpl
+def is_contain(two_dice: tuple[set[int], set[int]], sq: tuple[int, int]) -> bool:
+    if sq[0] in two_dice[0] and sq[1] in two_dice[1]:
+        return True
+    if sq[0] in two_dice[1] and sq[1] in two_dice[0]:
+        return True
 
-
-def make_numbers(d1: tuple[str, ...], d2: tuple[str, ...]) -> list[tuple[str, str]]:
-    return flatten([(tpl[0] + tpl[1], tpl[1] + tpl[0]) for tpl in product(d1, d2)])
+    return False
 
 
 def compute() -> str:
-    squares = ['01', '04', '09', '16', '25', '36', '49', '64', '81']
-    faces = [
-        proc_69(tpl)
-        for tpl in combinations(('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'), 6)
-    ]
+    cnt = 0
+    all_dice = map(lambda x: set(x), combinations([0, 1, 2, 3, 4, 5, 6, 7, 8, 6], 6))
+    for two_dice in combinations_with_replacement(all_dice, 2):
+        if all(is_contain(two_dice, sq) for sq in SQUARES):
+            cnt += 1
 
-    acc = 0
-    for d1, d2 in product(faces, repeat=2):
-        numbers = make_numbers(d1, d2)
-        if all([sq in numbers for sq in squares]) is True:
-            acc += 1
-    else:
-        acc //= 2
-
-    return str(acc)
+    return str(cnt)
 
 
 def solve() -> str:
