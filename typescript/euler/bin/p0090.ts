@@ -1,50 +1,42 @@
 // project euler: problem 90
 
 import {
-  cartesianProduct,
   combinations,
-  permutationsWithReplacement,
+  combinationsWithReplacement,
 } from "combinatorics/mod.ts";
-import { dedupSort } from "../lib/util.ts";
 
-const proc69 = (lst: string[]): string[] => {
-  if (lst.includes("6") === true || lst.includes("9") === true) {
-    return dedupSort(lst.concat("6", "9"));
-  } else {
-    return lst;
-  }
-};
+const check_squares = (dice: number[][]): boolean => {
+  // deno-fmt-ignore
+  const squares = [[0, 1], [0, 4], [0, 6], [1, 6], [2, 5], [3, 6], [4, 6], [8, 1]];
 
-const makeNumbers = (d1: string[], d2: string[]): string[] => {
-  const result: string[] = [];
-  for (const tpl of cartesianProduct(d1, d2)) {
-    result.push(tpl[0] + tpl[1], tpl[1] + tpl[0]);
-  }
+  const is_contained = (x: number[]) => {
+    if (dice[0].includes(x[0]) && dice[1].includes(x[1])) {
+      return true;
+    }
+    if (dice[0].includes(x[1]) && dice[1].includes(x[0])) {
+      return true;
+    }
 
-  return result;
+    return false;
+  };
+
+  return squares.every(is_contained);
 };
 
 export const compute = (): string => {
-  const squares = ["01", "04", "09", "16", "25", "36", "49", "64", "81"];
-  const faces: string[][] = [];
+  let acc = 0;
   for (
-    const lst of combinations(
-      ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
-      6,
+    const two_dice of combinationsWithReplacement(
+      combinations([0, 1, 2, 3, 4, 5, 6, 7, 8, 6], 6),
+      2,
     )
   ) {
-    faces.push(proc69(lst));
-  }
-
-  let acc = 0;
-  for (const [d1, d2] of permutationsWithReplacement(faces, 2)) {
-    const numbers = makeNumbers(d1, d2);
-    if (squares.every((x) => numbers.includes(x)) === true) {
+    if (check_squares(two_dice) === true) {
       acc += 1;
     }
   }
 
-  return String(Math.trunc(acc / 2));
+  return String(acc);
 };
 
 export const solve = (): string => compute();
