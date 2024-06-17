@@ -1,131 +1,144 @@
 // project euler: problem 93
 
 /*
-It is slow, but I use Reverse Polish notation and Python's fraction module.
+combination of numberes:
+  nCk = C(n,k) = C(9,4) = 9*8*7*6 / 4*3*2*1 = 126
 
-  Infix notation and Reverse Polish notation
+arithmetic operations (fourOps):
+  commutative:
+    addition: X + Y
+    multiplication: X * Y
+  no-commutative:
+    subtraction:  X - Y, Y - X
+    division: X / Y, Y / X
 
-    case 1:
-       IN: ((x1 OP1 x2) OP2 x3) OP3 x4
-      RPN: x1 x2 OP1 x3 OP2 x4 OP3
+patterns:
+  A, B, C, D: numbers
+    4! = 24
 
-    # The case 2 can be ignored since it is covered on case 1.
-    case 2:
-       IN: (x1 OP1 (x2 OP2 x3)) OP3 x4
-      RPN: x1 x2 x3 OP2 OP1 x4 OP3
+  [1] ((A op B) op C) op D
+       ^^^--^^^
+      ^^^^^^^^^^--^^^
+      ^^^^^^^^^^^^^^^^--^^
+  [2] (A op B) op (C op D)
+      ^^^--^^^    ^^^--^^^
+      ^^^^^^^^^--^^^^^^^^^
 
-    case 3:
-       IN: (x1 OP1 x2) OP2 (x3 OP3 x4)
-      RPN: x1 x2 OP1 x3 x4 OP3 OP2
-
-    # The following cases can be ignored since the following reasons
-    #   - they are symmetrical with the above cases
-    #   - numbers(x{n}) are provided as permutations
-    #   - operators(OP{n}) are provided as permutations with repetition
-
-    case 4:   (it is symmetrical with case 2)
-       IN: x1 OP1 ((x2 OP2 x3) OP3 x4)
-      RPN: x1 x2 x3 OP2 x4 OP3 OP1
-
-    case 5:   (it is symmetrical with case 1)
-       IN: x1 OP1 (x2 OP2 (x3 OP3 x4))
-      RPN: x1 x2 x3 x4 OP3 OP2 OP1
+  ^-^: We can ignore the order of two terms because
+       four_ops() considers no-commutative operations.
 */
 
-import {
-  permutations,
-  permutationsWithReplacement,
-} from "combinatorics/mod.ts";
+import { cartesianProduct, combinations } from "combinatorics/mod.ts";
 import { Rational, rational } from "../lib/rational.ts";
-import { dedupSort } from "../lib/util.ts";
 
-type RPNelm = string | Rational;
+const four_ops = (x1: Rational, x2: Rational): Rational[] => {
+  const result: Rational[] = [x1.add(x2), x1.mul(x2), x1.sub(x2), x2.sub(x1)];
+  if (x1.num !== 0n) {
+    result.push(x2.div(x1));
+  }
+  if (x2.num !== 0n) {
+    result.push(x1.div(x2));
+  }
 
-const calcRPN = (rpn: RPNelm[]): Rational => {
-  const stack: Rational[] = [];
-  for (const elm of rpn) {
-    if (typeof elm !== "string") {
-      stack.push(elm);
-    } else {
-      const e2 = stack.pop()!;
-      const e1 = stack.pop()!;
-      switch (elm) {
-        case "+":
-          stack.push(e1.add(e2));
-          break;
-        case "-":
-          stack.push(e1.sub(e2));
-          break;
-        case "*":
-          stack.push(e1.mul(e2));
-          break;
-        case "/":
-          // Skip when zero divide will occur and return 0.
-          // We ignore numbers less than one, later.
-          if (e2.num === 0n) {
-            return rational(0, 1);
-          }
-          stack.push(e1.div(e2));
-          break;
-      }
+  return result;
+};
+
+const case_1 = (x1: Rational, x2: Rational, rest: Rational[]): Rational[] => {
+  // ((A op B) op C) op D
+  let result: Rational[] = [];
+  for (const ab of four_ops(x1, x2)) {
+    // C: rest[0], D: rest[1]
+    for (const abc of four_ops(ab, rest[0])) {
+      result = result.concat(four_ops(abc, rest[1]));
+    }
+    // C: rest[1], D: rest[0]
+    for (const abc of four_ops(ab, rest[1])) {
+      result = result.concat(four_ops(abc, rest[0]));
     }
   }
 
-  return stack[0];
+  return result;
 };
 
-const numsGenerator = function* (): Generator<Rational[], void, unknown> {
-  for (let a = 0; a < 10; a++) {
-    for (let b = a + 1; b < 10; b++) {
-      for (let c = b + 1; c < 10; c++) {
-        for (let d = c + 1; d < 10; d++) {
-          yield [rational(a), rational(b), rational(c), rational(d)];
+const case_2 = (x1: Rational, x2: Rational, rest: Rational[]): Rational[] => {
+  // (A op B) op (C op D)
+  let result: Rational[] = [];
+  const ab_lst = four_ops(x1, x2);
+  const cd_lst = four_ops(rest[0], rest[1]);
+
+  for (const [ab, cd] of cartesianProduct(ab_lst, cd_lst)) {
+    result = result.concat(four_ops(ab, cd));
+  }
+
+  return result;
+};
+
+const make_numbers = (lst: Rational[]): Set<number> => {
+  const result = new Set<number>();
+  for (let i = 0; i < lst.length; i++) {
+    for (let j = i + 1; j < lst.length; j++) {
+      const rest: Rational[] = [];
+      for (let k = 0; k < lst.length; k++) {
+        if (k !== i && k !== j) {
+          rest.push(lst[k]);
+        }
+      }
+
+      for (const rat of case_1(lst[i], lst[j], rest)) {
+        if (rat.isInteger() === true) {
+          result.add(Number(rat.num));
+        }
+      }
+      for (const rat of case_2(lst[i], lst[j], rest)) {
+        if (rat.isInteger() === true) {
+          result.add(Number(rat.num));
         }
       }
     }
   }
+
+  return result;
 };
 
-const getMaxConsecNum = (x: Rational[], opSets: string[][]): number => {
-  let acc: Rational[] = [];
-  for (const [x1, x2, x3, x4] of permutations(x)) {
-    for (const [op1, op2, op3] of opSets) {
-      acc = acc.concat(
-        calcRPN([x1, x2, op1, x3, op2, x4, op3]),
-        calcRPN([x1, x2, op1, x3, x4, op3, op2]),
-      );
-    }
+const count_consec_numbers = (lst: Rational[]): number => {
+  const n_set = make_numbers(lst);
+  let cnt = 1;
+  while (n_set.has(cnt)) {
+    cnt += 1;
   }
-  const nationalNumbers = acc.filter((x) =>
-    x!.isInteger() === true && x!.num > 0n
-  ) as Rational[];
-  const result = dedupSort(
-    nationalNumbers.map((x) => Number(String(x.num))),
-    (a, b) => a - b,
-  );
 
-  let cnt: number;
-  for (cnt = 0; cnt === result[cnt] - 1; cnt++);
-
-  return cnt;
+  return cnt - 1;
 };
 
 export const compute = (): string => {
-  const opSets: string[][] = [
-    ...permutationsWithReplacement(["+", "-", "*", "/"], 3),
+  let max_count = 0;
+  let nums: Rational[] = [];
+  const rational_numbers = [
+    rational(1),
+    rational(2),
+    rational(3),
+    rational(4),
+    rational(5),
+    rational(6),
+    rational(7),
+    rational(8),
+    rational(9),
   ];
-  const nums_gen = numsGenerator();
 
-  let answer: [number, Rational[]] = [0, []];
-  for (const x of nums_gen) {
-    const result = getMaxConsecNum(x, opSets);
-    //console.log(result);
-    if (result > answer[0]) {
-      answer = [result, x];
+  for (const lst of combinations(rational_numbers, 4)) {
+    const len = count_consec_numbers(lst);
+    if (len > max_count) {
+      max_count = len;
+      nums = lst;
     }
   }
 
-  return answer[1].map((x) => String(x.num)).join("");
+  let result = 0;
+  for (const x of nums) {
+    result = result * 10 + Number(x.num);
+  }
+
+  return String(result);
 };
 
 export const solve = (): string => compute();
