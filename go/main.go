@@ -217,20 +217,22 @@ func runSolver(n string, fn func() string) {
 
 	fmt.Printf("[Problem %s]\n", n)
 	fmt.Printf("Answer: %s\n", result)
-	fmt.Printf("Elapsed time: %s\n", elapsedTime)
+	fmt.Printf("Elapsed time: %s\n\n", elapsedTime)
 }
 
 func main() {
-	if len(os.Args) != 2 {
+	if len(os.Args) < 2 {
 		println("Usage:")
-		fmt.Printf("  %s <problem number>\n\n", os.Args[0])
+		fmt.Printf("  %s <problem number ...>\n\n", os.Args[0])
 		os.Exit(1)
 	}
-	fn, ok := tbl[os.Args[1]]
-	if ok {
-		runSolver(os.Args[1], fn)
-	} else {
-		fmt.Printf("No solver exists for problem '%s'.\n", os.Args[1])
-		os.Exit(1)
+
+	for _, x := range os.Args[1:] {
+		fn, ok := tbl[x]
+		if ok {
+			runSolver(x, fn)
+		} else {
+			fmt.Printf("No solver exists for problem '%s'.\n\n", x)
+		}
 	}
 }
