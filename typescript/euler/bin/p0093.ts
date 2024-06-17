@@ -4,7 +4,7 @@
 combination of numberes:
   nCk = C(n,k) = C(9,4) = 9*8*7*6 / 4*3*2*1 = 126
 
-arithmetic operations (fourOps):
+arithmetic operations (four_ops):
   commutative:
     addition: X + Y
     multiplication: X * Y
@@ -14,7 +14,6 @@ arithmetic operations (fourOps):
 
 patterns:
   A, B, C, D: numbers
-    4! = 24
 
   [1] ((A op B) op C) op D
        ^^^--^^^
@@ -33,10 +32,10 @@ import { Rational, rational } from "../lib/rational.ts";
 
 const four_ops = (x1: Rational, x2: Rational): Rational[] => {
   const result: Rational[] = [x1.add(x2), x1.mul(x2), x1.sub(x2), x2.sub(x1)];
-  if (x1.num !== 0n) {
+  if (x1.isZero() == false) {
     result.push(x2.div(x1));
   }
-  if (x2.num !== 0n) {
+  if (x2.isZero() === false) {
     result.push(x1.div(x2));
   }
 
@@ -44,7 +43,6 @@ const four_ops = (x1: Rational, x2: Rational): Rational[] => {
 };
 
 const case_1 = (x1: Rational, x2: Rational, rest: Rational[]): Rational[] => {
-  // ((A op B) op C) op D
   let result: Rational[] = [];
   for (const ab of four_ops(x1, x2)) {
     // C: rest[0], D: rest[1]
@@ -61,7 +59,6 @@ const case_1 = (x1: Rational, x2: Rational, rest: Rational[]): Rational[] => {
 };
 
 const case_2 = (x1: Rational, x2: Rational, rest: Rational[]): Rational[] => {
-  // (A op B) op (C op D)
   let result: Rational[] = [];
   const ab_lst = four_ops(x1, x2);
   const cd_lst = four_ops(rest[0], rest[1]);
@@ -84,11 +81,14 @@ const make_numbers = (lst: Rational[]): Set<number> => {
         }
       }
 
+      // [1] ((A op B) op C) op D
       for (const rat of case_1(lst[i], lst[j], rest)) {
         if (rat.isInteger() === true) {
           result.add(Number(rat.num));
         }
       }
+
+      // [2] (A op B) op (C op D)
       for (const rat of case_2(lst[i], lst[j], rest)) {
         if (rat.isInteger() === true) {
           result.add(Number(rat.num));

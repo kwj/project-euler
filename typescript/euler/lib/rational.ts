@@ -10,6 +10,7 @@ export interface Rational {
   div(rat: Rat): Rat;
 
   isInteger(): boolean;
+  isZero(): boolean;
 }
 
 type RatNumber = number | bigint | string;
@@ -70,6 +71,10 @@ class Rat implements Rational {
 
   isInteger(): boolean {
     return this.denom === 1n;
+  }
+
+  isZero(): boolean {
+    return this.num === 0n;
   }
 }
 
