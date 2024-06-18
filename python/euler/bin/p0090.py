@@ -2,15 +2,16 @@
 
 from itertools import combinations, combinations_with_replacement
 
+# For simplicity, I have replaced all 9's with 6.
 SQUARES = [
-    (0, 1),
-    (0, 4),
-    (0, 6),
-    (1, 6),
-    (2, 5),
-    (3, 6),
-    (4, 6),
-    (8, 1),
+    (0, 1),  # 1^2
+    (0, 4),  # 2^2
+    (0, 6),  # 3^2
+    (1, 6),  # 4^2
+    (2, 5),  # 5^2
+    (3, 6),  # 6^2
+    (4, 6),  # 7^2, 8^2
+    (8, 1),  # 9^2
 ]
 
 
