@@ -28,12 +28,12 @@ function solve_0050(limit::Int = 1_000_000)
 
     answer = 0
     i = 1
-    width = 1
-    while cs_lst[i + width] - cs_lst[i] < limit
+    consec_length = 0
+    while cs_lst[i + consec_length] - cs_lst[i] < limit
         start = cs_lst[i]
-        lst = collect(Iterators.dropwhile(p -> p - start >= limit || isprime(p - start) == false, @view cs_lst[end:-1:(i + width)]))
+        lst = collect(Iterators.dropwhile(p -> p - start >= limit || isprime(p - start) == false, @view cs_lst[end:-1:(i + consec_length)]))
         if length(lst) > 0
-            width += length(lst)
+            consec_length += length(lst) - 1
             answer = lst[1] - start
         end
         push!(cs_lst, take!(cs_gen))

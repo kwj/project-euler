@@ -31,15 +31,15 @@ export const compute = (limit: number): string => {
 
   let ans = 0;
   let i = 0;
-  let width = 1;
-  while (cs_lst[i + width] - cs_lst[i] < limit) {
+  let consecLength = 0;
+  while (cs_lst[i + consecLength] - cs_lst[i] < limit) {
     const begin = cs_lst[i];
     const lst = dropWhile(
-      cs_lst.slice(i + width).reverse(),
+      cs_lst.slice(i + consecLength).reverse(),
       (p) => p - begin >= limit || isPrimeSimple(p - begin) === false,
     );
     if (lst.length > 0) {
-      width += lst.length;
+      consecLength += lst.length - 1;
       ans = lst[0] - begin;
     }
     cs_lst.push(cs_gen.next().value as number);

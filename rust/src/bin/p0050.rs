@@ -14,17 +14,17 @@ fn compute(limit: i64) -> i64 {
 
     let mut ans: i64 = 0;
     let mut i: usize = 0;
-    let mut width: usize = 1;
-    while cs_lst[i + width] - cs_lst[i] < limit {
+    let mut consec_length: usize = 0;
+    while cs_lst[i + consec_length] - cs_lst[i] < limit {
         let begin = cs_lst[i];
-        let lst: Vec<i64> = cs_lst[(i + width)..]
+        let lst: Vec<i64> = cs_lst[(i + consec_length)..]
             .iter()
             .rev()
             .skip_while(|&&p| p - begin >= limit || !primes::is_prime(p - begin))
             .copied()
             .collect();
         if !lst.is_empty() {
-            width += lst.len();
+            consec_length += lst.len() - 1;
             ans = lst[0] - begin;
         }
         cs_lst.push(cs_gen.next().unwrap());

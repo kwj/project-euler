@@ -33,10 +33,10 @@ func compute(limit int) string {
 
 	result := 0
 	startIdx := 0
-	width := 1
-	for lst[startIdx+width]-lst[startIdx] < limit {
+	consecLength := 0
+	for lst[startIdx+consecLength]-lst[startIdx] < limit {
 		var idx int
-		for idx = len(lst) - 1; idx > startIdx+width; idx-- {
+		for idx = len(lst) - 1; idx > startIdx+consecLength; idx-- {
 			diff := lst[idx] - lst[startIdx]
 			if diff >= limit {
 				continue
@@ -46,8 +46,8 @@ func compute(limit int) string {
 			}
 		}
 
-		if idx != startIdx+width {
-			width += idx - (startIdx + width)
+		if idx != startIdx+consecLength {
+			consecLength += idx - (startIdx + consecLength) - 1
 			result = lst[idx] - lst[startIdx]
 		}
 		lst = append(lst, csumGen.next())

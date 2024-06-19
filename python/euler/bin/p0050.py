@@ -31,17 +31,17 @@ def compute(limit: int) -> str:
 
     ans = 0
     i = 0
-    width = 1
-    while cs_lst[i + width] - cs_lst[i] < limit:
+    consec_length = 0
+    while cs_lst[i + consec_length] - cs_lst[i] < limit:
         begin = cs_lst[i]
         lst = list(
             dropwhile(
                 lambda p: p - begin >= limit or is_prime(p - begin) is False,
-                cs_lst[i + width :][::-1],
+                cs_lst[i + consec_length :][::-1],
             )
         )
         if len(lst) > 0:
-            width += len(lst)
+            consec_length += len(lst) - 1
             ans = lst[0] - begin
         cs_lst.append(next(cs_gen))
         i += 1
