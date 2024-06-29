@@ -12,7 +12,7 @@ func Test_compute(t *testing.T) {
 		want string
 	}{
 		{name: "number 13195", args: args{13_195}, want: "29"},
-		{name: "below 600851475143", args: args{600_851_475_143}, want: "6857"},
+		{name: "number 600851475143", args: args{600_851_475_143}, want: "6857"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
