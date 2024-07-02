@@ -18,7 +18,7 @@ func reverseBigNum(bignum *big.Int) *big.Int {
 	panic("unreachable")
 }
 
-func isRychrel(bignum *big.Int) bool {
+func isLychrel(bignum *big.Int) bool {
 	tmp := reverseBigNum(bignum)
 	for range 50 {
 		bignum.Add(bignum, tmp)
@@ -34,7 +34,7 @@ func isRychrel(bignum *big.Int) bool {
 func compute(limit int) string {
 	var result int
 	for i := 1; i <= limit; i++ {
-		if isRychrel(big.NewInt(int64(i))) {
+		if isLychrel(big.NewInt(int64(i))) {
 			result++
 		}
 	}
