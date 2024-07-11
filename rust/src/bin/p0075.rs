@@ -33,7 +33,11 @@ mod tests {
     use super::compute;
 
     #[test]
-    fn p0075() {
+    fn p0075_48() {
+        assert_eq!(compute(48), 6);
+    }
+    #[test]
+    fn p0075_1500000() {
         assert_eq!(compute(1_500_000), 161667);
     }
 }

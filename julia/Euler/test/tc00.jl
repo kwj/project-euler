@@ -340,6 +340,7 @@
     end
 
     @testset "0075" begin
+        @test solve_0075(48) == 6
         @test solve_0075(1_500_000) == 161667
     end
 
