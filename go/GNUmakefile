@@ -1,8 +1,4 @@
 
-SRCS := .gitignore go.mod main.go solve.sh README.md
-PUBLIC_DIR = $(subst project-euler,project-euler-public,$(shell pwd))
-SUBDIRS = internal
-
 .PHONY: usage
 usage:
 	@echo 'Usage:'
