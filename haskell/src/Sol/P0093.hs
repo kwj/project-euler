@@ -1,0 +1,107 @@
+module Sol.P0093 (compute, solve) where
+
+import Data.Function (on)
+import Data.List (maximumBy, nub, sort, (\\))
+import Data.Maybe (fromJust)
+import Data.Ratio (Ratio, denominator, numerator, (%))
+
+import qualified Data.Set as S (fromList, member)
+
+import Mylib.Combinatorics (combinations)
+
+fourArithmeticOps :: Maybe (Ratio Int) -> Maybe (Ratio Int) -> [Maybe (Ratio Int)]
+fourArithmeticOps Nothing _ = [Nothing]
+fourArithmeticOps _ Nothing = [Nothing]
+fourArithmeticOps (Just x) (Just y) = do
+    op_number <- [1 .. 6]
+    pure (aux op_number x y)
+  where
+    aux :: Int -> Ratio Int -> Ratio Int -> Maybe (Ratio Int)
+    aux 1 a b = Just (a + b)
+    aux 2 a b = Just (a - b)
+    aux 3 a b = Just (b - a)
+    aux 4 a b = Just (a * b)
+    aux 5 _ 0 = Nothing
+    aux 5 a b = Just (a / b)
+    aux 6 0 _ = Nothing
+    aux 6 a b = Just (b / a)
+    aux _ _ _ = error "fatal error (unreachable)"
+
+makeNumbers :: [Maybe (Ratio Int)] -> [Int]
+makeNumbers xs =
+    nub
+        . sort
+        . map (numerator)
+        . filter (\x -> denominator x == 1)
+        . map (fromJust)
+        $ aux xs
+  where
+    aux lst = do
+        pair_lst <- choiceTwo lst
+        filter
+            (\x -> x /= Nothing)
+            (case_1a pair_lst ++ case_1b pair_lst ++ case_2 pair_lst)
+
+    choiceTwo :: Eq a => [a] -> [([a], [a])]
+    choiceTwo lst = do
+        two <- combinations 2 lst
+        pure (two, lst \\ two)
+
+case_1a :: ([Maybe (Ratio Int)], [Maybe (Ratio Int)]) -> [Maybe (Ratio Int)]
+case_1a (lst1, lst2) = do
+    ab <- fourArithmeticOps d1 d2
+    abc <- fourArithmeticOps ab d3
+    fourArithmeticOps abc d4
+  where
+    d1 = lst1 !! 0
+    d2 = lst1 !! 1
+    d3 = lst2 !! 0
+    d4 = lst2 !! 1
+
+case_1b :: ([Maybe (Ratio Int)], [Maybe (Ratio Int)]) -> [Maybe (Ratio Int)]
+case_1b (lst1, lst2) = do
+    ab <- fourArithmeticOps d1 d2
+    abc <- fourArithmeticOps ab d4
+    fourArithmeticOps abc d3
+  where
+    d1 = lst1 !! 0
+    d2 = lst1 !! 1
+    d3 = lst2 !! 0
+    d4 = lst2 !! 1
+
+case_2 :: ([Maybe (Ratio Int)], [Maybe (Ratio Int)]) -> [Maybe (Ratio Int)]
+case_2 (lst1, lst2) = do
+    ab <- fourArithmeticOps d1 d2
+    cd <- fourArithmeticOps d3 d4
+    fourArithmeticOps ab cd
+  where
+    d1 = lst1 !! 0
+    d2 = lst1 !! 1
+    d3 = lst2 !! 0
+    d4 = lst2 !! 1
+
+countConsecNumbers :: [Maybe (Ratio Int)] -> Int
+countConsecNumbers lst =
+    go 1
+  where
+    set = S.fromList (makeNumbers lst)
+
+    go :: Int -> Int
+    go cnt
+        | S.member cnt set == True =
+            go (succ cnt)
+        | otherwise =
+            pred cnt
+
+compute :: String
+compute =
+    concatMap (show . numerator . fromJust)
+        . snd
+        . maximumBy (compare `on` fst)
+        . map (\lst -> (countConsecNumbers lst, lst))
+        $ combinations 4 numbers
+  where
+    numbers = map (\n -> Just (n % 1)) [1 .. 9]
+
+solve :: String
+solve = compute

@@ -1,0 +1,98 @@
+cabal-version:      3.0
+name:               euler
+version:            0.0.1.0
+author:             Jun Kawai
+maintainer:         kwj@vlax.net
+build-type:         Simple
+
+common warnings
+    ghc-options: -Wall -Wcompat
+
+executable pe-solver
+    import: warnings
+    main-is: Main.hs
+    hs-source-dirs: app
+    build-depends:
+        base ^>=4.20.0.0,
+        deepseq ^>=1.5.0.0,
+        solutions
+    default-extensions: Strict
+    default-language: GHC2021
+
+library solutions
+    import: warnings
+    hs-source-dirs:   src
+    build-depends:
+        base ^>=4.20.0.0,
+        array ^>=0.5.7.0,
+        bytestring ^>=0.12.1.0,
+        containers ^>=0.7,
+        text ^>=2.1.1,
+        primes ^>=0.2.1.0,
+        file-embed ^>= 0.0.16.0
+    exposed-modules:
+        Sol,
+        Sol.P0001, Sol.P0002, Sol.P0003, Sol.P0004, Sol.P0005,
+        Sol.P0006, Sol.P0007, Sol.P0008, Sol.P0009, Sol.P0010,
+        Sol.P0011, Sol.P0012, Sol.P0013, Sol.P0014, Sol.P0015,
+        Sol.P0016, Sol.P0017, Sol.P0018, Sol.P0019, Sol.P0020,
+        Sol.P0021, Sol.P0022, Sol.P0023, Sol.P0024, Sol.P0025,
+        Sol.P0026, Sol.P0027, Sol.P0028, Sol.P0029, Sol.P0030,
+        Sol.P0031, Sol.P0032, Sol.P0033, Sol.P0034, Sol.P0035,
+        Sol.P0036, Sol.P0037, Sol.P0038, Sol.P0039, Sol.P0040,
+        Sol.P0041, Sol.P0042, Sol.P0043, Sol.P0044, Sol.P0045,
+        Sol.P0046, Sol.P0047, Sol.P0048, Sol.P0049, Sol.P0050,
+        Sol.P0051, Sol.P0052, Sol.P0053, Sol.P0054, Sol.P0055,
+        Sol.P0056, Sol.P0057, Sol.P0058, Sol.P0059, Sol.P0060,
+        Sol.P0061, Sol.P0062, Sol.P0063, Sol.P0064, Sol.P0065,
+        Sol.P0066, Sol.P0067, Sol.P0068, Sol.P0069, Sol.P0070,
+        Sol.P0071, Sol.P0072, Sol.P0073, Sol.P0074, Sol.P0075,
+        Sol.P0076, Sol.P0077, Sol.P0078, Sol.P0079, Sol.P0080,
+        Sol.P0081, Sol.P0082, Sol.P0083, Sol.P0084, Sol.P0085,
+        Sol.P0086, Sol.P0087, Sol.P0088, Sol.P0089, Sol.P0090,
+        Sol.P0091, Sol.P0092, Sol.P0093, Sol.P0094, Sol.P0095,
+        Sol.P0096, Sol.P0097, Sol.P0098, Sol.P0099, Sol.P0100
+    other-modules:
+        Mylib.Combinatorics,
+        Mylib.Factor,
+        Mylib.Heap.Internal,
+        Mylib.Heap.LeftistHeap,
+        Mylib.Math,
+        Mylib.MinFactor,
+        Mylib.Prime,
+        Mylib.Util,
+    default-extensions: Strict
+    default-language: GHC2021
+
+test-suite solutions-test
+    import: warnings
+    type: exitcode-stdio-1.0
+    main-is: Spec.hs
+    hs-source-dirs: test
+    build-depends:
+        base ^>=4.20.0.0,
+        hspec ^>=2.11.9,
+        solutions
+    other-modules:
+        Paths_euler,
+        Sol.P0001Spec, Sol.P0002Spec, Sol.P0003Spec, Sol.P0004Spec, Sol.P0005Spec,
+        Sol.P0006Spec, Sol.P0007Spec, Sol.P0008Spec, Sol.P0009Spec, Sol.P0010Spec,
+        Sol.P0011Spec, Sol.P0012Spec, Sol.P0013Spec, Sol.P0014Spec, Sol.P0015Spec,
+        Sol.P0016Spec, Sol.P0017Spec, Sol.P0018Spec, Sol.P0019Spec, Sol.P0020Spec,
+        Sol.P0021Spec, Sol.P0022Spec, Sol.P0023Spec, Sol.P0024Spec, Sol.P0025Spec,
+        Sol.P0026Spec, Sol.P0027Spec, Sol.P0028Spec, Sol.P0029Spec, Sol.P0030Spec,
+        Sol.P0031Spec, Sol.P0032Spec, Sol.P0033Spec, Sol.P0034Spec, Sol.P0035Spec,
+        Sol.P0036Spec, Sol.P0037Spec, Sol.P0038Spec, Sol.P0039Spec, Sol.P0040Spec,
+        Sol.P0041Spec, Sol.P0042Spec, Sol.P0043Spec, Sol.P0044Spec, Sol.P0045Spec,
+        Sol.P0046Spec, Sol.P0047Spec, Sol.P0048Spec, Sol.P0049Spec, Sol.P0050Spec,
+        Sol.P0051Spec, Sol.P0052Spec, Sol.P0053Spec, Sol.P0054Spec, Sol.P0055Spec,
+        Sol.P0056Spec, Sol.P0057Spec, Sol.P0058Spec, Sol.P0059Spec, Sol.P0060Spec,
+        Sol.P0061Spec, Sol.P0062Spec, Sol.P0063Spec, Sol.P0064Spec, Sol.P0065Spec,
+        Sol.P0066Spec, Sol.P0067Spec, Sol.P0068Spec, Sol.P0069Spec, Sol.P0070Spec,
+        Sol.P0071Spec, Sol.P0072Spec, Sol.P0073Spec, Sol.P0074Spec, Sol.P0075Spec,
+        Sol.P0076Spec, Sol.P0077Spec, Sol.P0078Spec, Sol.P0079Spec, Sol.P0080Spec,
+        Sol.P0081Spec, Sol.P0082Spec, Sol.P0083Spec, Sol.P0084Spec, Sol.P0085Spec,
+        Sol.P0086Spec, Sol.P0087Spec, Sol.P0088Spec, Sol.P0089Spec, Sol.P0090Spec,
+        Sol.P0091Spec, Sol.P0092Spec, Sol.P0093Spec, Sol.P0094Spec, Sol.P0095Spec,
+        Sol.P0096Spec, Sol.P0097Spec, Sol.P0098Spec, Sol.P0099Spec, Sol.P0100Spec
+    default-language: GHC2021
