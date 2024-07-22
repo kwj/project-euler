@@ -55,11 +55,11 @@ powerMod b e m
         case invMod b m of
             Just x ->
                 Just
-                    (fromIntegral (powerMod' (fromIntegral x) (fromIntegral (-e)) (fromIntegral m) 1) :: Int)
+                    (fromIntegral (powerMod' (fromIntegral x) (fromIntegral (-e)) (fromIntegral m) 1))
             Nothing -> Nothing
     | otherwise =
         Just
-            (fromIntegral (powerMod' (fromIntegral b) (fromIntegral e) (fromIntegral m) 1) :: Int)
+            (fromIntegral (powerMod' (fromIntegral b) (fromIntegral e) (fromIntegral m) 1))
 
 powerMod' :: Integer -> Integer -> Integer -> Integer -> Integer
 powerMod' b e m result
@@ -132,8 +132,10 @@ auxKronecker sign x y
             else
                 let tmp = y `mod` 8
                  in if tmp == 3 || tmp == 5 then (-sign) else sign
+{- FOURMOLU_DISABLE -}
 {-# SPECIALIZE auxKronecker :: Int -> Int -> Int -> (Int, Int) #-}
 {-# SPECIALIZE auxKronecker :: Integer -> Integer -> Integer -> (Integer, Integer) #-}
+{- FOURMOLU_ENABLE -}
 
 binomial :: Integral int => int -> int -> int
 binomial _ 0 = 1

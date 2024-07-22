@@ -45,8 +45,8 @@ compute limit =
         | otherwise =
             let tmp = findRepetendLength x
              in case tmp > max_length of
-                True -> aux xs tmp (pp x)
-                False -> aux xs max_length answer
+                    True -> aux xs tmp (pp x)
+                    False -> aux xs max_length answer
 
 solve :: String
 solve = compute 1_000

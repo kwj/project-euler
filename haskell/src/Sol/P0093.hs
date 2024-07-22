@@ -9,7 +9,8 @@ import qualified Data.Set as S (fromList, member)
 
 import Mylib.Combinatorics (combinations)
 
-fourArithmeticOps :: Maybe (Ratio Int) -> Maybe (Ratio Int) -> [Maybe (Ratio Int)]
+fourArithmeticOps ::
+    Maybe (Ratio Int) -> Maybe (Ratio Int) -> [Maybe (Ratio Int)]
 fourArithmeticOps Nothing _ = [Nothing]
 fourArithmeticOps _ Nothing = [Nothing]
 fourArithmeticOps (Just x) (Just y) = do

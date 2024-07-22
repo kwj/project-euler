@@ -1,9 +1,9 @@
 module Mylib.Heap.LeftistHeap (
     LeftistHeap,
-    module Mylib.Heap.Internal
+    module Mylib.Heap.Internal,
 ) where
 
-import Mylib.Heap.Internal ( Heap(..) )
+import Mylib.Heap.Internal (Heap (..))
 
 data LeftistHeap a = Empty | Tree Int a (LeftistHeap a) (LeftistHeap a)
 

@@ -23,8 +23,8 @@ mobiusTbl limit =
             tmp <- readArray p_tbl i
             when (tmp == i) $ do
                 let k = i * i
-                for_ [k, k + i .. limit] $ (\j -> writeArray p_tbl j i)
-                for_ [k, k + k .. limit] $ (\j -> writeArray p_tbl j 0)
+                for_ [k, k + i .. limit] (\j -> writeArray p_tbl j i)
+                for_ [k, k + k .. limit] (\j -> writeArray p_tbl j 0)
         tbl <- newArray (1, limit) 0
         writeArray tbl 1 1
         for_ [2 .. limit] $ \i -> do

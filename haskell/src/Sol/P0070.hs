@@ -36,7 +36,7 @@ ratio pfSeq =
 
 pfSequences :: Int -> Int -> [[(Int, Int)]]
 pfSequences x y =
-     unfoldr
+    unfoldr
         ( \pfLst ->
             if length pfLst == 1 && snd (pfLst !! 0) == 1
                 then Nothing

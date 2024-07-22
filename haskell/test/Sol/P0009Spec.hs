@@ -1,6 +1,7 @@
 module Sol.P0009Spec (spec) where
 
 import Test.Hspec
+
 import Sol.P0009 (compute)
 
 spec :: Spec

@@ -9,7 +9,8 @@ import Data.Maybe (fromJust)
 
 import Mylib.Factor (aliquotSumTbl)
 
--- Note: not only amicable chains, but also perfect numbers and amicable pairs
+-- Note: This result contains not only amicable chains,
+--       but also perfect numbers and amicable pairs.
 makeAmicableChains :: Int -> [[Int]]
 makeAmicableChains limit =
     aux [2 .. limit] []
@@ -27,7 +28,7 @@ makeAmicableChains limit =
             Nothing
         | elem n chain == True =
             let (l1, _) = splitLst chain n []
-            in Just l1
+             in Just l1
         | otherwise =
             go (nextPosTbl ! n) (n : chain)
 

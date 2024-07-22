@@ -31,8 +31,8 @@ countLetters n
     | otherwise =
         let (q, r) = (div n 100, mod n 100)
          in case r of
-            0 -> (under20 ! q) + (length "hundred")
-            _ -> (under20 ! q) + (length "hundred") + (length "and") + (countLetters r)
+                0 -> (under20 ! q) + (length "hundred")
+                _ -> (under20 ! q) + (length "hundred") + (length "and") + (countLetters r)
 
 compute :: Int -> String
 compute limit =

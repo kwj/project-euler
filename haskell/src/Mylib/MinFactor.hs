@@ -1,6 +1,6 @@
 module Mylib.MinFactor (
     minFactor,
-    minFactorTbl
+    minFactorTbl,
 ) where
 
 import Data.Array.Unboxed (UArray, listArray, (!))

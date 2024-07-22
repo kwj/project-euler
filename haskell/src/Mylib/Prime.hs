@@ -193,7 +193,8 @@ nextPrime n
     | n < 5 = 5
     | n < 7 = 7
     | otherwise =
-        let idx = if numberToIndex n /= numberToIndex (n + 1)
+        let idx =
+                if numberToIndex n /= numberToIndex (n + 1)
                     then (numberToIndex n) + 1
                     else numberToIndex n
          in fromMaybe (error "") $ find isPrime $ map indexToNumber [idx ..]

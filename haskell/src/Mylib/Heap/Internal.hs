@@ -1,5 +1,5 @@
 module Mylib.Heap.Internal (
-    Heap (..)
+    Heap (..),
 ) where
 
 class Heap h where
