@@ -16,11 +16,9 @@ compute upper_n thr =
         Int
     aux n x c r answer
         | r <= (div n 2) =
-            if c > thr
-                then
-                    aux (pred n) (pred x) (div (pred x * c) n) r (answer + n - r * 2 + 1)
-                else
-                    aux n (pred x) (div (pred x * c) (succ r)) (succ r) answer
+            case c > thr of
+                True -> aux (pred n) (pred x) (div (pred x * c) n) r (answer + n - r * 2 + 1)
+                False -> aux n (pred x) (div (pred x * c) (succ r)) (succ r) answer
         | otherwise =
             answer
 

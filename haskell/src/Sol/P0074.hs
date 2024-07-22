@@ -3,7 +3,7 @@ module Sol.P0074 (compute, solve) where
 import Data.Array.Unboxed (UArray, listArray, (!))
 import Data.List (group)
 
-import qualified Data.Set as S (empty, insert, member, size)
+import qualified Data.Set as S (Set, empty, insert, member, size)
 
 import Mylib.Combinatorics (combinationsWithRepetition)
 import Mylib.Math (factorial)
@@ -15,6 +15,7 @@ factTbl = listArray (0, 9) [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880]
 nextNumber :: Int -> Int
 nextNumber = aux 0
   where
+    aux :: Int -> Int -> Int
     aux acc 0 = acc
     aux acc x = aux (acc + factTbl ! (x `mod` 10)) (x `div` 10)
 
@@ -22,8 +23,9 @@ chainLength :: Int -> Int
 chainLength n =
     aux S.empty n
   where
+    aux :: S.Set Int -> Int -> Int
     aux set x
-        | S.member x set == True = S.size set
+        | S.member x set = S.size set
         | otherwise = aux (S.insert x set) (nextNumber x)
 
 countNumbers :: [Int] -> Int
@@ -45,7 +47,7 @@ compute max_digit =
         . filter (\lst -> (chainLength . sum $ map (factTbl !) lst) == max_chain - 1)
         $ concatMap (flip combinationsWithRepetition numbers) [1 .. max_digit]
   where
-    numbers :: [Int] = [0 .. 9]
+    numbers = [0 :: Int .. 9]
     max_chain = 60
 
 solve :: String

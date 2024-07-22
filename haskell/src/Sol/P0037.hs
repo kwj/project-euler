@@ -6,7 +6,8 @@ import Mylib.Math (numOfDigits)
 import Mylib.Prime (isPrime)
 
 addPrefix :: [Int] -> [Int] -> [Int]
-addPrefix prefix candsLst = [p * (10 ^ numOfDigits n 10) + n | p <- prefix, n <- candsLst]
+addPrefix prefix candsLst =
+    [p * (10 ^ numOfDigits n 10) + n | p <- prefix, n <- candsLst]
 
 pickupPrimes :: [Int] -> [Int]
 pickupPrimes lst =

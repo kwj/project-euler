@@ -9,7 +9,7 @@ import Mylib.Util (digits)
 
 compute :: String
 compute =
-    show $ sum $ map aux [2 .. 7]
+    show . sum $ map aux [2 .. 7]
   where
     factTbl :: UArray Int Int
     factTbl = listArray (0, 9) (map factorial [0 .. 9])

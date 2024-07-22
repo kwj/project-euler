@@ -23,12 +23,9 @@ makePrimeTbl ndigits =
     ps = primes (10 ^ (ndigits - 1)) (10 ^ ndigits)
     addEntry :: M.Map String [Int] -> [(String, Int)] -> M.Map String [Int]
     addEntry m [] = m
-    addEntry m (tpl : rest)
-        | M.member key m == True = addEntry (M.update (\x -> Just (val : x)) key m) rest
+    addEntry m ((key, val) : rest)
+        | M.member key m = addEntry (M.update (\x -> Just (val : x)) key m) rest
         | otherwise = addEntry (M.insert key [val] m) rest
-      where
-        key = fst tpl
-        val = snd tpl
 
 findNumbers :: [[Int]] -> [Int]
 findNumbers llst

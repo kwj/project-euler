@@ -16,19 +16,24 @@ compute n
     blkLowerLimit = if n == 1 then 0 else 10 ^ ((n - 1) * 2)
     blkSize = 10 ^ (n * 2 - 2)
     blocks =
-        map (\x -> (x - 1, x - blkSize)) $
-            takeWhile (> blkLowerLimit) $
-                iterate (\x -> x - blkSize) blkUpperLimit
-    aux blkUpper blkLower =
-        filter (\x -> isPalindrome x 10) $
-            filter (>= blkLower) $
-                concat $
-                    map (\x -> map (\y -> x * y) [nLower .. (min x (blkUpper `div` x))]) $
-                        filter (\x -> x * x >= blkLower) [nLower .. nUpper]
-    maxPalindrome (tpl : tpls) =
-        let lst = aux (fst tpl) (snd tpl)
-         in if null lst then maxPalindrome tpls else Just (maximum lst)
+        map (\x -> (x - 1, x - blkSize))
+            . takeWhile (> blkLowerLimit)
+            $ iterate (\x -> x - blkSize) blkUpperLimit
+
+    maxPalindrome :: [(Int, Int)] -> Maybe Int
     maxPalindrome [] = Nothing
+    maxPalindrome (tpl : tpls)
+        | null lst = maxPalindrome tpls
+        | otherwise = Just (maximum lst)
+      where
+        lst = aux tpl
+
+        aux :: (Int, Int) -> [Int]
+        aux (blkUpper, blkLower) =
+            filter (flip isPalindrome 10)
+                . filter (>= blkLower)
+                . concatMap (\x -> map (\y -> x * y) [nLower .. (min x (blkUpper `div` x))])
+                $ filter (\x -> x * x >= blkLower) [nLower .. nUpper]
 
 solve :: String
 solve = compute 3
@@ -38,9 +43,9 @@ solve = compute 3
 
 compute :: Int -> String
 compute n =
-    show $
-        maximum $
-            filter (\z -> isPalindrome z 10) [x * y | x <- [nLower .. nUpper], y <- [nLower .. nUpper]]
+    show
+        . maximum
+        $ filter (flip isPalindrome 10) [x * y | x <- [nLower .. nUpper], y <- [nLower .. nUpper]]
   where
     nUpper = 10 ^ n - 1 :: Int
     nLower = 10 ^ (n - 1) :: Int

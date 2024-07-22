@@ -26,17 +26,19 @@ primes_mod2 = 3 : filter (\p -> p `mod` 3 == 2) (drop 3 primeNumbers)
 
 pairablePrimes :: Int -> Int -> [Int]
 pairablePrimes p limit =
-    [x | x <- takeWhile (\x -> x + p < limit && x < p) ascPrimes, isPair x == True]
+    [x | x <- takeWhile (\x -> x + p < limit && x < p) ascPrimes, isPair x]
   where
     upper_p = 10 ^ (numOfDigits p 10)
-    isPair x =
-        isPrime (x * upper_p + p) && isPrime (p * upper_x + x)
-      where
-        upper_x = 10 ^ (numOfDigits x 10)
     ascPrimes =
         if p `mod` 3 == 1
             then primes_mod1
             else primes_mod2
+
+    isPair :: Int -> Bool
+    isPair x =
+        isPrime (x * upper_p + p) && isPrime (p * upper_x + x)
+      where
+        upper_x = 10 ^ (numOfDigits x 10)
 
 -- [TODO] There is room for improvement in this method.
 findCliques :: [Int] -> Int -> M.Map Int (S.Set Int) -> [[Int]]
@@ -44,10 +46,12 @@ findCliques dscNbrs size tbl =
     filter isClique cands
   where
     cands = combinations size dscNbrs
+
+    isClique :: [Int] -> Bool
     isClique [] = error "unreachable"
     isClique (x : xs)
         | null xs = True
-        | all (`S.member` (tbl M.! x)) xs == True = isClique xs
+        | all (`S.member` (tbl M.! x)) xs = isClique xs
         | otherwise = False
 
 compute :: Int -> String
@@ -57,6 +61,7 @@ compute groupSize =
     updateMinSum :: Int -> [[Int]] -> Int -> Int
     updateMinSum p cliques current =
         min current (minimum $ map (\clq -> sum $ p : clq) cliques)
+
     aux :: Int -> M.Map Int (S.Set Int) -> [Int] -> Int
     aux _ _ [] = error "fatal error (unreachable)"
     aux minSum tbl (p : ps)

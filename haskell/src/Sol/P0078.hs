@@ -18,6 +18,8 @@ expand_partition_array denom old_array new_end =
             (0, new_end)
             (elems old_array ++ [mod (p x) denom | x <- [old_end + 1 .. new_end]])
     (_, old_end) = bounds old_array
+
+    p :: Int -> Int
     p n =
         sum $
             zipWith

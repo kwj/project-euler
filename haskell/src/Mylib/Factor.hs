@@ -9,6 +9,7 @@ module Mylib.Factor (
     MF.minFactorTbl,
 ) where
 
+import Control.Monad (when)
 import Data.Array.ST (MArray, newArray, readArray, runSTUArray, writeArray)
 import Data.Array.Unboxed (UArray)
 import Data.Foldable (for_)
@@ -61,9 +62,7 @@ sigmaTbl' z limit = do
             for_ [2 .. (limit `div` q)] $ \n -> do
                 tmp_n <- readArray tbl n
                 tmp_q <- readArray tbl q
-                if tmp_n == 1 || n `mod` p == 0
-                    then pure ()
-                    else writeArray tbl (q * n) (tmp_q * tmp_n)
+                when (tmp_n /= 1 && n `mod` p /= 0) (writeArray tbl (q * n) (tmp_q * tmp_n))
     writeArray tbl 0 0
     return tbl
   where

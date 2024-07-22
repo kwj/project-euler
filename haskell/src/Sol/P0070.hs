@@ -36,17 +36,13 @@ ratio pfSeq =
 
 pfSequences :: Int -> Int -> [[(Int, Int)]]
 pfSequences x y =
-    let init_pfSeq =
-            if x == y
-                then [(x, 2)]
-                else [(max x y, 1), (min x y, 1)]
-     in unfoldr
-            ( \pfLst ->
-                if length pfLst == 1 && snd (pfLst !! 0) == 1
-                    then Nothing
-                    else Just (reverse pfLst, next_pfLst pfLst)
-            )
-            init_pfSeq
+     unfoldr
+        ( \pfLst ->
+            if length pfLst == 1 && snd (pfLst !! 0) == 1
+                then Nothing
+                else Just (reverse pfLst, next_pfLst pfLst)
+        )
+        (if x == y then [(x, 2)] else [(max x y, 1), (min x y, 1)])
   where
     next_pfLst :: [(Int, Int)] -> [(Int, Int)]
     next_pfLst pfSeq
@@ -98,7 +94,7 @@ compute =
         | otherwise =
             let n = prod pfs
                 totient = phi pfs
-             in if isPermutation n totient == True
+             in if isPermutation n totient
                     then go (H.insert (Node n (fromIntegral n / fromIntegral totient)) pq) pfss
                     else go pq pfss
       where

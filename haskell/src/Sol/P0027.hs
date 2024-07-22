@@ -7,13 +7,13 @@ consecLength a b =
     aux 1
   where
     aux n
-        | isPrime (n * n + a * n + b) == True = aux (succ n)
+        | isPrime (n * n + a * n + b) = aux (succ n)
         | otherwise = n
 
 compute :: String
 compute =
     let (a, b) = snd $ maximum pairs
-     in show $ (a * b)
+     in show (a * b)
   where
     plst = takeWhile (< 2000) primeNumbers
     pairs =

@@ -64,7 +64,7 @@ allHandPatterns =
 --       Full House [6, 4, 8]
 getHand :: [String] -> [Int]
 getHand cards
-    | isFlush suits == True =
+    | isFlush suits =
         let hand = checkStraight nums
          in case hand of
                 0 -> 9 : handNums -- Royal Flush: 9

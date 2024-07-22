@@ -8,6 +8,8 @@ continuedFraction n =
   where
     isqrt_n = isqrt n
     stop = 2 * isqrt_n
+
+    aux :: Int -> Int -> Int -> [Int] -> (Int, [Int])
     aux b c a lst
         | isqrt_n * isqrt_n == n =
             (isqrt_n, [])

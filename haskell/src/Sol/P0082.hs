@@ -22,6 +22,7 @@ parseData =
     wordsWhen p s =
         aux (break p s) []
       where
+        aux :: (String, String) -> [String] -> [String]
         aux ("", "") acc = reverse acc
         aux ("", tl) acc = aux (break p (drop 1 tl)) acc
         aux (hd, tl) acc = aux (break p (drop 1 tl)) (hd : acc)
@@ -35,23 +36,27 @@ compute =
             (headExn matrix)
             (drop 1 matrix)
   where
+    matrix = parseData (BS.unpack fileData)
+
     auxRightward :: [Int] -> [Int] -> [Int]
     auxRightward prev crnt =
-        let (x, xs) =
-                mapAccumL
-                    (\a tpl -> (snd tpl + (min a (fst tpl)), a))
-                    maxBound
-                    (zipWith (\a b -> (a, b)) prev crnt)
-         in (drop 1 xs) ++ [x]
+        (drop 1 xs) ++ [x]
+      where
+        (x, xs) =
+            mapAccumL
+                (\a tpl -> (snd tpl + (min a (fst tpl)), a))
+                maxBound
+                (zipWith (\a b -> (a, b)) prev crnt)
+
     auxLeftward :: [Int] -> [Int] -> [Int]
     auxLeftward crnt work =
-        let (x, xs) =
-                mapAccumR
-                    (\a tpl -> (min (fst tpl + a) (snd tpl), a))
-                    (lastExn work)
-                    (zipWith (\a b -> (a, b)) crnt work)
-         in x : (initExn xs)
-    matrix = parseData (BS.unpack fileData)
+        x : (initExn xs)
+      where
+        (x, xs) =
+            mapAccumR
+                (\a tpl -> (min (fst tpl + a) (snd tpl), a))
+                (lastExn work)
+                (zipWith (\a b -> (a, b)) crnt work)
 
 solve :: String
 solve = compute

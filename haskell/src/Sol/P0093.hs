@@ -36,6 +36,7 @@ makeNumbers xs =
         . map (fromJust)
         $ aux xs
   where
+    aux :: [Maybe (Ratio Int)] -> [Maybe (Ratio Int)]
     aux lst = do
         pair_lst <- choiceTwo lst
         filter

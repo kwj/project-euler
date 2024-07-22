@@ -11,7 +11,7 @@ prodSumLst limit =
     runSTUArray $ do
         tbl <- newArray (1, limit) upper_value
         aux 1 0 0 2 tbl
-        return tbl
+        pure tbl
   where
     upper_value = limit * 2
 

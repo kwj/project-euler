@@ -6,7 +6,7 @@ import Mylib.Math (factorial)
 
 compute :: Int -> String
 compute nth =
-    printf "%010d" (aux [0 .. 9] (pred nth) 0)
+    printf "%010d" $ aux [0 .. 9] (pred nth) 0
   where
     aux :: [Int] -> Int -> Int -> Int
     aux [] _ acc = acc

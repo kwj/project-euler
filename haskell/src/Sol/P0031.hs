@@ -14,7 +14,7 @@ dpSolve target coins =
                 crnt <- readArray memo i
                 tmp <- readArray memo (i - c)
                 writeArray memo i (crnt + tmp)
-        return memo
+        pure memo
 
 compute :: Int -> [Int] -> String
 compute target coins =

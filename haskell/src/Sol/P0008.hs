@@ -29,7 +29,11 @@ numStr =
 
 compute :: Int -> String
 compute len =
-    show . maximum . map product . partitionByStep len 1 $ map digitToInt numStr
+    show
+        . maximum
+        . map product
+        . partitionByStep len 1
+        $ map digitToInt numStr
 
 solve :: String
 solve = compute 13

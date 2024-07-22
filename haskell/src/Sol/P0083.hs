@@ -69,6 +69,7 @@ parseData str =
     wordsWhen p s =
         aux (break p s) []
       where
+        aux :: (String, String) -> [String] -> [String]
         aux ("", "") acc = reverse acc
         aux ("", tl) acc = aux (break p (drop 1 tl)) acc
         aux (hd, tl) acc = aux (break p (drop 1 tl)) (hd : acc)

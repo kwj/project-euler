@@ -101,7 +101,7 @@ nextPctArray arr nfaces =
             for_ (nextStates idx (arr ! idx) nfaces) $ \(pos, pct) -> do
                 v <- readArray result pos
                 writeArray result pos (v + pct)
-        return result
+        pure result
 
 makeSteadyState :: PercentArray -> Int -> [(Percentage, Int)]
 makeSteadyState pct_arr nfaces =

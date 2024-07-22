@@ -21,10 +21,8 @@ triangleStr =
     \04 62 98 27 23 09 70 98 73 93 38 53 60 04 23\n"
 
 parseData :: String -> [[Int]]
-parseData str =
-    map (map (read :: String -> Int))
-        . map words
-        $ lines str
+parseData =
+    (map . map) (read :: String -> Int) . map words . lines
 
 compute :: String
 compute =

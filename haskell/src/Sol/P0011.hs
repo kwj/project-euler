@@ -31,7 +31,11 @@ grid =
 {- FOURMOLU_ENABLE -}
 
 compute :: Int -> String
-compute len = show . maximum . map product $ concat vectors
+compute len =
+    show
+        . maximum
+        . map product
+        $ concat vectors
   where
     nRow = 20
     nCol = 20

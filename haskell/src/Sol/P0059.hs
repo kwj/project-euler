@@ -23,6 +23,7 @@ parseData =
     wordsWhen p s =
         aux (break p s) []
       where
+        aux :: (String, String) -> [String] -> [String]
         aux ("", "") acc = reverse acc
         aux ("", tl) acc = aux (break p (drop 1 tl)) acc
         aux (hd, tl) acc = aux (break p (drop 1 tl)) (hd : acc)
@@ -31,6 +32,7 @@ score :: [Int] -> Int
 score =
     sum . map score'
   where
+    score' :: Int -> Int
     score' x
         | x == ord ' ' = 3 -- 0x20
         | x >= ord 'A' && x <= ord 'Z' = 5 -- 0x41 .. 0x5a

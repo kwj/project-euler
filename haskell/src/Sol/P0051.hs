@@ -6,10 +6,12 @@ import Mylib.Combinatorics (powerset)
 import Mylib.Prime (isPrime, primeNumbers)
 import Mylib.Util (digits, headExn, undigits)
 
-replaceAtIndexes :: [a] -> [Int] -> a -> [a]
+-- Here, I used the 'ScopedTypeVariables' extension enabled in GHC2021.
+replaceAtIndexes :: forall a. [a] -> [Int] -> a -> [a]
 replaceAtIndexes src indexes elm =
     aux (zipWith (\x y -> (x, y)) [0 ..] src) (filter (>= 0) $ sort indexes) []
   where
+    aux :: [(Int, a)] -> [Int] -> [a] -> [a]
     aux [] _ acc = reverse acc
     aux (x : xs) [] acc = aux xs [] ((snd x) : acc)
     aux (x : xs) idx@(i : is) acc
@@ -21,14 +23,20 @@ isFamily familySize p =
     any isFamily' [0 .. (10 - familySize)]
   where
     p_digits = digits p
+
+    isFamily' :: Int -> Bool
     isFamily' n =
         any
             (\mask -> (length $ filter isPrime (cands n mask)) >= familySize - 1)
             (masks n)
+
+    masks :: Int -> [[Int]]
     masks n =
         filter (\mask -> length mask >= 3 && length mask `mod` 3 == 0 && mask !! 0 /= 0)
             . powerset
             $ elemIndices n p_digits
+
+    cands :: Int -> [Int] -> [Int]
     cands n mask =
         map (undigits . replaceAtIndexes p_digits mask) [n + 1 .. 9]
 

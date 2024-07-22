@@ -30,14 +30,13 @@ countLetters n
     | n < 100 = (mults10 ! (div n 10)) + (under20 ! (mod n 10))
     | otherwise =
         let (q, r) = (div n 100, mod n 100)
-         in if r == 0
-                then
-                    (under20 ! q) + (length "hundred")
-                else
-                    (under20 ! q) + (length "hundred") + (length "and") + (countLetters r)
+         in case r of
+            0 -> (under20 ! q) + (length "hundred")
+            _ -> (under20 ! q) + (length "hundred") + (length "and") + (countLetters r)
 
 compute :: Int -> String
-compute limit = show $ sum $ map countLetters [1 .. limit]
+compute limit =
+    show . sum $ map countLetters [1 .. limit]
 
 solve :: String
 solve = compute 1_000

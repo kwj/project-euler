@@ -6,6 +6,7 @@ compute :: String
 compute =
     show $ aux 1 0 1
   where
+    aux :: Int -> Int -> Int -> Int
     aux base nPrimes n
         | next_nPrimes * 10 < 4 * n + 1 =
             2 * n + 1

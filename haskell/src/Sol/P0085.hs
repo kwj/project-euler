@@ -19,6 +19,7 @@ getApproximation m target
                 else Just (diff_2, m * n)
   where
     n = headExn $ dropWhile (\x -> target - lhs m x > 0) [isqrt (target `div` (m * (m + 1))) - 1 ..]
+
     lhs :: Int -> Int -> Int
     lhs x y = x * (x + 1) * y * (y + 1)
 

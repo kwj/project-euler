@@ -4,6 +4,7 @@ module Sol.P0014 (compute, solve) where
 getCollatzLength :: Int -> Int
 getCollatzLength n = aux n 1
   where
+    aux :: Int -> Int -> Int
     aux 1 cnt = cnt
     aux x cnt = aux next_x (succ cnt)
       where
@@ -11,8 +12,10 @@ getCollatzLength n = aux n 1
 
 compute :: Int -> String
 compute limit =
-    show . snd . maximum $
-        map (\x -> (getCollatzLength x, x)) [(div limit 2) .. (limit - 1)]
+    show
+        . snd
+        . maximum
+        $ map (\x -> (getCollatzLength x, x)) [(div limit 2) .. (limit - 1)]
 
 solve :: String
 solve = compute 1_000_000

@@ -12,6 +12,8 @@ compute p =
   where
     powerTbl :: UArray Int Int
     powerTbl = listArray (0, 9) (map (^ p) [0 .. 9])
+
+    aux :: Int -> Int
     aux k =
         sum
             . map fst

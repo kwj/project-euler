@@ -6,16 +6,18 @@ import Mylib.Util (headExn, initExn, lastExn)
 
 searchRings :: Int -> [[Int]]
 searchRings n_gon =
+    concatMap searchRings' [min_weight .. max_weight]
+  where
+    numbers = [1 .. n_gon * 2]
     -- weight: sum of each node on line
     --   minimum weight: (n_gon * 2) + 1 + 2 = n_gon * 2 + 3
     --   maximum weight: 1 + (n_gon * 2 - 1) + (n_gon * 2) = n_gon * 4
-    let min_weight = n_gon * 2 + 3
-        max_weight = n_gon * 4
-     in concatMap searchRings' [min_weight .. max_weight]
-  where
+    min_weight = n_gon * 2 + 3
+    max_weight = n_gon * 4
+
+    searchRings' :: Int -> [[Int]]
     searchRings' weight =
-        let numbers = [1 .. n_gon * 2]
-         in concatMap (\n -> aux [n] (delete n numbers)) numbers
+        concatMap (\n -> aux [n] (delete n numbers)) numbers
       where
         -- ring :: [Int]
         --    +-+---     ---+-+-+   X: first selected inner node (last ring)

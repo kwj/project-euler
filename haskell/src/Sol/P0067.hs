@@ -12,7 +12,7 @@ fileData = $(FE.makeRelativeToProject "resources/0067_triangle.txt" >>= FE.embed
 
 parseData :: String -> [[Int]]
 parseData =
-    map (map (read :: String -> Int) . words) . lines
+    (map . map) (read :: String -> Int) . map words . lines
 
 compute :: String
 compute =

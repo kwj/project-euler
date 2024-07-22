@@ -13,7 +13,7 @@ dupTbl upper = runSTUArray $ do
     tbl <- newArray (2, max_power) 0
     for_ [2 .. max_power] $ \x -> do
         writeArray tbl x (sum $ dupList x upper)
-    return tbl
+    pure tbl
   where
     max_power = maxPower upper 2
 
@@ -27,7 +27,7 @@ dupList x upper =
             let k = (lcm x y) `div` x
             for_ [(max k 2), (max k 2) + k .. ((upper * y) `div` x)] $ \idx -> do
                 writeArray tbl idx 1
-        return tbl
+        pure tbl
 
 compute :: Int -> String
 compute upper =
@@ -35,10 +35,11 @@ compute upper =
   where
     base_limit = isqrt upper
     tbl = dupTbl upper
+
     aux :: [Int] -> S.Set Int -> Int -> Int
     aux [] _ answer = answer
     aux (b : bs) skips answer
-        | S.member b skips == True = aux bs skips answer
+        | S.member b skips = aux bs skips answer
         | otherwise =
             let es = [2 .. (maxPower upper b)]
                 dup_count = sum $ map (tbl !) es

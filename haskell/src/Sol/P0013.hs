@@ -107,7 +107,8 @@ numbers =
 {- FOURMOLU_ENABLE -}
 
 compute :: Int -> String
-compute len = take len . show $ sum numbers
+compute len =
+    take len . show $ sum numbers
 
 solve :: String
 solve = compute 10

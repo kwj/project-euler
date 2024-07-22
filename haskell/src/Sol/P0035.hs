@@ -5,7 +5,10 @@ import Mylib.Prime (isPrime, primes)
 
 compute :: Int -> String
 compute limit =
-    show $ length $ filter isCircularPrime $ primes 1 limit
+    show
+        . length
+        . filter isCircularPrime
+        $ primes 1 limit
   where
     isCircularPrime :: Int -> Bool
     isCircularPrime n =

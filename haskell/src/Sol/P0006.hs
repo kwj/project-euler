@@ -8,7 +8,7 @@ squareOfSum n = (n * (n + 1) `div` 2) ^ (2 :: Int)
 
 compute :: Int -> String
 compute limit =
-    show $ abs (sumOfSquares limit - squareOfSum limit)
+    show . abs $ sumOfSquares limit - squareOfSum limit
 
 solve :: String
 solve = compute 100
