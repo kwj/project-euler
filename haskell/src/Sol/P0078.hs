@@ -1,7 +1,7 @@
 module Sol.P0078 (compute, solve) where
 
-import Control.Monad (msum)
 import Data.Array.IArray (Array, assocs, bounds, elems, listArray, (!))
+import Data.Foldable (asum)
 import Data.List (find, unfoldr)
 import Data.Maybe (fromJust)
 
@@ -40,7 +40,7 @@ compute denom =
     show
         . fst
         . fromJust
-        . msum
+        . asum
         . map (find (\tpl -> snd tpl == 0) . assocs)
         $ scanl
             (expand_partition_array denom)
