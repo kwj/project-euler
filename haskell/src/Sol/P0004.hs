@@ -1,35 +1,40 @@
 module Sol.P0004 (compute, solve) where
 
+import Data.Foldable (asum)
+
 import Mylib.Math (isPalindrome)
 
 compute :: Int -> String
 compute n
     | n < 1 = error "range error"
     | otherwise =
-        case maxPalindrome blocks of
-            Just x -> show (x :: Int)
-            Nothing -> error "not found"
+        case asum $ maxPalindromeNumber <$> blocks of
+            Just x -> show x
+            _ -> "not found"
   where
     nUpper = 10 ^ n - 1
     nLower = 10 ^ (n - 1)
     blkUpperLimit = 10 ^ (n * 2)
     blkLowerLimit = if n == 1 then 0 else 10 ^ ((n - 1) * 2)
     blkSize = 10 ^ (n * 2 - 2)
+
+    -- descending list of block ranges [(lower, uppper), ...]
+    blocks :: [(Int, Int)]
     blocks =
-        map (\x -> (x - 1, x - blkSize))
+        map (\x -> (x - blkSize, x - 1))
             . takeWhile (> blkLowerLimit)
             $ iterate (\x -> x - blkSize) blkUpperLimit
 
-    maxPalindrome :: [(Int, Int)] -> Maybe Int
-    maxPalindrome [] = Nothing
-    maxPalindrome (tpl : tpls)
-        | null lst = maxPalindrome tpls
-        | otherwise = Just (maximum lst)
+    -- find the maximum palindrome number in the block
+    maxPalindromeNumber :: (Int, Int) -> Maybe Int
+    maxPalindromeNumber block
+        | null numbers = Nothing
+        | otherwise = Just (maximum numbers)
       where
-        lst = aux tpl
+        numbers = findPalindromeNumbers block
 
-        aux :: (Int, Int) -> [Int]
-        aux (blkUpper, blkLower) =
+        findPalindromeNumbers :: (Int, Int) -> [Int]
+        findPalindromeNumbers (blkLower, blkUpper) =
             filter (flip isPalindrome 10)
                 . filter (>= blkLower)
                 . concatMap (\x -> map (\y -> x * y) [nLower .. (min x (blkUpper `div` x))])
