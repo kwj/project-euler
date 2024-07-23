@@ -1,5 +1,29 @@
 module Sol.P0093 (compute, solve) where
 
+{-
+arithmetic operations (four_ops):
+  commutative:
+    addition: X + Y
+    multiplication: X * Y
+  no-commutative:
+    subtraction:  X - Y, Y - X
+    division: X / Y, Y / X
+
+patterns:
+  A, B, C, D: numbers
+
+  [1] ((A op B) op C) op D  [C(4,2)*2 = 12]
+       ^^^--^^^
+      ^^^^^^^^^^--^^^
+      ^^^^^^^^^^^^^^^^--^^
+  [2] (A op B) op (C op D)  [C(4,2) = 6]
+      ^^^--^^^    ^^^--^^^
+      ^^^^^^^^^--^^^^^^^^^
+
+  ^-^: We can ignore the order of the two terms because
+       four_ops() considers no-commutative operations.
+-}
+
 import Data.Function (on)
 import Data.List (maximumBy, nub, sort, (\\))
 import Data.Maybe (fromJust)
