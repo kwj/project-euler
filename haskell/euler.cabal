@@ -21,7 +21,7 @@ executable pe-solver
 
 library solutions
     import: warnings
-    hs-source-dirs:   src
+    hs-source-dirs: src
     build-depends:
         base ^>=4.20.0.0,
         array ^>=0.5.7.0,

@@ -8,7 +8,7 @@ import Mylib.Math (numOfDigits)
 import Mylib.Prime (isPrime, primeNumbers)
 
 {-
-This implementation is quite slow. The following is a result on a Raspberry Pi 4.
+This implementation is quite slow. The following is a result on my Raspberry Pi 4.
 
 % cabal v2-run pe-solver -- 60
 [Problem 60]
