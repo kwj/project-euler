@@ -1,5 +1,16 @@
 module Sol.P0039 (compute, solve) where
 
+{-
+Primitive Pythagorean triples (variant type)
+  https://en.wikipedia.org/wiki/Pythagorean_triple#A_variant
+
+`m` > `n` > 0.
+`m` and `n` are both odd and coprime.
+   hypotenuse: (m^2 + n^2) / 2
+   catheti: mn, (m^2 - n^2) / 2
+   perimeter: mn + (m^2 - n^2) / 2 + (m^2 + n^2) / 2 = m(m + n)
+-}
+
 import Data.Function (on)
 import Data.List (group, maximumBy, sort)
 

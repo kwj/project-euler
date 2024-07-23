@@ -17,7 +17,7 @@ compute =
     aux x oddPrimes
         | isPrime x = aux (x + 2) (x : oddPrimes)
         | otherwise =
-            if any (\p -> isTwicedSquare (x - p)) oddPrimes
+            if any (isTwicedSquare . (x -)) oddPrimes
                 then aux (x + 2) oddPrimes
                 else x
 

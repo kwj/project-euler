@@ -1,5 +1,10 @@
 module Sol.P0072 (compute, solve) where
 
+{-
+Please see the following page.
+  https://mathproblems123.wordpress.com/2018/05/10/sum-of-the-euler-totient-function/
+-}
+
 import Data.Function (fix)
 
 import Mylib.Math (isqrt)

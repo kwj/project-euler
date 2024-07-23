@@ -1,5 +1,16 @@
 module Sol.P0078 (compute, solve) where
 
+{-
+https://en.wikipedia.org/wiki/Partition_(number_theory)
+https://en.wikipedia.org/wiki/Partition_function_(number_theory)
+https://en.wikipedia.org/wiki/Pentagonal_number_theorem
+
+  p(n) = Sigma{k ∈ Z/{0}} (-1)^(k+1) * p(n - k(3k-1)/2)
+       = p(n-1) + p(n-2) - p(n-5) - p(n-7) + p(n-12) + p(n-15) - p(n-22) - ...
+
+    [p(0) = 1, p(k) = 0 when k < 0]
+-}
+
 import Data.Array.IArray (Array, assocs, bounds, elems, listArray, (!))
 import Data.Foldable (asum)
 import Data.List (find, unfoldr)

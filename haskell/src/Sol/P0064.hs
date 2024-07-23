@@ -1,5 +1,27 @@
 module Sol.P0064 (compute, solve) where
 
+{-
+            sqrt(N) + b0        1              1
+  sqrt(N) = ------------ = a0 + --,  x1 = a1 + --, ...
+                 c0             x1             x2
+
+                  c0             c0(sqrt(N) - (b0 - a0c0))
+    x1 = --------------------- = -------------------------
+         sqrt(N) + (b0 - a0c0)       N - (b0 - a0c0)^2
+
+         sqrt(N) + (a0c0 - b0)   sqrt(N) + b1         1
+       = --------------------- = ------------- = a1 + --
+           N - (a0c0 - b0)^2          c1              x2
+           -----------------
+                  c0
+   -->
+     a{n} = floor( (sqrt(N)+b{n}) / c{n} )
+     b{n+1} = a{n}*c{n} - b{n}
+     c{n+1} = (N - b{n+1}^2) / c{n}
+
+     b{0} = 0, c{0} = 1, a{0} = sqrt(N)
+-}
+
 import Mylib.Math (isqrt)
 
 continuedFraction :: Int -> (Int, [Int])

@@ -1,5 +1,11 @@
 module Sol.P0076 (compute, solve) where
 
+{-
+another version of problem 31
+  coins: 1, 2, 3, ..., 99
+  total: 100
+-}
+
 import Data.Array.ST (newArray, readArray, runSTUArray, writeArray)
 import Data.Array.Unboxed (UArray, (!))
 import Data.Foldable (for_)

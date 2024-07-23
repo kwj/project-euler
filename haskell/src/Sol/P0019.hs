@@ -6,9 +6,10 @@ compute :: String
 compute =
     show
         . length
-        . filter (== 6)
+        . filter (== 6) -- '6' indicates Sunday because Jan 1, 1900 was a Monday.
         $ scanl (\acc x -> (acc + x) `mod` 7) 0 (365 : days)
   where
+    -- number of days in month (Jan 1901 - Nov 2000)
     days :: [Int]
     days =
         initExn -- drop 'Dec 2000'

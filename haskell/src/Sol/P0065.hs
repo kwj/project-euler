@@ -1,5 +1,10 @@
 module Sol.P0065 (compute, solve) where
 
+{-
+  e = [2; 1, 2, 1, 1, 4, 1, 1, 6, ..., 1, 1, 2k, ...]
+      [a{0}; a{1}, a{2}, ...]
+-}
+
 import Data.Ratio (numerator)
 
 import Mylib.Util (digits)

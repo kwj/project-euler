@@ -1,5 +1,24 @@
 module Sol.P0075 (compute, solve) where
 
+{-
+Pythagorean triple
+
+  a = k * (m^2 - n^2), b = k * 2mn, c = k * (m^2 + n^2)
+    where m > n > 0, gcd(m, n) = 1
+
+  perimeter L = k * (2m^2 + 2mn)
+              = k * 2m(m + n)
+
+  2m(m + n) = L/k
+    -->
+  2m^2 < 2m(m + n) = L/k
+    <-->
+  m^2 < L/2k
+
+  'm' is maximized when k=1
+    max(m) < sqrt(L/2)
+-}
+
 import Data.Array.Unboxed (UArray, accumArray, elems)
 
 import Mylib.Math (isqrt)

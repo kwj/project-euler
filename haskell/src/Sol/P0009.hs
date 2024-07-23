@@ -1,5 +1,16 @@
 module Sol.P0009 (compute, solve) where
 
+{-
+a = k(m^2 - n^2), b = k * 2mn, c = k(m^2 + n^2)  [m>n>0, gcd(m,n)=1, m+n is odd]
+
+abc = k^3 * (m^4 - n^4) * 2mn
+a + b + c = k * 2m(m+n) = 1000
+
+ -> 'k' and 'm' are divisors to 500 (= 1000/2).
+    'm+n' is a divisor to 500/m.
+    m(m+n) <= 500 --> m <= isqrt(500), m+n <= 500/m
+-}
+
 import Mylib.Math (isqrt)
 import Mylib.Util (headExn)
 

@@ -1,5 +1,25 @@
 module Sol.P0085 (compute, solve) where
 
+{-
+  nCr = n! / ((n-r)! * r!)
+      1  2       n-1  n
+    +--+--+-- ... --+--+
+   1|  |  |   ...   |  |
+    +--+--+-- ... --+--+
+   2|  |  |   ...   |  |
+    +--+--+-- ... --+--+ num of horizontal lines = m + 1
+   3|  |  |   ...   |  |
+    +--+--+-- ... --+--+
+    ....................
+    +--+--+-- ... --+--+
+   m|  |  |   ...   |  |
+    +--+--+-- ... --+--+
+      num of vertical lines = n + 1
+
+  (m+1)C2 * (n+1)C2 = m(m+1)/2 * n(n+1)/2 (\approx) 2_000_000
+  --> m(m+1)*n(n+1) (\approx) (2_000_000 * 4)
+-}
+
 import Data.Function (on)
 import Data.List (minimumBy)
 import Data.Maybe (fromJust)
@@ -34,7 +54,7 @@ compute target =
         . minimumBy (compare `on` fst)
         . map fromJust
         . takeWhile (/= Nothing)
-        $ map (\m -> getApproximation m (target * 4)) [1 ..]
+        $ map (flip getApproximation (target * 4)) [1 ..]
 
 solve :: String
 solve = compute 2_000_000

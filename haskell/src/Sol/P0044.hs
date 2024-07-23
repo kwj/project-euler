@@ -4,6 +4,10 @@ import Mylib.Factor (pfactorsToDivisors, primeFactors)
 import Mylib.Math (isPentagonal)
 import Mylib.Util (headExn)
 
+-- get_divisors(n) returns divisors of n(3n-1) which meet the following requirements:
+--  - They are less than 'n'.
+--  - They are congruent to 'n' modulo 3.
+-- note: 'n' and '3n-1' are relatively prime.
 getDivisors :: Int -> [Int]
 getDivisors n =
     filter (\x -> x < n && mod x 3 == mod n 3)
@@ -13,6 +17,10 @@ getDivisors n =
 pent :: Int -> Int
 pent n = n * (3 * n - 1) `div` 2
 
+-- d(3d-1) = (k-j)(3(k+j)-1)
+--   lhs: d(3d-1)
+--   rhs: (k-j) * (3(k+j)-1) = r1 * r2 [r1=k-j, r2=3(k+j)-1]
+--   0 < (k-j) < d, d % 3 == (k-j) % 3
 checkConditions :: Int -> Bool
 checkConditions d =
     any isSumPentagonal pairs

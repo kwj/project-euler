@@ -1,5 +1,24 @@
 module Sol.P0088 (compute, solve) where
 
+{-
+  N(k) = a1 + a2 + ... + ak = a1 * a2 * ... * ak
+    N(k) must be composite numbers.
+  min_N(k): minimal product-sum N(k)
+
+  when k = 2
+    sum {2,2} = prod {2,2}
+  when k > 2 and {a1, a2, a3, ..., ak}
+    min sum = sum {1, 1, ..., 1} = k
+    --> min_N(k) >= k
+  when k > 2 and {a1, a2, a3, ..., ak} = {1, ..., 1, 2, k}
+    for all k>2, there exists Ak = {a1, a2, ..., ak} = {1, 1, ..., 1, 2, k}, and
+    prod Ak = sum Ak = N(k) = 2k
+    --> min_N(k) <= 2k
+
+  2 <= k <= 12000
+   --> k <= N(k) <= 24000
+-}
+
 import Control.Monad (when)
 import Data.Array.ST (newArray, readArray, runSTUArray, writeArray)
 import Data.Array.Unboxed (UArray, elems)
