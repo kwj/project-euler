@@ -51,13 +51,9 @@ makeNumber w1 w2 sq
     | length trans_map /= (length . nub . sort $ map snd trans_map) =
         []
     | otherwise =
-        [mapping w2 trans_map]
+        pure (undigits . reverse $ map (fromJust . flip lookup trans_map) w2)
   where
     trans_map = nub . sort $ zip w1 (reverse $ digits sq)
-
-mapping :: String -> [(Char, Int)] -> Int
-mapping w2 trans_map =
-    undigits . reverse $ map (\c -> fromJust $ lookup c trans_map) w2
 
 compute :: String
 compute =

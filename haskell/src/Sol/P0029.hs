@@ -11,8 +11,7 @@ import Mylib.Math (isqrt, maxPower)
 dupTbl :: Int -> UArray Int Int
 dupTbl upper = runSTUArray $ do
     tbl <- newArray (2, max_power) 0
-    for_ [2 .. max_power] $ \x -> do
-        writeArray tbl x (sum $ dupList x upper)
+    for_ [2 .. max_power] (\x -> writeArray tbl x (sum $ dupList x upper))
     pure tbl
   where
     max_power = maxPower upper 2
@@ -25,8 +24,8 @@ dupList x upper =
         tbl <- newArray (2, upper) 0
         for_ [1 .. (x - 1)] $ \y -> do
             let k = (lcm x y) `div` x
-            for_ [(max k 2), (max k 2) + k .. ((upper * y) `div` x)] $ \idx -> do
-                writeArray tbl idx 1
+            for_ [(max k 2), (max k 2) + k .. ((upper * y) `div` x)]
+                (\idx -> writeArray tbl idx 1)
         pure tbl
 
 compute :: Int -> String

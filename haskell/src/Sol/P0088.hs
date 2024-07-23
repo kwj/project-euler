@@ -19,8 +19,8 @@ prodSumLst limit =
         when (k <= limit) $ do
             v <- readArray tbl k
             writeArray tbl k (min v p)
-            for_ [n .. upper_value `div` p] $ \x -> do
-                aux (p * x) (s + x) (len + 1) x tbl
+            for_ [n .. upper_value `div` p]
+                (\x -> aux (p * x) (s + x) (len + 1) x tbl)
       where
         k = p - s + len
 

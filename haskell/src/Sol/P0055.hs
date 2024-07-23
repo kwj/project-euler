@@ -20,7 +20,7 @@ isLychrel n =
 
 compute :: Integer -> String
 compute limit =
-    show . length $ filter (\n -> isLychrel n) [1 .. limit]
+    show . length $ filter isLychrel [1 .. limit]
 
 solve :: String
 solve = compute 10_000

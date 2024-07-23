@@ -25,8 +25,8 @@ compute :: Int -> String
 compute limit =
     show
         . length
-        . filter (odd . length)
-        $ map (snd . continuedFraction) [1 .. limit]
+        . filter (odd . length . snd)
+        $ map continuedFraction [1 .. limit]
 
 solve :: String
 solve = compute 10_000

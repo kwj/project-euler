@@ -25,6 +25,7 @@ checkConditions d =
         , mod r2 3 == 2
         , mod (r1 + (r2 + 1) `div` 3) 2 == 0
         ]
+
     isSumPentagonal :: (Int, Int) -> Bool
     isSumPentagonal (a, b) =
         isPentagonal (pent k + pent j)

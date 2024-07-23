@@ -21,6 +21,7 @@ compute limit =
     show $ aux [1 .. limit] [] 0
   where
     tbl = abndntTbl limit
+
     aux :: [Int] -> [Int] -> Int -> Int
     aux [] _ acc = acc
     aux (x : xs) ab_lst acc

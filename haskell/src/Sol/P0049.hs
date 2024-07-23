@@ -21,6 +21,7 @@ makePrimeTbl ndigits =
     addEntry M.empty (map (\p -> (show . undigits . sort $ digits p, p)) ps)
   where
     ps = primes (10 ^ (ndigits - 1)) (10 ^ ndigits)
+
     addEntry :: M.Map String [Int] -> [(String, Int)] -> M.Map String [Int]
     addEntry m [] = m
     addEntry m ((key, val) : rest)

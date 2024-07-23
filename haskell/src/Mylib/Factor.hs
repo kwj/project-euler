@@ -64,7 +64,7 @@ sigmaTbl' z limit = do
                 tmp_q <- readArray tbl q
                 when (tmp_n /= 1 && n `mod` p /= 0) (writeArray tbl (q * n) (tmp_q * tmp_n))
     writeArray tbl 0 0
-    return tbl
+    pure tbl
   where
     primes = takeWhile (<= limit) P.primes
 
@@ -75,4 +75,4 @@ aliquotSumTbl limit =
         for_ [1 .. limit] $ \x -> do
             tmp <- readArray tbl x
             writeArray tbl x (tmp - x)
-        return tbl
+        pure tbl

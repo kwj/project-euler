@@ -31,7 +31,7 @@ isCompleted :: Grid -> Bool
 isCompleted = (all . all) (/= 0)
 
 dfs :: (Grid -> [Grid]) -> Grid -> [Grid]
-dfs f g = g : (f g >>= dfs f)
+dfs f grid = grid : (f grid >>= dfs f)
 
 makeTentativeGrids :: Grid -> [Grid]
 makeTentativeGrids g =

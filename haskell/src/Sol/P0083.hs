@@ -75,10 +75,9 @@ parseData str =
         aux (hd, tl) acc = aux (break p (drop 1 tl)) (hd : acc)
 
 findMinCost :: CostMatrix -> Pos -> Pos -> Int
-findMinCost matrix start goal =
-    case dijkstra (initialPQ, initialCostMap) M.! goal of
-        Infinity -> error "fatal error"
-        Cost v -> v
+findMinCost matrix start goal
+    | Cost v <- dijkstra (initialPQ, initialCostMap) M.! goal = v
+    | otherwise = error "fatal error"
   where
     ix :: ((Int, Int), (Int, Int))
     ix = bounds matrix

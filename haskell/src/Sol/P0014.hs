@@ -6,9 +6,9 @@ getCollatzLength n = aux n 1
   where
     aux :: Int -> Int -> Int
     aux 1 cnt = cnt
-    aux x cnt = aux next_x (succ cnt)
-      where
-        next_x = if even x then div x 2 else 3 * x + 1
+    aux x cnt
+        | even x = aux (x `div` 2) (succ cnt)
+        | otherwise = aux (3 * x + 1) (succ cnt)
 
 compute :: Int -> String
 compute limit =
