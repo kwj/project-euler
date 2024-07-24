@@ -3,7 +3,7 @@
 module Sol.P0059 (compute, solve) where
 
 import Data.Bits (xor)
-import Data.Char (ord)
+import Data.Char (chr, isAlphaNum, isPrint, isSpace, ord)
 import Data.Function (on)
 import Data.List (maximumBy)
 
@@ -28,30 +28,33 @@ parseData =
         aux ("", tl) acc = aux (break p (drop 1 tl)) acc
         aux (hd, tl) acc = aux (break p (drop 1 tl)) (hd : acc)
 
-score :: [Int] -> Int
+score :: [Char] -> Int
 score =
     sum . map score'
   where
-    score' :: Int -> Int
+    score' :: Char -> Int
     score' x
-        | x == ord ' ' = 3 -- 0x20
-        | x >= ord 'A' && x <= ord 'Z' = 5 -- 0x41 .. 0x5a
-        | x >= ord 'a' && x <= ord 'z' = 3 -- 0x61 .. 0x7a
-        | x >= ord '!' && x <= ord '~' = 1 -- 0x21 .. 0x7e
-        | otherwise = 0
+        | isAlphaNum x = 3
+        | isSpace x = 2
+        | otherwise = 1
 
-decodeData :: [Int] -> [Int] -> [Int]
-decodeData key encData = zipWith xor (cycle key) encData
+decodeData :: [Int] -> [Int] -> [Char]
+decodeData key encData =
+    zipWith (\a b -> chr $ xor a b) (cycle key) encData
 
 compute :: String
 compute =
     show
-        . sum
+        . foldl (\acc c -> acc + ord c) 0
         . maximumBy (compare `on` score)
+        . filter (all isValidChar) -- pruning
         $ zipWith
             (\key encData -> decodeData key encData)
             (cartesianProduct . take 3 $ repeat [ord 'a' .. ord 'z'])
             (repeat $ parseData (BS.unpack fileData))
+  where
+    isValidChar :: Char -> Bool
+    isValidChar x = any ($ x) [isPrint, isSpace]
 
 solve :: String
 solve = compute
