@@ -27,7 +27,7 @@ patterns:
 -}
 
 import Data.Function (on)
-import Data.List (maximumBy, nub, sort, (\\))
+import Data.List (maximumBy, (\\))
 import Data.Maybe (fromJust)
 import Data.Ratio (Ratio, denominator, numerator, (%))
 
@@ -56,9 +56,7 @@ fourArithmeticOps (Just x) (Just y) = do
 
 makeNumbers :: [Maybe (Ratio Int)] -> [Int]
 makeNumbers xs =
-    nub
-        . sort
-        . map (numerator)
+    map (numerator)
         . filter (\x -> denominator x == 1)
         . map (fromJust)
         . filter (/= Nothing)

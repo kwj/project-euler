@@ -9,7 +9,7 @@ import Mylib.Util (digits, headExn, undigits)
 -- Here, I used the 'ScopedTypeVariables' extension enabled in GHC2021.
 replaceAtIndexes :: forall a. [a] -> [Int] -> a -> [a]
 replaceAtIndexes src indexes elm =
-    aux (zipWith (\x y -> (x, y)) [0 ..] src) (filter (>= 0) $ sort indexes) []
+    aux (zip [0 ..] src) (filter (>= 0) $ sort indexes) []
   where
     aux :: [(Int, a)] -> [Int] -> [a] -> [a]
     aux [] _ acc = reverse acc
