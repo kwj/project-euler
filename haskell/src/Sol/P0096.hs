@@ -57,8 +57,7 @@ numbersInCol g (_, c) = map (!! c) g
 
 numbersInBox :: Grid -> (Int, Int) -> [Int]
 numbersInBox g (r, c) =
-    concatMap (take 3 . drop ((c `div` 3) * 3)) $
-        (take 3 . drop ((r `div` 3) * 3)) g
+    (take 3 . drop ((r `div` 3) * 3)) g >>= take 3 . drop ((c `div` 3) * 3)
 
 undeterminedPositions :: Grid -> [(Int, Int)]
 undeterminedPositions g = do

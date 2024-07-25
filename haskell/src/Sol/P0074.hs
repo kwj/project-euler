@@ -45,7 +45,7 @@ compute max_digit =
         . sum
         . map countNumbers
         . filter (\lst -> (chainLength . sum $ map (factTbl !) lst) == max_chain - 1)
-        $ concatMap (flip combinationsWithRepetition numbers) [1 .. max_digit]
+        $ flip combinationsWithRepetition numbers =<< [1 .. max_digit]
   where
     numbers = [0 :: Int .. 9]
     max_chain = 60

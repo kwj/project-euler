@@ -66,29 +66,18 @@ makeNumbers xs =
         pair_lst <- choiceTwo lst
         filter
             (\x -> x /= Nothing)
-            (case_1a pair_lst ++ case_1b pair_lst ++ case_2 pair_lst)
+            (case_1 pair_lst ++ case_2 pair_lst)
 
     choiceTwo :: Eq a => [a] -> [([a], [a])]
     choiceTwo lst = do
         two <- combinations 2 lst
         pure (two, lst \\ two)
 
-case_1a :: ([Maybe (Ratio Int)], [Maybe (Ratio Int)]) -> [Maybe (Ratio Int)]
-case_1a (lst1, lst2) = do
-    ab <- fourArithmeticOps d1 d2
-    abc <- fourArithmeticOps ab d3
-    fourArithmeticOps abc d4
-  where
-    d1 = lst1 !! 0
-    d2 = lst1 !! 1
-    d3 = lst2 !! 0
-    d4 = lst2 !! 1
-
-case_1b :: ([Maybe (Ratio Int)], [Maybe (Ratio Int)]) -> [Maybe (Ratio Int)]
-case_1b (lst1, lst2) = do
-    ab <- fourArithmeticOps d1 d2
-    abc <- fourArithmeticOps ab d4
-    fourArithmeticOps abc d3
+case_1 :: ([Maybe (Ratio Int)], [Maybe (Ratio Int)]) -> [Maybe (Ratio Int)]
+case_1 (lst1, lst2) =
+    let l1 = fourArithmeticOps d1 d2 >>= fourArithmeticOps d3 >>= fourArithmeticOps d4
+        l2 = fourArithmeticOps d1 d2 >>= fourArithmeticOps d4 >>= fourArithmeticOps d3
+     in l1 ++ l2
   where
     d1 = lst1 !! 0
     d2 = lst1 !! 1
