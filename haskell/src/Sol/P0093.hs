@@ -1,7 +1,7 @@
 module Sol.P0093 (compute, solve) where
 
 {-
-arithmetic operations (four_ops):
+arithmetic operations (fourArithmeticOps):
   commutative:
     addition: X + Y
     multiplication: X * Y
@@ -12,16 +12,18 @@ arithmetic operations (four_ops):
 patterns:
   A, B, C, D: numbers
 
-  [1] ((A op B) op C) op D  [C(4,2)*2 = 12]
-       ^^^--^^^
-      ^^^^^^^^^^--^^^
-      ^^^^^^^^^^^^^^^^--^^
-  [2] (A op B) op (C op D)  [C(4,2) = 6]
-      ^^^--^^^    ^^^--^^^
-      ^^^^^^^^^--^^^^^^^^^
+  [case 1]
+     ((A op B) op C) op D
+      ^^^--^^^
+     ^^^^^^^^^^--^^^
+     ^^^^^^^^^^^^^^^^--^^
+  [case 2]
+     (A op B) op (C op D)
+     ^^^--^^^    ^^^--^^^
+     ^^^^^^^^^--^^^^^^^^^
 
-  ^-^: We can ignore the order of the two terms because
-       four_ops() considers no-commutative operations.
+  ^^-^^: We can ignore the order of the two terms because
+         fourArithmeticOps() considers no-commutative operations.
 -}
 
 import Data.Function (on)
@@ -59,14 +61,13 @@ makeNumbers xs =
         . map (numerator)
         . filter (\x -> denominator x == 1)
         . map (fromJust)
+        . filter (/= Nothing)
         $ aux xs
   where
     aux :: [Maybe (Ratio Int)] -> [Maybe (Ratio Int)]
     aux lst = do
         pair_lst <- choiceTwo lst
-        filter
-            (\x -> x /= Nothing)
-            (case_1 pair_lst ++ case_2 pair_lst)
+        case_1 pair_lst ++ case_2 pair_lst
 
     choiceTwo :: Eq a => [a] -> [([a], [a])]
     choiceTwo lst = do
@@ -85,10 +86,8 @@ case_1 (lst1, lst2) =
     d4 = lst2 !! 1
 
 case_2 :: ([Maybe (Ratio Int)], [Maybe (Ratio Int)]) -> [Maybe (Ratio Int)]
-case_2 (lst1, lst2) = do
-    ab <- fourArithmeticOps d1 d2
-    cd <- fourArithmeticOps d3 d4
-    fourArithmeticOps ab cd
+case_2 (lst1, lst2) =
+    concat $ fourArithmeticOps <$> fourArithmeticOps d1 d2 <*> fourArithmeticOps d3 d4
   where
     d1 = lst1 !! 0
     d2 = lst1 !! 1
