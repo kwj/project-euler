@@ -1,5 +1,7 @@
 module Sol.P0078 (compute, solve) where
 
+-- [Note] This implementation is slow.
+
 {-
 https://en.wikipedia.org/wiki/Partition_(number_theory)
 https://en.wikipedia.org/wiki/Partition_function_(number_theory)
