@@ -1,7 +1,7 @@
 module Sol.P0060 (compute, solve) where
 
 import qualified Data.Map.Strict as M (Map, empty, insert, (!))
-import qualified Data.Set as S (Set, fromList, member)
+import qualified Data.IntSet as S (IntSet, fromList, member)
 
 import Mylib.Combinatorics (combinations)
 import Mylib.Math (numOfDigits)
@@ -41,7 +41,7 @@ pairablePrimes p limit =
         upper_x = 10 ^ (numOfDigits x 10)
 
 -- [TODO] There is room for improvement in this method.
-findCliques :: [Int] -> Int -> M.Map Int (S.Set Int) -> [[Int]]
+findCliques :: [Int] -> Int -> M.Map Int S.IntSet -> [[Int]]
 findCliques dscNbrs size tbl =
     filter isClique cands
   where
@@ -62,7 +62,7 @@ compute groupSize =
     updateMinSum p cliques current =
         min current (minimum $ map (\clq -> sum $ p : clq) cliques)
 
-    aux :: Int -> M.Map Int (S.Set Int) -> [Int] -> Int
+    aux :: Int -> M.Map Int S.IntSet -> [Int] -> Int
     aux _ _ [] = error "fatal error (unreachable)"
     aux minSum tbl (p : ps)
         | p >= minSum =

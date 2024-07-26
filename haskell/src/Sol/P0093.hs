@@ -31,7 +31,7 @@ import Data.List (maximumBy, (\\))
 import Data.Maybe (fromJust)
 import Data.Ratio (Ratio, denominator, numerator, (%))
 
-import qualified Data.Set as S (fromList, member)
+import qualified Data.IntSet as S (fromList, member)
 
 import Mylib.Combinatorics (combinations)
 

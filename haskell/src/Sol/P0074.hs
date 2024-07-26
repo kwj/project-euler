@@ -3,7 +3,7 @@ module Sol.P0074 (compute, solve) where
 import Data.Array.Unboxed (UArray, listArray, (!))
 import Data.List (group)
 
-import qualified Data.Set as S (Set, empty, insert, member, size)
+import qualified Data.IntSet as S (IntSet, empty, insert, member, size)
 
 import Mylib.Combinatorics (combinationsWithRepetition)
 import Mylib.Math (factorial)
@@ -23,7 +23,7 @@ chainLength :: Int -> Int
 chainLength n =
     aux S.empty n
   where
-    aux :: S.Set Int -> Int -> Int
+    aux :: S.IntSet -> Int -> Int
     aux set x
         | S.member x set = S.size set
         | otherwise = aux (S.insert x set) (nextNumber x)

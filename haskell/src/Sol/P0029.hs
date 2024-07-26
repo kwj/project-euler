@@ -4,7 +4,7 @@ import Data.Array.ST (newArray, runSTUArray, writeArray)
 import Data.Array.Unboxed (UArray, elems, (!))
 import Data.Foldable (for_)
 
-import qualified Data.Set as S (Set, empty, fromList, member, union)
+import qualified Data.IntSet as S (IntSet, empty, fromList, member, union)
 
 import Mylib.Math (isqrt, maxPower)
 
@@ -35,7 +35,7 @@ compute upper =
     base_limit = isqrt upper
     tbl = dupTbl upper
 
-    aux :: [Int] -> S.Set Int -> Int -> Int
+    aux :: [Int] -> S.IntSet -> Int -> Int
     aux [] _ answer = answer
     aux (b : bs) skips answer
         | S.member b skips = aux bs skips answer

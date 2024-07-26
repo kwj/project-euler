@@ -2,7 +2,7 @@ module Sol.P0087 (compute, solve) where
 
 -- [Note] This implementation is slow.
 
-import qualified Data.Set as S (fromList, size)
+import qualified Data.IntSet as S (fromList, size)
 
 import Mylib.Prime (primeNumbers)
 
