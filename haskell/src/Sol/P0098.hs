@@ -69,7 +69,7 @@ compute =
 
     isAnagram :: String -> String -> Bool
     isAnagram w1 w2 =
-        sort w1 == sort w2
+        length w1 == length w2 && sort w1 == sort w2
 
 solve :: String
 solve = compute
