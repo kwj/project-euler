@@ -25,16 +25,17 @@ module Sol.P0064 (compute, solve) where
 import Mylib.Math (isqrt)
 
 continuedFraction :: Int -> (Int, [Int])
-continuedFraction n =
-    aux 0 1 isqrt_n []
+continuedFraction n
+    | isqrt_n * isqrt_n == n =
+        (isqrt_n, [])
+    | otherwise =
+        aux 0 1 isqrt_n []
   where
     isqrt_n = isqrt n
     stop = 2 * isqrt_n
 
     aux :: Int -> Int -> Int -> [Int] -> (Int, [Int])
     aux b c a lst
-        | isqrt_n * isqrt_n == n =
-            (isqrt_n, [])
         | a == stop =
             (isqrt_n, reverse lst)
         | otherwise =

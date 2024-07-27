@@ -9,16 +9,17 @@ import Mylib.Util (initExn)
 
 -- Here, I used the 'ScopedTypeVariables' extension enabled in GHC2021.
 continuedFraction :: forall int. Integral int => int -> (int, [int])
-continuedFraction n =
-    aux 0 1 isqrt_n []
+continuedFraction n
+    | isqrt_n * isqrt_n == n =
+        (isqrt_n, [])
+    | otherwise =
+        aux 0 1 isqrt_n []
   where
     isqrt_n = isqrt n
     stop = 2 * isqrt_n
 
     aux :: int -> int -> int -> [int] -> (int, [int])
     aux b c a lst
-        | isqrt_n * isqrt_n == n =
-            (isqrt_n, [])
         | a == stop =
             (isqrt_n, reverse lst)
         | otherwise =
