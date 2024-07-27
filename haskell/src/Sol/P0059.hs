@@ -50,7 +50,7 @@ compute =
         . filter (all isValidChar) -- pruning
         $ zipWith
             (\key encData -> decodeData key encData)
-            (cartesianProduct . take 3 $ repeat [ord 'a' .. ord 'z'])
+            (cartesianProduct $ replicate 3 [ord 'a' .. ord 'z'])
             (repeat $ parseData (BS.unpack fileData))
   where
     isValidChar :: Char -> Bool

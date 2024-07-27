@@ -13,9 +13,8 @@ compute =
     days :: [Int]
     days =
         initExn -- drop 'Dec 2000'
-            . concat
-            . take 25 -- from 'Jan 1901' to 'Dec 2000'
-            $ repeat (commonYear ++ commonYear ++ commonYear ++ leapYear)
+            . concat -- from 'Jan 1901' to 'Dec 2000'
+            $ replicate 25 (commonYear ++ commonYear ++ commonYear ++ leapYear)
     commonYear = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     leapYear = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
