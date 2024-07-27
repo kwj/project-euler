@@ -15,6 +15,9 @@ when 'n' is a odd number:
   'n^2 + b' is a even number. so 'a' must be a odd number.
 -}
 
+import Data.Function (on)
+import Data.List (maximumBy)
+
 import Mylib.Prime (isPrime, primeNumbers)
 
 consecLength :: Int -> Int -> Int
@@ -27,11 +30,11 @@ consecLength a b =
 
 compute :: String
 compute =
-    let (a, b) = snd $ maximum pairs
+    let (a, b) = snd $ maximumBy (compare `on` fst) lst
      in show (a * b)
   where
     plst = takeWhile (< 2000) primeNumbers
-    pairs =
+    lst =
         [ (consecLength a b, (a, b))
         | b <- takeWhile (<= 1000) (drop 1 plst)
         , a <- map (\x -> x - b - 1) plst
