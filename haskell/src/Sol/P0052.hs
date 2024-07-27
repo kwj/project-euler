@@ -15,7 +15,7 @@ compute =
     show
         . headExn
         . filter isPermutedMultiples
-        $ concatMap (\x -> [10 ^ (x - 1) .. (10 ^ x `div` 6)]) [6 :: Int ..]
+        $ (\x -> [10 ^ (x - 1) .. (10 ^ x `div` 6)]) =<< [6 :: Int ..]
 
 solve :: String
 solve = compute

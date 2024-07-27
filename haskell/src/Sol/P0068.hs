@@ -16,7 +16,7 @@ searchRings n_gon =
 
 searchRings' :: Int -> Int -> [[Int]]
 searchRings' n_gon weight =
-    concatMap (\n -> aux [n] (delete n numbers)) numbers
+    numbers >>= (\n -> aux [n] (delete n numbers))
   where
     numbers = [1 .. n_gon * 2]
 
