@@ -18,7 +18,7 @@ import Data.Foldable (asum)
 import Data.List (find, unfoldr)
 import Data.Maybe (fromJust)
 
--- The unboxed array (UArray) can't be used to this solution because recursive
+-- The unboxed array (UArray) can't be used to this implementation because recursive
 -- definition is used. Please see the following link for details.
 -- https://wiki.haskell.org/Arrays#Unboxed_arrays
 
@@ -65,3 +65,21 @@ compute denom =
 
 solve :: String
 solve = compute 1_000_000
+
+{-
+-- I don't know why the following implementation is slower than the above.
+
+expand_partition_array :: Int -> Array Int Int -> Int -> Array Int Int
+expand_partition_array denom old_array new_end =
+    runSTArray $ do
+        new_array <- newArray (0, new_end) 0
+        for_ [0 .. old_end] (\idx -> writeArray new_array idx (old_array ! idx))
+        for_ [old_end + 1 .. new_end] $ \idx -> do
+            for_ (zip (cycle [1, 1, -1, -1]) [idx - k | k <- takeWhile (<= idx) gpNumbers]) $ \(sign, x) -> do
+                crnt <- readArray new_array idx
+                tmp <- readArray new_array x
+                writeArray new_array idx (mod (crnt + sign * tmp) denom)
+        pure new_array
+  where
+    (_, old_end) = bounds old_array
+-}
