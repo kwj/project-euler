@@ -42,7 +42,7 @@ compute limit =
         . filter (not . null . snd . fst)
         $ zipWith
             (\cf n -> (cf, n))
-            (map (continuedFraction) [1 .. limit])
+            (continuedFraction <$> [1 .. limit])
             [(1 :: Int) ..]
   where
     aux :: Integral int => (int, [int]) -> [int]

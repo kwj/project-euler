@@ -30,8 +30,7 @@ compute =
         . fst
         . maximumBy (compare `on` snd)
         . zip [1 :: Int ..]
-        . map (\lst -> (lst !! 1) * (log (lst !! 0)))
-        $ parseData (BS.unpack fileData)
+        $ (\lst -> (lst !! 1) * (log (lst !! 0))) <$> parseData (BS.unpack fileData)
 
 solve :: String
 solve = compute

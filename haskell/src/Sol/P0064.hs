@@ -49,7 +49,7 @@ compute limit =
     show
         . length
         . filter (odd . length . snd)
-        $ map continuedFraction [1 .. limit]
+        $ continuedFraction <$> [1 .. limit]
 
 solve :: String
 solve = compute 10_000

@@ -30,8 +30,7 @@ compute =
     show
         . length
         . filter isTriangular
-        . map score
-        $ parseData (BS.unpack fileData)
+        $ score <$> parseData (BS.unpack fileData)
   where
     score :: [Char] -> Int
     score = sum . map (\c -> ord c - ord 'A' + 1)

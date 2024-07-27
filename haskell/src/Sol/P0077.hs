@@ -19,7 +19,7 @@ compute thr =
         . fst
         . headExn
         . dropWhile (\tpl -> snd tpl <= thr)
-        $ map (\n -> (n, partitionByCoins primeNumbers n)) [1 ..]
+        $ (\n -> (n, partitionByCoins primeNumbers n)) <$> [1 ..]
 
 solve :: String
 solve = compute 5_000

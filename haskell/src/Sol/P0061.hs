@@ -18,7 +18,7 @@ polygonalNumbers s =
 -- Triangle/Square/.../Heptagonal numbers
 polygonals_P3_to_P7 :: [[Int]]
 polygonals_P3_to_P7 =
-    [polygonalNumbers s | s <- [3 .. 7]]
+    polygonalNumbers <$> [3 .. 7]
 
 searchRest :: [Int] -> [[Int]] -> [[Int]]
 searchRest ns [] =

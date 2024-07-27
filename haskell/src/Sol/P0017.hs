@@ -36,7 +36,7 @@ countLetters n
 
 compute :: Int -> String
 compute limit =
-    show . sum $ map countLetters [1 .. limit]
+    show . sum $ countLetters <$> [1 .. limit]
 
 solve :: String
 solve = compute 1_000

@@ -48,10 +48,10 @@ mobiusTbl limit =
         pure tbl
 
 f :: Int -> Int
-f x = sum $ map (\j -> (j - 1) `div` 2 - j `div` 3) [1 .. x]
+f x = sum $ (\j -> (j - 1) `div` 2 - j `div` 3) <$> [1 .. x]
 
 g :: Int -> Int
-g n = sum $ map (\k -> mbTbl ! k * f (n `div` k)) [1 .. n]
+g n = sum $ (\k -> mbTbl ! k * f (n `div` k)) <$> [1 .. n]
   where
     mbTbl = mobiusTbl n
 

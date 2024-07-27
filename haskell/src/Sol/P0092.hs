@@ -17,7 +17,7 @@ compute :: Int -> String
 compute limit =
     show
         . sum
-        $ map (numerator `div`) denominators
+        $ (numerator `div`) <$> denominators
   where
     ndigits = (numOfDigits limit 10) - 1
     squares = [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]

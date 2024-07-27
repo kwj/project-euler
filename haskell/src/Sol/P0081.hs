@@ -44,7 +44,7 @@ compute =
             mapAccumL
                 (\a tpl -> (snd tpl + (min a (fst tpl)), a))
                 maxBound
-                (zipWith (\a b -> (a, b)) prev crnt)
+                (zip prev crnt)
 
 solve :: String
 solve = compute

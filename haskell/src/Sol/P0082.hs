@@ -46,7 +46,7 @@ compute =
             mapAccumL
                 (\a tpl -> (snd tpl + (min a (fst tpl)), a))
                 maxBound
-                (zipWith (\a b -> (a, b)) prev crnt)
+                (zip prev crnt)
 
     auxLeftward :: [Int] -> [Int] -> [Int]
     auxLeftward crnt work =
@@ -56,7 +56,7 @@ compute =
             mapAccumR
                 (\a tpl -> (min (fst tpl + a) (snd tpl), a))
                 (lastExn work)
-                (zipWith (\a b -> (a, b)) crnt work)
+                (zip crnt work)
 
 solve :: String
 solve = compute

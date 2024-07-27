@@ -33,7 +33,7 @@ d nth =
 
 compute :: String
 compute =
-    show . product $ map d [1, 10, 100, 1_000, 10_000, 100_000, 1_000_000]
+    show . product $ d <$> [1, 10, 100, 1_000, 10_000, 100_000, 1_000_000]
 
 solve :: String
 solve = compute

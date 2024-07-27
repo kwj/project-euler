@@ -15,7 +15,7 @@ compute limit =
     show
         . snd
         . maximum
-        $ map (\x -> (getCollatzLength x, x)) [(div limit 2) .. (limit - 1)]
+        $ (\x -> (getCollatzLength x, x)) <$> [(div limit 2) .. (limit - 1)]
 
 solve :: String
 solve = compute 1_000_000

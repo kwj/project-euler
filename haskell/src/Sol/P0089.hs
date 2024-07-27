@@ -34,8 +34,7 @@ compute :: String
 compute =
     show
         . sum
-        . map (\s -> T.length s - T.length (replaceNumStr s))
-        $ parseData (BS.unpack fileData)
+        $ (\s -> T.length s - T.length (replaceNumStr s)) <$> parseData (BS.unpack fileData)
 
 solve :: String
 solve = compute
