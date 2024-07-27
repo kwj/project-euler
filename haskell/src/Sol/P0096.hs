@@ -34,34 +34,33 @@ dfs :: (Grid -> [Grid]) -> Grid -> [Grid]
 dfs f grid = grid : (f grid >>= dfs f)
 
 makeTentativeGrids :: Grid -> [Grid]
-makeTentativeGrids g =
-    map (replaceGrid g pos) numbers
+makeTentativeGrids grid =
+    replaceGrid grid pos <$> numbers
   where
     (pos, numbers) =
         minimumBy (compare `on` length . snd)
-            . map (\x -> (x, candidateNumbers g x))
-            $ undeterminedPositions g
+            $ (\x -> (x, candidateNumbers grid x)) <$> undeterminedPositions grid
 
 candidateNumbers :: Grid -> (Int, Int) -> [Int]
-candidateNumbers g (r, c) =
+candidateNumbers grid (r, c) =
     filter (`notElem` neighbors) [1 .. 9]
   where
     neighbors =
-        concatMap (\f -> f g (r, c)) [numbersInRow, numbersInCol, numbersInBox]
+        (\f -> f grid (r, c)) =<< [numbersInRow, numbersInCol, numbersInBox]
 
 numbersInRow :: Grid -> (Int, Int) -> [Int]
-numbersInRow g (r, _) = g !! r
+numbersInRow grid (r, _) = grid !! r
 
 numbersInCol :: Grid -> (Int, Int) -> [Int]
-numbersInCol g (_, c) = map (!! c) g
+numbersInCol grid (_, c) = map (!! c) grid
 
 numbersInBox :: Grid -> (Int, Int) -> [Int]
-numbersInBox g (r, c) =
-    (take 3 . drop ((r `div` 3) * 3)) g >>= take 3 . drop ((c `div` 3) * 3)
+numbersInBox grid (r, c) =
+    (take 3 . drop ((r `div` 3) * 3)) grid >>= take 3 . drop ((c `div` 3) * 3)
 
 undeterminedPositions :: Grid -> [(Int, Int)]
-undeterminedPositions g = do
-    (r, row) <- addIndex g
+undeterminedPositions grid = do
+    (r, row) <- addIndex grid
     (c, v) <- addIndex row
     guard (v == 0)
     pure (r, c)
@@ -70,10 +69,10 @@ undeterminedPositions g = do
     addIndex = zip [0 ..]
 
 replaceGrid :: Grid -> (Int, Int) -> Int -> Grid
-replaceGrid g (r, c) v =
+replaceGrid grid (r, c) v =
     insertBetween row1 (replaceLst (headExn row2) c v) (tailExn row2)
   where
-    (row1, row2) = splitAt r g
+    (row1, row2) = splitAt r grid
 
 replaceLst :: [a] -> Int -> a -> [a]
 replaceLst lst idx v =
@@ -85,17 +84,18 @@ insertBetween :: [a] -> a -> [a] -> [a]
 insertBetween l1 v l2 = l1 ++ (v : l2)
 
 get3digitNumber :: Grid -> Int
-get3digitNumber g =
+get3digitNumber grid =
     foldl (\acc n -> acc * 10 + n) 0
         . take 3
-        $ headExn g
+        $ headExn grid
 
 compute :: String
 compute =
     show
         . sum
-        . map (get3digitNumber . fromJust . findSolution)
-        $ parseData (BS.unpack fileData)
+        . map (get3digitNumber . fromJust)
+        . filter (/= Nothing)
+        $ findSolution <$> parseData (BS.unpack fileData)
 
 solve :: String
 solve = compute
