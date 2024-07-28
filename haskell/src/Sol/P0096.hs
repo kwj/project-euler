@@ -4,6 +4,7 @@
 
 module Sol.P0096 (compute, solve) where
 
+import Control.Arrow ((&&&))
 import Control.Monad (guard)
 import Data.Char (digitToInt)
 import Data.Function (on)
@@ -40,7 +41,7 @@ makeTentativeGrids grid =
   where
     (pos, numbers) =
         minimumBy (compare `on` length . snd)
-            $ (\x -> (x, candidateNumbers grid x)) <$> undeterminedPositions grid
+            $ (id &&& candidateNumbers grid) <$> undeterminedPositions grid
 
 candidateNumbers :: Grid -> (Int, Int) -> [Int]
 candidateNumbers grid (r, c) =
