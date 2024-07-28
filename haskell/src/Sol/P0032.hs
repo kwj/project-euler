@@ -20,7 +20,7 @@ compute =
         . sum
         . nub
         . map snd
-        $ filter (\(x, _) -> isPandigitalNZ x) (p1 ++ p2)
+        $ filter (isPandigitalNZ . fst) (p1 ++ p2)
   where
     p1 =
         [ (m1 * 10 ^ (5 :: Int) + m2 * 10 ^ (4 :: Int) + m1 * m2, m1 * m2)
