@@ -8,17 +8,17 @@ import Mylib.Util (digits)
 
 compute :: Int -> String
 compute p =
-    show . sum $ map aux [2 .. 6]
+    show . sum $ aux <$> [2 .. 6]
   where
     powerTbl :: UArray Int Int
-    powerTbl = listArray (0, 9) (map (^ p) [0 .. 9])
+    powerTbl = listArray (0, 9) ((^ p) <$> [0 .. 9])
 
     aux :: Int -> Int
     aux k =
         sum
             . map fst
             . filter (\(n, lst) -> (sort $ digits n) == lst)
-            . map (\lst -> (sum $ map (powerTbl !) lst, lst))
+            . map (\lst -> (sum $ (powerTbl !) <$> lst, lst))
             $ combinationsWithRepetition k [0 .. 9]
 
 solve :: String

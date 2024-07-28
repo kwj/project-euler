@@ -60,7 +60,7 @@ compute boundary =
         . (+ init_c)
         . length
         . takeWhile (<= boundary)
-        $ scanl1 (+) (map countTriangles [init_c ..])
+        $ scanl1 (+) (countTriangles <$> [init_c ..])
   where
     init_c = 3 :: Int
 

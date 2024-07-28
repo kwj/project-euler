@@ -52,7 +52,7 @@ numbersInRow :: Grid -> (Int, Int) -> [Int]
 numbersInRow grid (r, _) = grid !! r
 
 numbersInCol :: Grid -> (Int, Int) -> [Int]
-numbersInCol grid (_, c) = map (!! c) grid
+numbersInCol grid (_, c) = (!! c) <$> grid
 
 numbersInBox :: Grid -> (Int, Int) -> [Int]
 numbersInBox grid (r, c) =

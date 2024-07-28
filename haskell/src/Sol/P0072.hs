@@ -20,12 +20,11 @@ sumPhi f n =
     v - v1 - v2
   where
     v = n * (n + 1) `div` 2
-    v1 = sum $ map (\m -> f (n `div` m)) [2 .. (isqrt n)]
+    v1 = sum $ (\m -> f (n `div` m)) <$> [2 .. (isqrt n)]
     v2 =
         sum $
-            map
-                (\d -> ((n `div` d) - (n `div` (d + 1))) * f d)
-                [1 .. n `div` ((isqrt n) + 1)]
+            (\d -> ((n `div` d) - (n `div` (d + 1))) * f d)
+                <$> [1 .. n `div` ((isqrt n) + 1)]
 
 compute :: Int -> String
 compute limit =

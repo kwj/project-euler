@@ -34,7 +34,7 @@ compute =
             (sort $ parseData (BS.unpack fileData))
   where
     score :: Int -> [Char] -> Int
-    score i s = i * (sum $ map (\c -> ord c - ord 'A' + 1) s)
+    score i s = i * (sum $ (\c -> ord c - ord 'A' + 1) <$> s)
 
 solve :: String
 solve = compute

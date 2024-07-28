@@ -33,7 +33,7 @@ compute len =
         . maximum
         . map product
         . partitionByStep len 1
-        $ map digitToInt numStr
+        $ digitToInt <$> numStr
 
 solve :: String
 solve = compute 13

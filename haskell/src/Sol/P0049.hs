@@ -18,7 +18,7 @@ import Mylib.Util (digits, headExn, undigits)
 
 makePrimeTbl :: Int -> M.Map String [Int]
 makePrimeTbl ndigits =
-    addEntry M.empty (map (\p -> (show . undigits . sort $ digits p, p)) ps)
+    addEntry M.empty ((\p -> (show . undigits . sort $ digits p, p)) <$> ps)
   where
     ps = primes (10 ^ (ndigits - 1)) (10 ^ ndigits)
 

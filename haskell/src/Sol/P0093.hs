@@ -113,7 +113,7 @@ compute =
         . map (\lst -> (countConsecNumbers lst, lst))
         $ combinations 4 numbers
   where
-    numbers = map (\n -> Just (n % 1)) [1 .. 9]
+    numbers = (\n -> Just (n % 1)) <$> [1 .. 9]
 
 solve :: String
 solve = compute

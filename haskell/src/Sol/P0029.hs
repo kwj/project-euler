@@ -41,8 +41,8 @@ compute upper =
         | S.member b skips = aux bs skips answer
         | otherwise =
             let es = [2 .. (maxPower upper b)]
-                dup_count = sum $ map (tbl !) es
-                add_skips = S.fromList $ filter (\x -> x <= base_limit) $ map (b ^) es
+                dup_count = sum $ (tbl !) <$> es
+                add_skips = S.fromList . filter (\x -> x <= base_limit) $ (b ^) <$> es
              in aux bs (S.union skips add_skips) (answer - dup_count)
 
 solve :: String

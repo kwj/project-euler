@@ -30,7 +30,7 @@ continuedFraction n
 
 numerator' :: Integral int => [int] -> int
 numerator' lst =
-    numerator . foldr1 (\x acc -> x + (1 / acc)) $ map (\x -> x % 1) lst
+    numerator . foldr1 (\x acc -> x + (1 / acc)) $ (% 1) <$> lst
 
 compute :: Integer -> String
 compute limit =

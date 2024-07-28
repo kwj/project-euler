@@ -30,15 +30,15 @@ import Mylib.Util (digits)
 
 compute :: String
 compute =
-    show . sum $ map aux [2 .. 7] -- 2-digit .. 7-digit numbers
+    show . sum $ aux <$> [2 .. 7] -- 2-digit .. 7-digit numbers
   where
     factTbl :: UArray Int Int
-    factTbl = listArray (0, 9) (map factorial [0 .. 9])
+    factTbl = listArray (0, 9) (factorial <$> [0 .. 9])
     aux k =
         sum
             . map fst
             . filter (\(n, lst) -> (sort $ digits n) == lst)
-            . map (\lst -> (sum $ map (factTbl !) lst, lst))
+            . map (\lst -> (sum $ (factTbl !) <$> lst, lst))
             $ combinationsWithRepetition k [0 .. 9]
 
 solve :: String

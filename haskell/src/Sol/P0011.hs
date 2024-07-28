@@ -44,10 +44,10 @@ compute len =
         | c < 1 || c > nCol = 0
         | otherwise = grid ! (r, c)
     vectors =
-        [ [ map (\x -> valueAt r (c + x)) [0 .. (len - 1)] -- Rightward
-          , map (\x -> valueAt (r + x) c) [0 .. (len - 1)] -- Downward
-          , map (\x -> valueAt (r + x) (c + x)) [0 .. (len - 1)] -- Down Rightward
-          , map (\x -> valueAt (r + x) (c - x)) [0 .. (len - 1)] -- Down Leftward
+        [ [ (\x -> valueAt r (c + x)) <$> [0 .. (len - 1)] -- Rightward
+          , (\x -> valueAt (r + x) c) <$> [0 .. (len - 1)] -- Downward
+          , (\x -> valueAt (r + x) (c + x)) <$> [0 .. (len - 1)] -- Down Rightward
+          , (\x -> valueAt (r + x) (c - x)) <$> [0 .. (len - 1)] -- Down Leftward
           ]
         | r <- [1 .. nRow]
         , c <- [1 .. nCol]
