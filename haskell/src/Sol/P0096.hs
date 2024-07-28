@@ -12,6 +12,7 @@ import Data.Maybe (catMaybes)
 
 import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
 import qualified Data.FileEmbed as FE (embedFile, makeRelativeToProject)
+import qualified Data.IntSet as S (fromList, notMember)
 
 import Mylib.Util (headExn, partitionByStep, tailExn)
 
@@ -43,10 +44,10 @@ makeTentativeGrids grid =
 
 candidateNumbers :: Grid -> (Int, Int) -> [Int]
 candidateNumbers grid (r, c) =
-    filter (`notElem` neighbors) [1 .. 9]
+    filter (`S.notMember` neighbors) [1 .. 9]
   where
     neighbors =
-        (\f -> f grid (r, c)) =<< [numbersInRow, numbersInCol, numbersInBox]
+        S.fromList $ (\f -> f grid (r, c)) =<< [numbersInRow, numbersInCol, numbersInBox]
 
 numbersInRow :: Grid -> (Int, Int) -> [Int]
 numbersInRow grid (r, _) = grid !! r
