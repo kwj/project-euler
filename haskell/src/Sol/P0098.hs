@@ -5,7 +5,7 @@ module Sol.P0098 (compute, solve) where
 import Control.Monad (guard)
 import Data.Array.IArray (Array, listArray, (!))
 import Data.List (nub, sort)
-import Data.Maybe (fromJust)
+import Data.Maybe (catMaybes)
 
 import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
 import qualified Data.FileEmbed as FE (embedFile, makeRelativeToProject)
@@ -51,7 +51,7 @@ makeNumber w1 w2 sq
     | length trans_map /= (length . nub $ snd <$> trans_map) =
         []
     | otherwise =
-        pure (undigits . reverse $ map (fromJust . flip lookup trans_map) w2)
+        pure . undigits . reverse . catMaybes $ flip lookup trans_map <$> w2
   where
     trans_map = nub $ zip w1 (reverse $ digits sq)
 

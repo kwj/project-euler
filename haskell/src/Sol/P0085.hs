@@ -22,7 +22,7 @@ module Sol.P0085 (compute, solve) where
 
 import Data.Function (on)
 import Data.List (minimumBy)
-import Data.Maybe (fromJust)
+import Data.Maybe (catMaybes)
 
 import Mylib.Math (isqrt)
 import Mylib.Util (headExn)
@@ -52,7 +52,7 @@ compute target =
     show
         . snd
         . minimumBy (compare `on` fst)
-        . map fromJust
+        . catMaybes
         . takeWhile (/= Nothing)
         $ (flip getApproximation (target * 4)) <$> [1 ..]
 

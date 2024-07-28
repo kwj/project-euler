@@ -8,7 +8,7 @@ import Control.Monad (guard)
 import Data.Char (digitToInt)
 import Data.Function (on)
 import Data.List (find, minimumBy)
-import Data.Maybe (fromJust)
+import Data.Maybe (catMaybes)
 
 import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
 import qualified Data.FileEmbed as FE (embedFile, makeRelativeToProject)
@@ -93,8 +93,8 @@ compute :: String
 compute =
     show
         . sum
-        . map (get3digitNumber . fromJust)
-        . filter (/= Nothing)
+        . map get3digitNumber
+        . catMaybes
         $ findSolution <$> parseData (BS.unpack fileData)
 
 solve :: String

@@ -28,7 +28,7 @@ patterns:
 
 import Data.Function (on)
 import Data.List (maximumBy, (\\))
-import Data.Maybe (fromJust)
+import Data.Maybe (catMaybes, fromJust)
 import Data.Ratio (Ratio, denominator, numerator, (%))
 
 import qualified Data.IntSet as S (fromList, member)
@@ -58,8 +58,7 @@ makeNumbers :: [Maybe (Ratio Int)] -> [Int]
 makeNumbers xs =
     map (numerator)
         . filter (\x -> denominator x == 1)
-        . map (fromJust)
-        . filter (/= Nothing)
+        . catMaybes
         $ aux xs
   where
     aux :: [Maybe (Ratio Int)] -> [Maybe (Ratio Int)]

@@ -5,7 +5,7 @@ module Sol.P0095 (compute, solve) where
 import Data.Array.Unboxed ((!))
 import Data.Function (on)
 import Data.List (elemIndex, maximumBy)
-import Data.Maybe (fromJust)
+import Data.Maybe (catMaybes)
 
 import Mylib.Factor (aliquotSumTbl)
 
@@ -13,7 +13,7 @@ import Mylib.Factor (aliquotSumTbl)
 --       but also perfect numbers and amicable pairs.
 makeAmicableChains :: Int -> [[Int]]
 makeAmicableChains limit =
-    map fromJust . filter (/= Nothing) $ aux [] <$> [2 .. limit]
+    catMaybes $ aux [] <$> [2 .. limit]
   where
     nextPosTbl = aliquotSumTbl limit
 
