@@ -1,37 +1,58 @@
 module Sol.P0095 (compute, solve) where
 
--- [TODO] This implementation is slow and needs to be improved.
+{-
+This implementation is slow. The following is a result on my Raspberry Pi 4.
+
+% cabal v2-run pe-solver -- 95
+[Problem 95]
+Answer: 14316
+Elapsed time: 2.747619 sec.
+-}
 
 import Data.Array.Unboxed ((!))
 import Data.Function (on)
-import Data.List (elemIndex, maximumBy)
+import Data.List (elemIndex, mapAccumL, maximumBy)
 import Data.Maybe (catMaybes)
+
+import qualified Data.IntSet as S (IntSet, empty, fromList, member, union)
 
 import Mylib.Factor (aliquotSumTbl)
 
--- Note: This result contains not only amicable chains,
---       but also perfect numbers and amicable pairs.
-makeAmicableChains :: Int -> [[Int]]
-makeAmicableChains limit =
-    catMaybes $ aux [] <$> [2 .. limit]
+amicableChains :: Int -> [[Int]]
+amicableChains limit =
+    catMaybes . snd $ mapAccumL findAmicableChain S.empty [2 .. limit]
   where
     nextPosTbl = aliquotSumTbl limit
 
-    aux :: [Int] -> Int -> Maybe [Int]
-    aux chain n
-        | n <= 1 || n > limit =
-            Nothing
-        | Just idx <- elemIndex n chain =
-            Just $ take (idx + 1) chain
-        | otherwise =
-            aux (n : chain) (nextPosTbl ! n)
+    findAmicableChain :: S.IntSet -> Int -> (S.IntSet, Maybe [Int])
+    findAmicableChain checked =
+        aux checked . checkChain checked
+
+    checkChain :: S.IntSet -> Int -> Either [Int] ([Int], [Int])
+    checkChain checked =
+        go []
+      where
+        go :: [Int] -> Int -> Either [Int] ([Int], [Int])
+        go chain n
+            | n > limit || S.member n checked =
+                Left chain
+            | Just idx <- elemIndex n chain =
+                Right (take (idx + 1) chain, chain)
+            | otherwise =
+                go (n : chain) (nextPosTbl ! n)
+
+    aux :: S.IntSet -> Either [Int] ([Int], [Int]) -> (S.IntSet, Maybe [Int])
+    aux checked (Left x) =
+        (S.union checked (S.fromList x), Nothing)
+    aux checked (Right (loop, x)) =
+        (S.union checked (S.fromList x), Just loop)
 
 compute :: Int -> String
 compute limit =
     show
         . minimum
         . maximumBy (compare `on` length)
-        $ makeAmicableChains limit
+        $ amicableChains limit
 
 solve :: String
 solve = compute 1_000_000
