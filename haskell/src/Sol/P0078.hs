@@ -1,6 +1,14 @@
 module Sol.P0078 (compute, solve) where
 
--- [Note] This implementation is slow.
+{-
+This implementation is quite slow. The following is a result on my Raspberry Pi 4.
+I have no ideas to improve performance so far.
+
+% cabal v2-run pe-solver -- 78
+[Problem 78]
+Answer: 55374
+Elapsed time: 4.809514 sec.
+-}
 
 {-
 https://en.wikipedia.org/wiki/Partition_(number_theory)

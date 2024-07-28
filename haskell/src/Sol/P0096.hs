@@ -1,6 +1,13 @@
 {-# LANGUAGE TemplateHaskell #-}
 
--- [TODO] This implementation is slow and needs to be improved.
+{-
+This implementation is slow. The following is a result on my Raspberry Pi 4.
+
+% cabal v2-run pe-solver -- 96
+[Problem 96]
+Answer: 24702
+Elapsed time: 1.963376 sec.
+-}
 
 module Sol.P0096 (compute, solve) where
 

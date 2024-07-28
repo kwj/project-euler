@@ -1,6 +1,15 @@
 module Sol.P0093 (compute, solve) where
 
 {-
+This implementation is little slow. The following is a result on my Raspberry Pi 4.
+
+% cabal v2-run pe-solver -- 93
+[Problem 93]
+Answer: 1258
+Elapsed time: 1.134940 sec.
+-}
+
+{-
 arithmetic operations (fourArithmeticOps):
   commutative:
     addition: X + Y

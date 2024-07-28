@@ -1,6 +1,15 @@
 module Sol.P0086 (compute, solve) where
 
 {-
+This implementation is little slow. The following is a result on my Raspberry Pi 4.
+
+% cabal v2-run pe-solver -- 86
+[Problem 86]
+Answer: 1818
+Elapsed time: 1.393238 sec.
+-}
+
+{-
   1 <= a, b, c <= M
 
   we can ignore rotations. there is only one case to consider.
