@@ -66,8 +66,8 @@ compute groupSize =
     aux _ _ [] = error "fatal error (unreachable)"
     aux minSum tbl (p : ps)
         | p >= minSum =
-            -- All prime numbers under the *minSum* have been checked,
-            -- this value is confirmed that it is the smallest sum.
+            -- All prime numbers under the `minSum` have been checked,
+            -- it is confirmed that the `minSum` is the smallest sum.
             minSum
         | otherwise =
             -- If not, search for prime numbers less than 'p'
