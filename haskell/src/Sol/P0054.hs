@@ -2,7 +2,7 @@
 
 module Sol.P0054 (compute, solve) where
 
-import Data.List (elemIndex, group, nub, sort, sortBy)
+import Data.List (elemIndex, group, nub, sortBy)
 import Data.Maybe (fromJust)
 import Data.Ord (Down (..), comparing)
 
@@ -76,8 +76,8 @@ getHand cards
     | otherwise =
         (fromJust $ elemIndex handPattern allHandPatterns) : handNums
   where
-    nums = sortBy (comparing Down) . map chToNum $ map (!! 0) cards
-    suits = nub . sort $ map (!! 1) cards
+    nums = sortBy (comparing Down) . map chToNum $ (!! 0) <$> cards
+    suits = nub $ (!! 1) <$> cards
     handPattern = sortBy (comparing Down) . map length $ group nums
     handNums = map headExn . sortBy (comparing (Down . length)) $ group nums
 

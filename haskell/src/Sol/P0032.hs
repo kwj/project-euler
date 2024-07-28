@@ -10,7 +10,7 @@ m * n = mn (multiplicand/multiplier/product identity can be written as a 1 throu
 multiplicand/multiplier/product : 4-digits/1-digit/4-digits or 3-digits/2-digits/4-digits
 -}
 
-import Data.List (nub, sort)
+import Data.List (nub)
 
 import Mylib.Math (isPandigitalNZ)
 
@@ -19,7 +19,6 @@ compute =
     show
         . sum
         . nub
-        . sort
         . map snd
         $ filter (\(x, _) -> isPandigitalNZ x) (p1 ++ p2)
   where

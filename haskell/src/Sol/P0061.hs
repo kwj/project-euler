@@ -1,6 +1,6 @@
 module Sol.P0061 (compute, solve) where
 
-import Data.List (delete, nub, sort)
+import Data.List (delete, nub)
 
 import Mylib.Util (headExn, lastExn)
 
@@ -41,7 +41,7 @@ compute =
     cands =
         filter (\lst -> length lst == 6) $ -- each number in the cycle is different
             map
-                (nub . sort)
+                nub
                 [ x : rest
                 | x <- polygonalNumbers 8 -- start searching from octagonal numbers
                 , rest <- searchRest [x] polygonals_P3_to_P7

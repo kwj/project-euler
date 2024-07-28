@@ -23,7 +23,7 @@ import Control.Monad (when)
 import Data.Array.ST (newArray, readArray, runSTUArray, writeArray)
 import Data.Array.Unboxed (UArray, elems)
 import Data.Foldable (for_)
-import Data.List (nub, sort)
+import Data.List (nub)
 
 prodSumLst :: Int -> UArray Int Int
 prodSumLst limit =
@@ -48,7 +48,6 @@ compute limit =
     show
         . sum
         . nub
-        . sort
         . drop 1
         . elems
         $ prodSumLst limit
