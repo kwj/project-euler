@@ -11,10 +11,10 @@ compute limit =
     show
         . S.size
         $ S.fromList
-            [ pow x 2 + pow y 3 + pow z 4
-            | x <- takeWhile (\n -> pow n 2 <= limit) primeNumbers
-            , y <- takeWhile (\n -> pow x 2 + pow n 3 <= limit) primeNumbers
-            , z <- takeWhile (\n -> pow x 2 + pow y 3 + pow n 4 <= limit) primeNumbers
+            [ x + y + z
+            | x <- [pow p 2 | p <- takeWhile (\n -> pow n 2 < limit) primeNumbers]
+            , y <- [pow p 3 | p <- takeWhile (\n -> x + pow n 3 < limit) primeNumbers]
+            , z <- [pow p 4 | p <- takeWhile (\n -> x + y + pow n 4 <= limit) primeNumbers]
             ]
   where
     pow :: Int -> Int -> Int
