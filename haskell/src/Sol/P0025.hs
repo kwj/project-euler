@@ -10,7 +10,7 @@ compute ndigits =
         . fst
         . headExn
         . dropWhile (\(_, n) -> n < 10 ^ (pred ndigits))
-        $ zipWith (\x y -> (x, y)) [1 :: Int ..] fibs
+        $ zip [1 :: Int ..] fibs
   where
     fibs :: [Integer]
     fibs = unfoldr (\(x, y) -> Just (x, (y, x + y))) (1, 1)
