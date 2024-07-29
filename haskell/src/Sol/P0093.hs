@@ -35,6 +35,7 @@ patterns:
          fourArithmeticOps() considers no-commutative operations.
 -}
 
+import Control.Arrow ((&&&))
 import Data.Function (on)
 import Data.List (maximumBy, (\\))
 import Data.Maybe (catMaybes, fromJust)
@@ -65,7 +66,7 @@ fourArithmeticOps (Just x) (Just y) = do
 
 makeNumbers :: [Maybe (Ratio Int)] -> [Int]
 makeNumbers xs =
-    map (numerator)
+    map numerator
         . filter (\x -> denominator x == 1)
         . catMaybes
         $ aux xs
@@ -76,9 +77,8 @@ makeNumbers xs =
         case_1 pair_lst ++ case_2 pair_lst
 
     choiceTwo :: Eq a => [a] -> [([a], [a])]
-    choiceTwo lst = do
-        two <- combinations 2 lst
-        pure (two, lst \\ two)
+    choiceTwo lst =
+        (id &&& (lst \\)) <$> combinations 2 lst
 
 case_1 :: ([Maybe (Ratio Int)], [Maybe (Ratio Int)]) -> [Maybe (Ratio Int)]
 case_1 (lst1, lst2) =
@@ -118,10 +118,25 @@ compute =
     concatMap (show . numerator . fromJust)
         . snd
         . maximumBy (compare `on` fst)
-        . map (\lst -> (countConsecNumbers lst, lst))
+        . map (countConsecNumbers &&& id)
         $ combinations 4 numbers
   where
     numbers = (\n -> Just (n % 1)) <$> [1 .. 9]
 
 solve :: String
 solve = compute
+
+{-
+The following implementation is about twice slower than the above. I wonder why.
+
+compute :: String
+compute =
+    concatMap (show . numerator . fromJust)
+        . maximumBy (compare `on` countConsecNumbers)
+        $ combinations 4 numbers
+
+% cabal v2-run pe-solver -- 93
+[Problem 93]
+Answer: 1258
+Elapsed time: 2.213767 sec.
+-}

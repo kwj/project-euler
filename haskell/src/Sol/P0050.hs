@@ -11,9 +11,10 @@ cumsumPrimes = scanl (+) 0 primeNumbers
 
 compute :: Int -> String
 compute limit =
-    let max_window_size = (fromJust $ findIndex (>= limit) cumsumPrimes) - 1
-     in show $ go 0 max_window_size
+    show $ go 0 max_window_size
   where
+    max_window_size = pred . fromJust $ findIndex (>= limit) cumsumPrimes
+
     go :: Int -> Int -> Int
     go left k
         | diff >= limit =

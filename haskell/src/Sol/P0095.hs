@@ -9,6 +9,7 @@ Answer: 14316
 Elapsed time: 2.747619 sec.
 -}
 
+import Control.Arrow ((&&&))
 import Data.Array.Unboxed ((!))
 import Data.Function (on)
 import Data.List (elemIndex, mapAccumL, maximumBy)
@@ -37,14 +38,14 @@ amicableChains limit =
             | n > limit || S.member n checked =
                 Left chain
             | Just idx <- elemIndex n chain =
-                Right (take (idx + 1) chain, chain)
+                Right $ (id &&& take (idx + 1)) chain
             | otherwise =
                 go (n : chain) (nextPosTbl ! n)
 
     aux :: S.IntSet -> Either [Int] ([Int], [Int]) -> (S.IntSet, Maybe [Int])
     aux checked (Left x) =
         (S.union checked (S.fromList x), Nothing)
-    aux checked (Right (loop, x)) =
+    aux checked (Right (x, loop)) =
         (S.union checked (S.fromList x), Just loop)
 
 compute :: Int -> String

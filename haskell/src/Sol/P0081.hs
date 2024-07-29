@@ -38,7 +38,7 @@ compute =
 
     auxRightward :: [Int] -> [Int] -> [Int]
     auxRightward prev crnt =
-        (drop 1 xs) ++ [x]
+        drop 1 xs ++ [x]
       where
         (x, xs) =
             mapAccumL
