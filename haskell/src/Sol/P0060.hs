@@ -1,13 +1,5 @@
 module Sol.P0060 (compute, solve) where
 
-import Control.Monad (MonadPlus, mplus, mzero)
-
-import qualified Data.IntMap as M (IntMap, empty, insert, (!))
-import qualified Data.IntSet as S (IntSet, fromList, member)
-
-import Mylib.Math (numOfDigits)
-import Mylib.Prime (isPrime, primeNumbers)
-
 {-
 This implementation is a bit slow.
 The following is a result on my Raspberry Pi 4.
@@ -17,6 +9,14 @@ The following is a result on my Raspberry Pi 4.
 Answer: 26033
 Elapsed time: 9.548267 sec.
 -}
+
+import Control.Applicative (Alternative, empty, (<|>))
+
+import qualified Data.IntMap as M (IntMap, empty, insert, (!))
+import qualified Data.IntSet as S (IntSet, fromList, member)
+
+import Mylib.Math (numOfDigits)
+import Mylib.Prime (isPrime, primeNumbers)
 
 -- [3, 7, 13, 19, ...]
 primes_rem1 :: [Int]
@@ -46,11 +46,11 @@ findCliques :: [Int] -> Int -> M.IntMap S.IntSet -> [[Int]]
 findCliques dscNbrs size tbl =
     aux [([], dscNbrs)]
   where
-    aux :: MonadPlus m => [([Int], [Int])] -> m [Int]
-    aux [] = mzero
+    aux :: Alternative m => [([Int], [Int])] -> m [Int]
+    aux [] = empty
     aux ((clq, nbrs) : tpls)
         | length clq == size =
-            pure clq `mplus` aux tpls
+            pure clq <|> aux tpls
         | otherwise =
             let next_cands = filter (\x -> all (S.member x . (tbl M.!)) clq) nbrs
                 next_tpls =
