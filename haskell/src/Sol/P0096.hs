@@ -47,15 +47,16 @@ makeTentativeGrids grid =
     replaceGrid grid pos <$> numbers
   where
     (pos, numbers) =
-        minimumBy (compare `on` length . snd)
-            $ (id &&& candidateNumbers grid) <$> undeterminedPositions grid
+        minimumBy (compare `on` length . snd) $
+            (id &&& candidateNumbers grid) <$> undeterminedPositions grid
 
 candidateNumbers :: Grid -> (Int, Int) -> [Int]
 candidateNumbers grid (r, c) =
     filter (`S.notMember` neighbors) [1 .. 9]
   where
     neighbors =
-        S.fromList $ (\f -> f grid (r, c)) =<< [numbersInRow, numbersInCol, numbersInBox]
+        S.fromList $
+            (\f -> f grid (r, c)) =<< [numbersInRow, numbersInCol, numbersInBox]
 
 numbersInRow :: Grid -> (Int, Int) -> [Int]
 numbersInRow grid (r, _) = grid !! r

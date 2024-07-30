@@ -24,7 +24,8 @@ dupList x upper =
         tbl <- newArray (2, upper) 0
         for_ [1 .. (x - 1)] $ \y -> do
             let k = (lcm x y) `div` x
-            for_ [(max k 2), (max k 2) + k .. ((upper * y) `div` x)]
+            for_
+                [(max k 2), (max k 2) + k .. ((upper * y) `div` x)]
                 (\idx -> writeArray tbl idx 1)
         pure tbl
 

@@ -46,7 +46,6 @@ Elapsed time: 1.393238 sec.
                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ = floor((a+b)/2)
 -}
 
-
 import Mylib.Math (isSquare)
 
 countTriangles :: Int -> Int
