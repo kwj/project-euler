@@ -52,7 +52,7 @@ findCliques dscNbrs size tbl =
         | length clq == size =
             pure clq `mplus` aux tpls
         | otherwise =
-            let next_cands = filter (\x -> all (\y -> S.member x (tbl M.! y)) clq) nbrs
+            let next_cands = filter (\x -> all (S.member x . (tbl M.!)) clq) nbrs
                 next_tpls =
                     filter
                         (\tpl -> length (snd tpl) >= size - length clq - 1)
