@@ -65,7 +65,7 @@ compute groupSize =
   where
     updateMinSum :: Int -> [[Int]] -> Int -> Int
     updateMinSum p cliques current =
-        min current (minimum $ (\clq -> sum $ p : clq) <$> cliques)
+        min current (minimum $ (sum . (p :)) <$> cliques)
 
     aux :: Int -> M.IntMap S.IntSet -> [Int] -> Int
     aux _ _ [] = error "fatal error (unreachable)"
