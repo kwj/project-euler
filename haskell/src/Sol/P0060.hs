@@ -1,19 +1,21 @@
 module Sol.P0060 (compute, solve) where
 
+import Control.Monad (MonadPlus, mplus, mzero)
+
 import qualified Data.IntMap as M (IntMap, empty, insert, (!))
 import qualified Data.IntSet as S (IntSet, fromList, member)
 
-import Mylib.Combinatorics (combinations)
 import Mylib.Math (numOfDigits)
 import Mylib.Prime (isPrime, primeNumbers)
 
 {-
-This implementation is quite slow. The following is a result on my Raspberry Pi 4.
+This implementation is a bit slow.
+The following is a result on my Raspberry Pi 4.
 
 % cabal v2-run pe-solver -- 60
 [Problem 60]
 Answer: 26033
-Elapsed time: 22.443569 sec.
+Elapsed time: 9.548267 sec.
 -}
 
 -- [3, 7, 13, 19, ...]
@@ -40,19 +42,22 @@ pairablePrimes p limit =
       where
         upper_x = 10 ^ (numOfDigits x 10)
 
--- [TODO] There is room for improvement in this method.
 findCliques :: [Int] -> Int -> M.IntMap S.IntSet -> [[Int]]
 findCliques dscNbrs size tbl =
-    filter isClique cands
+    aux [([], dscNbrs)]
   where
-    cands = combinations size dscNbrs
-
-    isClique :: [Int] -> Bool
-    isClique [] = error "unreachable"
-    isClique (x : xs)
-        | null xs = True
-        | all (`S.member` (tbl M.! x)) xs = isClique xs
-        | otherwise = False
+    aux :: MonadPlus m => [([Int], [Int])] -> m [Int]
+    aux [] = mzero
+    aux ((clq, rest) : tpls)
+        | length clq == size =
+            pure clq `mplus` aux tpls
+        | otherwise =
+            let next_cands = filter (\x -> all (\y -> S.member x (tbl M.! y)) clq) rest
+                next_tpls =
+                    filter
+                        (\tpl -> length (snd tpl) >= size - length clq - 1)
+                        (zip ((: clq) <$> next_cands) (flip drop next_cands <$> [1 ..]))
+             in aux (next_tpls ++ tpls) -- Depth-first search
 
 compute :: Int -> String
 compute groupSize =
