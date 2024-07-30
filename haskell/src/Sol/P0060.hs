@@ -48,11 +48,11 @@ findCliques dscNbrs size tbl =
   where
     aux :: MonadPlus m => [([Int], [Int])] -> m [Int]
     aux [] = mzero
-    aux ((clq, rest) : tpls)
+    aux ((clq, nbrs) : tpls)
         | length clq == size =
             pure clq `mplus` aux tpls
         | otherwise =
-            let next_cands = filter (\x -> all (\y -> S.member x (tbl M.! y)) clq) rest
+            let next_cands = filter (\x -> all (\y -> S.member x (tbl M.! y)) clq) nbrs
                 next_tpls =
                     filter
                         (\tpl -> length (snd tpl) >= size - length clq - 1)
