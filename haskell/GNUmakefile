@@ -11,7 +11,7 @@ usage:
 
 .PHONY: build
 build:
-	@cabal v2-build
+	@cabal build
 
 .PHONY: test
 test:

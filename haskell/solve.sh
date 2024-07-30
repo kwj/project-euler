@@ -5,4 +5,4 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-cabal v2-run pe-solver -- $*
+cabal run pe-solver -- $*
