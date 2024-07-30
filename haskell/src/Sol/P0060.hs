@@ -19,12 +19,12 @@ Elapsed time: 9.548267 sec.
 -}
 
 -- [3, 7, 13, 19, ...]
-primes_mod1 :: [Int]
-primes_mod1 = 3 : filter (\p -> p `mod` 3 == 1) (drop 3 primeNumbers)
+primes_rem1 :: [Int]
+primes_rem1 = 3 : filter (\p -> p `mod` 3 == 1) (drop 3 primeNumbers)
 
 -- [3, 11, 17, 23, ...]
-primes_mod2 :: [Int]
-primes_mod2 = 3 : filter (\p -> p `mod` 3 == 2) (drop 3 primeNumbers)
+primes_rem2 :: [Int]
+primes_rem2 = 3 : filter (\p -> p `mod` 3 == 2) (drop 3 primeNumbers)
 
 pairablePrimes :: Int -> Int -> [Int]
 pairablePrimes p limit =
@@ -33,8 +33,8 @@ pairablePrimes p limit =
     upper_p = 10 ^ (numOfDigits p 10)
     ascPrimes =
         if p `mod` 3 == 1
-            then primes_mod1
-            else primes_mod2
+            then primes_rem1
+            else primes_rem2
 
     isPair :: Int -> Bool
     isPair x =
