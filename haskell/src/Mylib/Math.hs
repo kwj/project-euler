@@ -19,7 +19,7 @@ module Mylib.Math (
     isHexagonal,
 ) where
 
-import Data.Bits (shiftL, (.|.))
+import Data.Bits (shiftL, shiftR, testBit, (.|.))
 import Data.Maybe (fromMaybe)
 
 import Mylib.Util (bitLength)
@@ -55,17 +55,17 @@ powerMod b e m
         case invMod b m of
             Just x ->
                 Just
-                    (fromIntegral (powerMod' (fromIntegral x) (fromIntegral (-e)) (fromIntegral m) 1))
+                    (fromIntegral (powerMod' (fromIntegral x) (negate e) (fromIntegral m) 1))
             Nothing -> Nothing
     | otherwise =
         Just
-            (fromIntegral (powerMod' (fromIntegral b) (fromIntegral e) (fromIntegral m) 1))
+            (fromIntegral (powerMod' (fromIntegral b) e (fromIntegral m) 1))
 
-powerMod' :: Integer -> Integer -> Integer -> Integer -> Integer
+powerMod' :: Integer -> Int -> Integer -> Integer -> Integer
 powerMod' b e m result
     | e == 0 = result
-    | odd e = powerMod' ((b * b) `mod` m) (e `div` 2) m ((result * b) `mod` m)
-    | otherwise = powerMod' ((b * b) `mod` m) (e `div` 2) m result
+    | testBit e 0 = powerMod' ((b * b) `mod` m) (shiftR e 1) m ((result * b) `mod` m)
+    | otherwise = powerMod' ((b * b) `mod` m) (shiftR e 1) m result
 
 powerModExn :: Int -> Int -> Int -> Int
 powerModExn b e m = fromMaybe (error "") (powerMod b e m)

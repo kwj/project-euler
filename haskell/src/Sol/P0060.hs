@@ -13,7 +13,7 @@ This implementation is quite slow. The following is a result on my Raspberry Pi 
 % cabal v2-run pe-solver -- 60
 [Problem 60]
 Answer: 26033
-Elapsed time: 28.931796 sec.
+Elapsed time: 22.443569 sec.
 -}
 
 -- [3, 7, 13, 19, ...]
