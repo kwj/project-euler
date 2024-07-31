@@ -21,6 +21,7 @@ the maximum n-digits number is n * 9!
 so, 'n' is equal to or less than 7.
 -}
 
+import Control.Arrow ((&&&))
 import Data.Array.Unboxed (UArray, listArray, (!))
 import Data.List (sort)
 
@@ -38,7 +39,7 @@ compute =
         sum
             . map fst
             . filter (\(n, lst) -> (sort $ digits n) == lst)
-            . map (\lst -> (sum $ (factTbl !) <$> lst, lst))
+            . map (sum . fmap (factTbl !) &&& id)
             $ combinationsWithRepetition k [0 .. 9]
 
 solve :: String

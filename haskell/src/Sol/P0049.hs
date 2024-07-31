@@ -1,5 +1,6 @@
 module Sol.P0049 (compute, solve) where
 
+import Control.Arrow ((&&&))
 import Data.List (sort)
 
 import qualified Data.Map.Strict as M (
@@ -18,14 +19,14 @@ import Mylib.Util (digits, headExn, undigits)
 
 makePrimeTbl :: Int -> M.Map String [Int]
 makePrimeTbl ndigits =
-    addEntry M.empty ((\p -> (show . undigits . sort $ digits p, p)) <$> ps)
+    addEntry M.empty ((show . undigits . sort . digits &&& id) <$> ps)
   where
     ps = primes (10 ^ (ndigits - 1)) (10 ^ ndigits)
 
     addEntry :: M.Map String [Int] -> [(String, Int)] -> M.Map String [Int]
     addEntry m [] = m
     addEntry m ((key, val) : rest)
-        | M.member key m = addEntry (M.update (\x -> Just (val : x)) key m) rest
+        | M.member key m = addEntry (M.update (Just . (val :)) key m) rest
         | otherwise = addEntry (M.insert key [val] m) rest
 
 findNumbers :: [[Int]] -> [Int]

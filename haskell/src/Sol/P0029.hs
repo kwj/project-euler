@@ -43,7 +43,7 @@ compute upper =
         | otherwise =
             let es = [2 .. (maxPower upper b)]
                 dup_count = sum $ (tbl !) <$> es
-                add_skips = S.fromList . filter (\x -> x <= base_limit) $ (b ^) <$> es
+                add_skips = S.fromList . filter (<= base_limit) $ (b ^) <$> es
              in aux bs (S.union skips add_skips) (answer - dup_count)
 
 solve :: String

@@ -1,5 +1,9 @@
 module Sol.P0014 (compute, solve) where
 
+import Control.Arrow ((&&&))
+import Data.Function (on)
+import Data.List (maximumBy)
+
 -- It is a straightforward method that doesn't use memoization.
 getCollatzLength :: Int -> Int
 getCollatzLength n = aux n 1
@@ -14,8 +18,8 @@ compute :: Int -> String
 compute limit =
     show
         . snd
-        . maximum
-        $ (\x -> (getCollatzLength x, x)) <$> [(div limit 2) .. (limit - 1)]
+        . maximumBy (compare `on` fst)
+        $ (getCollatzLength &&& id) <$> [(div limit 2) .. (limit - 1)]
 
 solve :: String
 solve = compute 1_000_000

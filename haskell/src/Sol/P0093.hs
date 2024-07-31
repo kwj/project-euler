@@ -94,7 +94,7 @@ case_1 (lst1, lst2) =
 case_2 :: ([Maybe (Ratio Int)], [Maybe (Ratio Int)]) -> [Maybe (Ratio Int)]
 case_2 (lst1, lst2) =
     concat $
-        fourArithmeticOps <$> fourArithmeticOps d1 d2 <*> fourArithmeticOps d3 d4
+        liftA2 fourArithmeticOps (fourArithmeticOps d1 d2) (fourArithmeticOps d3 d4)
   where
     d1 = lst1 !! 0
     d2 = lst1 !! 1

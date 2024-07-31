@@ -1,5 +1,6 @@
 module Sol.P0030 (compute, solve) where
 
+import Control.Arrow ((&&&))
 import Data.Array.Unboxed (UArray, listArray, (!))
 import Data.List (sort)
 
@@ -18,7 +19,7 @@ compute p =
         sum
             . map fst
             . filter (\(n, lst) -> (sort $ digits n) == lst)
-            . map (\lst -> (sum $ (powerTbl !) <$> lst, lst))
+            . map (sum . fmap (powerTbl !) &&& id)
             $ combinationsWithRepetition k [0 .. 9]
 
 solve :: String
