@@ -17,8 +17,7 @@ module Sol.P0070 (compute, solve) where
     N = p1^k1 * p2^k2 * ... * pn^kn  (N < 10^7, n > 1, 11 <= p1 < p2 < ... < pn, k1>2 when n=1)
 -}
 
-import Data.List (sort, uncons, unfoldr)
-import Data.Maybe (fromJust)
+import Data.List (sort, unfoldr)
 
 import Mylib.Math (isqrt)
 import Mylib.Prime (prevPrime, primes)
@@ -95,17 +94,15 @@ compute =
   where
     aux :: H.LeftistHeap Node -> [Int] -> Int
     aux pq [] = n (H.peek pq)
-    aux pq prime_seq
+    aux pq (p : ps)
         | ratio [(p, 1)] > r (H.peek pq) =
             n (H.peek pq)
         | otherwise =
             aux (go pq (pfSequences p (prevPrime ((limit `div` p) + 1)))) ps
-      where
-        (p, ps) = fromJust $ uncons prime_seq
 
     go :: H.LeftistHeap Node -> [[(Int, Int)]] -> H.LeftistHeap Node
     go pq [] = pq
-    go pq pfseq_seq
+    go pq (pfs : pfss)
         | ratio (take (min 2 (length pfs)) pfs) > r (H.peek pq) =
             pq
         | otherwise =
@@ -114,8 +111,6 @@ compute =
              in if isPermutation n totient
                     then go (H.insert (Node n (fromIntegral n / fromIntegral totient)) pq) pfss
                     else go pq pfss
-      where
-        (pfs, pfss) = fromJust $ uncons pfseq_seq
 
     isPermutation :: Int -> Int -> Bool
     isPermutation a b =
