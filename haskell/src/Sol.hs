@@ -1,9 +1,8 @@
 module Sol (
-    isExist,
-    solve,
+    findSolver,
 ) where
 
-import qualified Data.Map as M (Map, fromList, lookup, member)
+import qualified Data.Map as M (Map, fromList, lookup)
 
 import qualified Sol.P0001 as P0001 (solve)
 import qualified Sol.P0002 as P0002 (solve)
@@ -133,8 +132,5 @@ funcTbl =
         ]
 {- FOURMOLU_ENABLE -}
 
-isExist :: String -> Bool
-isExist problem = M.member problem funcTbl
-
-solve :: String -> Maybe String
-solve problem = M.lookup problem funcTbl
+findSolver :: String -> Maybe String
+findSolver = flip M.lookup funcTbl

@@ -1,42 +1,35 @@
 module Main where
 
 import Control.DeepSeq (force)
-import Data.Maybe (fromMaybe)
+import Data.Foldable (for_)
 import GHC.Clock (getMonotonicTimeNSec)
 import System.Environment (getArgs, getProgName)
 import Text.Printf (printf)
 
-import qualified Sol (isExist, solve)
+import qualified Sol (findSolver)
 
 runSolver :: String -> IO ()
-runSolver problem =
-    if Sol.isExist problem
-        then do
-            printf "[Problem %s]\n" problem
+runSolver problem = do
+    printf "[Problem %s]\n" problem
+    case Sol.findSolver problem of
+        Just solver -> do
             start <- getMonotonicTimeNSec
-            let result = force (Sol.solve problem)
+            let result = force solver
             end <- getMonotonicTimeNSec
-            printf "Answer: %s\n" (fromMaybe "" result)
+            printf "Answer: %s\n" result
             printf
                 "Elapsed time: %.6f sec.\n\n"
                 (fromIntegral (end - start) / 1e9 :: Double)
-        else
-            printf "No solver exists for problem '%s'.\n\n" problem
-
-solveProblems :: [String] -> IO ()
-solveProblems [] = return ()
-solveProblems (x : xs) = do
-    runSolver x
-    solveProblems xs
+        Nothing ->
+            printf "No solver exists.\n\n"
 
 usage :: IO ()
-usage = do
-    prog_name <- getProgName
-    printf "usage: %s <problem_number ...>\n\n" prog_name
+usage =
+    printf "usage: %s <problem_number ...>\n\n" =<< getProgName
 
 main :: IO ()
 main = do
     problems <- getArgs
     case length problems of
         0 -> usage
-        _ -> solveProblems problems
+        _ -> for_ problems runSolver
