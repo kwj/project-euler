@@ -44,20 +44,20 @@ pairablePrimes p limit =
 
 findCliques :: [Int] -> Int -> M.IntMap S.IntSet -> [[Int]]
 findCliques dscNbrs size tbl =
-    aux [([], dscNbrs)]
+    dfs [([], dscNbrs)]
   where
-    aux :: Alternative m => [([Int], [Int])] -> m [Int]
-    aux [] = empty
-    aux ((clq, nbrs) : tpls)
+    dfs :: Alternative m => [([Int], [Int])] -> m [Int]
+    dfs [] = empty
+    dfs ((clq, nbrs) : tpls)
         | length clq == size =
-            pure clq <|> aux tpls
+            pure clq <|> dfs tpls
         | otherwise =
             let next_cands = filter (\x -> all (S.member x . (tbl M.!)) clq) nbrs
                 next_tpls =
                     filter
                         (\tpl -> length (snd tpl) >= size - length clq - 1)
                         (zip ((: clq) <$> next_cands) (flip drop next_cands <$> [1 ..]))
-             in aux (next_tpls ++ tpls) -- Depth-first search
+             in dfs (next_tpls ++ tpls)
 
 compute :: Int -> String
 compute groupSize =
