@@ -11,11 +11,12 @@ Elapsed time: 1.963376 sec.
 
 module Sol.P0096 (compute, solve) where
 
+import Control.Applicative (Alternative, empty, (<|>))
 import Control.Arrow ((&&&))
 import Control.Monad (guard)
 import Data.Char (digitToInt)
 import Data.Function (on)
-import Data.List (find, minimumBy)
+import Data.List (minimumBy)
 import Data.Maybe (catMaybes)
 
 import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
@@ -34,13 +35,18 @@ parseData =
     (map . map . map) digitToInt . map (drop 1) . partitionByStep 10 10 . lines
 
 findSolution :: Grid -> Maybe Grid
-findSolution = find isCompleted . dfs makeTentativeGrids
+findSolution grid = dfs makeTentativeGrids [grid]
+
+dfs :: Alternative m => (Grid -> [Grid]) -> [Grid] -> m Grid
+dfs _ [] = empty
+dfs f (g : gs)
+    | isCompleted g =
+        pure g <|> dfs f gs
+    | otherwise =
+        dfs f (f g ++ gs)
 
 isCompleted :: Grid -> Bool
 isCompleted = (all . all) (/= 0)
-
-dfs :: (Grid -> [Grid]) -> Grid -> [Grid]
-dfs f grid = grid : (f grid >>= dfs f)
 
 makeTentativeGrids :: Grid -> [Grid]
 makeTentativeGrids grid =
@@ -109,3 +115,14 @@ compute =
 
 solve :: String
 solve = compute
+
+{-
+-- Initial version (for comparison)
+-- It's a little slower than the above on my machine.
+
+findSolution :: Grid -> Maybe Grid
+findSolution = find isCompleted . dfs makeTentativeGrids
+
+dfs :: (Grid -> [Grid]) -> Grid -> [Grid]
+dfs f grid = grid : (f grid >>= dfs f)
+-}
