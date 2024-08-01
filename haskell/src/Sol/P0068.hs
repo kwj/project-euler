@@ -63,9 +63,9 @@ compute n_gon =
         $ if n_gon == 5
             then
                 -- only 16-digit strings when n_gon == 5
-                filter ((== 16) . length) . map listToDigitString $ searchRings n_gon
+                filter ((== 16) . length) $ listToDigitString <$> searchRings n_gon
             else
-                map listToDigitString $ searchRings n_gon
+                listToDigitString <$> searchRings n_gon
 
 solve :: String
 solve = compute 5

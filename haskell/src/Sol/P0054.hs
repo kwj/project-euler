@@ -78,8 +78,8 @@ getHand cards
   where
     nums = sortBy (comparing Down) . map chToNum $ (!! 0) <$> cards
     suits = nub $ (!! 1) <$> cards
-    handPattern = sortBy (comparing Down) . map length $ group nums
-    handNums = map headExn . sortBy (comparing (Down . length)) $ group nums
+    handPattern = sortBy (comparing Down) $ length <$> group nums
+    handNums = headExn <$> sortBy (comparing (Down . length)) $ group nums
 
 parseData :: String -> [([String], [String])]
 parseData = map (splitAt 5 . words) . lines

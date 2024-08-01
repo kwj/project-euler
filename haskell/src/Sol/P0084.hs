@@ -33,13 +33,11 @@ nSquares = 40
 nextStates :: Pos -> Percentage -> Int -> [(Pos, Percentage)]
 nextStates _ 0 _ = []
 nextStates (sq, dbl) pct nfaces =
-    concatMap map_ccard
-        . concatMap map_cchest
-        . map
-            (\(st, p) -> if toEnum (fst st) /= G2J then (st, p) else ((fromEnum JAIL, 0), p))
-        $ map
-            (\(st, p) -> if snd st /= 3 then (st, p) else ((fromEnum JAIL, 0), p))
-            next_state
+    chanceCard
+        =<< communityChest
+        =<< (\(st, p) -> if toEnum (fst st) /= G2J then (st, p) else ((fromEnum JAIL, 0), p))
+            <$> (\(st, p) -> if snd st /= 3 then (st, p) else ((fromEnum JAIL, 0), p))
+            <$> next_state
   where
     next_state =
         [ ((next_sq, next_dbl), pct / (fromIntegral (nfaces * nfaces)))
@@ -50,8 +48,8 @@ nextStates (sq, dbl) pct nfaces =
         ]
 
 {- FOURMOLU_DISABLE -}
-    map_ccard :: (Pos, Percentage) -> [(Pos, Percentage)]
-    map_ccard (next_pos, next_pct)
+    chanceCard :: (Pos, Percentage) -> [(Pos, Percentage)]
+    chanceCard (next_pos, next_pct)
         | square /= CH1 && square /= CH2 && square /= CH3 =
             [(next_pos, next_pct)]
         | otherwise =
@@ -61,7 +59,7 @@ nextStates (sq, dbl) pct nfaces =
                     , fromEnum (nextU square), (fst next_pos + (nSquares - 3)) `mod` nSquares, fst next_pos, fst next_pos
                     , fst next_pos, fst next_pos, fst next_pos, fst next_pos
                     ]
-             in map (\c -> ((c, snd next_pos), next_pct / (fromIntegral $ length cards))) cards
+             in (\c -> ((c, snd next_pos), next_pct / (fromIntegral $ length cards))) <$> cards
       where
         square = toEnum (fst next_pos) :: Squares
 
@@ -77,8 +75,8 @@ nextStates (sq, dbl) pct nfaces =
         nextU CH3 = U1
         nextU _ = error "fatal error"
 
-    map_cchest :: (Pos, Percentage) -> [(Pos, Percentage)]
-    map_cchest (next_pos, next_pct)
+    communityChest :: (Pos, Percentage) -> [(Pos, Percentage)]
+    communityChest (next_pos, next_pct)
         | square /= CC1 && square /= CC2 && square /= CC3 =
             [(next_pos, next_pct)]
         | otherwise =
@@ -88,7 +86,7 @@ nextStates (sq, dbl) pct nfaces =
                     , fst next_pos, fst next_pos, fst next_pos, fst next_pos
                     , fst next_pos, fst next_pos, fst next_pos, fst next_pos
                     ]
-             in map (\c -> ((c, snd next_pos), next_pct / (fromIntegral $ length cards))) cards
+             in (\c -> ((c, snd next_pos), next_pct / (fromIntegral $ length cards))) <$> cards
       where
         square = toEnum (fst next_pos) :: Squares
 {- FOURMOLU_ENABLE -}

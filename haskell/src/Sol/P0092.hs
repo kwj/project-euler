@@ -9,7 +9,7 @@ import Mylib.Util (digits)
 isGroup89 :: Int -> Bool
 isGroup89 n
     | n /= 89 && n > 1 =
-        isGroup89 (sum . map (\x -> x * x) $ digits n)
+        isGroup89 (sum $ (\x -> x * x) <$> digits n)
     | otherwise =
         n == 89
 

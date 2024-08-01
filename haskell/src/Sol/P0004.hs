@@ -37,8 +37,8 @@ compute n
         findPalindromeNumbers (blkLower, blkUpper) =
             filter (flip isPalindrome 10)
                 . filter (>= blkLower)
-                . concatMap (\x -> map (\y -> x * y) [nLower .. (min x (blkUpper `div` x))])
-                $ filter (\x -> x * x >= blkLower) [nLower .. nUpper]
+                . concatMap (\x -> (x *) <$> [nLower .. (min x (blkUpper `div` x))])
+                $ dropWhile (\x -> x * x < blkLower) [nLower .. nUpper]
 
 solve :: String
 solve = compute 3

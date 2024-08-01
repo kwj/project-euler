@@ -30,7 +30,7 @@ compute limit =
         . filter (== 1)
         . elems
         . (accumArray (+) 0 (1, limit) :: [(Int, Int)] -> UArray Int Int)
-        . map (\p -> (p, 1))
+        . map (, 1)
         $ concat
             [ [perimeter, perimeter * 2 .. limit]
             | m <- [2 .. upper_m]
