@@ -44,20 +44,25 @@ pairablePrimes p limit =
 
 findCliques :: [Int] -> Int -> M.IntMap S.IntSet -> [[Int]]
 findCliques dscNbrs size tbl =
-    dfs [([], dscNbrs)]
+    dfs nextTpls [([], dscNbrs)]
   where
-    dfs :: Alternative m => [([Int], [Int])] -> m [Int]
-    dfs [] = empty
-    dfs ((clq, nbrs) : tpls)
+    dfs ::
+        Alternative m =>
+        (([Int], [Int]) -> [([Int], [Int])]) -> [([Int], [Int])] -> m [Int]
+    dfs _ [] = empty
+    dfs f (tpl@(clq, _) : rest)
         | length clq == size =
-            pure clq <|> dfs tpls
+            pure clq <|> dfs f rest
         | otherwise =
-            let next_cands = filter (\x -> all (S.member x . (tbl M.!)) clq) nbrs
-                next_tpls =
-                    filter
-                        (\tpl -> length (snd tpl) >= size - length clq - 1)
-                        (zip ((: clq) <$> next_cands) (flip drop next_cands <$> [1 ..]))
-             in dfs (next_tpls ++ tpls)
+            dfs f (nextTpls tpl ++ rest)
+
+    nextTpls :: ([Int], [Int]) -> [([Int], [Int])]
+    nextTpls (clq, nbrs) =
+        filter
+            (\tpl -> length (snd tpl) >= size - length clq - 1)
+            (zip ((: clq) <$> cands) (flip drop cands <$> [1 ..]))
+      where
+        cands = filter (\x -> all (S.member x . (tbl M.!)) clq) nbrs
 
 compute :: Int -> String
 compute groupSize =
