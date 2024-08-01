@@ -4,6 +4,7 @@ module Sol.P0069 (compute, solve) where
   https://en.wikipedia.org/wiki/Euler%27s_totient_function
 
     n/phi(n) = n / n(1-1/p{1})(1-1/p{2})...(1-1/p{r})
+             = p{1}/(p{1}-1) * p{2}/(p{2}-1) * ... * p{r}/(p{r}-1)
              = p{1}p{2}...p{r} / (p{1}-1)(p{2}-1)...(p{r}-1)
                     (p{i} is prime number)
 
