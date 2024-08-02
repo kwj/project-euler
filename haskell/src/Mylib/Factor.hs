@@ -9,6 +9,7 @@ module Mylib.Factor (
     MF.minFactorTbl,
 ) where
 
+import Control.Arrow ((&&&))
 import Control.Monad (when)
 import Data.Array.ST (
     MArray,
@@ -21,6 +22,7 @@ import Data.Array.ST (
 import Data.Array.Unboxed (UArray)
 import Data.Foldable (for_)
 import Data.List (group, sort, uncons)
+import Data.Maybe (fromJust)
 
 import qualified Data.Numbers.Primes as P (primeFactors, primes)
 
@@ -30,12 +32,12 @@ import qualified Mylib.MinFactor as MF (minFactor, minFactorTbl)
 
 primeFactorization :: Int -> [(Int, Int)]
 primeFactorization =
-    map (\x -> (maybe (error "") fst (uncons x), length x)) . group . P.primeFactors
+    map (fst . fromJust . uncons &&& length) . group . P.primeFactors
 
 pfactorsToDivisors :: [Int] -> [Int]
 pfactorsToDivisors [] = []
 pfactorsToDivisors lst =
-    pfactorsToDivisors' (fmap (scanl1 (*)) $ group . sort $ lst) [1]
+    pfactorsToDivisors' (map (scanl1 (*)) . group $ sort lst) [1]
 
 pfactorsToDivisors' :: [[Int]] -> [Int] -> [Int]
 pfactorsToDivisors' lst divs =
@@ -59,11 +61,11 @@ sigmaTbl' :: MArray a Int m => Int -> Int -> m (a Int Int)
 sigmaTbl' z limit = do
     tbl <- newArray (0, limit) 1
     for_ primes $ \p -> do
-        let qs = takeWhile (<= limit) $ scanl1 (*) $ repeat p
+        let qs = takeWhile (<= limit) . scanl1 (*) $ repeat p
             xs = tailExn $ scanl (\acc q -> acc + q ^ z) 0 qs
          in for_ (zip qs xs) (\(q, x) -> modifyArray tbl q (+ x))
     for_ primes $ \p -> do
-        for_ (takeWhile (<= limit) $ scanl1 (*) $ repeat p) $ \q -> do
+        for_ (takeWhile (<= limit) . scanl1 (*) $ repeat p) $ \q -> do
             for_ [2 .. (limit `div` q)] $ \n -> do
                 tmp_n <- readArray tbl n
                 tmp_q <- readArray tbl q

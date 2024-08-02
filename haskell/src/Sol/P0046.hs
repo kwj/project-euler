@@ -1,13 +1,10 @@
 module Sol.P0046 (compute, solve) where
 
-import Mylib.Math (isqrt)
+import Mylib.Math (isSquare)
 import Mylib.Prime (isPrime)
 
 isTwicedSquare :: Int -> Bool
-isTwicedSquare n =
-    tmp * tmp == n `div` 2
-  where
-    tmp = isqrt (n `div` 2)
+isTwicedSquare n = isSquare (n `div` 2)
 
 compute :: String
 compute =
