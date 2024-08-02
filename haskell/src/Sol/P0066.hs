@@ -40,10 +40,7 @@ compute limit =
         . map (\(lst, n) -> ((numerator' lst), n))
         . map (\tpl -> ((aux $ fst tpl), snd tpl))
         . filter (not . null . snd . fst)
-        $ zipWith
-            (\cf n -> (cf, n))
-            (continuedFraction <$> [1 .. limit])
-            [(1 :: Int) ..]
+        $ zip (continuedFraction <$> [1 .. limit]) [(1 :: Int) ..]
   where
     aux :: Integral int => (int, [int]) -> [int]
     aux (n, lst)
