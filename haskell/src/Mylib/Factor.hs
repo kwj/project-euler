@@ -10,7 +10,14 @@ module Mylib.Factor (
 ) where
 
 import Control.Monad (when)
-import Data.Array.ST (MArray, newArray, readArray, runSTUArray, writeArray)
+import Data.Array.ST (
+    MArray,
+    modifyArray,
+    newArray,
+    readArray,
+    runSTUArray,
+    writeArray,
+ )
 import Data.Array.Unboxed (UArray)
 import Data.Foldable (for_)
 import Data.List (group, sort, uncons)
@@ -54,9 +61,7 @@ sigmaTbl' z limit = do
     for_ primes $ \p -> do
         let qs = takeWhile (<= limit) $ scanl1 (*) $ repeat p
             xs = tailExn $ scanl (\acc q -> acc + q ^ z) 0 qs
-         in for_ (zipWith (\q x -> (q, x)) qs xs) $ \(q, x) -> do
-                tmp <- readArray tbl q
-                writeArray tbl q (tmp + x)
+         in for_ (zip qs xs) (\(q, x) -> modifyArray tbl q (+ x))
     for_ primes $ \p -> do
         for_ (takeWhile (<= limit) $ scanl1 (*) $ repeat p) $ \q -> do
             for_ [2 .. (limit `div` q)] $ \n -> do
@@ -72,7 +77,5 @@ aliquotSumTbl :: Int -> UArray Int Int
 aliquotSumTbl limit =
     runSTUArray $ do
         tbl <- sigmaTbl' 1 limit
-        for_ [1 .. limit] $ \x -> do
-            tmp <- readArray tbl x
-            writeArray tbl x (tmp - x)
+        for_ [1 .. limit] (\x -> modifyArray tbl x (subtract x))
         pure tbl
