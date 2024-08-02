@@ -50,11 +50,11 @@ findCliques dscNbrs size tbl =
         Alternative m =>
         (([Int], [Int]) -> [([Int], [Int])]) -> [([Int], [Int])] -> m [Int]
     dfs _ [] = empty
-    dfs f (tpl@(clq, _) : rest)
+    dfs f (x@(clq, _) : xs)
         | length clq == size =
-            pure clq <|> dfs f rest
+            pure clq <|> dfs f xs
         | otherwise =
-            dfs f (nextTpls tpl ++ rest)
+            dfs f (nextTpls x ++ xs)
 
     nextTpls :: ([Int], [Int]) -> [([Int], [Int])]
     nextTpls (clq, nbrs) =

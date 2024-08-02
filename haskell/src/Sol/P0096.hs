@@ -35,15 +35,16 @@ parseData =
     (map . map . map) digitToInt . map (drop 1) . partitionByStep 10 10 . lines
 
 findSolution :: Grid -> Maybe Grid
-findSolution grid = dfs makeTentativeGrids [grid]
+findSolution grid =
+    dfs makeTentativeGrids [grid]
 
 dfs :: Alternative m => (Grid -> [Grid]) -> [Grid] -> m Grid
 dfs _ [] = empty
-dfs f (g : gs)
-    | isCompleted g =
-        pure g <|> dfs f gs
+dfs f (x : xs)
+    | isCompleted x =
+        pure x <|> dfs f xs
     | otherwise =
-        dfs f (f g ++ gs)
+        dfs f (f x ++ xs)
 
 isCompleted :: Grid -> Bool
 isCompleted = (all . all) (/= 0)
