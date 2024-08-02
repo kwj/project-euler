@@ -19,7 +19,6 @@ import qualified Mylib.Heap.LeftistHeap as H (
     peek,
  )
 
--- Object representing the sum of path from the starting position
 data Cost a = Infinity | Cost a deriving (Show, Eq)
 
 instance Ord a => Ord (Cost a) where
