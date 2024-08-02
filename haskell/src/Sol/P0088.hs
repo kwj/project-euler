@@ -34,7 +34,7 @@ prodSumLst limit =
   where
     upper_value = limit * 2
 
-    aux p s len n tbl = do
+    aux p s len n tbl =
         when (k <= limit) $ do
             v <- readArray tbl k
             writeArray tbl k (min v p)

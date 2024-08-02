@@ -68,10 +68,6 @@ compute :: Int -> String
 compute groupSize =
     show $ aux maxBound M.empty (drop 3 primeNumbers)
   where
-    updateMinSum :: Int -> [[Int]] -> Int -> Int
-    updateMinSum p cliques current =
-        min current (minimum $ (sum . (p :)) <$> cliques)
-
     aux :: Int -> M.IntMap S.IntSet -> [Int] -> Int
     aux _ _ [] = error "fatal error (unreachable)"
     aux minSum tbl (p : ps)
@@ -92,6 +88,10 @@ compute groupSize =
                          in if null cliques
                                 then aux minSum new_tbl ps
                                 else aux (updateMinSum p cliques minSum) new_tbl ps
+
+    updateMinSum :: Int -> [[Int]] -> Int -> Int
+    updateMinSum p cliques current =
+        min current (minimum $ (sum . (p :)) <$> cliques)
 
 solve :: String
 solve = compute 5

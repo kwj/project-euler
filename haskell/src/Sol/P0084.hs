@@ -4,7 +4,7 @@ module Sol.P0084 (compute, solve) where
 -- This solution is of poor quality because floating point calculation is not appropriate.
 -- I feel that I just happened to get the right answer.
 
-import Data.Array.ST (newArray, readArray, runSTUArray, writeArray)
+import Data.Array.ST (modifyArray, newArray, runSTUArray)
 import Data.Array.Unboxed (UArray, bounds, elems, listArray, (!))
 import Data.Foldable (for_)
 import Data.Function (on)
@@ -95,10 +95,9 @@ nextPctArray :: PercentArray -> Int -> PercentArray
 nextPctArray arr nfaces =
     runSTUArray $ do
         result <- newArray (bounds arr) 0
-        for_ (range (bounds arr)) $ \idx -> do
-            for_ (nextStates idx (arr ! idx) nfaces) $ \(pos, pct) -> do
-                v <- readArray result pos
-                writeArray result pos (v + pct)
+        for_ (range (bounds arr)) $ \idx ->
+            for_ (nextStates idx (arr ! idx) nfaces) $ \(pos, pct) ->
+                modifyArray result pos (+ pct)
         pure result
 
 makeSteadyState :: PercentArray -> Int -> [(Percentage, Int)]

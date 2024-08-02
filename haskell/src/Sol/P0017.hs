@@ -2,25 +2,47 @@ module Sol.P0017 (compute, solve) where
 
 import Data.Array.Unboxed (UArray, listArray, (!))
 
-{- FOURMOLU_DISABLE -}
 under20 :: UArray Int Int
 under20 =
-    listArray
-        (0, 19)
-        [ 0, length "one", length "two", length "three", length "four"
-        , length "five", length "six", length "seven", length "eight", length "nine"
-        , length "ten", length "eleven", length "twelve", length "thirteen", length "fourteen"
-        , length "fifteen", length "sixteen", length "seventeen", length "eighteen", length "nineteen"
-        ]
+    listArray (0, 19) $
+        length
+            <$> [ ""
+                , "one"
+                , "two"
+                , "three"
+                , "four"
+                , "five"
+                , "six"
+                , "seven"
+                , "eight"
+                , "nine"
+                , "ten"
+                , "eleven"
+                , "twelve"
+                , "thirteen"
+                , "fourteen"
+                , "fifteen"
+                , "sixteen"
+                , "seventeen"
+                , "eighteen"
+                , "nineteen"
+                ]
 
 mults10 :: UArray Int Int
 mults10 =
-    listArray
-        (0, 9)
-        [ 0, 0, length "twenty", length "thirty", length "forty"
-        , length "fifty", length "sixty", length "seventy", length "eighty", length "ninety"
-        ]
-{- FOURMOLU_ENABLE -}
+    listArray (0, 9) $
+        length
+            <$> [ ""
+                , ""
+                , "twenty"
+                , "thirty"
+                , "forty"
+                , "fifty"
+                , "sixty"
+                , "seventy"
+                , "eighty"
+                , "ninety"
+                ]
 
 countLetters :: Int -> Int
 countLetters n

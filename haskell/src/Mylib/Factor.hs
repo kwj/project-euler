@@ -60,12 +60,12 @@ sigmaTbl z limit =
 sigmaTbl' :: MArray a Int m => Int -> Int -> m (a Int Int)
 sigmaTbl' z limit = do
     tbl <- newArray (0, limit) 1
-    for_ primes $ \p -> do
+    for_ primes $ \p ->
         let qs = takeWhile (<= limit) . scanl1 (*) $ repeat p
             xs = tailExn $ scanl (\acc q -> acc + q ^ z) 0 qs
          in for_ (zip qs xs) (\(q, x) -> modifyArray tbl q (+ x))
-    for_ primes $ \p -> do
-        for_ (takeWhile (<= limit) . scanl1 (*) $ repeat p) $ \q -> do
+    for_ primes $ \p ->
+        for_ (takeWhile (<= limit) . scanl1 (*) $ repeat p) $ \q ->
             for_ [2 .. (limit `div` q)] $ \n -> do
                 tmp_n <- readArray tbl n
                 tmp_q <- readArray tbl q

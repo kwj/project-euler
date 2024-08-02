@@ -10,7 +10,7 @@ import Mylib.Factor (aliquotSumTbl)
 abndntTbl :: Int -> UArray Int Bool
 abndntTbl limit = runSTUArray $ do
     tbl <- newArray (0, limit) False
-    for_ [0 .. limit] $ \x -> do
+    for_ [0 .. limit] $ \x ->
         when (x < alqTbl ! x) (writeArray tbl x True)
     pure tbl
   where

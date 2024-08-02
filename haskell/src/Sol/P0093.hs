@@ -72,9 +72,8 @@ makeNumbers xs =
         $ aux xs
   where
     aux :: [Maybe (Ratio Int)] -> [Maybe (Ratio Int)]
-    aux lst = do
-        pair_lst <- choiceTwo lst
-        case_1 pair_lst ++ case_2 pair_lst
+    aux lst =
+        (\x -> case_1 x ++ case_2 x) =<< choiceTwo lst
 
     choiceTwo :: Eq a => [a] -> [([a], [a])]
     choiceTwo lst =
