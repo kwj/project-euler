@@ -51,7 +51,7 @@ isCompleted = (all . all) (/= 0)
 
 makeTentativeGrids :: Grid -> [Grid]
 makeTentativeGrids grid =
-    replaceGrid grid pos <$> numbers
+    setCandidateNumber grid pos <$> numbers
   where
     (pos, numbers) =
         minimumBy (compare `on` length . snd) $
@@ -85,8 +85,8 @@ undeterminedPositions grid = do
     addIndex :: [a] -> [(Int, a)]
     addIndex = zip [0 ..]
 
-replaceGrid :: Grid -> (Int, Int) -> Int -> Grid
-replaceGrid grid (r, c) v =
+setCandidateNumber :: Grid -> (Int, Int) -> Int -> Grid
+setCandidateNumber grid (r, c) v =
     insertBetween row1 (replaceLst (headExn row2) c v) (tailExn row2)
   where
     (row1, row2) = splitAt r grid
