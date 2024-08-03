@@ -1,5 +1,7 @@
 module Sol.P0077 (compute, solve) where
 
+import Control.Arrow ((&&&))
+
 import Mylib.Prime (primeNumbers)
 import Mylib.Util (headExn)
 
@@ -19,7 +21,7 @@ compute thr =
         . fst
         . headExn
         . dropWhile (\tpl -> snd tpl <= thr)
-        $ (\n -> (n, partitionByCoins primeNumbers n)) <$> [1 ..]
+        $ (id &&& partitionByCoins primeNumbers) <$> [1 ..]
 
 solve :: String
 solve = compute 5_000
