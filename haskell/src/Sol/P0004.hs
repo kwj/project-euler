@@ -1,5 +1,6 @@
 module Sol.P0004 (compute, solve) where
 
+import Control.Arrow ((&&&))
 import Data.Foldable (asum)
 
 import Mylib.Math (isPalindrome)
@@ -21,9 +22,9 @@ compute n
     -- descending list of block ranges [(lower, uppper), ...]
     blocks :: [(Int, Int)]
     blocks =
-        map (\x -> (x - blkSize, x - 1))
+        map (subtract blkSize &&& subtract 1)
             . takeWhile (> blkLowerLimit)
-            $ iterate (\x -> x - blkSize) blkUpperLimit
+            $ iterate (subtract blkSize) blkUpperLimit
 
     -- find the maximum palindrome number in the block
     maxPalindromeNumber :: (Int, Int) -> Maybe Int
