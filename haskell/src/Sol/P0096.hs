@@ -26,6 +26,7 @@ import qualified Data.IntSet as S (IntSet, fromList, size, toList, (\\))
 import Mylib.Util (headExn, partitionByStep, tailExn)
 
 type Grid = [[Int]]
+type Pos = (Int, Int)
 
 fileData :: BS.ByteString
 fileData = $(FE.makeRelativeToProject "resources/0096_sudoku.txt" >>= FE.embedFile)
@@ -57,7 +58,7 @@ makeTentativeGrids grid =
         minimumBy (compare `on` S.size . snd) $
             (id &&& candidateNumbers grid) <$> undeterminedPositions grid
 
-candidateNumbers :: Grid -> (Int, Int) -> S.IntSet
+candidateNumbers :: Grid -> Pos -> S.IntSet
 candidateNumbers grid (r, c) =
     allNumbers S.\\ numbersInRow S.\\ numbersInCol S.\\ numbersInBox
   where
@@ -68,7 +69,7 @@ candidateNumbers grid (r, c) =
         S.fromList $
             take 3 . drop ((c `div` 3) * 3) =<< (take 3 . drop ((r `div` 3) * 3)) grid
 
-undeterminedPositions :: Grid -> [(Int, Int)]
+undeterminedPositions :: Grid -> [Pos]
 undeterminedPositions grid = do
     (r, row) <- addIndex grid
     (c, v) <- addIndex row
@@ -78,7 +79,7 @@ undeterminedPositions grid = do
     addIndex :: [a] -> [(Int, a)]
     addIndex = zip [0 ..]
 
-setCandidateNumber :: Grid -> (Int, Int) -> Int -> Grid
+setCandidateNumber :: Grid -> Pos -> Int -> Grid
 setCandidateNumber grid (r, c) v =
     insertBetween row1 (replaceLst (headExn row2) c v) (tailExn row2)
   where
