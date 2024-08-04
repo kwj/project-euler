@@ -21,7 +21,7 @@ import Data.Maybe (catMaybes)
 
 import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
 import qualified Data.FileEmbed as FE (embedFile, makeRelativeToProject)
-import qualified Data.IntSet as S (fromList, notMember)
+import qualified Data.IntSet as S (IntSet, fromList, size, toList, (\\))
 
 import Mylib.Util (headExn, partitionByStep, tailExn)
 
@@ -51,29 +51,22 @@ isCompleted = (all . all) (/= 0)
 
 makeTentativeGrids :: Grid -> [Grid]
 makeTentativeGrids grid =
-    setCandidateNumber grid pos <$> numbers
+    setCandidateNumber grid pos <$> S.toList numbers
   where
     (pos, numbers) =
-        minimumBy (compare `on` length . snd) $
+        minimumBy (compare `on` S.size . snd) $
             (id &&& candidateNumbers grid) <$> undeterminedPositions grid
 
-candidateNumbers :: Grid -> (Int, Int) -> [Int]
+candidateNumbers :: Grid -> (Int, Int) -> S.IntSet
 candidateNumbers grid (r, c) =
-    filter (`S.notMember` neighbors) [1 .. 9]
+    allNumbers S.\\ numbersInRow S.\\ numbersInCol S.\\ numbersInBox
   where
-    neighbors =
+    allNumbers = S.fromList [1 .. 9]
+    numbersInRow = S.fromList $ grid !! r
+    numbersInCol = S.fromList $ (!! c) <$> grid
+    numbersInBox =
         S.fromList $
-            (\f -> f grid (r, c)) =<< [numbersInRow, numbersInCol, numbersInBox]
-
-numbersInRow :: Grid -> (Int, Int) -> [Int]
-numbersInRow grid (r, _) = grid !! r
-
-numbersInCol :: Grid -> (Int, Int) -> [Int]
-numbersInCol grid (_, c) = (!! c) <$> grid
-
-numbersInBox :: Grid -> (Int, Int) -> [Int]
-numbersInBox grid (r, c) =
-    (take 3 . drop ((r `div` 3) * 3)) grid >>= take 3 . drop ((c `div` 3) * 3)
+            take 3 . drop ((c `div` 3) * 3) =<< (take 3 . drop ((r `div` 3) * 3)) grid
 
 undeterminedPositions :: Grid -> [(Int, Int)]
 undeterminedPositions grid = do
