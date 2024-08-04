@@ -20,7 +20,7 @@ module Sol.P0088 (compute, solve) where
 -}
 
 import Control.Monad (when)
-import Data.Array.ST (newArray, readArray, runSTUArray, writeArray)
+import Data.Array.ST (modifyArray, newArray, runSTUArray)
 import Data.Array.Unboxed (UArray, elems)
 import Data.Foldable (for_)
 import Data.List (nub)
@@ -36,8 +36,7 @@ prodSumLst limit =
 
     aux p s len n tbl =
         when (k <= limit) $ do
-            v <- readArray tbl k
-            writeArray tbl k (min v p)
+            modifyArray tbl k (min p)
             for_
                 [n .. upper_value `div` p]
                 (\x -> aux (p * x) (s + x) (len + 1) x tbl)
