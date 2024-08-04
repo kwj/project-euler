@@ -6,7 +6,7 @@ This implementation is slow. The following is a result on my Raspberry Pi 4.
 % cabal v2-run pe-solver -- 95
 [Problem 95]
 Answer: 14316
-Elapsed time: 2.747619 sec.
+Elapsed time: 3.108977 sec.
 -}
 
 import Control.Arrow ((&&&))

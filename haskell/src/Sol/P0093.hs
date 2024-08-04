@@ -19,17 +19,17 @@ arithmetic operations (fourArithmeticOps):
     division: X / Y, Y / X
 
 patterns:
-  A, B, C, D: numbers
+  d1, d2, d3, d4: numbers
 
   [case 1]
-     ((A op B) op C) op D
-      ^^^--^^^
-     ^^^^^^^^^^--^^^
-     ^^^^^^^^^^^^^^^^--^^
+     ((d1 OP d2) OP d3) OP d4
+      ^^^----^^^
+     ^^^^^^^^^^^----^^^
+     ^^^^^^^^^^^^^^^^^^----^^
   [case 2]
-     (A op B) op (C op D)
-     ^^^--^^^    ^^^--^^^
-     ^^^^^^^^^--^^^^^^^^^
+     (d1 OP d2) OP (d3 OP d4)
+     ^^^----^^^    ^^^----^^^
+     ^^^^^^^^^^----^^^^^^^^^^
 
   ^^-^^: We can ignore the order of the two terms because
          fourArithmeticOps() considers no-commutative operations.
