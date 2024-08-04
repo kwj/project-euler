@@ -81,12 +81,12 @@ undeterminedPositions grid = do
 
 setCandidateNumber :: Grid -> Pos -> Int -> Grid
 setCandidateNumber grid (r, c) v =
-    insertBetween row1 (replaceLst (headExn row2) c v) (tailExn row2)
+    insertBetween row1 (modifyLst (headExn row2) c v) (tailExn row2)
   where
     (row1, row2) = splitAt r grid
 
-replaceLst :: [a] -> Int -> a -> [a]
-replaceLst lst idx v =
+modifyLst :: [a] -> Int -> a -> [a]
+modifyLst lst idx v =
     insertBetween l1 v (drop 1 l2)
   where
     (l1, l2) = splitAt idx lst
