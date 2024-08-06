@@ -44,6 +44,7 @@ import Data.Ratio (Ratio, denominator, numerator, (%))
 import qualified Data.IntSet as S (fromList, member)
 
 import Mylib.Combinatorics (combinations)
+import Mylib.Util (headExn, tailExn)
 
 fourArithmeticOps ::
     Maybe (Ratio Int) -> Maybe (Ratio Int) -> [Maybe (Ratio Int)]
@@ -73,11 +74,10 @@ makeNumbers xs =
   where
     aux :: [Maybe (Ratio Int)] -> [Maybe (Ratio Int)]
     aux lst =
-        (\x -> case_1 x ++ case_2 x) =<< choiceTwo lst
-
-    choiceTwo :: Eq a => [a] -> [([a], [a])]
-    choiceTwo lst =
-        (id &&& (lst \\)) <$> combinations 2 lst
+        l1 ++ l2
+      where
+        l1 = case_1 =<< (id &&& (lst \\)) <$> combinations 2 lst
+        l2 = case_2 =<< (id &&& (lst \\)) <$> map (: [headExn lst]) (tailExn lst)
 
 case_1 :: ([Maybe (Ratio Int)], [Maybe (Ratio Int)]) -> [Maybe (Ratio Int)]
 case_1 (lst1, lst2) =
