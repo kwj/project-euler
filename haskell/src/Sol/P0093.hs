@@ -6,7 +6,7 @@ This implementation is little slow. The following is a result on my Raspberry Pi
 % cabal v2-run pe-solver -- 93
 [Problem 93]
 Answer: 1258
-Elapsed time: 1.134940 sec.
+Elapsed time: 0.843592 sec.
 -}
 
 {-
@@ -26,6 +26,11 @@ patterns:
       ^^^----^^^
      ^^^^^^^^^^^----^^^
      ^^^^^^^^^^^^^^^^^^----^^
+
+     ((d1 OP d2) OP d4) OP d3
+      ^^^----^^^
+     ^^^^^^^^^^^----^^^
+     ^^^^^^^^^^^^^^^^^^----^^
   [case 2]
      (d1 OP d2) OP (d3 OP d4)
      ^^^----^^^    ^^^----^^^
@@ -38,90 +43,70 @@ patterns:
 import Control.Arrow ((&&&))
 import Data.Function (on)
 import Data.List (maximumBy, (\\))
-import Data.Maybe (catMaybes, fromJust)
-import Data.Ratio (Ratio, denominator, numerator, (%))
+import Data.Ratio (Ratio, denominator, numerator)
 
 import qualified Data.IntSet as S (fromList, member)
 
 import Mylib.Combinatorics (combinations)
 import Mylib.Util (headExn, tailExn)
 
-fourArithmeticOps ::
-    Maybe (Ratio Int) -> Maybe (Ratio Int) -> [Maybe (Ratio Int)]
-fourArithmeticOps Nothing _ = [Nothing]
-fourArithmeticOps _ Nothing = [Nothing]
-fourArithmeticOps (Just x) (Just y) = do
-    op_number <- [1 .. 6]
-    pure (aux op_number x y)
-  where
-    aux :: Int -> Ratio Int -> Ratio Int -> Maybe (Ratio Int)
-    aux 1 a b = Just (a + b)
-    aux 2 a b = Just (a - b)
-    aux 3 a b = Just (b - a)
-    aux 4 a b = Just (a * b)
-    aux 5 _ 0 = Nothing
-    aux 5 a b = Just (a / b)
-    aux 6 0 _ = Nothing
-    aux 6 a b = Just (b / a)
-    aux _ _ _ = error "fatal error (unreachable)"
+fourArithmeticOps :: Ratio Int -> Ratio Int -> [Ratio Int]
+fourArithmeticOps x y
+    | x == 0 =
+        [negate y, 0, y]
+    | y == 0 =
+        [negate x, 0, x]
+    | otherwise =
+        [x + y, x - y, y - x, x * y, x / y, y / x]
 
-makeNumbers :: [Maybe (Ratio Int)] -> [Int]
-makeNumbers xs =
-    map numerator
-        . filter (\x -> denominator x == 1)
-        . catMaybes
-        $ aux xs
+case_1 :: ([Ratio Int], [Ratio Int]) -> [Ratio Int]
+case_1 (lst1, lst2) =
+    let res1 = d1d2 >>= fourArithmeticOps d3 >>= fourArithmeticOps d4
+        res2 = d1d2 >>= fourArithmeticOps d4 >>= fourArithmeticOps d3
+     in res1 ++ res2
   where
-    aux :: [Maybe (Ratio Int)] -> [Maybe (Ratio Int)]
+    d1d2 = fourArithmeticOps (lst1 !! 0) (lst1 !! 1)
+    d3 = lst2 !! 0
+    d4 = lst2 !! 1
+
+case_2 :: ([Ratio Int], [Ratio Int]) -> [Ratio Int]
+case_2 (lst1, lst2) =
+    concat $ liftA2 fourArithmeticOps d1d2 d3d4
+  where
+    d1d2 = fourArithmeticOps (lst1 !! 0) (lst1 !! 1)
+    d3d4 = fourArithmeticOps (lst2 !! 0) (lst2 !! 1)
+
+makeIntNumbers :: [Ratio Int] -> [Int]
+makeIntNumbers =
+    map numerator . filter ((== 1) . denominator) . aux
+  where
+    aux :: [Ratio Int] -> [Ratio Int]
     aux lst =
         l1 ++ l2
       where
         l1 = case_1 =<< (id &&& (lst \\)) <$> combinations 2 lst
         l2 = case_2 =<< (id &&& (lst \\)) <$> map (: [headExn lst]) (tailExn lst)
 
-case_1 :: ([Maybe (Ratio Int)], [Maybe (Ratio Int)]) -> [Maybe (Ratio Int)]
-case_1 (lst1, lst2) =
-    let l1 = fourArithmeticOps d1 d2 >>= fourArithmeticOps d3 >>= fourArithmeticOps d4
-        l2 = fourArithmeticOps d1 d2 >>= fourArithmeticOps d4 >>= fourArithmeticOps d3
-     in l1 ++ l2
-  where
-    d1 = lst1 !! 0
-    d2 = lst1 !! 1
-    d3 = lst2 !! 0
-    d4 = lst2 !! 1
-
-case_2 :: ([Maybe (Ratio Int)], [Maybe (Ratio Int)]) -> [Maybe (Ratio Int)]
-case_2 (lst1, lst2) =
-    concat $
-        liftA2 fourArithmeticOps (fourArithmeticOps d1 d2) (fourArithmeticOps d3 d4)
-  where
-    d1 = lst1 !! 0
-    d2 = lst1 !! 1
-    d3 = lst2 !! 0
-    d4 = lst2 !! 1
-
-countConsecNumbers :: [Maybe (Ratio Int)] -> Int
+countConsecNumbers :: [Ratio Int] -> Int
 countConsecNumbers lst =
     go 1
   where
-    set = S.fromList (makeNumbers lst)
+    set = S.fromList (makeIntNumbers lst)
 
     go :: Int -> Int
     go cnt
-        | S.member cnt set == True =
+        | S.member cnt set =
             go (succ cnt)
         | otherwise =
             pred cnt
 
 compute :: String
 compute =
-    concatMap (show . numerator . fromJust)
+    concatMap (show . numerator)
         . snd
         . maximumBy (compare `on` fst)
         . map (countConsecNumbers &&& id)
-        $ combinations 4 numbers
-  where
-    numbers = (\n -> Just (n % 1)) <$> [1 .. 9]
+        $ combinations 4 [1 .. 9 :: Ratio Int]
 
 solve :: String
 solve = compute
@@ -131,12 +116,12 @@ The following implementation is about twice slower than the above. I wonder why.
 
 compute :: String
 compute =
-    concatMap (show . numerator . fromJust)
+    concatMap (show . numerator)
         . maximumBy (compare `on` countConsecNumbers)
-        $ combinations 4 numbers
+        $ combinations 4 [1 .. 9 :: Ratio Int]
 
 % cabal v2-run pe-solver -- 93
 [Problem 93]
 Answer: 1258
-Elapsed time: 2.213767 sec.
+Elapsed time: 1.699603 sec.
 -}
