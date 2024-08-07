@@ -17,7 +17,7 @@ fileData = $(FE.makeRelativeToProject "resources/0059_cipher.txt" >>= FE.embedFi
 
 parseData :: String -> [Int]
 parseData =
-    map (read :: String -> Int) . wordsWhen (\c -> c == ',')
+    map (read :: String -> Int) . wordsWhen (== ',')
   where
     wordsWhen :: (Char -> Bool) -> String -> [String]
     wordsWhen p s =

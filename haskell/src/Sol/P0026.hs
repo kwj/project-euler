@@ -30,7 +30,10 @@ findRepetendLength n
     | d == 1 =
         0
     | otherwise =
-        headExn $ filter (\k -> powerModExn 10 k d == 1) (divisors $ carmichael d)
+        headExn
+            . filter ((== 1) . (flip .) powerModExn 10 d)
+            . divisors
+            $ carmichael d
   where
     d = pp n
 

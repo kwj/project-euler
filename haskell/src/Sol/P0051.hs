@@ -27,7 +27,7 @@ isFamily familySize p =
     isFamily' :: Int -> Bool
     isFamily' n =
         any
-            (\mask -> (length $ filter isPrime (cands n mask)) >= familySize - 1)
+            ((>= familySize - 1) . length . filter isPrime . cands n)
             (masks n)
 
     masks :: Int -> [[Int]]

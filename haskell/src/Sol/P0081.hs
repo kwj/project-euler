@@ -14,7 +14,7 @@ fileData = $(FE.makeRelativeToProject "resources/0081_matrix.txt" >>= FE.embedFi
 
 parseData :: String -> [[Int]]
 parseData =
-    map (map (read :: String -> Int) . wordsWhen (\c -> c == ',')) . lines
+    map (map (read :: String -> Int) . wordsWhen (== ',')) . lines
   where
     wordsWhen :: (Char -> Bool) -> String -> [String]
     wordsWhen p s =

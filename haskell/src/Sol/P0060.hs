@@ -21,11 +21,11 @@ import Mylib.Prime (isPrime, primeNumbers)
 
 -- [3, 7, 13, 19, ...]
 primes_rem1 :: [Int]
-primes_rem1 = 3 : filter (\p -> p `mod` 3 == 1) (drop 3 primeNumbers)
+primes_rem1 = 3 : filter ((== 1) . (`mod` 3)) (drop 3 primeNumbers)
 
 -- [3, 11, 17, 23, ...]
 primes_rem2 :: [Int]
-primes_rem2 = 3 : filter (\p -> p `mod` 3 == 2) (drop 3 primeNumbers)
+primes_rem2 = 3 : filter ((== 2) . (`mod` 3)) (drop 3 primeNumbers)
 
 pairablePrimes :: Int -> Int -> [Int]
 pairablePrimes p limit =

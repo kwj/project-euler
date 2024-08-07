@@ -45,7 +45,7 @@ compute =
         . findNumbers
         . concatMap (combinations lowerLimit)
         . M.elems
-        . M.filter (\lst -> length lst >= lowerLimit)
+        . M.filter ((>= lowerLimit) . length)
         $ makePrimeTbl nDigits
   where
     nDigits = 4

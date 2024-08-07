@@ -13,7 +13,7 @@ fileData = $(FE.makeRelativeToProject "resources/0099_base_exp.txt" >>= FE.embed
 
 parseData :: String -> [[Double]]
 parseData =
-    map (map (read :: String -> Double) . wordsWhen (\c -> c == ',')) . lines
+    map (map (read :: String -> Double) . wordsWhen (== ',')) . lines
   where
     wordsWhen :: (Char -> Bool) -> String -> [String]
     wordsWhen p s =

@@ -8,7 +8,7 @@ import Mylib.Util (headExn, lastExn)
 -- A polygonal number is equal to an arithmetic series.
 polygonalNumbers :: Int -> [Int]
 polygonalNumbers s =
-    filter (\x -> mod x 100 >= 10)
+    filter ((>= 10) . (`mod` 100))
         . takeWhile (< 10000)
         . dropWhile (< 1000)
         $ scanl1 (+) [1, k ..]
@@ -39,7 +39,7 @@ compute =
         else show . sum $ headExn cands
   where
     cands =
-        filter (\lst -> length lst == 6) $ -- each number in the cycle is different
+        filter ((== 6) . length) $ -- each number in the cycle is different
             map
                 nub
                 [ x : rest

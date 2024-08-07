@@ -17,7 +17,7 @@ fileData = $(FE.makeRelativeToProject "resources/0098_words.txt" >>= FE.embedFil
 
 parseData :: String -> [String]
 parseData =
-    wordsWhen (\c -> c == ',') . filter (\c -> c /= '"')
+    wordsWhen (== ',') . filter (/= '"')
   where
     wordsWhen :: (Char -> Bool) -> String -> [String]
     wordsWhen p s =
