@@ -11,22 +11,13 @@ import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
 import qualified Data.FileEmbed as FE (embedFile, makeRelativeToProject)
 
 import Mylib.Combinatorics (cartesianProduct)
+import Mylib.Util (wordsWhen)
 
 fileData :: BS.ByteString
 fileData = $(FE.makeRelativeToProject "resources/0059_cipher.txt" >>= FE.embedFile)
 
 parseData :: String -> [Int]
-parseData =
-    map (read :: String -> Int) . wordsWhen (== ',')
-  where
-    wordsWhen :: (Char -> Bool) -> String -> [String]
-    wordsWhen p s =
-        aux (break p s) []
-      where
-        aux :: (String, String) -> [String] -> [String]
-        aux ("", "") acc = reverse acc
-        aux ("", tl) acc = aux (break p (drop 1 tl)) acc
-        aux (hd, tl) acc = aux (break p (drop 1 tl)) (hd : acc)
+parseData = map (read :: String -> Int) . wordsWhen (== ',')
 
 score :: [Char] -> Int
 score =

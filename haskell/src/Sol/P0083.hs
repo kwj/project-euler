@@ -8,7 +8,7 @@ import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
 import qualified Data.FileEmbed as FE (embedFile, makeRelativeToProject)
 import qualified Data.Map.Strict as M (Map, fromList, insert, (!))
 
-import Mylib.Util (headExn)
+import Mylib.Util (headExn, wordsWhen)
 
 import qualified Mylib.Heap.LeftistHeap as H (
     LeftistHeap,
@@ -63,15 +63,6 @@ parseData str =
             (lines str)
     nRow = length matrix
     nCol = length $ headExn matrix
-
-    wordsWhen :: (Char -> Bool) -> String -> [String]
-    wordsWhen p s =
-        aux (break p s) []
-      where
-        aux :: (String, String) -> [String] -> [String]
-        aux ("", "") acc = reverse acc
-        aux ("", tl) acc = aux (break p (drop 1 tl)) acc
-        aux (hd, tl) acc = aux (break p (drop 1 tl)) (hd : acc)
 
 findMinCost :: CostMatrix -> Pos -> Pos -> Int
 findMinCost matrix start goal

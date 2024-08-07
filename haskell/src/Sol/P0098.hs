@@ -10,23 +10,13 @@ import Data.Maybe (catMaybes)
 import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
 import qualified Data.FileEmbed as FE (embedFile, makeRelativeToProject)
 
-import Mylib.Util (digits, undigits)
+import Mylib.Util (digits, undigits, wordsWhen)
 
 fileData :: BS.ByteString
 fileData = $(FE.makeRelativeToProject "resources/0098_words.txt" >>= FE.embedFile)
 
 parseData :: String -> [String]
-parseData =
-    wordsWhen (== ',') . filter (/= '"')
-  where
-    wordsWhen :: (Char -> Bool) -> String -> [String]
-    wordsWhen p s =
-        aux (break p s) []
-      where
-        aux :: (String, String) -> [String] -> [String]
-        aux ("", "") acc = reverse acc
-        aux ("", tl) acc = aux (break p (drop 1 tl)) acc
-        aux (hd, tl) acc = aux (break p (drop 1 tl)) (hd : acc)
+parseData = wordsWhen (== ',') . filter (/= '"')
 
 squareNumbers :: [Int]
 squareNumbers = [n * n | n <- [1 ..]]

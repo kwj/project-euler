@@ -8,6 +8,7 @@ module Mylib.Util (
     partitionByStep,
     digits,
     undigits,
+    wordsWhen,
 ) where
 
 import Data.List (uncons, unfoldr, unsnoc)
@@ -54,3 +55,12 @@ undigits :: Integral int => [int] -> int
 undigits lst = foldr (\x acc -> acc * 10 + x) 0 lst
 {-# SPECIALIZE undigits :: [Int] -> Int #-}
 {-# SPECIALIZE undigits :: [Integer] -> Integer #-}
+
+wordsWhen :: (Char -> Bool) -> String -> [String]
+wordsWhen p s =
+    aux (break p s) []
+    where
+    aux :: (String, String) -> [String] -> [String]
+    aux ("", "") acc = reverse acc
+    aux ("", tl) acc = aux (break p (drop 1 tl)) acc
+    aux (hd, tl) acc = aux (break p (drop 1 tl)) (hd : acc)
