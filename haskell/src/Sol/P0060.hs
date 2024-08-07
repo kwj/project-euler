@@ -11,6 +11,7 @@ Elapsed time: 9.548267 sec.
 -}
 
 import Control.Applicative (Alternative, empty, (<|>))
+import Data.List (tails)
 
 import qualified Data.IntMap as M (IntMap, empty, insert, (!))
 import qualified Data.IntSet as S (IntSet, fromList, member)
@@ -59,8 +60,8 @@ findCliques dscNbrs size tbl =
     nextTpls :: ([Int], [Int]) -> [([Int], [Int])]
     nextTpls (clq, nbrs) =
         filter
-            (\tpl -> length (snd tpl) >= size - length clq - 1)
-            (zip ((: clq) <$> cands) (flip drop cands <$> [1 ..]))
+            ((>= size - length clq - 1) . length . snd)
+            (zip ((: clq) <$> cands) (drop 1 $ tails cands))
       where
         cands = filter (\x -> all (S.member x . (tbl M.!)) clq) nbrs
 
