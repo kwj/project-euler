@@ -38,7 +38,7 @@ expand_partition_array denom old_array new_end =
         listArray
             (0, new_end)
             (elems old_array ++ [mod (p x) denom | x <- [old_end + 1 .. new_end]])
-    (_, old_end) = bounds old_array
+    old_end = snd $ bounds old_array
 
     p :: Int -> Int
     p n =
@@ -62,7 +62,7 @@ compute denom =
         . fst
         . fromJust
         . asum
-        . map (find (\tpl -> snd tpl == 0) . assocs)
+        . map (find ((== 0) . snd) . assocs)
         $ scanl
             (expand_partition_array denom)
             seed_array
@@ -89,5 +89,5 @@ expand_partition_array denom old_array new_end =
                 writeArray new_array idx (mod (crnt + sign * tmp) denom)
         pure new_array
   where
-    (_, old_end) = bounds old_array
+    old_end = snd $ bounds old_array
 -}

@@ -17,7 +17,7 @@ dpSolve target coins =
 
 compute :: Int -> [Int] -> String
 compute target coins =
-    show $ (dpSolve target coins) ! target
+    show $ dpSolve target coins ! target
 
 solve :: String
 solve = compute 200 [1, 2, 5, 10, 20, 50, 100, 200]

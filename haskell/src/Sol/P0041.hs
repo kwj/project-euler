@@ -21,7 +21,7 @@ compute =
     show
         . fromJust -- We already know 2143 is a 4-digit pandigital prime number.
         . find isPrime
-        $ (undigits . reverse) <$> digitsLst
+        $ undigits . reverse <$> digitsLst
   where
     digitsLst = permutations 7 [7, 6, 5, 4, 3, 2, 1] ++ permutations 4 [4, 3, 2, 1]
 

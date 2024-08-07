@@ -32,7 +32,7 @@ compute limit =
     show $ (y + 1) `div` 2 -- a = (y + 1) / 2
   where
     border = 2 * limit - 1 -- x = 2b - 1
-    y = snd . headExn $ dropWhile (\(x, _) -> x <= border) peSols
+    y = snd . headExn $ dropWhile ((<= border) . fst) peSols
 
 solve :: String
 solve = compute 1_000_000_000_000

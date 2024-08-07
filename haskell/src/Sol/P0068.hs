@@ -44,8 +44,8 @@ searchRings' n_gon weight =
     aux ring rest =
         [ outer : headExn ring : inner : result
         | outer <- rest
-        , (length ring > 1 && outer > (lastExn $ initExn ring))
-            || (length ring == 1 && outer <= n_gon + 1)
+        , length ring > 1 && outer > (lastExn $ initExn ring)
+            || length ring == 1 && outer <= n_gon + 1
         , let inner = weight - headExn ring - outer
         , outer /= inner
         , elem inner rest

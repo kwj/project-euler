@@ -20,7 +20,7 @@ compute thr =
     show
         . fst
         . headExn
-        . dropWhile (\tpl -> snd tpl <= thr)
+        . dropWhile ((<= thr) . snd)
         $ (id &&& partitionByCoins primeNumbers) <$> [1 ..]
 
 solve :: String

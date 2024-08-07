@@ -8,7 +8,7 @@ isPermutedMultiples :: Int -> Bool
 isPermutedMultiples n =
     all
         (== (sort $ digits n))
-        ((\x -> sort $ digits (n * x)) <$> [2 .. 6])
+        (sort . digits . (n *) <$> [2 .. 6])
 
 compute :: String
 compute =

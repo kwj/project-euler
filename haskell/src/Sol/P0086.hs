@@ -55,7 +55,7 @@ countTriangles c =
     aux :: Int -> Int -> Int
     aux 2 acc = acc
     aux ab acc
-        | isSquare (c * c + ab * ab) == False =
+        | not $ isSquare (c * c + ab * ab) =
             aux (pred ab) acc
         | ab <= c =
             aux (pred ab) (acc + ab `div` 2)
@@ -68,7 +68,8 @@ compute boundary =
         . (+ init_c)
         . length
         . takeWhile (<= boundary)
-        $ scanl1 (+) (countTriangles <$> [init_c ..])
+        . scanl1 (+)
+        $ countTriangles <$> [init_c ..]
   where
     init_c = 3 :: Int
 

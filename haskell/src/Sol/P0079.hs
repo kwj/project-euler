@@ -18,12 +18,12 @@ dfs depInfo perm ch =
   where
     visit :: [Char] -> [Char] -> Char -> [Char]
     visit temp visited node
-        | elem node temp == True =
+        | elem node temp =
             error "cycle detection"
-        | elem node visited == True =
+        | elem node visited =
             visited
-        | M.member node depInfo == True =
-            node : (foldl (\acc x -> visit (node : temp) acc x) visited (depInfo M.! node))
+        | M.member node depInfo =
+            node : foldl (\acc x -> visit (node : temp) acc x) visited (depInfo M.! node)
         | otherwise =
             [node]
 

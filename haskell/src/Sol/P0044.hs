@@ -12,7 +12,7 @@ getDivisors :: Int -> [Int]
 getDivisors n =
     filter (\x -> x < n && mod x 3 == mod n 3)
         . pfactorsToDivisors
-        $ primeFactors n ++ primeFactors (3 * n - 1)
+        $ primeFactors =<< [n, 3 * n - 1]
 
 pent :: Int -> Int
 pent n = n * (3 * n - 1) `div` 2

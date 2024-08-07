@@ -54,7 +54,7 @@ compute target =
         . minimumBy (compare `on` fst)
         . catMaybes
         . takeWhile (/= Nothing)
-        $ (flip getApproximation (target * 4)) <$> [1 ..]
+        $ flip getApproximation (target * 4) <$> [1 ..]
 
 solve :: String
 solve = compute 2_000_000

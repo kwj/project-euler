@@ -30,7 +30,7 @@ compute :: Int -> String
 compute nth =
     show $ j * ((2 * j) - 1)
   where
-    (_, z) = (filter (\(x, y) -> mod x 6 == 5 && mod y 4 == 3) gpeSols) !! (nth - 1)
+    z = snd $ filter (\(x, y) -> mod x 6 == 5 && mod y 4 == 3) gpeSols !! (nth - 1)
     j = (z + 1) `div` 4
 
 solve :: String

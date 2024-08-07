@@ -39,7 +39,7 @@ compute =
         sum
             . map fst
             . filter (\(n, lst) -> (sort $ digits n) == lst)
-            . map (sum . fmap (factTbl !) &&& id)
+            . map (sum . map (factTbl !) &&& id)
             $ combinationsWithRepetition k [0 .. 9]
 
 solve :: String

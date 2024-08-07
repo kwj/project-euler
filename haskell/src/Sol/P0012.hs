@@ -24,7 +24,7 @@ compute :: Int -> String
 compute thr =
     show $ nth * (nth + 1) `div` 2
   where
-    nth = headExn $ dropWhile (\x -> numberOfDivisors x <= thr) [1 ..]
+    nth = headExn $ dropWhile ((<= thr) . numberOfDivisors) [1 ..]
 
 solve :: String
 solve = compute 500

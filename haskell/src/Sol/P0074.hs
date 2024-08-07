@@ -44,10 +44,10 @@ compute max_digit =
     show
         . sum
         . map countNumbers
-        . filter (\lst -> (chainLength . sum $ (factTbl !) <$> lst) == max_chain - 1)
+        . filter ((== max_chain - 1) . chainLength . sum . map (factTbl !))
         $ flip combinationsWithRepetition numbers =<< [1 .. max_digit]
   where
-    numbers = [0 :: Int .. 9]
+    numbers = [0 .. 9]
     max_chain = 60
 
 solve :: String

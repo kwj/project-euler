@@ -24,7 +24,7 @@ compute limit =
     denominators =
         [ product . map (factorial . length) . group $ pat
         | pat <- combinationsWithRepetition ndigits squares
-        , isGroup89 (sum pat) == True
+        , isGroup89 (sum pat)
         ]
     numerator = factorial ndigits
 

@@ -44,7 +44,8 @@ compute limit =
     aux :: [Int] -> Int -> Int -> Int
     aux [] _ answer = answer
     aux (x : xs) max_length answer
-        | x <= max_length = answer
+        | x <= max_length =
+            answer
         | otherwise =
             let tmp = findRepetendLength x
              in case tmp > max_length of

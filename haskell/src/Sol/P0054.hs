@@ -76,7 +76,7 @@ getHand cards
     | otherwise =
         (fromJust $ elemIndex handPattern allHandPatterns) : handNums
   where
-    nums = sortBy (comparing Down) . map chToNum $ (!! 0) <$> cards
+    nums = sortBy (comparing Down) $ chToNum . (!! 0) <$> cards
     suits = nub $ (!! 1) <$> cards
     handPattern = sortBy (comparing Down) $ length <$> group nums
     handNums = headExn <$> sortBy (comparing (Down . length)) $ group nums

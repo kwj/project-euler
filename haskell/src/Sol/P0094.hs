@@ -68,7 +68,7 @@ compute limit =
         | otherwise =
             go (tailExn pairs) (acc + p)
       where
-        (a, _) = headExn pairs
+        a = fst $ headExn pairs
         p = if mod a 3 == 2 then 2 * a - 2 else 2 * a + 2
 
 solve :: String

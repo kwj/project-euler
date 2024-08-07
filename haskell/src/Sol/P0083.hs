@@ -107,7 +107,7 @@ findMinCost matrix start goal
 
     dijkstra :: (PQueue, CostMap) -> CostMap
     dijkstra (pq, cmap)
-        | H.isEmpty pq == True =
+        | H.isEmpty pq =
             cmap
         | otherwise =
             let Node{c, p} = H.peek pq -- the node which has minimum cost

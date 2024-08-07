@@ -29,7 +29,7 @@ primes_rem2 = 3 : filter ((== 2) . (`mod` 3)) (drop 3 primeNumbers)
 
 pairablePrimes :: Int -> Int -> [Int]
 pairablePrimes p limit =
-    [x | x <- takeWhile (\x -> x + p < limit && x < p) ascPrimes, isPair x]
+    [x | x <- takeWhile (\n -> n + p < limit && n < p) ascPrimes, isPair x]
   where
     upper_p = 10 ^ (numOfDigits p 10)
     ascPrimes =

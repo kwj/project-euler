@@ -37,7 +37,7 @@ compute =
     lst =
         [ (consecLength a b, (a, b))
         | b <- takeWhile (<= 1000) (drop 1 plst)
-        , a <- (\x -> x - b - 1) <$> plst
+        , a <- subtract (b + 1) <$> plst
         , abs a < 1000
         ]
 

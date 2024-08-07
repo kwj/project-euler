@@ -19,7 +19,7 @@ compute p =
         sum
             . map fst
             . filter (\(n, lst) -> (sort $ digits n) == lst)
-            . map (sum . fmap (powerTbl !) &&& id)
+            . map (sum . map (powerTbl !) &&& id)
             $ combinationsWithRepetition k [0 .. 9]
 
 solve :: String

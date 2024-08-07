@@ -24,7 +24,10 @@ compute :: Int -> String
 compute sideLen =
     show
         . foldr (+) 1
-        $ (\n -> 16 * n * n + 4 * n + 4) <$> [1 .. (div (sideLen - 1) 2)]
+        $ f <$> [1 .. (div (sideLen - 1) 2)]
+  where
+    f :: Int -> Int
+    f x = 16 * x * x + 4 * x + 4
 
 solve :: String
 solve = compute 1_001

@@ -18,7 +18,7 @@ import Mylib.Util (digits, headExn)
 
 getBlock :: Int -> (Int, Int)
 getBlock nth =
-    headExn . snd $ break (\(_, y) -> nth <= y) blocks
+    headExn . snd $ break ((nth <=) . snd) blocks
   where
     blocks :: [(Int, Int)]
     blocks = iterate (\(x, y) -> (x + 1, y + (x + 1) * 9 * 10 ^ x)) (1, 9)

@@ -38,7 +38,7 @@ isFamily familySize p =
 
     cands :: Int -> [Int] -> [Int]
     cands n mask =
-        (undigits . replaceAtIndexes p_digits mask) <$> [n + 1 .. 9]
+        undigits . replaceAtIndexes p_digits mask <$> [n + 1 .. 9]
 
 compute :: Int -> String
 compute familySize =
