@@ -20,7 +20,8 @@ module Sol.P0088 (compute, solve) where
 -}
 
 import Control.Monad (when)
-import Data.Array.ST (modifyArray, newArray, runSTUArray)
+import Control.Monad.ST (ST)
+import Data.Array.ST (STUArray, modifyArray, newArray, runSTUArray)
 import Data.Array.Unboxed (UArray, elems)
 import Data.Foldable (for_)
 import Data.List (nub)
@@ -34,6 +35,7 @@ prodSumLst limit =
   where
     upper_value = limit * 2
 
+    aux :: forall s. Int -> Int -> Int -> Int -> STUArray s Int Int -> ST s ()
     aux p s len n tbl =
         when (k <= limit) $ do
             modifyArray tbl k (min p)

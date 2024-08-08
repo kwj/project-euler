@@ -17,7 +17,7 @@ executable pe-solver
         deepseq ^>=1.5.0.0,
         solutions
     default-extensions: Strict
-    default-language: GHC2021
+    default-language: GHC2024
 
 library solutions
     import: warnings
@@ -62,7 +62,7 @@ library solutions
         Mylib.Prime,
         Mylib.Util,
     default-extensions: Strict
-    default-language: GHC2021
+    default-language: GHC2024
 
 test-suite solutions-test
     import: warnings
@@ -95,4 +95,4 @@ test-suite solutions-test
         Sol.P0086Spec, Sol.P0087Spec, Sol.P0088Spec, Sol.P0089Spec, Sol.P0090Spec,
         Sol.P0091Spec, Sol.P0092Spec, Sol.P0093Spec, Sol.P0094Spec, Sol.P0095Spec,
         Sol.P0096Spec, Sol.P0097Spec, Sol.P0098Spec, Sol.P0099Spec, Sol.P0100Spec
-    default-language: GHC2021
+    default-language: GHC2024
