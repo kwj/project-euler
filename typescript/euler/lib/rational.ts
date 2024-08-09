@@ -1,13 +1,14 @@
 // tiny rational class
 
-export interface Rational {
+interface Rational {
   readonly num: bigint;
   readonly denom: bigint;
 
-  add(rat: Rat): Rat;
-  sub(rat: Rat): Rat;
-  mul(rat: Rat): Rat;
-  div(rat: Rat): Rat;
+  add(rat: Ratio): Ratio;
+  sub(rat: Ratio): Ratio;
+  mul(rat: Ratio): Ratio;
+  div(rat: Ratio): Ratio;
+  negate(): Ratio;
 
   isInteger(): boolean;
   isZero(): boolean;
@@ -23,7 +24,7 @@ function gcd(a: bigint, b: bigint): bigint {
   return a > 0 ? a : -a;
 }
 
-class Rat implements Rational {
+export class Ratio implements Rational {
   readonly num: bigint;
   readonly denom: bigint;
 
@@ -38,34 +39,41 @@ class Rat implements Rational {
     Object.freeze(this);
   }
 
-  add(rat: Rat): Rat {
-    return new Rat(
+  add(rat: Ratio): Ratio {
+    return new Ratio(
       this.num * rat.denom + rat.num * this.denom,
       this.denom * rat.denom,
     );
   }
 
-  sub(rat: Rat): Rat {
-    return new Rat(
+  sub(rat: Ratio): Ratio {
+    return new Ratio(
       this.num * rat.denom - rat.num * this.denom,
       this.denom * rat.denom,
     );
   }
 
-  mul(rat: Rat): Rat {
-    return new Rat(
+  mul(rat: Ratio): Ratio {
+    return new Ratio(
       this.num * rat.num,
       this.denom * rat.denom,
     );
   }
 
-  div(rat: Rat): Rat {
+  div(rat: Ratio): Ratio {
     if (rat.num === 0n) {
       throw new Error("division by zero");
     }
-    return new Rat(
+    return new Ratio(
       this.num * rat.denom,
       this.denom * rat.num,
+    );
+  }
+
+  negate(): Ratio {
+    return new Ratio(
+      -this.num,
+      this.denom,
     );
   }
 
@@ -78,7 +86,7 @@ class Rat implements Rational {
   }
 }
 
-export function rational(n: RatNumber, d?: RatNumber): Rat {
+export function rational(n: RatNumber, d?: RatNumber): Ratio {
   d = (d === undefined) ? 1 : d;
-  return new Rat(n, d);
+  return new Ratio(n, d);
 }
