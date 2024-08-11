@@ -8,7 +8,7 @@ module Mylib.Prime (
 
 import Control.Arrow ((&&&))
 import Data.Array.Unboxed (UArray, listArray, (!))
-import Data.Bits (countTrailingZeros, shiftR, xor, (.&.))
+import Data.Bits (countTrailingZeros, shiftR, testBit, xor, (.&.))
 import Data.List (find, unfoldr)
 import Data.Maybe (fromMaybe)
 import Data.Word (Word64)
@@ -16,7 +16,7 @@ import Data.Word (Word64)
 import qualified Data.Numbers.Primes as P (primes)
 
 import Mylib.Factor (minFactorTbl)
-import Mylib.Math (getCTZ, isqrt, kronecker, powerModExn)
+import Mylib.Math (getCTZ, isqrt, kronecker)
 import Mylib.Util (bitLength, headExn)
 
 primeNumbers :: [Int]
@@ -30,15 +30,24 @@ primes low high =
         else
             error "range error"
 
+powerModW64 :: Word64 -> Int -> Word64 -> Word64
+powerModW64 b e m = powerModW64' b e m 1
+
+powerModW64' :: Word64 -> Int -> Word64 -> Word64 -> Word64
+powerModW64' b e m result
+    | e == 0 = result
+    | testBit e 0 = powerModW64' ((b * b) `mod` m) (shiftR e 1) m ((result * b) `mod` m)
+    | otherwise = powerModW64' ((b * b) `mod` m) (shiftR e 1) m result
+
 {- FOURMOLU_DISABLE -}
-sprpBase :: Int -> Int
+sprpBase :: Int -> Word64
 sprpBase n = bases ! idx
   where
     h = fromIntegral n :: Word64
     h1 = (shiftR h 16 `xor` h) * 0x45d9f3b
     h2 = (shiftR h1 16 `xor` h1) * 0x45d9f3b
     idx = (shiftR h2 16 `xor` h2) .&. 0xff
-    bases :: UArray Word64 Int
+    bases :: UArray Word64 Word64
     bases =
         listArray
             (0, 255)
@@ -60,14 +69,14 @@ sprpBase n = bases ! idx
             , 922, 350, 7514, 4452, 3449, 2663, 4708, 418, 1621, 1171, 3471, 88, 11345, 412, 1559, 194]
 {- FOURMOLU_ENABLE -}
 
-millerRabinTest :: Int -> Int -> Bool
+millerRabinTest :: Word64 -> Word64 -> Bool
 millerRabinTest n base =
     cond1 || cond2
   where
     s = countTrailingZeros (n - 1)
-    d = shiftR (n - 1) s
-    cond1 = powerModExn base d n == 1
-    cond2 = elem (n - 1) $ map (\k -> powerModExn base (d * 2 ^ k) n) [0 .. (s - 1)]
+    d = fromIntegral $ shiftR (n - 1) s
+    cond1 = powerModW64 base d n == 1
+    cond2 = elem (n - 1) $ map (\k -> powerModW64 base (d * 2 ^ k) n) [0 .. (s - 1)]
 
 lucasTest :: Int -> Bool
 lucasTest n = lucasTest' (fromIntegral n)
@@ -142,8 +151,8 @@ isPrime n
     | mod n 23 == 0 = False
     | mod n 29 == 0 = False
     | mod n 31 == 0 = False
-    | n <= 4294967295 = millerRabinTest n (sprpBase n) -- (2^32 - 1) = 4294967295
-    | otherwise = millerRabinTest n 2 && lucasTest n
+    | n <= 4294967295 = millerRabinTest (fromIntegral n) (sprpBase n) -- (2^32 - 1) = 4294967295
+    | otherwise = millerRabinTest (fromIntegral n) 2 && lucasTest n
 
 {- FOURMOLU_DISABLE -}
 numberToIndex :: Int -> Int
