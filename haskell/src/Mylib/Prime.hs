@@ -6,6 +6,7 @@ module Mylib.Prime (
     prevPrime,
 ) where
 
+import Control.Arrow ((&&&))
 import Data.Array.Unboxed (UArray, listArray, (!))
 import Data.Bits (countTrailingZeros, shiftR, xor, (.&.))
 import Data.List (find, unfoldr)
@@ -88,18 +89,19 @@ lucasTest' n =
                 (\(x, y) -> Just (x, (((x * x) - 2 * y) `mod` n, (y * y) `mod` n)))
                 (v, qk)
 
+-- return: Maybe (D, P, Q)
 lucasSeqParameter :: Integer -> Maybe (Integer, Integer, Integer)
 lucasSeqParameter n
     | isqrt_n * isqrt_n == n = Nothing
-    | d == 0 = Nothing
-    | otherwise = Just (d, 1, (1 - d) `div` 4) -- (D, P, Q)
+    | d == 5 = Just (d, 5, 5)
+    | otherwise = Just (d, 1, (1 - d) `div` 4)
   where
     isqrt_n = isqrt n
     ~d =
         snd
             . headExn
-            . dropWhile (\x -> fst x == 1)
-            . map (\x -> (kronecker x n, x))
+            . dropWhile ((/= -1) . fst)
+            . map (flip kronecker n &&& id)
             $ zipWith (*) (iterate (+ 2) 5) (cycle [1, -1])
 
 lucasSeq ::
