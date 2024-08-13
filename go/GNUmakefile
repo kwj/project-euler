@@ -15,6 +15,10 @@ build:
 
 .PHONY: test
 test:
+	@go test ./internal/sol/...
+
+.PHONY: all-test
+all-test:
 	@go clean -testcache
 	@go test ./internal/sol/...
 
