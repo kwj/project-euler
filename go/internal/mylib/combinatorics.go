@@ -1,28 +1,27 @@
 package mylib
 
 import (
+	"iter"
 	"slices"
 )
 
-func Combinations[T any](xs []T, k int) chan []T {
+func Combinations[T any](xs []T, k int) iter.Seq[[]T] {
 	if k < 0 {
 		panic("'k' must be a non-negative number")
 	}
 
-	ch := make(chan []T, 1)
-
-	go func() {
-		defer close(ch)
-
+	return func(yield func(v []T) bool) {
 		n := len(xs)
 		if n < k {
 			return
 		}
 		indices := make([]int, n)
-		for i := range indices {
+		for i := range len(indices) {
 			indices[i] = i
 		}
-		ch <- slices.Clone(xs[0:k])
+		if !yield(slices.Clone(xs[0:k])) {
+			return
+		}
 
 		for {
 			var i int
@@ -48,23 +47,19 @@ func Combinations[T any](xs []T, k int) chan []T {
 				indices[j] = idx
 				result[j] = xs[idx]
 			}
-			ch <- result
+			if !yield(result) {
+				return
+			}
 		}
-	}()
-
-	return ch
+	}
 }
 
-func CombinationsWithRepetition[T any](xs []T, k int) chan []T {
+func CombinationsWithRepetition[T any](xs []T, k int) iter.Seq[[]T] {
 	if k < 0 {
 		panic("'k' must be a non-negative number")
 	}
 
-	ch := make(chan []T, 1)
-
-	go func() {
-		defer close(ch)
-
+	return func(yield func(v []T) bool) {
 		n := len(xs)
 		if n == 0 && k > 0 {
 			return
@@ -72,10 +67,12 @@ func CombinationsWithRepetition[T any](xs []T, k int) chan []T {
 		indices := make([]int, n)
 
 		tmp := make([]T, k)
-		for i := range tmp {
+		for i := range len(tmp) {
 			tmp[i] = xs[0]
 		}
-		ch <- tmp
+		if !yield(tmp) {
+			return
+		}
 
 		for {
 			var i int
@@ -100,36 +97,34 @@ func CombinationsWithRepetition[T any](xs []T, k int) chan []T {
 				indices[j] = idx
 				result[j] = elmnt
 			}
-			ch <- result
+			if !yield(result) {
+				return
+			}
 		}
-	}()
-
-	return ch
+	}
 }
 
-func Permutations[T any](xs []T, k int) chan []T {
+func Permutations[T any](xs []T, k int) iter.Seq[[]T] {
 	if k < 0 {
 		panic("'k' must be a non-negative number")
 	}
 
-	ch := make(chan []T, 1)
-
-	go func() {
-		defer close(ch)
-
+	return func(yield func(v []T) bool) {
 		n := len(xs)
 		if n < k {
 			return
 		}
 		indices := make([]int, n)
-		for i := range indices {
+		for i := range len(indices) {
 			indices[i] = i
 		}
 		swapPos := make([]int, k)
-		for i := range swapPos {
+		for i := range len(swapPos) {
 			swapPos[i] = n - i
 		}
-		ch <- slices.Clone(xs[0:k])
+		if !yield(slices.Clone(xs[0:k])) {
+			return
+		}
 
 		var i int
 		for i >= 0 {
@@ -139,10 +134,12 @@ func Permutations[T any](xs []T, k int) chan []T {
 					j := n - swapPos[i]
 					indices[i], indices[j] = indices[j], indices[i]
 					result := make([]T, k)
-					for idx := range result {
+					for idx := range len(result) {
 						result[idx] = xs[indices[idx]]
 					}
-					ch <- result
+					if !yield(result) {
+						return
+					}
 					break
 				} else {
 					idx := indices[i]
@@ -153,21 +150,15 @@ func Permutations[T any](xs []T, k int) chan []T {
 				}
 			}
 		}
-	}()
-
-	return ch
+	}
 }
 
-func PermutationsWithRepetition[T any](xs []T, k int) chan []T {
+func PermutationsWithRepetition[T any](xs []T, k int) iter.Seq[[]T] {
 	if k < 0 {
 		panic("'k' must be a non-negative number")
 	}
 
-	ch := make(chan []T, 1)
-
-	go func() {
-		defer close(ch)
-
+	return func(yield func(v []T) bool) {
 		n := len(xs)
 		if n == 0 && k > 0 {
 			return
@@ -175,10 +166,12 @@ func PermutationsWithRepetition[T any](xs []T, k int) chan []T {
 		indices := make([]int, n)
 
 		tmp := make([]T, k)
-		for i := range tmp {
+		for i := range len(tmp) {
 			tmp[i] = xs[0]
 		}
-		ch <- tmp
+		if !yield(tmp) {
+			return
+		}
 
 		for {
 			for i := k - 1; i >= 0; i-- {
@@ -196,22 +189,18 @@ func PermutationsWithRepetition[T any](xs []T, k int) chan []T {
 					indices[j] = 0
 					result[j] = xs[0]
 				}
-				ch <- result
+				if !yield(tmp) {
+					return
+				}
 				break
 			}
 		}
-	}()
-
-	return ch
+	}
 }
 
-func CartesianProduct[T any](xss ...[]T) chan []T {
-	ch := make(chan []T, 1)
-
-	go func() {
-		defer close(ch)
-
-		for _, xs := range xss {
+func CartesianProduct[T any](xss ...[]T) iter.Seq[[]T] {
+	return func(yield func(v []T) bool) {
+		for xs := range slices.Values(xss) {
 			if len(xs) == 0 {
 				return
 			}
@@ -220,13 +209,15 @@ func CartesianProduct[T any](xss ...[]T) chan []T {
 		n := len(xss)
 		tmp := make([]T, n)
 		if n == 0 {
-			ch <- tmp
+			yield(tmp)
 			return
 		} else {
-			for idx, xs := range xss {
+			for idx, xs := range slices.All(xss) {
 				tmp[idx] = xs[0]
 			}
-			ch <- tmp
+			if !yield(tmp) {
+				return
+			}
 		}
 
 		indices := make([]int, n)
@@ -248,38 +239,34 @@ func CartesianProduct[T any](xss ...[]T) chan []T {
 					indices[j] = 0
 					result[j] = xss[j][0]
 				}
-				ch <- result
+				if !yield(result) {
+					return
+				}
 				continue loop
 			}
 
 			return
 		}
-	}()
-
-	return ch
+	}
 }
 
-func PowerSet[T any](xs []T) chan []T {
+func PowerSet[T any](xs []T) iter.Seq[[]T] {
 	if len(xs) > intSize-1 {
 		panic("too many elements")
 	}
 
-	ch := make(chan []T, 1)
-
-	go func() {
-		defer close(ch)
-
+	return func(yield func(v []T) bool) {
 		var mask uint
 		for mask = 0; mask < (1 << len(xs)); mask++ {
 			result := make([]T, 0)
-			for pos, x := range xs {
+			for pos, x := range slices.All(xs) {
 				if (mask>>pos)&1 == 1 {
 					result = append(result, x)
 				}
 			}
-			ch <- result
+			if !yield(result) {
+				return
+			}
 		}
-	}()
-
-	return ch
+	}
 }

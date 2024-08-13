@@ -2,6 +2,7 @@ package p0016
 
 import (
 	"math/big"
+	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -13,7 +14,7 @@ func compute(b, e int) string {
 	}
 
 	var result int
-	for _, v := range mylib.DigitsBig(mylib.PowBig(big.NewInt(int64(b)), e)) {
+	for v := range slices.Values(mylib.DigitsBig(mylib.PowBig(big.NewInt(int64(b)), e))) {
 		result += v
 	}
 

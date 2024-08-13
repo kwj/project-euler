@@ -1,6 +1,7 @@
 package p0029
 
 import (
+	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -9,7 +10,7 @@ import (
 func dupTbl(upper int) []int {
 	sum := func(ns []int) int {
 		var result int
-		for _, v := range ns {
+		for v := range slices.Values(ns) {
 			result += v
 		}
 

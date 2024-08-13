@@ -3,6 +3,7 @@ package p0099
 import (
 	_ "embed"
 	"math"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -14,7 +15,7 @@ func compute(data string) string {
 	var maxValue float64
 	var lineNo int
 
-	for idx, line := range strings.Split(strings.Trim(data, "\n"), "\n") {
+	for idx, line := range slices.All(strings.Split(strings.Trim(data, "\n"), "\n")) {
 		x := strings.Split(line, ",")
 		var base int
 		var exp int

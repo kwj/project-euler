@@ -14,9 +14,9 @@ func compute(limit int) string {
 	cbLst := slices.DeleteFunc(slices.Clone(sqLst), func(x int) bool { return mylib.Pow(x, 3) > limit })
 	quLst := slices.DeleteFunc(slices.Clone(cbLst), func(x int) bool { return mylib.Pow(x, 4) > limit })
 
-	for _, z := range quLst {
-		for _, y := range cbLst {
-			for _, x := range sqLst {
+	for z := range slices.Values(quLst) {
+		for y := range slices.Values(cbLst) {
+			for x := range slices.Values(sqLst) {
 				if tmp := mylib.Pow(x, 2) + mylib.Pow(y, 3) + mylib.Pow(z, 4); tmp < limit {
 					nSet[tmp] = struct{}{}
 				}

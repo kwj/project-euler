@@ -39,7 +39,9 @@ package p0092
 */
 
 import (
+	"maps"
 	"math"
+	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -62,7 +64,7 @@ func isGroup89(n int) bool {
 
 func sum(xs []int) int {
 	var result int
-	for _, v := range xs {
+	for v := range slices.Values(xs) {
 		result += v
 	}
 
@@ -77,11 +79,10 @@ func compute(limit int) string {
 	nDigits := mylib.NumOfDigits(limit, 10) - 1
 	llst := make([][]int, 0)
 
-	ch := mylib.CombinationsWithRepetition(squares, nDigits)
-	for pat := range ch {
+	for pat := range mylib.CombinationsWithRepetition(squares, nDigits) {
 		if isGroup89(sum(pat)) {
 			tmp := make([]int, 0)
-			for _, x := range mylib.Frequencies(pat) {
+			for x := range maps.Values(mylib.Frequencies(pat)) {
 				tmp = append(tmp, x)
 			}
 			llst = append(llst, tmp)
@@ -90,9 +91,9 @@ func compute(limit int) string {
 
 	var result int
 	var numerator = mylib.Factorial(nDigits)
-	for _, lst := range llst {
+	for lst := range slices.Values(llst) {
 		denominator := 1
-		for _, i := range lst {
+		for i := range slices.Values(lst) {
 			denominator *= mylib.Factorial(i)
 		}
 		result += numerator / denominator

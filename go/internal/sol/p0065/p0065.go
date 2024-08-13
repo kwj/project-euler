@@ -30,13 +30,14 @@ package p0065
 import (
 	"math/big"
 	"pe-solver/internal/mylib"
+	"slices"
 	"strconv"
 )
 
 func compute(nth int) string {
 	sum := func(xs []int) int {
 		var result int
-		for _, v := range xs {
+		for v := range slices.Values(xs) {
 			result += v
 		}
 

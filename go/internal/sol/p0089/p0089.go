@@ -3,6 +3,7 @@ package p0089
 import (
 	_ "embed"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -27,7 +28,7 @@ func replaceRomanNumbers(line string) string {
 
 func compute(data string) string {
 	var result int
-	for _, line := range strings.Split(strings.Trim(data, "\n"), "\n") {
+	for line := range slices.Values(strings.Split(strings.Trim(data, "\n"), "\n")) {
 		result += len(line) - len(replaceRomanNumbers(line))
 	}
 

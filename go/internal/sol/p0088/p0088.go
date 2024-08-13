@@ -20,6 +20,7 @@ package p0088
 */
 
 import (
+	"slices"
 	"strconv"
 )
 
@@ -40,7 +41,7 @@ func aux(p, s, length, n, limit int, tbl []int) {
 
 func compute(limit int) string {
 	tbl := make([]int, limit+1)
-	for i := range tbl {
+	for i := range len(tbl) {
 		tbl[i] = limit * 2
 	}
 
@@ -48,7 +49,7 @@ func compute(limit int) string {
 
 	type intSet map[int]struct{}
 	nSet := intSet{}
-	for _, v := range tbl[2:] {
+	for v := range slices.Values(tbl[2:]) {
 		nSet[v] = struct{}{}
 	}
 

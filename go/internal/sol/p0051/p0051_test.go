@@ -1,6 +1,9 @@
 package p0051
 
-import "testing"
+import (
+	"slices"
+	"testing"
+)
 
 func Test_compute(t *testing.T) {
 	type args struct {
@@ -13,7 +16,7 @@ func Test_compute(t *testing.T) {
 	}{
 		{name: "Prime digit replacements", args: args{8}, want: "121313"},
 	}
-	for _, tt := range tests {
+	for tt := range slices.Values(tests) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := compute(tt.args.familySize); got != tt.want {
 				t.Errorf("compute() = %v, want %v", got, tt.want)

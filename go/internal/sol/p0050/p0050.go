@@ -1,6 +1,7 @@
 package p0050
 
 import (
+	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -32,26 +33,27 @@ func compute(limit int) string {
 	lst := initCsumLst(csumGen, limit)
 
 	result := 0
-	startIdx := 0
-	consecLength := 0
-	for lst[startIdx+consecLength]-lst[startIdx] < limit {
-		var idx int
-		for idx = len(lst) - 1; idx > startIdx+consecLength; idx-- {
-			diff := lst[idx] - lst[startIdx]
+	left := 0
+	k := 0
+	for lst[left+k]-lst[left] < limit {
+		for idx, v := range slices.Backward(lst) {
+			if idx <= left+k {
+				break
+			}
+
+			diff := v - lst[left]
 			if diff >= limit {
 				continue
 			}
 			if mylib.IsPrime(diff) {
+				k = idx - left
+				result = diff
 				break
 			}
 		}
 
-		if idx != startIdx+consecLength {
-			consecLength += idx - (startIdx + consecLength) - 1
-			result = lst[idx] - lst[startIdx]
-		}
 		lst = append(lst, csumGen.next())
-		startIdx++
+		left++
 	}
 
 	return strconv.FormatInt(int64(result), 10)

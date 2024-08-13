@@ -15,6 +15,7 @@ block #n: n-digits number
 */
 
 import (
+	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -46,7 +47,7 @@ func d(nth int) int {
 func compute() string {
 	indices := []int{1, 10, 100, 1_000, 10_000, 100_000, 1_000_000}
 	var result = 1
-	for _, nth := range indices {
+	for nth := range slices.Values(indices) {
 		result *= d(nth)
 	}
 

@@ -20,6 +20,7 @@ Pythagorean triple
 */
 
 import (
+	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -45,7 +46,7 @@ func compute(length int) string {
 	}
 
 	var result int
-	for _, v := range counter {
+	for v := range slices.Values(counter) {
 		if v == 1 {
 			result++
 		}

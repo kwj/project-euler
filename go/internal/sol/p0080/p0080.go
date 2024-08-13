@@ -26,8 +26,8 @@ func compute(limit, digit int) string {
 			continue
 		}
 		s := new(big.Int).Sqrt(new(big.Int).Mul(powerOf10, big.NewInt(int64(n)))).String()[:digit]
-		for _, rune := range s {
-			result += int(rune) - int('0')
+		for _, char := range s {
+			result += int(char) - int('0')
 		}
 	}
 

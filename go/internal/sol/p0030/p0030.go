@@ -26,16 +26,15 @@ Otherwise, we need to use other method.
 func compute(e int) string {
 	var digits = []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 	tbl := make([]int, 10)
-	for x := range tbl {
+	for x := range len(tbl) {
 		tbl[x] = mylib.Pow(x, e)
 	}
 
 	var result int
 	for n := 2; n <= maxNdigits(e); n++ {
-		ch := mylib.CombinationsWithRepetition(digits, n)
-		for lst := range ch {
+		for lst := range mylib.CombinationsWithRepetition(digits, n) {
 			acc := 0
-			for _, x := range lst {
+			for x := range slices.Values(lst) {
 				acc += tbl[x]
 			}
 			tmp := mylib.Digits(acc)

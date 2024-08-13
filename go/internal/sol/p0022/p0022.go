@@ -13,15 +13,15 @@ var fileContent string
 func totalScore(words []string) int {
 	score := func(s string) int {
 		var result int32
-		for _, ch := range s {
-			result += int32(ch) - int32('A') + 1
+		for _, char := range s {
+			result += int32(char) - int32('A') + 1
 		}
 
 		return int(result)
 	}
 
 	var result int
-	for i, word := range words {
+	for i, word := range slices.All(words) {
 		result += (i + 1) * score(word)
 	}
 

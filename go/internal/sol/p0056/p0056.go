@@ -2,6 +2,7 @@ package p0056
 
 import (
 	"math/big"
+	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -21,7 +22,7 @@ func compute() string {
 				break
 			}
 			var sum int
-			for _, v := range mylib.DigitsBig(prod) {
+			for v := range slices.Values(mylib.DigitsBig(prod)) {
 				sum += v
 			}
 			result = max(result, sum)

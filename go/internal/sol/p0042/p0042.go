@@ -2,6 +2,7 @@ package p0042
 
 import (
 	_ "embed"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -14,22 +15,22 @@ var fileContent string
 func calcScores(words []string) []int {
 	tbl := map[rune]int{}
 	value := 1
-	for ch := 'A'; ch <= 'Z'; ch++ {
-		tbl[ch] = value
+	for char := 'A'; char <= 'Z'; char++ {
+		tbl[char] = value
 		value++
 	}
 
 	score := func(word string) int {
 		var result int
-		for _, ch := range word {
-			result += tbl[ch]
+		for _, char := range word {
+			result += tbl[char]
 		}
 
 		return result
 	}
 
 	result := make([]int, len(words))
-	for idx, word := range words {
+	for idx, word := range slices.All(words) {
 		result[idx] = score(word)
 	}
 
@@ -39,7 +40,7 @@ func calcScores(words []string) []int {
 func compute(data string) string {
 	words := strings.Split(strings.Trim(data, `"`), `","`)
 	var result int
-	for _, x := range calcScores(words) {
+	for x := range slices.Values(calcScores(words)) {
 		if mylib.IsTriangular(x) {
 			result++
 		}

@@ -1,6 +1,9 @@
 package p0047
 
-import "testing"
+import (
+	"slices"
+	"testing"
+)
 
 func Test_compute(t *testing.T) {
 	type args struct {
@@ -15,7 +18,7 @@ func Test_compute(t *testing.T) {
 		{name: "three consecutive numbersr", args: args{3}, want: "644"},
 		{name: "four consecutive numbers", args: args{4}, want: "134043"},
 	}
-	for _, tt := range tests {
+	for tt := range slices.Values(tests) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := compute(tt.args.length); got != tt.want {
 				t.Errorf("compute() = %v, want %v", got, tt.want)

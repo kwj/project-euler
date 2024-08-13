@@ -101,6 +101,7 @@ import (
 	_ "embed"
 	"fmt"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -234,15 +235,15 @@ var adjacentCells = [NUM_OF_CELLS]bitTable{
 func parseData(data string) [][]int {
 	convert := func(lst []string) []int {
 		var s string
-		for _, x := range lst {
+		for x := range slices.Values(lst) {
 			s += x
 		}
 		s = regexp.MustCompile(`[^0-9.]`).ReplaceAllLiteralString(s, "")
 		s = regexp.MustCompile(`\.`).ReplaceAllLiteralString(s, "0")
 
 		result := make([]int, 0)
-		for _, x := range s {
-			result = append(result, int(x)-int('0'))
+		for _, char := range s {
+			result = append(result, int(char)-int('0'))
 		}
 
 		return result
@@ -253,7 +254,7 @@ func parseData(data string) [][]int {
 
 	validChar := regexp.MustCompile(`^[0-9.]`)
 	sepChar := regexp.MustCompile(`^-`)
-	for _, line := range strings.Split(strings.Trim(data, "\n"), "\n") {
+	for line := range slices.Values(strings.Split(strings.Trim(data, "\n"), "\n")) {
 		if matched := validChar.MatchString(line); matched {
 			acc = append(acc, line)
 			continue
@@ -268,7 +269,7 @@ func parseData(data string) [][]int {
 		result = append(result, convert(acc))
 	}
 
-	for _, s := range result {
+	for s := range slices.Values(result) {
 		if len(s) != 81 {
 			panic("invalid data")
 		}
@@ -281,14 +282,14 @@ func makeGrids(puzzles [][]int) [][]bitTable {
 	result := make([][]bitTable, 0)
 
 loop:
-	for i, lst := range puzzles {
+	for i, lst := range slices.All(puzzles) {
 		if len(lst) != NUM_OF_CELLS {
 			fmt.Printf("[Warning] size of input data is mismatch [Grid: %d] (ignored)\n%v\n", i+1, lst)
 			continue
 		}
 
 		grid := make([]bitTable, 10)
-		for pos, n := range lst {
+		for pos, n := range slices.All(lst) {
 			if n != 0 && grid[n].and(adjacentCells[pos]).notZero() {
 				fmt.Printf("[Warning] there is a same number in the adjacent cells [Grid: %d] (ignored)\n%v\n", i+1, lst)
 				continue loop
@@ -340,12 +341,12 @@ func _sudokouSolver(grid *[]bitTable, pos int, posBit bitTable) bool {
 func compute(data string) string {
 	var result int
 
-	for _, grid := range makeGrids(parseData(data)) {
+	for grid := range slices.Values(makeGrids(parseData(data))) {
 		if sudokuSolver(&grid) {
 			var tmp int
 			for i := 0; i <= 2; i++ {
 				bit := bitTable{h: 0, l: 1}.leftShift(i)
-				for pos, elm := range grid[1:] {
+				for pos, elm := range slices.All(grid[1:]) {
 					if elm.and(bit).notZero() {
 						tmp = tmp*10 + (pos + 1)
 						break

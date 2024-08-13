@@ -1,6 +1,7 @@
 package p0035
 
 import (
+	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -23,7 +24,7 @@ func isCircularPrime(n int) bool {
 
 func compute(limit int) string {
 	var result int
-	for _, prime := range mylib.Primes(limit) {
+	for prime := range slices.Values(mylib.Primes(limit)) {
 		if isCircularPrime(prime) {
 			result++
 		}

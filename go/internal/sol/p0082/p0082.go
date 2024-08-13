@@ -13,9 +13,9 @@ var fileContent string
 func parseData(data string) [][]int {
 	result := make([][]int, 0)
 
-	for _, line := range strings.Split(strings.Trim(data, "\n"), "\n") {
+	for line := range slices.Values(strings.Split(strings.Trim(data, "\n"), "\n")) {
 		tmp := make([]int, 0)
-		for _, s := range strings.Split(line, ",") {
+		for s := range slices.Values(strings.Split(line, ",")) {
 			if n, err := strconv.Atoi(s); err == nil {
 				tmp = append(tmp, n)
 			}
@@ -46,7 +46,7 @@ func compute(data string) string {
 	matrix := transpose(parseData(data))
 
 	work := matrix[0]
-	for _, crnt := range matrix[1:] {
+	for crnt := range slices.Values(matrix[1:]) {
 		work[0] += crnt[0]
 		for i := 1; i < len(crnt); i++ {
 			work[i] = crnt[i] + min(work[i], work[i-1])

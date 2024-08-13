@@ -13,8 +13,8 @@ import (
 
 func addPrefixNumber(preLst, lst []int) []int {
 	result := make([]int, 0)
-	for _, p := range preLst {
-		for _, n := range lst {
+	for p := range slices.Values(preLst) {
+		for n := range slices.Values(lst) {
 			result = append(result, p*(mylib.Pow(10, mylib.NumOfDigits(n, 10)))+n)
 		}
 	}
@@ -24,7 +24,7 @@ func addPrefixNumber(preLst, lst []int) []int {
 
 func makeNextList(lst []int) []int {
 	result := make([]int, 0)
-	for _, n := range addPrefixNumber([]int{1, 3, 7, 9}, lst) {
+	for n := range slices.Values(addPrefixNumber([]int{1, 3, 7, 9}, lst)) {
 		if mylib.IsPrime(n) {
 			result = append(result, n)
 		}
@@ -49,7 +49,7 @@ func pickupPrimes(lst []int) []int {
 	}
 
 	result := make([]int, 0)
-	for _, n := range addPrefixNumber([]int{2, 3, 5, 7}, lst) {
+	for n := range slices.Values(addPrefixNumber([]int{2, 3, 5, 7}, lst)) {
 		if isTruncablePrime(n) {
 			result = append(result, n)
 		}
@@ -71,7 +71,7 @@ func compute() string {
 	}
 
 	var acc int
-	for _, v := range result {
+	for v := range slices.Values(result) {
 		acc += v
 	}
 

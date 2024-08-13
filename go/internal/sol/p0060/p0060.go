@@ -13,7 +13,7 @@ func pairablePrimes(x int, ascPrimes []int, limit int) []int {
 	upper_x := mylib.Pow(10, mylib.NumOfDigits(x, 10))
 	upper_p := 10
 	result := make([]int, 0)
-	for _, p := range ascPrimes {
+	for p := range slices.Values(ascPrimes) {
 		if x+p >= limit {
 			break
 		}
@@ -30,7 +30,7 @@ func pairablePrimes(x int, ascPrimes []int, limit int) []int {
 
 func findCliques(ascPrimes []int, size int, tbl map[int]intSet) [][]int {
 	isAllPair := func(p int, group []int) bool {
-		for _, x := range group {
+		for x := range slices.Values(group) {
 			if _, ok := tbl[x][p]; !ok {
 				return false
 			}
@@ -48,7 +48,7 @@ func findCliques(ascPrimes []int, size int, tbl map[int]intSet) [][]int {
 		if depth == 0 {
 			result = append(result, group)
 		} else {
-			for idx, p := range descPrimes[:len(descPrimes)-depth+1] {
+			for idx, p := range slices.All(descPrimes[:len(descPrimes)-depth+1]) {
 				if len(group) == 0 || isAllPair(p, group) {
 					aux(append(group, p), descPrimes[idx+1:], depth-1)
 				}
@@ -72,7 +72,7 @@ func compute(groupSize int) string {
 		grpIdx := (p % 3) - 1
 		nbrs := pairablePrimes(p, primeGroups[grpIdx], result)
 		numSet := intSet{}
-		for _, x := range nbrs {
+		for x := range slices.Values(nbrs) {
 			numSet[x] = struct{}{}
 		}
 		tbl[p] = numSet
@@ -84,9 +84,9 @@ func compute(groupSize int) string {
 
 		cliques := findCliques(nbrs, size, tbl)
 		if len(cliques) > 0 {
-			for _, clq := range cliques {
+			for clq := range slices.Values(cliques) {
 				acc := p
-				for _, x := range clq {
+				for x := range slices.Values(clq) {
 					acc += x
 				}
 				result = min(result, acc)

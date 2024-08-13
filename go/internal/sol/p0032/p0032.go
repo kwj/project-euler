@@ -11,6 +11,7 @@ multiplicand/multiplier/product : 4-digits/1-digit/4-digits or 3-digits/2-digits
 */
 
 import (
+	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -54,7 +55,7 @@ func compute() string {
 	type Set map[int]struct{}
 
 	nSet := Set{}
-	for _, tpl := range makeCands() {
+	for tpl := range slices.Values(makeCands()) {
 		if mylib.IsPandigitalNZ(tpl.n) {
 			nSet[tpl.prod] = struct{}{}
 		}

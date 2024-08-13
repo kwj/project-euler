@@ -1,6 +1,9 @@
 package p0026
 
-import "testing"
+import (
+	"slices"
+	"testing"
+)
 
 func Test_compute(t *testing.T) {
 	type args struct {
@@ -15,7 +18,7 @@ func Test_compute(t *testing.T) {
 		{name: "under 300", args: args{300}, want: "289"},
 		{name: "under 1000", args: args{1_000}, want: "983"},
 	}
-	for _, tt := range tests {
+	for tt := range slices.Values(tests) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := compute(tt.args.limit); got != tt.want {
 				t.Errorf("compute() = %v, want %v", got, tt.want)

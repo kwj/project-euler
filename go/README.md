@@ -6,7 +6,7 @@
 sh solve.sh <problem_number ...>
 ```
 
-The following is ane examples of execution.
+The following is an examples of execution.
 
 ```console
 sh solve.sh 1
@@ -21,5 +21,5 @@ go build .
 
 ## Notes
 
-It was confirmed to work with Go 1.22.4.
+It was confirmed to work with Go 1.23.0.
 

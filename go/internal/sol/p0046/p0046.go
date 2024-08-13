@@ -1,6 +1,7 @@
 package p0046
 
 import (
+	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -24,7 +25,7 @@ loop:
 			continue
 		}
 
-		for _, p := range oddPrimes {
+		for p := range slices.Values(oddPrimes) {
 			if isTwiceSquare(x - p) {
 				continue loop
 			}

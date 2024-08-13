@@ -3,6 +3,7 @@ package p0098
 import (
 	_ "embed"
 	"fmt"
+	"maps"
 	"slices"
 	"strconv"
 	"strings"
@@ -43,11 +44,11 @@ func makeMappingFn(m map[rune]rune) func(rune) rune {
 func checkAnagram(words, squares []string) int {
 	transTbl := func(s1, s2 string) map[rune]rune {
 		t1 := make(map[rune]rune)
-		for i, ch := range s1 {
-			t1[ch] = rune(s2[i])
+		for i, char := range s1 {
+			t1[char] = rune(s2[i])
 		}
 		t2 := make(map[rune]rune)
-		for k, v := range t1 {
+		for k, v := range maps.All(t1) {
 			t2[v] = k
 		}
 
@@ -57,7 +58,7 @@ func checkAnagram(words, squares []string) int {
 	aux := func(w1, w2 string) int {
 		var result int
 
-		for _, sq := range squares {
+		for sq := range slices.Values(squares) {
 			mappingFn := makeMappingFn(transTbl(sq, w1))
 			if strings.Map(mappingFn, w1) != sq {
 				continue
@@ -78,8 +79,8 @@ func checkAnagram(words, squares []string) int {
 	}
 
 	var result int
-	for idx, w1 := range words {
-		for _, w2 := range words[idx+1:] {
+	for idx, w1 := range slices.All(words) {
+		for w2 := range slices.Values(words[idx+1:]) {
 			result = max(result, aux(w1, w2))
 		}
 	}
@@ -89,7 +90,7 @@ func checkAnagram(words, squares []string) int {
 
 func compute(data string) string {
 	wordTbl := make(map[string][]string)
-	for _, word := range strings.Split(strings.Trim(data, `"`), `","`) {
+	for word := range slices.Values(strings.Split(strings.Trim(data, `"`), `","`)) {
 		tmp := []rune(word)
 		slices.Sort(tmp)
 		key := string(tmp)
@@ -103,7 +104,7 @@ func compute(data string) string {
 	sqTbl := squareMap{}
 
 	var result int
-	for key, words := range wordTbl {
+	for key, words := range maps.All(wordTbl) {
 		if len(words) < 2 {
 			continue
 		}

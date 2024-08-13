@@ -8,7 +8,7 @@ import (
 )
 
 func updateTbl(tbl, indices []int, v int) {
-	for _, i := range indices {
+	for i := range slices.Values(indices) {
 		tbl[i] = v
 	}
 }

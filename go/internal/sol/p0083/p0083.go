@@ -27,9 +27,9 @@ func (p pair) values() (int, int) {
 func parseData(data string) [][]int {
 	result := make([][]int, 0)
 
-	for _, line := range strings.Split(strings.Trim(data, "\n"), "\n") {
+	for line := range slices.Values(strings.Split(strings.Trim(data, "\n"), "\n")) {
 		tmp := make([]int, 0)
-		for _, s := range strings.Split(line, ",") {
+		for s := range slices.Values(strings.Split(line, ",")) {
 			if n, err := strconv.Atoi(s); err == nil {
 				tmp = append(tmp, n)
 			}
@@ -95,7 +95,7 @@ func compute(data string) string {
 		pairItem := heap.Pop(&pq).(*item)
 		i, j := pairItem.node.values()
 		d := pairItem.priority
-		for _, p := range nbrTbl[i][j] {
+		for p := range slices.Values(nbrTbl[i][j]) {
 			x, y := p.values()
 			if newDistance := d + matrix[x][y]; newDistance < distTbl[x][y] {
 				distTbl[x][y] = newDistance

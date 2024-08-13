@@ -11,6 +11,7 @@ f(a*b) = f(a) * f(b) when 'a' and 'b' are coprime.
 */
 
 import (
+	"maps"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -24,7 +25,7 @@ func numOfDivisors(n int) int {
 	}
 
 	var result = 1
-	for _, v := range mylib.Frequencies(mylib.PrimeFactorization(n)) {
+	for v := range maps.Values(mylib.Frequencies(mylib.PrimeFactorization(n))) {
 		result *= v + 1
 	}
 	memo[n] = result

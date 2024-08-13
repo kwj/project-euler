@@ -2,6 +2,7 @@ package p0081
 
 import (
 	_ "embed"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -12,9 +13,9 @@ var fileContent string
 func parseData(data string) [][]int {
 	result := make([][]int, 0)
 
-	for _, line := range strings.Split(strings.Trim(data, "\n"), "\n") {
+	for line := range slices.Values(strings.Split(strings.Trim(data, "\n"), "\n")) {
 		tmp := make([]int, 0)
-		for _, s := range strings.Split(line, ",") {
+		for s := range slices.Values(strings.Split(line, ",")) {
 			if n, err := strconv.Atoi(s); err == nil {
 				tmp = append(tmp, n)
 			}
@@ -31,7 +32,7 @@ func compute(data string) string {
 	accumulate := func(xs []int) []int {
 		result := make([]int, 0)
 		acc := 0
-		for _, n := range xs {
+		for n := range slices.Values(xs) {
 			acc += n
 			result = append(result, acc)
 		}
@@ -42,7 +43,7 @@ func compute(data string) string {
 	matrix := parseData(data)
 	prev := append([]int{maxInt}, accumulate(matrix[0])...)
 
-	for _, work := range matrix[1:] {
+	for work := range slices.Values(matrix[1:]) {
 		work = append([]int{maxInt}, work...)
 		for i := 1; i < len(work); i++ {
 			work[i] += min(work[i-1], prev[i])

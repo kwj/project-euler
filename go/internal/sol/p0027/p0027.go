@@ -16,6 +16,7 @@ when 'n' is a odd number:
 */
 
 import (
+	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -40,11 +41,11 @@ func compute() string {
 	var maxLen int
 	var maxTpl pair
 
-	for _, b := range primes[1:] {
+	for b := range slices.Values(primes[1:]) {
 		if b >= 1000 {
 			break
 		}
-		for _, x := range primes {
+		for x := range slices.Values(primes) {
 			if a := x - b - 1; mylib.Abs(a) < 1000 {
 				if tmp := countConsecutive(a, b); tmp > maxLen {
 					maxLen = tmp

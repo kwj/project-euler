@@ -51,7 +51,7 @@ func isFlush[T comparable](m map[T]struct{}) bool {
 // If 'xs' is an element of 'xss', return its position (>=0) in 'xss'.
 // Otherwise, return -1.
 func indexOf(xss [][]int, xs []int) int {
-	for idx, lst := range xss {
+	for idx, lst := range slices.All(xss) {
 		if slices.Compare(lst, xs) == 0 {
 			return idx
 		}
@@ -84,7 +84,7 @@ hand rank:
 func getHand(cards []string) (int, []int) {
 	nums := make([]int, 0)
 	suits := make(map[byte]struct{})
-	for _, card := range cards {
+	for card := range slices.Values(cards) {
 		nums = append(nums, cardNumber(card))
 		suits[card[1]] = struct{}{}
 	}
@@ -93,7 +93,7 @@ func getHand(cards []string) (int, []int) {
 
 	numsGrp := make([][]int, 0)
 	tmp := make([]int, 0)
-	for _, v := range nums {
+	for v := range slices.Values(nums) {
 		if len(tmp) != 0 && tmp[0] != v {
 			numsGrp = append(numsGrp, tmp)
 			tmp = []int{v}
@@ -106,7 +106,7 @@ func getHand(cards []string) (int, []int) {
 	}
 
 	pattern := make([]int, 0)
-	for _, grp := range numsGrp {
+	for grp := range slices.Values(numsGrp) {
 		pattern = append(pattern, len(grp))
 	}
 	slices.Sort(pattern)
@@ -114,7 +114,7 @@ func getHand(cards []string) (int, []int) {
 
 	handNums := make([]int, 0)
 	slices.SortStableFunc(numsGrp, func(a, b []int) int { return len(b) - len(a) })
-	for _, grp := range numsGrp {
+	for grp := range slices.Values(numsGrp) {
 		handNums = append(handNums, grp[0])
 	}
 
@@ -139,7 +139,7 @@ func getHand(cards []string) (int, []int) {
 func parseData(data string) [][][]string {
 	lines := strings.Split(strings.Trim(data, "\n"), "\n")
 	result := make([][][]string, 0)
-	for _, line := range lines {
+	for line := range slices.Values(lines) {
 		cards := strings.Split(line, " ")
 		if len(cards) != 10 {
 			panic("invalid data")
@@ -163,7 +163,7 @@ func judge(game [][]string) int {
 
 func compute(data string) string {
 	var result int
-	for _, game := range parseData(data) {
+	for game := range slices.Values(parseData(data)) {
 		if judge(game) > 0 {
 			result++
 		}

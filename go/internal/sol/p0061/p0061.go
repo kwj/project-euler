@@ -1,7 +1,9 @@
 package p0061
 
 import (
+	"maps"
 	"pe-solver/internal/mylib"
+	"slices"
 	"strconv"
 )
 
@@ -85,7 +87,7 @@ func findCircularRoute(tbl map[int]nextHop, start int, guide []int) []int {
 		if nextCands, ok := nextMap[route[0]]; !ok {
 			return nil
 		} else {
-			for _, nextNum := range nextCands {
+			for nextNum := range slices.Values(nextCands) {
 				if result := dfs(guide[1:], append([]int{nextNum}, route...)); result != nil {
 					return result
 				}
@@ -95,8 +97,8 @@ func findCircularRoute(tbl map[int]nextHop, start int, guide []int) []int {
 		return nil
 	}
 
-	for k, v := range tbl[start] {
-		for _, nextNum := range v {
+	for k, v := range maps.All(tbl[start]) {
+		for nextNum := range slices.Values(v) {
 			if result := dfs(guide, []int{nextNum, k}); result != nil {
 				return result
 			}
@@ -109,7 +111,7 @@ func findCircularRoute(tbl map[int]nextHop, start int, guide []int) []int {
 func compute() string {
 	sum := func(xs []int) int {
 		var result int
-		for _, v := range xs {
+		for v := range slices.Values(xs) {
 			result += v
 		}
 
@@ -119,8 +121,7 @@ func compute() string {
 	tbl := polygonalTbl()
 
 	// start with octagonal numbers
-	ch := mylib.Permutations([]int{7, 6, 5, 4, 3}, 5)
-	for guide := range ch {
+	for guide := range mylib.Permutations([]int{7, 6, 5, 4, 3}, 5) {
 		if route := findCircularRoute(tbl, 8, guide); route != nil {
 			// (100*route[0] + route[1]) + (100*route[1] + route[2]) + ... + (100*route[n] + route[0])
 			//   = sum(route) * 101

@@ -2,6 +2,7 @@ package p0079
 
 import (
 	_ "embed"
+	"maps"
 	"slices"
 	"strings"
 )
@@ -21,7 +22,7 @@ func dfs(graph map[string][]string, perm []string, v string) []string {
 		}
 		if _, ok := graph[node]; ok {
 			acc := visited
-			for _, v := range graph[node] {
+			for v := range slices.Values(graph[node]) {
 				acc = visit(slices.Concat([]string{node}, temp), acc, v)
 			}
 			return slices.Concat([]string{node}, acc)
@@ -36,9 +37,9 @@ func dfs(graph map[string][]string, perm []string, v string) []string {
 func parseData(data string) map[string][]string {
 	m := make(map[string][]string)
 
-	for _, line := range strings.Split(strings.Trim(data, "\n"), "\n") {
+	for line := range slices.Values(strings.Split(strings.Trim(data, "\n"), "\n")) {
 		x := strings.Split(line, "")
-		for _, kv := range [][]string{{x[0], x[1]}, {x[0], x[2]}, {x[1], x[2]}} {
+		for kv := range slices.Values([][]string{{x[0], x[1]}, {x[0], x[2]}, {x[1], x[2]}}) {
 			if v, ok := m[kv[0]]; ok {
 				m[kv[0]] = append(v, kv[1])
 			} else {
@@ -48,7 +49,7 @@ func parseData(data string) map[string][]string {
 	}
 
 	// sort & dedup
-	for k, xs := range m {
+	for k, xs := range maps.All(m) {
 		slices.Sort(xs)
 		i := 0
 		for j := 1; j < len(xs); j++ {
@@ -68,12 +69,12 @@ func compute(data string) string {
 	graph := parseData(data)
 
 	var acc []string
-	for vertex := range graph {
+	for vertex := range maps.Keys(graph) {
 		acc = dfs(graph, acc, vertex)
 	}
 
 	var result string
-	for _, s := range acc {
+	for s := range slices.Values(acc) {
 		result += s
 	}
 

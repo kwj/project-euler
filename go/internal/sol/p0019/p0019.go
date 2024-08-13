@@ -10,11 +10,8 @@ func compute() string {
 	leapYear := []int{31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
 
 	// days per month (Jan 1901 - *Nov* 2000)
-	days := make([]int, 0)
-	for range 25 {
-		days = slices.Concat(days, commonYear, commonYear, commonYear, leapYear)
-	}
-	days = days[:len(days)-1] // remove Dec 2000
+	days := slices.Repeat(slices.Concat(commonYear, commonYear, commonYear, leapYear), 25)
+	days = days[:len(days)-1] // drop Dec 2000
 
 	// insert number of days of the year 1900 (common year)
 	days = slices.Insert(days, 0, 365)
@@ -31,7 +28,7 @@ func compute() string {
 	//     Mar 1, 1901 was Firday since (365 + 31 + 28) % 7 = 4.
 	//     ... and so on
 	var cnt int
-	for _, x := range days {
+	for x := range slices.Values(days) {
 		// If it is Sunday, count it
 		if x%7 == 6 {
 			cnt++

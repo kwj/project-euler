@@ -27,13 +27,13 @@ var triangleData = `
 func makeTriangle(data string) [][]int {
 	ss := strings.Split(data, "\n")
 	triangle := make([][]int, len(ss))
-	for idx, line := range ss {
+	for idx, line := range slices.All(ss) {
 		row := make([]int, 0)
 		tokens := strings.Split(line, " ")
 		if len(tokens) != idx+1 {
 			panic("data error (not triangle)")
 		}
-		for _, x := range tokens {
+		for x := range slices.Values(tokens) {
 			if n, err := strconv.Atoi(x); err == nil {
 				row = append(row, n)
 			} else {
@@ -63,9 +63,9 @@ func compute(data string) string {
 	slices.Reverse(triangle)
 
 	work := triangle[0]
-	for _, crnt := range triangle[1:] {
+	for crnt := range slices.Values(triangle[1:]) {
 		selected := selectLargerValue(work[0:len(work)-1], work[1:])
-		for idx := range crnt {
+		for idx := range len(crnt) {
 			crnt[idx] += selected[idx]
 		}
 		work = crnt

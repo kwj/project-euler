@@ -1,6 +1,7 @@
 package p0023
 
 import (
+	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -33,7 +34,7 @@ loop:
 		if i&1 == 0 && tbl[i/2] {
 			lst = append(lst, i/2)
 		}
-		for _, x := range lst {
+		for x := range slices.Values(lst) {
 			if tbl[i-x] {
 				continue loop
 			}

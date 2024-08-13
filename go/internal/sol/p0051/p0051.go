@@ -32,15 +32,14 @@ import (
 func isFamily(p, familySize int) bool {
 	pDigits := mylib.Digits(p)
 	for n := 0; n <= 10-familySize; n++ {
-		ch := mylib.PowerSet(mylib.FindAll(pDigits, func(x int) bool { return x == n }))
-		for positions := range ch {
+		for positions := range mylib.PowerSet(mylib.FindAll(pDigits, func(x int) bool { return x == n })) {
 			if len(positions) < 3 || len(positions)%3 != 0 || positions[0] == 0 {
 				continue
 			}
 			cnt := 1
 			work := slices.Clone(pDigits)
 			for d := n + 1; d <= 9; d++ {
-				for _, pos := range positions {
+				for pos := range slices.Values(positions) {
 					work[pos] = d
 				}
 				if mylib.IsPrime(mylib.UnDigits(work)) {

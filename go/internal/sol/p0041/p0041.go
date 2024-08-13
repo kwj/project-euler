@@ -29,9 +29,8 @@ func compute() string {
 		{4, 3, 2, 1},
 	}
 
-	for _, grp := range digitGroup {
-		ch := mylib.Permutations(grp, len(grp))
-		for lst := range ch {
+	for grp := range slices.Values(digitGroup) {
+		for lst := range mylib.Permutations(grp, len(grp)) {
 			slices.Reverse(lst)
 			n := mylib.UnDigits(lst)
 			if mylib.IsPrime(n) {

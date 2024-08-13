@@ -43,7 +43,7 @@ func checkSquare(twoDice []die) bool {
 		panic("there are not two dice")
 	}
 
-	for _, sq := range squares {
+	for sq := range slices.Values(squares) {
 		if !isContain(twoDice, sq) {
 			return false
 		}
@@ -55,14 +55,10 @@ func checkSquare(twoDice []die) bool {
 func compute() string {
 	// use '6' instead of '9'.
 	var dice []die
-	ch1 := mylib.Combinations([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 6}, 6)
-	for lst := range ch1 {
-		dice = append(dice, lst)
-	}
+	dice = slices.Collect(mylib.Combinations([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 6}, 6))
 
 	var result int
-	ch2 := mylib.CombinationsWithRepetition(dice, 2)
-	for twoDice := range ch2 {
+	for twoDice := range mylib.CombinationsWithRepetition(dice, 2) {
 		if checkSquare(twoDice) {
 			result++
 		}

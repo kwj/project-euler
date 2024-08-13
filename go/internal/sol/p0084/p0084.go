@@ -195,7 +195,7 @@ func compute(side, nAttempts int) string {
 		cnt int
 	}
 	board := make([]square, NUMBER_OF_SQUARES)
-	for idx, cnt := range counterTbl {
+	for idx, cnt := range slices.All(counterTbl) {
 		board[idx] = square{idx: idx, cnt: cnt}
 	}
 	slices.SortFunc(board, func(x, y square) int {

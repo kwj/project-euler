@@ -18,7 +18,7 @@ func getDivisors(n int) []int {
 	result := make([]int, 0)
 
 	lst := slices.Concat(mylib.PrimeFactorization(n), mylib.PrimeFactorization(3*n-1))
-	for _, x := range mylib.PfactorsToDivisors(lst) {
+	for x := range slices.Values(mylib.PfactorsToDivisors(lst)) {
 		if x >= n {
 			break
 		}
@@ -47,7 +47,7 @@ func compute() string {
 	d := 4
 	for {
 		lhs := d * (3*d - 1)
-		for _, r1 := range getDivisors(d) {
+		for r1 := range slices.Values(getDivisors(d)) {
 			r2 := lhs / r1
 			if r2%3 != 2 {
 				continue

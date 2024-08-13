@@ -12,6 +12,7 @@ Primitive Pythagorean triples (variant type)
 */
 
 import (
+	"maps"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -30,10 +31,9 @@ func compute(limit int) string {
 		}
 	}
 
-	freqMap := mylib.Frequencies(lst)
 	var maxCnt int
 	var result int
-	for k, cnt := range freqMap {
+	for k, cnt := range maps.All(mylib.Frequencies(lst)) {
 		if cnt > maxCnt {
 			result = k
 			maxCnt = cnt

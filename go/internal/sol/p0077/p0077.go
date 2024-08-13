@@ -1,6 +1,7 @@
 package p0077
 
 import (
+	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -14,7 +15,7 @@ func compute(boundary int) string {
 		primes = append(primes, pGen.Next())
 		tbl := make([]int, len(primes)+1)
 		tbl[0] = 1
-		for _, p := range primes {
+		for p := range slices.Values(primes) {
 			for j := p; j < len(tbl); j++ {
 				tbl[j] += tbl[j-p]
 			}

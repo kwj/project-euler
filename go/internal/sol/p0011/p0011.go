@@ -31,10 +31,10 @@ var data = []string{
 
 func makeMatrix(data []string) [][]int {
 	matrix := make([][]int, len(data))
-	for rIdx, line := range data {
+	for rIdx, line := range slices.All(data) {
 		nums := strings.Split(line, " ")
 		row := make([]int, len(nums))
-		for cIdx, s := range nums {
+		for cIdx, s := range slices.All(nums) {
 			if n, err := strconv.Atoi(s); err == nil {
 				row[cIdx] = n
 			} else {
@@ -49,7 +49,7 @@ func makeMatrix(data []string) [][]int {
 
 func prodInts(is ...int) int {
 	var result = 1
-	for _, x := range is {
+	for x := range slices.Values(is) {
 		result *= x
 	}
 

@@ -109,7 +109,7 @@ func contFraction(n int) (int, []int) {
 
 func numerator(a0 int, lst []int) *big.Int {
 	n1, n2 := big.NewInt(int64(a0)), big.NewInt(1)
-	for _, a := range lst {
+	for a := range slices.Values(lst) {
 		tmp := big.NewInt(int64(a))
 		tmp.Mul(tmp, n1)
 		tmp.Add(tmp, n2)

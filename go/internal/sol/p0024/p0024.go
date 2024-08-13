@@ -22,7 +22,7 @@ func factorialTbl(n, depth int) []int {
 func compute(nth int, elmLst []int, depth int) string {
 	idx := nth - 1
 	result := make([]string, 0)
-	for _, n := range factorialTbl(len(elmLst), depth) {
+	for n := range slices.Values(factorialTbl(len(elmLst), depth)) {
 		i := idx / n
 		result = append(result, fmt.Sprint(elmLst[i]))
 		elmLst = slices.Delete(elmLst, i, i+1)

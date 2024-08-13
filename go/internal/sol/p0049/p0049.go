@@ -2,6 +2,7 @@ package p0049
 
 import (
 	"fmt"
+	"maps"
 	"slices"
 	"strconv"
 
@@ -11,7 +12,7 @@ import (
 func makePrimeTbl(ndigits int) map[string][]int {
 	tbl := make(map[string][]int)
 
-	for _, p := range mylib.Primes(mylib.Pow(10, ndigits-1), mylib.Pow(10, ndigits)) {
+	for p := range slices.Values(mylib.Primes(mylib.Pow(10, ndigits-1), mylib.Pow(10, ndigits))) {
 		tmp := []rune(strconv.FormatInt(int64(p), 10))
 		slices.Sort(tmp)
 		key := string(tmp)
@@ -29,7 +30,7 @@ func compute() string {
 	// 4-digit prime numbers
 	tbl := makePrimeTbl(4)
 
-	for _, lst := range tbl {
+	for lst := range maps.Values(tbl) {
 		if len(lst) < 3 {
 			continue
 		}

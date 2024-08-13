@@ -31,6 +31,7 @@ package p0070
 
 import (
 	"container/heap"
+	"iter"
 	"slices"
 	"strconv"
 
@@ -50,7 +51,7 @@ func (p pair) values() (int, int) {
 
 func prod(lst []pair) int {
 	result := 1
-	for _, tpl := range lst {
+	for tpl := range slices.Values(lst) {
 		result *= mylib.Pow(tpl.b, tpl.e)
 	}
 
@@ -59,7 +60,7 @@ func prod(lst []pair) int {
 
 func phi(lst []pair) int {
 	result := 1
-	for _, tpl := range lst {
+	for tpl := range slices.Values(lst) {
 		result *= mylib.Pow(tpl.b, tpl.e-1) * (tpl.b - 1)
 	}
 
@@ -70,7 +71,7 @@ func ratio(lst []pair) float64 {
 	return float64(prod(lst)) / float64(phi(lst))
 }
 
-func pfGenerator(a, b int) chan []pair {
+func pfLstGenerator(a, b int) iter.Seq[[]pair] {
 	aux := func(lst ...pair) []pair {
 		b, e := lst[0].values()
 		if tmp := LIMIT / prod(lst); tmp < b {
@@ -81,8 +82,6 @@ func pfGenerator(a, b int) chan []pair {
 			return append([]pair{{b, e + 1}}, lst[1:]...)
 		}
 	}
-
-	ch := make(chan []pair, 1)
 
 	// for safty
 	if a > b {
@@ -96,9 +95,7 @@ func pfGenerator(a, b int) chan []pair {
 		pfLst = []pair{{b, 1}, {a, 1}}
 	}
 
-	go func() {
-		defer close(ch)
-
+	return func(yield func(v []pair) bool) {
 		for {
 			b, e := pfLst[0].values()
 			if len(pfLst) == 1 && e == 1 {
@@ -119,11 +116,11 @@ func pfGenerator(a, b int) chan []pair {
 				}
 			}
 
-			ch <- result
+			if !yield(result) {
+				return
+			}
 		}
-	}()
-
-	return ch
+	}
 }
 
 func isPermutation(a, b int) bool {
@@ -136,7 +133,7 @@ func isPermutation(a, b int) bool {
 		counter[b%10]--
 		b /= 10
 	}
-	for _, x := range counter {
+	for x := range slices.Values(counter) {
 		if x != 0 {
 			return false
 		}
@@ -154,13 +151,12 @@ func compute() string {
 	pq[0] = &item{n: 87109, priority: float64(87109) / float64(79180), index: 0}
 	heap.Init(&pq)
 
-	for _, p := range primes {
+	for p := range slices.Values(primes) {
 		if ratio([]pair{{p, 1}}) > pq[0].priority {
 			break
 		}
 
-		ch := pfGenerator(p, mylib.PrevPrime(LIMIT/p+1))
-		for pfLst := range ch {
+		for pfLst := range pfLstGenerator(p, mylib.PrevPrime(LIMIT/p+1)) {
 			if ratio(pfLst[0:min(len(pfLst), 2)]) > pq[0].priority {
 				break
 			}

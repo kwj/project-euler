@@ -28,6 +28,7 @@ patterns:
 
 import (
 	"math/big"
+	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -54,13 +55,13 @@ func fourOps(x1, x2 *big.Rat) []*big.Rat {
 
 func case1(d1, d2 *big.Rat, rest []*big.Rat) []*big.Rat {
 	result := make([]*big.Rat, 0)
-	for _, ab := range fourOps(d1, d2) {
+	for ab := range slices.Values(fourOps(d1, d2)) {
 		// c: rest[0], d: rest[1]
-		for _, abc := range fourOps(ab, rest[0]) {
+		for abc := range slices.Values(fourOps(ab, rest[0])) {
 			result = append(result, fourOps(abc, rest[1])...)
 		}
 		// c: rest[1], d: rest[0]
-		for _, abc := range fourOps(ab, rest[1]) {
+		for abc := range slices.Values(fourOps(ab, rest[1])) {
 			result = append(result, fourOps(abc, rest[0])...)
 		}
 	}
@@ -73,8 +74,7 @@ func case2(d1, d2 *big.Rat, rest []*big.Rat) []*big.Rat {
 	ab := fourOps(d1, d2)
 	cd := fourOps(rest[0], rest[1])
 
-	ch := mylib.CartesianProduct(ab, cd)
-	for pair := range ch {
+	for pair := range mylib.CartesianProduct(ab, cd) {
 		result = append(result, fourOps(pair[0], pair[1])...)
 	}
 
@@ -93,12 +93,12 @@ func makeNumbers(lst []*big.Rat) map[int]struct{} {
 				}
 			}
 
-			for _, x := range case1(lst[i], lst[j], rest) {
+			for x := range slices.Values(case1(lst[i], lst[j], rest)) {
 				if x.IsInt() {
 					nSet[int(x.Num().Int64())] = struct{}{}
 				}
 			}
-			for _, x := range case2(lst[i], lst[j], rest) {
+			for x := range slices.Values(case2(lst[i], lst[j], rest)) {
 				if x.IsInt() {
 					nSet[int(x.Num().Int64())] = struct{}{}
 				}
@@ -111,7 +111,7 @@ func makeNumbers(lst []*big.Rat) map[int]struct{} {
 
 func countConsecNumbers(lst []int) int {
 	ratLst := make([]*big.Rat, 0)
-	for _, x := range lst {
+	for x := range slices.Values(lst) {
 		ratLst = append(ratLst, big.NewRat(int64(x), 1))
 	}
 
@@ -128,8 +128,7 @@ func compute() string {
 	var maxCount int
 	var nums []int
 
-	ch := mylib.Combinations([]int{1, 2, 3, 4, 5, 6, 7, 8, 9}, 4)
-	for lst := range ch {
+	for lst := range mylib.Combinations([]int{1, 2, 3, 4, 5, 6, 7, 8, 9}, 4) {
 		tmp := countConsecNumbers(lst)
 		if tmp > maxCount {
 			maxCount = tmp
@@ -138,7 +137,7 @@ func compute() string {
 	}
 
 	var result int
-	for _, x := range nums {
+	for x := range slices.Values(nums) {
 		result = result*10 + x
 	}
 

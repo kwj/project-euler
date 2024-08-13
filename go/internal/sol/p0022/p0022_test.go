@@ -1,6 +1,7 @@
 package p0022
 
 import (
+	"slices"
 	"testing"
 )
 
@@ -16,7 +17,7 @@ func Test_compute(t *testing.T) {
 		// The variable 'fileContent' is defined in p0022.go
 		{name: "0022_names.txt", args: args{fileContent}, want: "871198282"},
 	}
-	for _, tt := range tests {
+	for tt := range slices.Values(tests) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := compute(tt.args.data); got != tt.want {
 				t.Errorf("compute() = %v, want %v", got, tt.want)

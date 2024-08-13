@@ -35,6 +35,7 @@ We only need to search for the case #1.
 */
 
 import (
+	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -51,8 +52,7 @@ func makeCands() []pair {
 	}
 
 	result := make([]pair, 0)
-	ch := mylib.Combinations([]int{1, 2, 3, 4, 5, 6, 7, 8, 9}, 3)
-	for lst := range ch {
+	for lst := range mylib.Combinations([]int{1, 2, 3, 4, 5, 6, 7, 8, 9}, 3) {
 		if check(lst[0], lst[1], lst[2]) {
 			result = append(result, pair{lst[0], lst[1]})
 		}
@@ -65,7 +65,7 @@ func compute() string {
 	// numerator, denominator
 	a, b := 1, 1
 
-	for _, tpl := range makeCands() {
+	for tpl := range slices.Values(makeCands()) {
 		a *= tpl.a
 		b *= tpl.b
 	}

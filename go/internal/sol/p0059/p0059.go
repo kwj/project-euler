@@ -2,6 +2,7 @@ package p0059
 
 import (
 	_ "embed"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -36,7 +37,7 @@ func evalChar(c byte) int {
 func compute(data string) string {
 	sum := func(xs []byte) int {
 		var result int
-		for _, v := range xs {
+		for v := range slices.Values(xs) {
 			result += int(v)
 		}
 
@@ -50,7 +51,7 @@ func compute(data string) string {
 	}
 
 	encryptedData := make([]byte, 0)
-	for _, s := range strings.Split(data, ",") {
+	for s := range slices.Values(strings.Split(data, ",")) {
 		if n, err := strconv.Atoi(s); err == nil {
 			encryptedData = append(encryptedData, byte(n))
 		} else {
@@ -61,10 +62,9 @@ func compute(data string) string {
 
 	var maxScore int
 	var result int
-	ch := mylib.CartesianProduct(keyRange, keyRange, keyRange)
-	for secretKey := range ch {
+	for secretKey := range mylib.CartesianProduct(keyRange, keyRange, keyRange) {
 		score := 0
-		for idx, x := range encryptedData {
+		for idx, x := range slices.All(encryptedData) {
 			plainData[idx] = x ^ secretKey[idx%3]
 			score += evalChar(plainData[idx])
 		}

@@ -1,6 +1,7 @@
 package p0008
 
 import (
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -32,12 +33,12 @@ func makeIntSlice(rawStr string) []int {
 	byteStr := []byte(strings.ReplaceAll(rawStr, "\n", ""))
 	result := make([]int, len(byteStr))
 
-	for idx, ch := range byteStr {
-		ch -= byte('0')
-		if ch > 9 {
+	for idx, char := range slices.All(byteStr) {
+		char -= byte('0')
+		if char > 9 {
 			panic("no numeric character exists")
 		}
-		result[idx] = int(ch)
+		result[idx] = int(char)
 	}
 
 	return result
@@ -45,7 +46,7 @@ func makeIntSlice(rawStr string) []int {
 
 func prodIntSlice(is []int) int {
 	var result = 1
-	for _, x := range is {
+	for x := range slices.Values(is) {
 		result *= x
 	}
 

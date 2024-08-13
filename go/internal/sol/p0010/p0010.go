@@ -1,6 +1,7 @@
 package p0010
 
 import (
+	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -8,7 +9,7 @@ import (
 
 func compute(upper int) string {
 	var result int
-	for _, v := range mylib.Primes(upper) {
+	for v := range slices.Values(mylib.Primes(upper)) {
 		result += v
 	}
 

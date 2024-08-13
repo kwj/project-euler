@@ -12,6 +12,7 @@ package p0078
 */
 
 import (
+	"slices"
 	"strconv"
 )
 
@@ -46,7 +47,7 @@ func compute(denom int) string {
 			gp = append(gp, gpGen.next())
 		}
 		rem := 0
-		for i, x := range gp {
+		for i, x := range slices.All(gp) {
 			if x > n {
 				break
 			}

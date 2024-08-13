@@ -1,12 +1,15 @@
 package p0031
 
-import "strconv"
+import (
+	"slices"
+	"strconv"
+)
 
 func compute(numbers []int, target int) string {
 	tbl := make([]int, target+1)
 	tbl[0] = 1
 
-	for _, c := range numbers {
+	for c := range slices.Values(numbers) {
 		for i := c; i <= target; i++ {
 			tbl[i] += tbl[i-c]
 		}

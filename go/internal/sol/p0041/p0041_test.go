@@ -1,6 +1,9 @@
 package p0041
 
-import "testing"
+import (
+	"slices"
+	"testing"
+)
 
 func Test_compute(t *testing.T) {
 	tests := []struct {
@@ -9,7 +12,7 @@ func Test_compute(t *testing.T) {
 	}{
 		{name: "largest pandigital prime", want: "7652413"},
 	}
-	for _, tt := range tests {
+	for tt := range slices.Values(tests) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := compute(); got != tt.want {
 				t.Errorf("compute() = %v, want %v", got, tt.want)

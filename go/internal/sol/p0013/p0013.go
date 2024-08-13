@@ -2,6 +2,7 @@ package p0013
 
 import (
 	"math/big"
+	"slices"
 )
 
 var data = []string{
@@ -109,7 +110,7 @@ var data = []string{
 
 func convertToBignum(data []string) []*big.Int {
 	result := make([]*big.Int, 0, len(data))
-	for _, s := range data {
+	for s := range slices.Values(data) {
 		if n, ok := new(big.Int).SetString(s, 10); ok {
 			result = append(result, n)
 		} else {
@@ -122,7 +123,7 @@ func convertToBignum(data []string) []*big.Int {
 
 func compute(length int) string {
 	result := big.NewInt(0)
-	for _, x := range convertToBignum(data) {
+	for x := range slices.Values(convertToBignum(data)) {
 		result.Add(result, x)
 	}
 

@@ -1,6 +1,8 @@
 package p0026
 
 import (
+	"maps"
+	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -10,7 +12,7 @@ import (
 // the function assumes that the argument is not a multiple of 2.
 func carmichael(n int) int {
 	var result = 1
-	for b, e := range mylib.Frequencies(mylib.PrimeFactorization(n)) {
+	for b, e := range maps.All(mylib.Frequencies(mylib.PrimeFactorization(n))) {
 		result = mylib.Lcm(result, (b-1)*mylib.Pow(b, (e-1)))
 	}
 
@@ -33,7 +35,7 @@ func findRepetendLength(d int) int {
 		return 0
 	}
 
-	for _, k := range mylib.Divisors(carmichael(d)) {
+	for k := range slices.Values(mylib.Divisors(carmichael(d))) {
 		if mylib.PowerMod(10, k, d) == 1 {
 			return k
 		}
