@@ -1,7 +1,6 @@
 module Sol.P0084 (compute, solve) where
 
--- Warning:
--- This solution is of poor quality because floating point calculation is not appropriate.
+-- Note:
 -- I feel that I just happened to get the right answer.
 
 import Data.Array.ST (modifyArray, newArray, runSTUArray)
