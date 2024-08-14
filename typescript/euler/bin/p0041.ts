@@ -12,7 +12,7 @@
 */
 
 import { permutations } from "combinatorics/mod.ts";
-import { isPrimeSimple } from "../lib/primes.ts";
+import { isPrime } from "../lib/prime.ts";
 import { isPandigitalNZ, range } from "../lib/util.ts";
 
 // This implementation depends on the permutation lists are emitted in lexicographic ordering
@@ -21,7 +21,7 @@ export const compute = (): string => {
   for (const digits of [range(7, 0, -1), range(4, 0, -1)]) {
     for (const nLst of permutations(digits)) {
       const n = nLst.reduce((x, y) => 10 * x + y);
-      if (isPandigitalNZ(n) && isPrimeSimple(n)) {
+      if (isPandigitalNZ(n) && isPrime(n)) {
         return String(n);
       }
     }

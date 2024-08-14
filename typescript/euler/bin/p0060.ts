@@ -15,7 +15,7 @@
 
 import { combinations } from "combinatorics/mod.ts";
 import { sum } from "../lib/math.ts";
-import { isPrime, primeGenerator } from "../lib/primes.ts";
+import { isPrime, primeGenerator } from "../lib/prime.ts";
 import { range } from "../lib/util.ts";
 
 const isPair = (x: number, y: number): boolean => {

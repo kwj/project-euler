@@ -1,7 +1,7 @@
 // project euler: problem 50
 
 import { dropWhile } from "@std/collections";
-import { isPrimeSimple, primeGenerator } from "../lib/primes.ts";
+import { isPrime, primeGenerator } from "../lib/prime.ts";
 
 const cumSumGenerator = function* (): Generator<number, void, void> {
   let acc = 0;
@@ -36,7 +36,7 @@ export const compute = (limit: number): string => {
     const begin = cs_lst[i];
     const lst = dropWhile(
       cs_lst.slice(i + consecLength).reverse(),
-      (p) => p - begin >= limit || isPrimeSimple(p - begin) === false,
+      (p) => p - begin >= limit || isPrime(p - begin) === false,
     );
     if (lst.length > 0) {
       consecLength += lst.length - 1;

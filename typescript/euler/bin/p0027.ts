@@ -13,11 +13,11 @@
     'n^2 + b' is a even number. so 'a' must be a odd number.
 */
 
-import { getPrimes, isPrimeSimple } from "../lib/primes.ts";
+import { isPrime, primes } from "../lib/prime.ts";
 
 const countConsecutive = (a: number, b: number): number => {
   let n = 0;
-  while (isPrimeSimple(n * n + a * n + b) === true) {
+  while (isPrime(n * n + a * n + b) === true) {
     n += 1;
   }
 
@@ -25,12 +25,12 @@ const countConsecutive = (a: number, b: number): number => {
 };
 
 export const compute = (): string => {
-  const primes = getPrimes(2000);
+  const primeLst = primes(2000);
   let maxLen = 0;
   let maxTpl: [number, number] = [0, 0];
-  for (const b of primes.slice(1).filter((x) => x < 1000)) {
+  for (const b of primeLst.slice(1).filter((x) => x < 1000)) {
     for (
-      const a of primes.filter((x) => Math.abs(x - b - 1) < 1000).map((x) =>
+      const a of primeLst.filter((x) => Math.abs(x - b - 1) < 1000).map((x) =>
         x - b - 1
       )
     ) {

@@ -6,7 +6,7 @@
 */
 
 import { sum } from "../lib/math.ts";
-import { isPrime } from "../lib/primes.ts";
+import { isPrime } from "../lib/prime.ts";
 import { numOfDigits } from "../lib/util.ts";
 
 const addPrefix = (prefixes: number[], lst: number[]): number[] => {

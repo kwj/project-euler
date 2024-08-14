@@ -1,6 +1,6 @@
 // project euler: problem 35
 
-import { getPrimeTbl, primeTblToPrimes } from "../lib/primes.ts";
+import { isPrime, primes } from "../lib/prime.ts";
 import { range } from "../lib/util.ts";
 
 export const compute = (limit: number): string => {
@@ -9,7 +9,7 @@ export const compute = (limit: number): string => {
     const m = Math.trunc(s.length / 2);
 
     for (const pos of range(0, m)) {
-      if (primeTbl[Number(s.slice(pos, pos + m))] == false) {
+      if (isPrime(Number(s.slice(pos, pos + m))) == false) {
         return false;
       }
     }
@@ -17,10 +17,8 @@ export const compute = (limit: number): string => {
     return true;
   };
 
-  const primeTbl = getPrimeTbl(limit);
-
   let acc = 0;
-  for (const n of primeTblToPrimes(primeTbl)) {
+  for (const n of primes(limit)) {
     if (checkRotNum(n) === true) {
       acc += 1;
     }

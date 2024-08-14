@@ -102,7 +102,21 @@ export function isqrt<T extends number | bigint>(n: T): T {
   Modular exponentiation
     https://en.wikipedia.org/wiki/Modular_exponentiation
  */
-export function modPow(base: bigint, exp: bigint, mod: bigint): bigint {
+export function modPow(base: number, exp: number, mod: number): number {
+  let result = 1;
+  base = base % mod;
+  while (exp > 0) {
+    if ((exp & 1) === 1) {
+      result = (result * base) % mod;
+    }
+    base = (base * base) % mod;
+    exp = exp >> 1;
+  }
+
+  return result;
+}
+
+export function modPowBigint(base: bigint, exp: bigint, mod: bigint): bigint {
   let result = 1n;
   base = base % mod;
   while (exp > 0) {
@@ -329,3 +343,78 @@ export function getMaxExp(n: number, base: number): number {
 
   return e;
 }
+
+export const checkNtz = (n: number): [number, number] => {
+  let cnt = 0;
+  while (n % 2 === 0) {
+    cnt += 1;
+    n = Math.trunc(n / 2);
+  }
+
+  return [cnt, n];
+};
+
+export const kronecker = (a: number, n: number): number => {
+  const mod = (a: number, b: number): number => {
+    const tmp = a % b;
+    if (tmp >= 0) {
+      return tmp;
+    } else {
+      return (tmp + b);
+    }
+  };
+
+  if (n === 0) {
+    if (Math.abs(a) === 1) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
+  let sign = 1;
+  if (n < 0) {
+    if (a < 0) {
+      sign = -sign;
+    }
+    n = -n;
+  }
+
+  const [ntz_n, new_n] = checkNtz(n);
+  if (ntz_n > 0) {
+    if (a % 2 === 0) {
+      return 0;
+    }
+    n = new_n;
+    if (ntz_n % 2 === 1) {
+      const tmp = a % 8;
+      if (tmp === 3 || tmp === 5) {
+        sign = -sign;
+      }
+    }
+  }
+
+  while ((a = mod(a, n)) > 0) {
+    const [ntz_a, new_a] = checkNtz(a);
+    if (ntz_a > 0) {
+      a = new_a;
+      if (ntz_a % 2 === 1) {
+        const tmp = n % 8;
+        if (tmp === 3 || tmp === 5) {
+          sign = -sign;
+        }
+      }
+    }
+
+    if (a % 4 === 3 && n % 4 === 3) {
+      sign = -sign;
+    }
+    [a, n] = [n, a];
+  }
+
+  if (n === 1) {
+    return sign;
+  } else {
+    return 0;
+  }
+};

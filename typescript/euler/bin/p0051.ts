@@ -37,7 +37,7 @@
 
 import { unzip } from "@std/collections";
 import { combinations } from "combinatorics/mod.ts";
-import { isPrimeSimple } from "../lib/primes.ts";
+import { isPrime } from "../lib/prime.ts";
 import { range } from "../lib/util.ts";
 
 /*
@@ -126,7 +126,7 @@ const findPrime = (i: number, pat: number[]): number | undefined => {
   const lst: number[] = [];
   for (const r of range(start, 10)) {
     const tmp = assembleNum(i, pat, r);
-    if (isPrimeSimple(tmp) === true) {
+    if (isPrime(tmp) === true) {
       lst.push(tmp);
     }
   }

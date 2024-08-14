@@ -45,7 +45,7 @@
   Use Miller-Rabin primality test since it's slow by trial division method in this problem.
 */
 
-import { isPrime } from "../lib/primes.ts";
+import { isPrime } from "../lib/prime.ts";
 
 export const compute = (): string => {
   const wrapper = (n: number): number => {

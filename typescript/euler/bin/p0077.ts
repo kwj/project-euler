@@ -1,6 +1,6 @@
 // project euler: problem 77
 
-import { primeGenerator } from "../lib/primes.ts";
+import { primeGenerator } from "../lib/prime.ts";
 import { range } from "../lib/util.ts";
 
 const plstGenerator = function* (): Generator<number[], void, unknown> {

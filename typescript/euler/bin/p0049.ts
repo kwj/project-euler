@@ -1,7 +1,7 @@
 // project euler: problem 49
 
 import { combinations } from "combinatorics/mod.ts";
-import { Sieve } from "../lib/primes.ts";
+import { isPrime, primes } from "../lib/prime.ts";
 
 export const compute = (limit: number): string => {
   const isPerm = (p1: number, p2: number, p3: number): boolean => {
@@ -12,10 +12,10 @@ export const compute = (limit: number): string => {
     return s1 === s2 && s1 === s3;
   };
 
-  const pt = new Sieve(1000, limit);
-  for (const [i, j] of combinations(pt.getPrimes(), 2)) {
+  const primeLst = primes(1000, limit);
+  for (const [i, j] of combinations(primeLst, 2)) {
     const m = Math.trunc((i + j) / 2);
-    if (pt.isPrime(m) === true && isPerm(i, m, j) === true) {
+    if (isPrime(m) === true && isPerm(i, m, j) === true) {
       if (i + j === 1487 + 8147) {
         continue;
       }

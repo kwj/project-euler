@@ -1,7 +1,7 @@
 // project euler: problem 46
 
 import { isqrt } from "../lib/math.ts";
-import { isPrimeSimple } from "../lib/primes.ts";
+import { isPrime } from "../lib/prime.ts";
 
 const isTwiceSquare = (n: number): boolean => {
   const tmp = Math.trunc(n / 2);
@@ -17,7 +17,7 @@ export const compute = (): string => {
   // The odd composite numbers less than 35 have been written in the problm statement
   loop_x:
   for (let x = 35;; x += 2) {
-    if (isPrimeSimple(x) === true) {
+    if (isPrime(x) === true) {
       oddPrimes.push(x);
       continue;
     }

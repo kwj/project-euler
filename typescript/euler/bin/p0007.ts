@@ -1,6 +1,6 @@
 // project euler: problem 7
 
-import { primeGenerator } from "../lib/primes.ts";
+import { primeGenerator } from "../lib/prime.ts";
 
 export const compute = (limit: number): string => {
   let answer = 0;

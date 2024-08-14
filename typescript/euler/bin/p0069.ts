@@ -22,7 +22,7 @@
   the answer 'n' is p{1} * p{2} * ... * p{k-1} * p{k}.
 */
 
-import { primeGenerator } from "../lib/primes.ts";
+import { primeGenerator } from "../lib/prime.ts";
 
 export const compute = (limit: number): string => {
   const p_gen = primeGenerator();

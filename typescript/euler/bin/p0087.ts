@@ -10,10 +10,10 @@
 */
 
 import { takeWhile } from "@std/collections";
-import { getPrimes } from "../lib/primes.ts";
+import { primes } from "../lib/prime.ts";
 
 export const compute = (limit: number): string => {
-  const sqPlst = getPrimes(Math.pow(limit - 2 ** 3 - 2 ** 4, 1 / 2));
+  const sqPlst = primes(Math.pow(limit - 2 ** 3 - 2 ** 4, 1 / 2));
   const cbPlst = takeWhile(sqPlst, (x) => x <= Math.pow(limit, 1 / 3));
   const fthPlst = takeWhile(sqPlst, (x) => x <= Math.pow(limit, 1 / 4));
 

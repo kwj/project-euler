@@ -18,37 +18,10 @@
 */
 
 import { ascend, BinaryHeap } from "@std/data-structures";
-import { dropWhile, takeWhile } from "@std/collections";
 import { isqrt } from "../lib/math.ts";
-import { getPrimeTbl, primeTblToPrimes } from "../lib/primes.ts";
+import { prevPrime, primes } from "../lib/prime.ts";
 
 const LIMIT = 10 ** 7 - 1;
-
-class Sieve {
-  prime_tbl: boolean[] = [];
-
-  constructor(limit: number) {
-    this.prime_tbl = getPrimeTbl(limit);
-  }
-
-  getPrimes(): number[] {
-    return primeTblToPrimes(this.prime_tbl);
-  }
-
-  prev_prime(n: number): number {
-    if (n > this.prime_tbl.length - 1) {
-      throw new RangeError("too large");
-    } else if (n <= 2) {
-      throw new RangeError("too small");
-    } else {
-      n -= 1;
-      while (this.prime_tbl[n] === false) {
-        n -= 1;
-      }
-      return n;
-    }
-  }
-}
 
 const prod = (pfLst: number[][]): number =>
   pfLst.map((x) => x[0] ** x[1]).reduce((acc, cur) => acc * cur, 1);
@@ -60,7 +33,6 @@ const phi = (pfLst: number[][]): number =>
 const getRatio = (pfLst: number[][]): number => prod(pfLst) / phi(pfLst);
 
 function* pfGenerator(
-  prime_t: Sieve,
   tpl: [number, number],
 ): Generator<[number, number][], void, unknown> {
   // Note:
@@ -75,7 +47,7 @@ function* pfGenerator(
     if (tmp < b) {
       return pfLst;
     } else {
-      const prev_p = prime_t.prev_prime(tmp + 1);
+      const prev_p = prevPrime(tmp + 1);
       if (prev_p > b) {
         return [[prev_p, 1]].concat(pfLst) as [number, number][];
       } else {
@@ -99,7 +71,7 @@ function* pfGenerator(
       // [[p_n, e_n], ...] --> [[p_n, e_n - 1], ...]
       pfLst[0] = [b, e - 1];
     } else {
-      const prev_p = prime_t.prev_prime(b);
+      const prev_p = prevPrime(b);
       const [b_x, e_x] = pfLst[1];
       if (prev_p === b_x) {
         // [[p_n, 1], [p_{n-1}, e_{n-1}], ...] -> [[p_{n-1}, e_{n-1} + 1], ...]
@@ -131,20 +103,13 @@ export const compute = (): string => {
   const pq = new BinaryHeap<[number, number[][]]>((a, b) => ascend(a[0], b[0]));
   pq.push([87109 / 79180, [[11, 1], [7919, 1]]]);
 
-  const prime_t = new Sieve(Math.trunc(LIMIT / 11) + 1);
-  const primeLst = takeWhile(
-    dropWhile(prime_t.getPrimes(), (x) => x < 11),
-    (y) => y <= isqrt(LIMIT),
-  );
+  const primeLst = primes(11, isqrt(LIMIT));
   for (const p of primeLst.reverse()) {
     if (getRatio([[p, 1]]) > pq.peek()![0]) {
       // pruning: end of search
       break;
     }
-    const pf_gen = pfGenerator(prime_t, [
-      p,
-      prime_t.prev_prime(Math.trunc(LIMIT / p) + 1),
-    ]);
+    const pf_gen = pfGenerator([p, prevPrime(Math.trunc(LIMIT / p) + 1)]);
     for (const pfLst of pf_gen) {
       if (getRatio(pfLst.slice(0, 2)) > pq.peek()![0]) {
         // pruning: skip to the next prime smaller than 'p'
