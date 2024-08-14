@@ -48,10 +48,9 @@ export const compute = (boundary: number): string => {
       const tmp = (c * c) + (ab * ab);
       const tmp_sq = isqrt(tmp);
       if (tmp_sq * tmp_sq === tmp) {
-        if (ab <= c) {
-          acc += Math.trunc(ab / 2);
-        } else {
-          acc += Math.trunc(ab / 2) - (ab - 1 - c);
+        acc += Math.trunc(ab / 2);
+        if (ab > c) {
+          acc -= ab - 1 - c;
         }
       }
       ab -= 1;
