@@ -34,38 +34,14 @@ export function factorialBigint(n: bigint): bigint {
   return n;
 }
 
+function isqrtNumber(n: number): number {
+  return Math.trunc(Math.sqrt(n));
+}
+
 /*
   Integer Square Root
     https://github.com/mdickinson/snippets/blob/master/proofs/isqrt/src/isqrt.lean
  */
-
-function isqrtNumber(n: number): number {
-  function aux(c: number, n: number): number {
-    if (c === 0) {
-      return 1;
-    } else {
-      const k: number = Math.trunc((c - 1) / 2);
-      const a: number = aux(
-        Math.trunc(c / 2),
-        Math.trunc(n / (2 ** (2 * k + 2))),
-      );
-
-      return (a * (2 ** k)) + Math.trunc(Math.trunc(n / (2 ** (k + 2))) / a);
-    }
-  }
-
-  if (n === 0) {
-    return 0;
-  } else {
-    const a = aux(Math.trunc((bitLength(n) - 1) / 2), n);
-    if (n < a * a) {
-      return a - 1;
-    } else {
-      return a;
-    }
-  }
-}
-
 function isqrtBigint(n: bigint): bigint {
   function aux(c: bigint, n: bigint): bigint {
     if (c === 0n) {
