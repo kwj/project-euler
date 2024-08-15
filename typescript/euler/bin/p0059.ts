@@ -34,9 +34,16 @@ export const compute = (data: string): string => {
     )
   ) {
     const plainText = decode(cipherText, key);
-    const score = calcScore(plainText);
-    if (score > maxScore[0]) {
-      maxScore = [score, key, plainText];
+    if (
+      plainText.every((x) =>
+        (0x20 <= x && x <= 0x7e) || x === 0x0a || x === 0x09 || x === 0x0d ||
+        x === 0x0c || x === 0x0b
+      )
+    ) {
+      const score = calcScore(plainText);
+      if (score > maxScore[0]) {
+        maxScore = [score, key, plainText];
+      }
     }
   }
   return String(sum(maxScore[2]));
