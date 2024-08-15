@@ -128,7 +128,7 @@ func IsPrime(n int) bool {
 		return millerRabinTest(n, sprpBase(uint32(n)))
 	}
 
-	// ProbablyPrime(0) applies only a Baillie-PSW test. (from Go 1.18)
+	// ProbablyPrime(0) applies only a Baillie-PSW test. (since Go 1.18)
 	return big.NewInt(int64(n)).ProbablyPrime(0)
 
 }

@@ -211,11 +211,13 @@ export const isPrime = (n: number): boolean => {
   }
 
   // Miller-Rabin  (< 2^32)
-  if (n <= 4294967296) {
+  // http://ceur-ws.org/Vol-1326/020-Forisek.pdf (FJ32_256)
+  if (n < 4294967296) {
     return millerRabinTest(n, sprpBase(n));
   }
 
   // Baillie-PSW step 1 & 2..5 (>= 2^32)
+  // https://arxiv.org/abs/2006.14425v2
   return millerRabinTest(n, 2) && lucasTest(n);
 };
 

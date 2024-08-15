@@ -40,6 +40,7 @@ powerModW64' b e m result
     | otherwise = powerModW64' ((b * b) `mod` m) (shiftR e 1) m result
 
 {- FOURMOLU_DISABLE -}
+-- http://ceur-ws.org/Vol-1326/020-Forisek.pdf (FJ32_256)
 sprpBase :: Int -> Word64
 sprpBase n = bases ! idx
   where

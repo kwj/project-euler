@@ -120,7 +120,7 @@
   (concat [2 3 5 7] (sift-fn (make-prime-candidates 11 spacing-candidates))))
 
 (def prime-numbers
-  "A lazy sequnce of prime numbers. (2 3 5 7 ...)"
+  "A lazy sequence of prime numbers. (2 3 5 7 ...)"
   (make-primes sift-by-pq))
 
 ;;; Functions related to prime numbers
