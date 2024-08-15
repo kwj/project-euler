@@ -21,6 +21,7 @@ module Mylib.Math (
 
 import Data.Bits (shiftL, shiftR, testBit, (.|.))
 import Data.Maybe (fromMaybe)
+import Data.Word (Word64)
 
 import Mylib.Util (bitLength)
 
@@ -85,6 +86,7 @@ isqrt n
          in a * 2 ^ k + div (div n' (2 ^ (k + 2))) a
 {-# SPECIALIZE isqrt :: Int -> Int #-}
 {-# SPECIALIZE isqrt :: Integer -> Integer #-}
+{-# SPECIALIZE isqrt :: Word64 -> Word64 #-}
 
 kronecker :: Integral int => int -> int -> int
 kronecker a 0 = if abs a == 1 then 1 else 0

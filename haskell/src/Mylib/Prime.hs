@@ -69,14 +69,15 @@ sprpBase n = bases ! idx
             , 922, 350, 7514, 4452, 3449, 2663, 4708, 418, 1621, 1171, 3471, 88, 11345, 412, 1559, 194]
 {- FOURMOLU_ENABLE -}
 
-millerRabinTest :: Word64 -> Word64 -> Bool
+millerRabinTest :: Int -> Word64 -> Bool
 millerRabinTest n base =
     cond1 || cond2
   where
-    s = countTrailingZeros (n - 1)
-    d = fromIntegral $ shiftR (n - 1) s
-    cond1 = powerModW64 base d n == 1
-    cond2 = elem (n - 1) $ map (\k -> powerModW64 base (d * 2 ^ k) n) [0 .. (s - 1)]
+    n' = fromIntegral n
+    s = countTrailingZeros (n' - 1)
+    d = fromIntegral $ shiftR (n' - 1) s
+    cond1 = powerModW64 base d n' == 1
+    cond2 = elem (n' - 1) $ map (\k -> powerModW64 base (d * 2 ^ k) n') [0 .. (s - 1)]
 
 lucasTest :: Int -> Bool
 lucasTest n = lucasTest' (fromIntegral n)
@@ -151,8 +152,8 @@ isPrime n
     | mod n 23 == 0 = False
     | mod n 29 == 0 = False
     | mod n 31 == 0 = False
-    | n <= 4294967295 = millerRabinTest (fromIntegral n) (sprpBase n) -- (2^32 - 1) = 4294967295
-    | otherwise = millerRabinTest (fromIntegral n) 2 && lucasTest n
+    | n <= 4294967295 = millerRabinTest n (sprpBase n) -- (2^32 - 1) = 4294967295
+    | otherwise = millerRabinTest n 2 && lucasTest n
 
 {- FOURMOLU_DISABLE -}
 numberToIndex :: Int -> Int
