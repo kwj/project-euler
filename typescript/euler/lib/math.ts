@@ -1,10 +1,16 @@
 import { unzip } from "@std/collections";
-import { bitLength, highOrderReduce, range } from "./util.ts";
+import { bitLength, range } from "./util.ts";
 
-/*
-  Factorial
- */
-export function factorial(n: number): number {
+/* Factorial */
+export const factorial = <T extends number | bigint>(n: T): T => {
+  if (typeof n === "number") {
+    return factorialNumber(n as number) as T;
+  } else {
+    return factorialBigint(n as bigint) as T;
+  }
+};
+
+const factorialNumber = (n: number): number => {
   if (n < 0 || Number.isInteger(n) != true) {
     throw new Error("invalid argument");
   }
@@ -17,9 +23,9 @@ export function factorial(n: number): number {
   }
 
   return n;
-}
+};
 
-export function factorialBigint(n: bigint): bigint {
+const factorialBigint = (n: bigint): bigint => {
   if (n < 0n) {
     throw new Error("invalid argument");
   }
@@ -32,17 +38,23 @@ export function factorialBigint(n: bigint): bigint {
   }
 
   return n;
-}
+};
 
-function isqrtNumber(n: number): number {
+/* Integer Square Root */
+export const isqrt = <T extends number | bigint>(n: T): T => {
+  if (typeof n === "number") {
+    return isqrtNumber(n as number) as T;
+  } else {
+    return isqrtBigint(n as bigint) as T;
+  }
+};
+
+const isqrtNumber = (n: number): number => {
   return Math.trunc(Math.sqrt(n));
-}
+};
 
-/*
-  Integer Square Root
-    https://github.com/mdickinson/snippets/blob/master/proofs/isqrt/src/isqrt.lean
- */
-function isqrtBigint(n: bigint): bigint {
+// https://github.com/mdickinson/snippets/blob/master/proofs/isqrt/src/isqrt.lean
+const isqrtBigint = (n: bigint): bigint => {
   function aux(c: bigint, n: bigint): bigint {
     if (c === 0n) {
       return 1n;
@@ -64,21 +76,25 @@ function isqrtBigint(n: bigint): bigint {
       return a;
     }
   }
-}
-
-export function isqrt<T extends number | bigint>(n: T): T {
-  if (typeof n === "number") {
-    return isqrtNumber(n as number) as T;
-  } else {
-    return isqrtBigint(n as bigint) as T;
-  }
-}
+};
 
 /*
   Modular exponentiation
     https://en.wikipedia.org/wiki/Modular_exponentiation
  */
-export function modPow(base: number, exp: number, mod: number): number {
+export const modPow = <T extends number | bigint>(
+  base: T,
+  exp: T,
+  mod: T,
+): T => {
+  if (typeof base === "number") {
+    return modPowNumber(base as number, exp as number, mod as number) as T;
+  } else {
+    return modPowBigint(base as bigint, exp as bigint, mod as bigint) as T;
+  }
+};
+
+const modPowNumber = (base: number, exp: number, mod: number): number => {
   let result = 1;
   base = base % mod;
   while (exp > 0) {
@@ -90,9 +106,9 @@ export function modPow(base: number, exp: number, mod: number): number {
   }
 
   return result;
-}
+};
 
-export function modPowBigint(base: bigint, exp: bigint, mod: bigint): bigint {
+const modPowBigint = (base: bigint, exp: bigint, mod: bigint): bigint => {
   let result = 1n;
   base = base % mod;
   while (exp > 0) {
@@ -104,12 +120,12 @@ export function modPowBigint(base: bigint, exp: bigint, mod: bigint): bigint {
   }
 
   return result;
-}
+};
 
 /*
   Prime factorization and more
  */
-export function factorize(n: number): [number, number][] {
+export const factorize = (n: number): [number, number][] => {
   if (n < 1) {
     throw new Error("parameter is too small");
   } else if (n === 1) {
@@ -152,16 +168,16 @@ export function factorize(n: number): [number, number][] {
   }
 
   return result;
-}
+};
 
-export function pflstToNumber(pf_lst: [number, number][]): number {
+export const pflstToNumber = (pf_lst: [number, number][]): number => {
   return pf_lst.map((lst) => lst[0] ** lst[1]).reduce(
     (acc, cur) => acc * cur,
     1,
   );
-}
+};
 
-export function pflstToDivisors(pf_lst: [number, number][]): number[] {
+export const pflstToDivisors = (pf_lst: [number, number][]): number[] => {
   let div_lst = [1];
   for (const tpl of pf_lst) {
     let acc_lst: number[] = [];
@@ -178,139 +194,130 @@ export function pflstToDivisors(pf_lst: [number, number][]): number[] {
       return a - b;
     });
   }
-}
+};
 
-export function divisors(n: number): number[] {
+export const divisors = (n: number): number[] => {
   return pflstToDivisors(factorize(n));
-}
+};
 
-export function numOfDivisors(n: number): number {
+export const numOfDivisors = (n: number): number => {
   const [_, e]: [number[], number[]] = unzip(factorize(n));
   return e.map((x) => x + 1)
     .reduce((acc, cur) => acc * cur, 1);
-}
+};
 
 /*
   funtions for array
  */
 // max
-export function max(...lst: number[] | number[][]): number {
-  if (Array.isArray(lst[0]) === true) {
-    return highOrderReduce<number>(Math.max, lst[0] as number[]);
+export const maxLst = <T extends number | bigint>(lst: T[]): T => {
+  const _max_number = (a: number, b: number): number => a < b ? b : a;
+  const _max_bigint = (a: bigint, b: bigint): bigint => a < b ? b : a;
+
+  if (typeof lst[0] === "number") {
+    return (lst as number[]).reduce(_max_number) as T;
   } else {
-    return highOrderReduce<number>(Math.max, lst as number[]);
+    return (lst as bigint[]).reduce(_max_bigint) as T;
   }
-}
+};
 
 // min
-export function min(...lst: number[] | number[][]): number {
-  if (Array.isArray(lst[0]) === true) {
-    return highOrderReduce<number>(Math.min, lst[0] as number[]);
+export const minLst = <T extends number | bigint>(lst: T[]): T => {
+  const _min_number = (a: number, b: number): number => a < b ? a : b;
+  const _min_bigint = (a: bigint, b: bigint): bigint => a < b ? a : b;
+
+  if (typeof lst[0] === "number") {
+    return (lst as number[]).reduce(_min_number) as T;
   } else {
-    return highOrderReduce<number>(Math.min, lst as number[]);
+    return (lst as bigint[]).reduce(_min_bigint) as T;
   }
-}
+};
 
 // gcd
-export function gcd(...lst: number[] | number[][]): number {
-  function _gcd(a: number, b: number): number {
-    if (b === 0) {
-      return a;
-    } else {
-      return _gcd(b, a % b);
-    }
-  }
+export const gcd = <T extends number | bigint>(a: T, b: T): T => {
+  const _gcd_number = (a: number, b: number): number =>
+    b === 0 ? a : _gcd_number(b, a % b);
+  const _gcd_bigint = (a: bigint, b: bigint): bigint =>
+    b === 0n ? a : _gcd_bigint(b, a % b);
 
-  if (Array.isArray(lst[0]) === true) {
-    return highOrderReduce<number>(_gcd, lst[0] as number[]);
+  if (typeof a === "number" && typeof b === "number") {
+    return _gcd_number(a, b) as T;
+  } else if (typeof a === "bigint" && typeof b === "bigint") {
+    return _gcd_bigint(a, b) as T;
   } else {
-    return highOrderReduce<number>(_gcd, lst as number[]);
+    throw new Error("Abend.");
   }
-}
+};
 
 // lcm
-export function lcm(...lst: number[] | number[][]): number {
-  function _lcm(a: number, b: number): number {
-    return a / gcd(a, b) * b;
-  }
+export const lcm = <T extends number | bigint>(a: T, b: T): T => {
+  const _lcm_number = (a: number, b: number): number => a / gcd(a, b) * b;
+  const _lcm_bigint = (a: bigint, b: bigint): bigint => a / gcd(a, b) * b;
 
-  if (Array.isArray(lst[0]) === true) {
-    return highOrderReduce<number>(_lcm, lst[0] as number[]);
+  if (typeof a === "number" && typeof b === "number") {
+    return _lcm_number(a, b) as T;
+  } else if (typeof a === "bigint" && typeof b === "bigint") {
+    return _lcm_bigint(a, b) as T;
   } else {
-    return highOrderReduce<number>(_lcm, lst as number[]);
+    throw new Error("Abend.");
   }
-}
+};
 
 // sum
-export function sum(...lst: number[] | number[][]): number {
-  function _add(a: number, b: number): number {
-    return a + b;
-  }
+export const sum = <T extends number | bigint>(lst: T[]): T => {
+  const _add_number = (a: number, b: number): number => a + b;
+  const _add_bigint = (a: bigint, b: bigint): bigint => a + b;
 
-  if (Array.isArray(lst[0]) === true) {
-    return highOrderReduce<number>(_add, lst[0] as number[]);
+  if (typeof lst[0] === "number") {
+    return (lst as number[]).reduce(_add_number) as T;
   } else {
-    return highOrderReduce<number>(_add, lst as number[]);
+    return (lst as bigint[]).reduce(_add_bigint) as T;
   }
-}
-
-// sum for Bigint
-export function sumBigint(...lst: bigint[] | bigint[][]): bigint {
-  function _add(a: bigint, b: bigint): bigint {
-    return a + b;
-  }
-
-  if (Array.isArray(lst[0]) === true) {
-    return highOrderReduce<bigint>(_add, lst[0] as bigint[]);
-  } else {
-    return highOrderReduce<bigint>(_add, lst as bigint[]);
-  }
-}
+};
 
 // prod
-export function prod(...lst: number[] | number[][]): number {
-  function _prod(a: number, b: number): number {
-    return a * b;
-  }
+export const prod = <T extends number | bigint>(lst: T[]): T => {
+  const _prod_number = (a: number, b: number): number => a * b;
+  const _prod_bigint = (a: bigint, b: bigint): bigint => a * b;
 
-  if (Array.isArray(lst[0]) === true) {
-    return highOrderReduce<number>(_prod, lst[0] as number[]);
+  if (typeof lst[0] === "number") {
+    return (lst as number[]).reduce(_prod_number) as T;
   } else {
-    return highOrderReduce<number>(_prod, lst as number[]);
+    return (lst as bigint[]).reduce(_prod_bigint) as T;
   }
-}
+};
 
 /*
   polygonal number
  */
-export function isTriangle(n: number): boolean {
+export const isTriangle = (n: number): boolean => {
   const tmp = 8 * n + 1;
   const tmp_sqrt = isqrt(tmp);
 
   return tmp_sqrt * tmp_sqrt === tmp && tmp_sqrt % 2 === 1;
-}
+};
 
-export function isSquare(n: number): boolean {
+export const isSquare = (n: number): boolean => {
   const n_sqrt = isqrt(n);
 
   return n_sqrt * n_sqrt === n;
-}
+};
 
-export function isPentagonal(n: number): boolean {
+export const isPentagonal = (n: number): boolean => {
   const tmp = 24 * n + 1;
   const tmp_sqrt = isqrt(tmp);
 
   return tmp_sqrt * tmp_sqrt === tmp && tmp_sqrt % 6 === 5;
-}
+};
 
-export function isHexagonal(n: number): boolean {
+export const isHexagonal = (n: number): boolean => {
   const tmp = 8 * n + 1;
   const tmp_sqrt = isqrt(tmp);
 
   return tmp_sqrt * tmp_sqrt === tmp && tmp_sqrt % 4 === 3;
-}
+};
 
-export function getMaxExp(n: number, base: number): number {
+export const getMaxExp = (n: number, base: number): number => {
   let e = 0;
   while (n >= base) {
     n = Math.trunc(n / base);
@@ -318,7 +325,7 @@ export function getMaxExp(n: number, base: number): number {
   }
 
   return e;
-}
+};
 
 export const checkNtz = (n: number): [number, number] => {
   let cnt = 0;

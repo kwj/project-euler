@@ -1,10 +1,10 @@
 // project euler: problem 14
 
-import { max } from "../lib/math.ts";
+import { maxLst } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
 export const compute = (limit: number): string => {
-  const cache = new Array(limit);
+  const cache: number[] = new Array(limit);
   cache.fill(0);
   cache[1] = 1;
 
@@ -33,7 +33,7 @@ export const compute = (limit: number): string => {
     }
   }
 
-  return String(cache.indexOf(max(cache)));
+  return String(cache.indexOf(maxLst(cache)));
 };
 
 export const solve = (): string => compute(1_000_000);

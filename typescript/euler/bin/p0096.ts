@@ -24,7 +24,7 @@
 import { chunk, zip } from "@std/collections";
 import { cartesianProduct } from "combinatorics/mod.ts";
 import { assetData } from "../lib/asset.ts";
-import { max } from "../lib/math.ts";
+import { maxLst } from "../lib/math.ts";
 import { dedupSort, range } from "../lib/util.ts";
 
 /* row/column/position(cell) */
@@ -188,7 +188,7 @@ class Grid {
   // for debug
   display(grid: Map<string, string>) {
     const values = [...grid.values()];
-    const width = max(values.map((s) => s.length)) + 1;
+    const width = maxLst(values.map((s) => s.length)) + 1;
     const line_sep = [
       "-".repeat(width * 3),
       "-".repeat(width * 3),

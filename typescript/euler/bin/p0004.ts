@@ -1,6 +1,6 @@
 // project euler: problem 4
 
-import { max } from "../lib/math.ts";
+import { maxLst } from "../lib/math.ts";
 import { isPalindrome, range } from "../lib/util.ts";
 
 export const compute = (digits: number): string => {
@@ -13,7 +13,7 @@ export const compute = (digits: number): string => {
   const blkUpperLimit = 10 ** (digits * 2);
   const blkLowerLimit = digits > 1 ? 10 ** ((digits - 1) * 2) : 0;
   const blkWidth = 10 ** (digits * 2 - 2);
-  const answer = [];
+  const answer: number[] = [];
 
   for (const blk_upper of range(blkUpperLimit, blkLowerLimit, -blkWidth)) {
     const blk_lower = blk_upper - blkWidth;
@@ -38,7 +38,7 @@ export const compute = (digits: number): string => {
     }
   }
 
-  return answer.length !== 0 ? String(max(answer)) : "0";
+  return answer.length !== 0 ? String(maxLst(answer)) : "0";
 };
 
 export const solve = (): string => compute(3); // 3-digit

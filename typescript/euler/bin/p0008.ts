@@ -1,6 +1,6 @@
 // project euler: problem 8
 
-import { max } from "../lib/math.ts";
+import { maxLst } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
 const data = `
@@ -46,7 +46,7 @@ export const compute = (limit: number): string => {
   }
 
   if (acc.length > 0) {
-    return String(max(acc));
+    return String(maxLst(acc));
   } else {
     throw new Error("no result");
   }

@@ -3,7 +3,7 @@
 import { unzip, zip } from "@std/collections";
 import { combinations } from "combinatorics/mod.ts";
 import { assetData } from "../lib/asset.ts";
-import { isqrt, max } from "../lib/math.ts";
+import { isqrt } from "../lib/math.ts";
 import { assocGroupMap, dedupSort, numOfDigits } from "../lib/util.ts";
 
 const selectKeywords = (words: string[]) => {
@@ -78,7 +78,7 @@ export const compute = (data: string): string => {
       if (transMap.size === ndigits) {
         const w2_trans = translate(w2, transMap);
         if (tbl.get(ndigits)!.includes(w2_trans) === true) {
-          return max(Number(translate(w1, transMap)), Number(w2_trans));
+          return Math.max(Number(translate(w1, transMap)), Number(w2_trans));
         }
       }
     }

@@ -1,6 +1,6 @@
 // project euler: problem 13
 
-import { sumBigint } from "../lib/math.ts";
+import { sum } from "../lib/math.ts";
 
 const data = [
   37107287533902102798797998220837590246510135740250n,
@@ -105,6 +105,6 @@ const data = [
   53503534226472524250874054075591789781264330331690n,
 ];
 
-export const compute = (): string => String(sumBigint(data)).substring(0, 10);
+export const compute = (): string => String(sum(data)).substring(0, 10);
 
 export const solve = (): string => compute();

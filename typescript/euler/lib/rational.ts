@@ -16,13 +16,13 @@ interface Rational {
 
 type RatNumber = number | bigint | string;
 
-function gcd(a: bigint, b: bigint): bigint {
+const gcd = (a: bigint, b: bigint): bigint => {
   while (b !== 0n) {
     [a, b] = [b, a % b];
   }
 
   return a > 0 ? a : -a;
-}
+};
 
 export class Ratio implements Rational {
   readonly num: bigint;
@@ -86,7 +86,7 @@ export class Ratio implements Rational {
   }
 }
 
-export function rational(n: RatNumber, d?: RatNumber): Ratio {
+export const rational = (n: RatNumber, d?: RatNumber): Ratio => {
   d = (d === undefined) ? 1 : d;
   return new Ratio(n, d);
-}
+};

@@ -2,14 +2,7 @@
  *  Prime functions
  */
 
-import {
-  checkNtz,
-  isqrt,
-  isSquare,
-  kronecker,
-  max,
-  modPowBigint,
-} from "./math.ts";
+import { checkNtz, isqrt, isSquare, kronecker, modPow } from "./math.ts";
 import { bitLength, range } from "../lib/util.ts";
 
 const sprpBase = (n: number): number => {
@@ -50,7 +43,7 @@ const millerRabinTest = (num: number, base: number): boolean => {
     s = s + 1;
   }
 
-  let x = modPowBigint(BigInt(base), d, n);
+  let x = modPow(BigInt(base), d, n);
   if (x === 1n) {
     return true;
   }
@@ -62,7 +55,7 @@ const millerRabinTest = (num: number, base: number): boolean => {
     if (s === 0) {
       break;
     }
-    x = modPowBigint(x, 2n, n);
+    x = modPow(x, 2n, n);
   }
 
   return false;
@@ -363,7 +356,9 @@ const getPrimeTbl = (low: number, high: number): boolean[] => {
         continue;
       }
       const prime = indexToNum(i);
-      let idx = numToIndex(max(Math.trunc((low + prime - 1) / prime), prime));
+      let idx = numToIndex(
+        Math.max(Math.trunc((low + prime - 1) / prime), prime),
+      );
       let q = prime * indexToNum(idx);
       while (q <= maxPrime) {
         tbl[numToIndex(q) - wLow] = false;
@@ -418,13 +413,13 @@ export const primes = (...args: number[]): number[] => {
     lst.push(7);
   }
   if (high >= 11) {
-    low = max(low, 11);
+    low = Math.max(low, 11);
     const wOffset = numToIndex(low);
     for (const [i, v] of getPrimeTbl(low, high).entries()) {
       if (v === false) {
         continue;
       }
-      lst.push(indexToNum(i + wOffset))
+      lst.push(indexToNum(i + wOffset));
     }
   }
 

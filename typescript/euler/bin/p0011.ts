@@ -1,6 +1,5 @@
 // project euler: problem 11
 
-import { max } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
 // deno-fmt-ignore
@@ -65,15 +64,15 @@ export const compute = (): string => {
   for (const row of range(0, ROW_SIZE)) {
     for (const col of range(0, COL_SIZE)) {
       if (row <= ROW_SIZE - QTY) {
-        result = max(result, product(row, col, Dir.Down));
+        result = Math.max(result, product(row, col, Dir.Down));
       }
       if (col <= COL_SIZE - QTY) {
-        result = max(result, product(row, col, Dir.Right));
+        result = Math.max(result, product(row, col, Dir.Right));
         if (row >= QTY - 1) {
-          result = max(result, product(row, col, Dir.UpperRight));
+          result = Math.max(result, product(row, col, Dir.UpperRight));
         }
         if (row <= ROW_SIZE - QTY) {
-          result = max(result, product(row, col, Dir.DownRight));
+          result = Math.max(result, product(row, col, Dir.DownRight));
         }
       }
     }

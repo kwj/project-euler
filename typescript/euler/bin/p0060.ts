@@ -14,7 +14,7 @@
   It is easy to find a 5-clique, however, it needs time to confirm its sum is the smallest.
 */
 
-import { min, sum } from "../lib/math.ts";
+import { minLst, sum } from "../lib/math.ts";
 import { isPrime, primeGenerator } from "../lib/prime.ts";
 import { numOfDigits, range } from "../lib/util.ts";
 
@@ -93,7 +93,7 @@ export const compute = (groupSize: number): string => {
 
     const cliques = findCliques(nbrLst, groupSize - 1, tbl);
     if (cliques.length > 0) {
-      const tmp = min(cliques.map((lst) => prime + sum(lst)));
+      const tmp = minLst(cliques.map((lst) => prime + sum(lst)));
       if (tmp < answer) {
         answer = tmp;
       }
