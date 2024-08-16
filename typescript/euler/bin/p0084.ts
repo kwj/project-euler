@@ -142,4 +142,4 @@ export const compute = (
   return Counter(result).sort((a, b) => b[1] - a[1])[0][0];
 };
 
-export const solve = (): string => compute(4, 1000, 10_000);
+export const solve = (): string => compute(4, 100, 10_000);
