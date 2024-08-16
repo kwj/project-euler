@@ -1,5 +1,6 @@
 // project euler: problem 95
 
+import { aliquotSumTbl } from "../lib/factor.ts";
 import { range } from "../lib/util.ts";
 
 export const compute = (limit: number): string => {
@@ -18,12 +19,7 @@ export const compute = (limit: number): string => {
   };
 
   // lookup table: sum of divisors
-  const sdTbl: number[] = Array(limit + 1).fill(1);
-  for (const i of range(2, limit + 1)) {
-    for (const j of range(2 * i, limit + 1, i)) {
-      sdTbl[j] += i;
-    }
-  }
+  const sdTbl = aliquotSumTbl(limit);
 
   // chain table
   const chainTbl: number[] = Array(limit + 1).fill(0);

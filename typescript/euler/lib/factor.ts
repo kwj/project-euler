@@ -4,7 +4,8 @@
 
 import { cartesianProduct } from "combinatorics/mod.ts";
 import { isqrt, prod } from "./math.ts";
-import { minFactorTbl, primeGenerator } from "./prime.ts";
+import { minFactorTbl, primeGenerator, primes } from "./prime.ts";
+import { range } from "./util.ts";
 import { unzip } from "@std/collections";
 
 export const primeFactors = (n: number): number[] => {
@@ -111,4 +112,45 @@ export const minFactor = (n: number): number => {
       }
     }
   }
+};
+
+export const sigmaTbl = (z: number, limit: number): number[] => {
+  const pLst = primes(limit);
+  const tbl: number[] = Array(limit + 1).fill(1);
+
+  let q: number;
+  let x: number;
+  for (const p of pLst) {
+    q = p;
+    x = 0;
+    while (q <= limit) {
+      x += q ** z;
+      tbl[q] += x;
+      q *= p;
+    }
+  }
+  for (const p of pLst) {
+    q = p;
+    while (q <= limit) {
+      for (const n of range(2, Math.trunc(limit / q) + 1)) {
+        if (tbl[n] === 1 || n % p === 0) {
+          continue;
+        }
+        tbl[q * n] = tbl[q] * tbl[n];
+      }
+      q *= p;
+    }
+  }
+  tbl[0] = 0;
+
+  return tbl;
+};
+
+export const aliquotSumTbl = (limit: number): number[] => {
+  const tbl = sigmaTbl(1, limit);
+  for (const i of range(1, limit + 1)) {
+    tbl[i] -= i;
+  }
+
+  return tbl;
 };

@@ -1,19 +1,8 @@
 // project euler: problem 23
 
+import { aliquotSumTbl } from "../lib/factor.ts";
 import { sum } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
-
-const getAbndntNums = (limit: number): number[] => {
-  const sd_tbl = new Array(limit + 1);
-  sd_tbl.fill(1);
-  for (const i of range(2, limit + 1)) {
-    for (const j of range(2 * i, limit + 1, i)) {
-      sd_tbl[j] += i;
-    }
-  }
-
-  return range(12, limit + 1).filter((x) => x < sd_tbl[x]);
-};
 
 export const compute = (limit: number): string => {
   const isSumOfTwoAbndnts = (n: number): boolean => {
@@ -31,9 +20,9 @@ export const compute = (limit: number): string => {
     return false;
   };
 
-  const abndntNums = getAbndntNums(limit);
-  const abndntFlags: boolean[] = new Array(limit + 1);
-  abndntFlags.fill(false);
+  const tbl = aliquotSumTbl(limit);
+  const abndntNums = range(12, limit + 1).filter((x) => x < tbl[x]);
+  const abndntFlags: boolean[] = Array(limit + 1).fill(false);
   for (const i of abndntNums) {
     abndntFlags[i] = true;
   }
