@@ -15,16 +15,19 @@ export const compute = (data: string): string => {
       }
     };
 
-    return splitLines(data).map((x) => x.split(",")).map((
-      x,
-    ) => [Number(x[0]), Number(x[1])]);
+    return splitLines(data)
+      .map((x) => x.split(","))
+      .map((x) => [Number(x[0]), Number(x[1])]);
   };
 
   const calc_result = parseData(data).map((tpl) => tpl[1] * Math.log10(tpl[0]));
 
   return String(
-    zip(range(1, calc_result.length + 1), calc_result).sort((a, b) =>
-      Number(b[1]) - Number(a[1])
+    zip(
+      range(1, calc_result.length + 1),
+      calc_result,
+    ).sort(
+      (a, b) => Number(b[1]) - Number(a[1]),
     )[0][0],
   );
 };
