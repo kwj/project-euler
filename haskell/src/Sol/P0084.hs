@@ -35,7 +35,7 @@ nextStates (sq, dbl) pct nfaces =
     chanceCard
         =<< communityChest
         =<< (\(st, p) -> if toEnum (fst st) /= G2J then (st, p) else ((fromEnum JAIL, 0), p))
-            <$> (\(st, p) -> if snd st /= 3 then (st, p) else ((fromEnum JAIL, 0), p))
+            . (\(st, p) -> if snd st /= 3 then (st, p) else ((fromEnum JAIL, 0), p))
             <$> next_state
   where
     next_state =
