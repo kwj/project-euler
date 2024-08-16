@@ -15,10 +15,10 @@ const makeNeighborTbl = (
 
   for (const r of range(0, rows)) {
     for (const c of range(0, cols)) {
-      //console.log(  [[r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1]].filter((x) => x[0] >= 0 && x[0] < rows && x[1] >= 0 && x[1] < cols) as [number, number][] );
-      tbl[r][c] = [[r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1]].filter((x) =>
-        x[0] >= 0 && x[0] < rows && x[1] >= 0 && x[1] < cols
-      ) as [number, number][];
+      tbl[r][c] = [[r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1]]
+        .filter(
+          (x) => x[0] >= 0 && x[0] < rows && x[1] >= 0 && x[1] < cols,
+        ) as [number, number][];
     }
   }
   return tbl;
