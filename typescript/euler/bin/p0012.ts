@@ -10,7 +10,7 @@
   f(a*b) = f(a) * f(b) when 'a' and 'b' are coprime.
 */
 
-import { numOfDivisors } from "../lib/math.ts";
+import { numOfDivisors } from "../lib/factor.ts";
 
 export const compute = (limit: number): string => {
   let n = 1;

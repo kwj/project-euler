@@ -1,5 +1,4 @@
-import { unzip } from "@std/collections";
-import { bitLength, range } from "./util.ts";
+import { bitLength } from "./util.ts";
 
 /* Factorial */
 export const factorial = <T extends number | bigint>(n: T): T => {
@@ -123,117 +122,8 @@ const modPowBigint = (base: bigint, exp: bigint, mod: bigint): bigint => {
 };
 
 /*
-  Prime factorization and more
+  GCD & LCM
  */
-export const factorize = (n: number): [number, number][] => {
-  if (n < 1) {
-    throw new Error("parameter is too small");
-  } else if (n === 1) {
-    return [[1, 1]];
-  }
-
-  const result: [number, number][] = [];
-  for (const b of [2, 3, 5]) {
-    let e = 0;
-    while (n % b === 0) {
-      e += 1;
-      n = Math.trunc(n / b);
-    }
-    if (e != 0) {
-      result.push([b, e]);
-    }
-  }
-
-  // 7, 11, 13, 17, 19, 23, 29, 31, (37, ...)
-  const diff = [4, 2, 4, 2, 4, 6, 2, 6];
-  let b = 7;
-  let idx = 0;
-  const limit = isqrt(n);
-
-  while (b <= limit) {
-    let e = 0;
-    while (n % b === 0) {
-      e += 1;
-      n = Math.trunc(n / b);
-    }
-    if (e != 0) {
-      result.push([b, e]);
-    }
-    b += diff[idx];
-    idx = (idx + 1) % 8;
-  }
-
-  if (n != 1) {
-    result.push([n, 1]);
-  }
-
-  return result;
-};
-
-export const pflstToNumber = (pf_lst: [number, number][]): number => {
-  return pf_lst.map((lst) => lst[0] ** lst[1]).reduce(
-    (acc, cur) => acc * cur,
-    1,
-  );
-};
-
-export const pflstToDivisors = (pf_lst: [number, number][]): number[] => {
-  let div_lst = [1];
-  for (const tpl of pf_lst) {
-    let acc_lst: number[] = [];
-    for (const m of range(1, tpl[1] + 1).map((e) => tpl[0] ** e)) {
-      acc_lst = acc_lst.concat(div_lst.map((x) => x * m));
-    }
-    div_lst = div_lst.concat(acc_lst);
-  }
-
-  if (div_lst[1] === 1) {
-    return [1];
-  } else {
-    return div_lst.sort((a, b) => {
-      return a - b;
-    });
-  }
-};
-
-export const divisors = (n: number): number[] => {
-  return pflstToDivisors(factorize(n));
-};
-
-export const numOfDivisors = (n: number): number => {
-  const [_, e]: [number[], number[]] = unzip(factorize(n));
-  return e.map((x) => x + 1)
-    .reduce((acc, cur) => acc * cur, 1);
-};
-
-/*
-  funtions for array
- */
-// max
-export const maxLst = <T extends number | bigint>(lst: T[]): T => {
-  const _max_number = (a: number, b: number): number => a < b ? b : a;
-  const _max_bigint = (a: bigint, b: bigint): bigint => a < b ? b : a;
-
-  if (typeof lst[0] === "number") {
-    return (lst as number[]).reduce(_max_number) as T;
-  } else {
-    return (lst as bigint[]).reduce(_max_bigint) as T;
-  }
-};
-
-// min
-export const minLst = <T extends number | bigint>(lst: T[]): T => {
-  const _min_number = (a: number, b: number): number => a < b ? a : b;
-  const _min_bigint = (a: bigint, b: bigint): bigint => a < b ? a : b;
-
-  if (typeof lst[0] === "number") {
-    return (lst as number[]).reduce(_min_number) as T;
-  } else {
-    return (lst as bigint[]).reduce(_min_bigint) as T;
-  }
-};
-
-// gcd
 export const gcd = <T extends number | bigint>(a: T, b: T): T => {
   const _gcd_number = (a: number, b: number): number =>
     b === 0 ? a : _gcd_number(b, a % b);
@@ -249,7 +139,6 @@ export const gcd = <T extends number | bigint>(a: T, b: T): T => {
   }
 };
 
-// lcm
 export const lcm = <T extends number | bigint>(a: T, b: T): T => {
   const _lcm_number = (a: number, b: number): number => a / gcd(a, b) * b;
   const _lcm_bigint = (a: bigint, b: bigint): bigint => a / gcd(a, b) * b;
@@ -263,7 +152,31 @@ export const lcm = <T extends number | bigint>(a: T, b: T): T => {
   }
 };
 
-// sum
+/*
+  functions for number array
+ */
+export const maxLst = <T extends number | bigint>(lst: T[]): T => {
+  const _max_number = (a: number, b: number): number => a < b ? b : a;
+  const _max_bigint = (a: bigint, b: bigint): bigint => a < b ? b : a;
+
+  if (typeof lst[0] === "number") {
+    return (lst as number[]).reduce(_max_number) as T;
+  } else {
+    return (lst as bigint[]).reduce(_max_bigint) as T;
+  }
+};
+
+export const minLst = <T extends number | bigint>(lst: T[]): T => {
+  const _min_number = (a: number, b: number): number => a < b ? a : b;
+  const _min_bigint = (a: bigint, b: bigint): bigint => a < b ? a : b;
+
+  if (typeof lst[0] === "number") {
+    return (lst as number[]).reduce(_min_number) as T;
+  } else {
+    return (lst as bigint[]).reduce(_min_bigint) as T;
+  }
+};
+
 export const sum = <T extends number | bigint>(lst: T[]): T => {
   const _add_number = (a: number, b: number): number => a + b;
   const _add_bigint = (a: bigint, b: bigint): bigint => a + b;
@@ -275,7 +188,6 @@ export const sum = <T extends number | bigint>(lst: T[]): T => {
   }
 };
 
-// prod
 export const prod = <T extends number | bigint>(lst: T[]): T => {
   const _prod_number = (a: number, b: number): number => a * b;
   const _prod_bigint = (a: bigint, b: bigint): bigint => a * b;
@@ -327,6 +239,9 @@ export const getMaxExp = (n: number, base: number): number => {
   return e;
 };
 
+/*
+  Others
+ */
 export const checkNtz = (n: number): [number, number] => {
   let cnt = 0;
   while (n % 2 === 0) {
