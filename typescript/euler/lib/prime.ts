@@ -3,7 +3,7 @@
  */
 
 import { checkNtz, isqrt, isSquare, kronecker, modPow } from "./math.ts";
-import { bitLength, range } from "../lib/util.ts";
+import { bitLength, range } from "./util.ts";
 
 const sprpBase = (n: number): number => {
   // deno-fmt-ignore
