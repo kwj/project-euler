@@ -161,7 +161,7 @@ export const dedupSort = <T>(
   const result: T[] = [];
 
   for (const x of lst) {
-    if (elms.has(x) === false) {
+    if (!elms.has(x)) {
       elms.add(x);
       result.push(x);
     }
@@ -177,7 +177,7 @@ export const dedupSort = <T>(
 export const assocGroupMap = <T, U>(tplLst: [T, U][]): Map<T, U[]> => {
   const result = new Map<T, U[]>();
   for (const [k, v] of tplLst) {
-    const new_v = (result.has(k) === false) ? [v] : result.get(k)!.concat(v);
+    const new_v = !result.has(k) ? [v] : result.get(k)!.concat(v);
     result.set(k, new_v);
   }
 

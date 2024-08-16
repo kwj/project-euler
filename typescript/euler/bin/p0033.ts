@@ -46,7 +46,7 @@ const makeCands = (): [number, number][] => {
   const acc: [number, number][] = [];
 
   for (const [a, b, c] of combinations(range(1, 10), 3)) {
-    if (check(a, b, c) === true) {
+    if (check(a, b, c)) {
       acc.push([a, b]);
     }
   }

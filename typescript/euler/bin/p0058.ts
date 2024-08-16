@@ -49,7 +49,7 @@ import { isPrime } from "../lib/prime.ts";
 
 export const compute = (): string => {
   const wrapper = (n: number): number => {
-    if (isPrime(n) === true) {
+    if (isPrime(n)) {
       return 1;
     } else {
       return 0;

@@ -35,7 +35,7 @@ export const compute = (limit: number): string => {
   for (const p of range(2, limit + 1, 2)) {
     const lst: [number, number, number][] = [];
     for (const a of range(1, trunc((p + 2) / 3))) {
-      if (checkPair(p, a) === true) {
+      if (checkPair(p, a)) {
         const b = trunc((p * p - 2 * a * p) / (2 * (p - a)));
         lst.push([a, b, p - a - b]);
       }

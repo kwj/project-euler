@@ -2,13 +2,10 @@
 
 import { isPalindrome, range } from "../lib/util.ts";
 
-const isBothPalindrome = (n: number): boolean =>
-  isPalindrome(n) === true && isPalindrome(n, 2) === true;
-
 export const compute = (limit: number): string => {
   let acc = 0;
   for (const i of range(1, limit, 2)) {
-    if (isBothPalindrome(i) === true) {
+    if (isPalindrome(i, 10) && isPalindrome(i, 2)) {
       acc += i;
     }
   }

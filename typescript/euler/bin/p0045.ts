@@ -12,7 +12,7 @@ export const compute = (): string => {
   let d = 144;
   while (true) {
     const n = hexNum(d);
-    if (isPentagonal(n) === true) {
+    if (isPentagonal(n)) {
       return String(n);
     }
     d += 1;

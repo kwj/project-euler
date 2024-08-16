@@ -9,7 +9,7 @@ const divLoop = (a: number, b: number): number => {
     if (a === 0) {
       return 0;
     }
-    if (rems.has(a) === true) {
+    if (rems.has(a)) {
       return (cnt - (rems.get(a) as number));
     } else {
       rems.set(a, cnt);

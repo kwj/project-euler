@@ -8,7 +8,7 @@ export const compute = (n: number): string => {
   const tbl = aliquotSumTbl(n - 1);
   const n_set = new Set();
   for (const i of range(2, n)) {
-    if (n_set.has(i) === true) {
+    if (n_set.has(i)) {
       continue;
     }
     const d1 = tbl[i];

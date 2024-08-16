@@ -38,11 +38,11 @@ import { cartesianProduct, combinations } from "combinatorics/mod.ts";
 import { Ratio, rational } from "../lib/rational.ts";
 
 const four_ops = (x1: Ratio, x2: Ratio): Ratio[] => {
-  if (x1.isZero() === true) {
+  if (x1.isZero()) {
     return [x2.negate(), rational(0), x2];
   }
 
-  if (x2.isZero() === true) {
+  if (x2.isZero()) {
     return [x1.negate(), rational(0), x1];
   }
 
@@ -100,7 +100,7 @@ const make_numbers = (lst: Ratio[]): Set<number> => {
       // [1] ((d1 OP d2) OP d3) OP d4
       //     ((d1 OP d2) OP d4) OP d3
       for (const rat of case_1(lst[i], lst[j], rest)) {
-        if (rat.isInteger() === true) {
+        if (rat.isInteger()) {
           result.add(Number(rat.num));
         }
       }
@@ -110,7 +110,7 @@ const make_numbers = (lst: Ratio[]): Set<number> => {
         continue;
       }
       for (const rat of case_2(lst[i], lst[j], rest)) {
-        if (rat.isInteger() === true) {
+        if (rat.isInteger()) {
           result.add(Number(rat.num));
         }
       }

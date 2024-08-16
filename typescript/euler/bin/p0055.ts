@@ -9,7 +9,7 @@ export const compute = (limit: number): string => {
   for (let i of range(0, limit)) {
     for (const _ of range(0, 50)) {
       i += Number(String(i).split("").reverse().join(""));
-      if (isPalindrome(i) === true) {
+      if (isPalindrome(i)) {
         continue loop_i;
       }
     }

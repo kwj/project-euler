@@ -12,7 +12,7 @@ export const compute = (limit: number): string => {
       if (x > Math.trunc(n / 2)) {
         break;
       }
-      if (abndntFlags[n - x] === true) {
+      if (abndntFlags[n - x]) {
         return true;
       }
     }
@@ -28,7 +28,7 @@ export const compute = (limit: number): string => {
   }
 
   return String(
-    sum(range(1, limit + 1).filter((x) => isSumOfTwoAbndnts(x) === false)),
+    sum(range(1, limit + 1).filter((x) => !isSumOfTwoAbndnts(x))),
   );
 };
 

@@ -9,7 +9,7 @@ export const compute = (limit: number): string => {
     const m = Math.trunc(s.length / 2);
 
     for (const pos of range(0, m)) {
-      if (isPrime(Number(s.slice(pos, pos + m))) == false) {
+      if (!isPrime(Number(s.slice(pos, pos + m)))) {
         return false;
       }
     }
@@ -19,7 +19,7 @@ export const compute = (limit: number): string => {
 
   let acc = 0;
   for (const n of primes(limit)) {
-    if (checkRotNum(n) === true) {
+    if (checkRotNum(n)) {
       acc += 1;
     }
   }

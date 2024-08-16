@@ -75,7 +75,7 @@ class Grid {
   createGrid(): boolean {
     for (const [pos, ch] of zip(POS, this.data.split(""))) {
       if (ch !== "0") {
-        if (this.decideNum(this.grid, pos, ch) === false) {
+        if (!this.decideNum(this.grid, pos, ch)) {
           return false;
         }
       }
@@ -91,9 +91,7 @@ class Grid {
     num: string,
   ): Map<string, string> | boolean {
     const otherNums = grid.get(pos)!.replace(num, "");
-    if (
-      otherNums.split("").every((n) => this.removeNum(grid, pos, n)) === true
-    ) {
+    if (otherNums.split("").every((n) => this.removeNum(grid, pos, n))) {
       return grid;
     } else {
       return false;
@@ -107,7 +105,7 @@ class Grid {
   //       but a reference to the original.
   removeNum(grid: Map<string, string>, pos: string, num: string): boolean {
     // If the target number to remove is not already in the cell, do nothing
-    if (grid.get(pos)!.includes(num) === false) {
+    if (!grid.get(pos)!.includes(num)) {
       return true;
     }
     // If there is only the target number in the cell to be removed, it is a contradiction
@@ -121,9 +119,7 @@ class Grid {
     // remove the number from the linked cells
     if (grid.get(pos)!.length === 1) {
       if (
-        links.get(pos)?.every((p) =>
-          this.removeNum(grid, p, grid.get(pos)!)
-        ) !== true
+        !links.get(pos)?.every((p) => this.removeNum(grid, p, grid.get(pos)!))
       ) {
         return false;
       }
@@ -141,7 +137,7 @@ class Grid {
       // If there is an only one cell which contains the removed number in a belong row/column/box,
       // the number is decided tentatively to remain in the cell
       if (cells.length === 1) {
-        if (this.decideNum(grid, cells[0], num) === false) {
+        if (!this.decideNum(grid, cells[0], num)) {
           return false;
         }
       }
@@ -159,7 +155,7 @@ class Grid {
     const cells: [number, string][] = POS.map((
       p,
     ) => [(grid as Map<string, string>).get(p)!.length, p]);
-    if (cells.every((c) => c[0] === 1) === true) {
+    if (cells.every((c) => c[0] === 1)) {
       return grid;
     }
 
@@ -178,7 +174,7 @@ class Grid {
   }
 
   solve(): Map<string, string> {
-    if (this.createGrid() === false) {
+    if (!this.createGrid()) {
       throw new Error("invalid data");
     } else {
       return this._solve(new Map(this.grid)) as Map<string, string>;

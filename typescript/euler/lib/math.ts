@@ -10,7 +10,7 @@ export const factorial = <T extends number | bigint>(n: T): T => {
 };
 
 const factorialNumber = (n: number): number => {
-  if (n < 0 || Number.isInteger(n) != true) {
+  if (n < 0 || !Number.isInteger(n)) {
     throw new Error("invalid argument");
   }
   if (n < 2) {

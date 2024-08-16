@@ -15,7 +15,7 @@ export const compute = (limit: number): string => {
   const primeLst = primes(1000, limit);
   for (const [i, j] of combinations(primeLst, 2)) {
     const m = Math.trunc((i + j) / 2);
-    if (isPrime(m) === true && isPerm(i, m, j) === true) {
+    if (isPrime(m) && isPerm(i, m, j)) {
       if (i + j === 1487 + 8147) {
         continue;
       }

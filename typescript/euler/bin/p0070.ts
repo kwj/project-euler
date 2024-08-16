@@ -115,7 +115,7 @@ export const compute = (): string => {
         // pruning: skip to the next prime smaller than 'p'
         break;
       }
-      if (isPerm(prod(pfLst), phi(pfLst)) === true) {
+      if (isPerm(prod(pfLst), phi(pfLst))) {
         pq.push([getRatio(pfLst), pfLst]);
       }
     }

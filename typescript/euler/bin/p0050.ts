@@ -36,7 +36,7 @@ export const compute = (limit: number): string => {
     const begin = cs_lst[i];
     const lst = dropWhile(
       cs_lst.slice(i + consecLength).reverse(),
-      (p) => p - begin >= limit || isPrime(p - begin) === false,
+      (p) => p - begin >= limit || !isPrime(p - begin),
     );
     if (lst.length > 0) {
       consecLength += lst.length - 1;

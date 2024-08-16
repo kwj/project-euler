@@ -126,7 +126,7 @@ const findPrime = (i: number, pat: number[]): number | undefined => {
   const lst: number[] = [];
   for (const r of range(start, 10)) {
     const tmp = assembleNum(i, pat, r);
-    if (isPrime(tmp) === true) {
+    if (isPrime(tmp)) {
       lst.push(tmp);
     }
   }
@@ -149,7 +149,7 @@ export const compute = (): string => {
       ) {
         const [_, patLst] = unzip(patTpls.filter((x) => x[0] === n));
         for (const pat of patLst) {
-          if (isProbable(i, pat, ans) === true) {
+          if (isProbable(i, pat, ans)) {
             const tmp = findPrime(i, pat);
             if (tmp !== undefined && tmp < ans) {
               ans = tmp;

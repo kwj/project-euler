@@ -28,7 +28,7 @@ export const compute = (digits: number): string => {
         if (tmp < blk_lower) {
           break;
         }
-        if (isPalindrome(tmp) === true) {
+        if (isPalindrome(tmp)) {
           answer.push(tmp);
         }
       }

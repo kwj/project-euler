@@ -24,24 +24,24 @@
   It is clear that the range of candidates is only [9183, 9499].
   Finally, the last digit of numbers is 0, 1, 4, 5, 8 or 9 can be excluded from candidates.
 */
-
 import { range } from "../lib/util.ts";
 
 export const compute = (): string => {
-  const lst: string[] = ["918273645"];
+  let result = 918273645;
 
-  for (const x of range(9183, 9500)) {
+  for (const x of range(9499, 9182, -1)) {
     const rem = x % 10;
     if (rem <= 1 || rem >= 8 || rem == 4 || rem == 5) {
       continue;
     }
-    const s = String(x * (10 ** 5) + x * 2);
-    if (s.split("").sort().join("") === "123456789") {
-      lst.push(s);
+    const tmp = x * (10 ** 5) + x * 2;
+    if (String(tmp).split("").sort().join("") === "123456789") {
+      result = tmp;
+      break;
     }
   }
 
-  return lst.sort().reverse()[0];
+  return String(result);
 };
 
 export const solve = (): string => compute();

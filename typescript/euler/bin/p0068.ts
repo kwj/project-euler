@@ -179,14 +179,14 @@ export const compute = (): string => {
     if (a0 > a3 || a0 > a5 || a0 > a7 || a0 > a9) {
       continue;
     }
-    if ([a3, a5, a7, a9].includes(10) === false) {
+    if (![a3, a5, a7, a9].includes(10)) {
       continue;
     }
 
     // deno-fmt-ignore
     const ring = [[a0, a1, a2], [a3, a2, a4], [a5, a4, a6], [a7, a6, a8], [a9, a8, a1]];
     const edgeWeights = ring.map((x) => sum(x));
-    if (edgeWeights.every((x) => x === edgeWeights[0]) === true) {
+    if (edgeWeights.every((x) => x === edgeWeights[0])) {
       result.push(ring.map((x) => x.map((y) => String(y)).join("")).join(""));
     }
   }

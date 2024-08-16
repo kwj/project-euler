@@ -40,7 +40,7 @@ const findNbrs = (
     while (x > upper_x) {
       upper_x *= 10;
     }
-    if (isPair(prime, upper_prime, x, upper_x) === true) {
+    if (isPair(prime, upper_prime, x, upper_x)) {
       result.push(x);
     }
   }

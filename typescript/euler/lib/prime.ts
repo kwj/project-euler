@@ -68,7 +68,7 @@ const findD = (n: number): bigint | undefined => {
   while ((k = kronecker(d, n)) != -1) {
     cnt += 1;
     if (cnt == 20) {
-      if (isSquare(n) === true) {
+      if (isSquare(n)) {
         return undefined;
       }
     }
@@ -165,7 +165,7 @@ const lucasTest = (num: number): boolean => {
     prev_qk = qk;
     qk = mod(qk * qk, n);
   }
-  if (u !== 0n && flag === false) {
+  if (u !== 0n && !flag) {
     return false;
   }
 
@@ -274,7 +274,7 @@ export const nextPrime = (n: number): number => {
       ? numToIndex(n) + 1
       : numToIndex(n);
     let p: number;
-    while (isPrime(p = indexToNum(idx)) === false) {
+    while (!isPrime(p = indexToNum(idx))) {
       idx = idx + 1;
     }
     return p;
@@ -293,7 +293,7 @@ export const prevPrime = (n: number): number => {
   } else {
     let idx = numToIndex(n) - 1;
     let p: number;
-    while (isPrime(p = indexToNum(idx)) === false) {
+    while (!isPrime(p = indexToNum(idx))) {
       idx = idx - 1;
     }
     return p;
@@ -303,7 +303,7 @@ export const prevPrime = (n: number): number => {
 export const primeGenerator = function* (
   n: number = 2,
 ): Generator<number, void, void> {
-  if (isPrime(n) === false) {
+  if (!isPrime(n)) {
     n = nextPrime(n);
   }
   while (true) {
@@ -326,7 +326,7 @@ const getSmallPrimeTbl = (upper: number): boolean[] => {
 
   if (upper >= 121) {
     for (const i of range(0, isqrt(upper) + 1)) {
-      if (tbl[i] === true) {
+      if (tbl[i]) {
         const prime = indexToNum(i);
         let idx = i % 48;
         let q = prime * prime;
@@ -354,7 +354,7 @@ const getPrimeTbl = (low: number, high: number): boolean[] => {
 
   if (high >= 121) {
     for (const [i, v] of getSmallPrimeTbl(isqrt(high)).entries()) {
-      if (v === false) {
+      if (!v) {
         continue;
       }
       const prime = indexToNum(i);
@@ -418,7 +418,7 @@ export const primes = (...args: number[]): number[] => {
     low = Math.max(low, 11);
     const wOffset = numToIndex(low);
     for (const [i, v] of getPrimeTbl(low, high).entries()) {
-      if (v === false) {
+      if (!v) {
         continue;
       }
       lst.push(indexToNum(i + wOffset));

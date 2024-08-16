@@ -30,7 +30,7 @@ export const compute = (upper: number): string => {
 
   let ans = (upper - 1) ** 2;
   for (const b of range(2, base_limit + 1)) {
-    if (skip_flag[b] === true) {
+    if (skip_flag[b]) {
       continue;
     }
     for (const e of range(2, getMaxExp(upper, b) + 1)) {

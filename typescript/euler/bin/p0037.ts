@@ -29,7 +29,7 @@ const pickupPrimes = (lst: number[]): number[] => {
       return false;
     }
     while (n !== 0) {
-      if (isPrime(n) === false) {
+      if (!isPrime(n)) {
         return false;
       }
       n = Math.trunc(n / 10);

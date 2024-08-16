@@ -8,7 +8,7 @@ export const compute = (numOfPerms: number): string => {
   while (true) {
     n += 1;
     const key = makeKey(n * n * n);
-    if (tbl.has(key) === true) {
+    if (tbl.has(key)) {
       tbl.set(key, tbl.get(key)!.concat(n));
       if (tbl.get(key)!.length === numOfPerms) {
         return String(tbl.get(key)![0] ** 3);

@@ -52,7 +52,7 @@ const findCycle = (
 
     const nextHop = nextRoute[0];
     const nextMap = polyTbl.get(nextHop) as Map<number, number[]>;
-    if (nextMap.has(path[0]) === false) {
+    if (!nextMap.has(path[0])) {
       return undefined;
     }
     for (const nextNum of nextMap.get(path[0]) as number[]) {

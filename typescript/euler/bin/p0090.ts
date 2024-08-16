@@ -31,7 +31,7 @@ export const compute = (): string => {
       2,
     )
   ) {
-    if (check_squares(two_dice) === true) {
+    if (check_squares(two_dice)) {
       acc += 1;
     }
   }

@@ -24,7 +24,7 @@ export const compute = (limit: number, threshold: number): string => {
     const footprints = new Set<number>();
     let steps = 0;
     let pos = n;
-    while (footprints.has(pos) === false) {
+    while (!footprints.has(pos)) {
       if (pos < limit && chain_tbl[pos] !== 0) {
         steps += chain_tbl[pos];
         break;

@@ -17,12 +17,12 @@ export const compute = (): string => {
   // The odd composite numbers less than 35 have been written in the problm statement
   loop_x:
   for (let x = 35;; x += 2) {
-    if (isPrime(x) === true) {
+    if (isPrime(x)) {
       oddPrimes.push(x);
       continue;
     }
     for (const p of oddPrimes) {
-      if (isTwiceSquare(x - p) === true) {
+      if (isTwiceSquare(x - p)) {
         continue loop_x;
       }
     }

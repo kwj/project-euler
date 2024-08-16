@@ -82,7 +82,7 @@ const getHandRank = (hand: string[]): number[] => {
     const handInfo = Counter(rankLst).sort(cmpDetail);
 
     if (Counter(suitLst).length === 1) {
-      if (isStraight(rankLst) === true) {
+      if (isStraight(rankLst)) {
         switch (rankLst[0]) {
           case 14:
             return [Hand.RF, ...getDetail(handInfo)];
@@ -95,7 +95,7 @@ const getHandRank = (hand: string[]): number[] => {
     } else {
       switch (handInfo.length) {
         case 5:
-          if (isStraight(rankLst) === true) {
+          if (isStraight(rankLst)) {
             return [Hand.S, ...getDetail(handInfo)];
           } else {
             return [Hand.HC, ...getDetail(handInfo)];

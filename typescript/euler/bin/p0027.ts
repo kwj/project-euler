@@ -17,7 +17,7 @@ import { isPrime, primes } from "../lib/prime.ts";
 
 const countConsecutive = (a: number, b: number): number => {
   let n = 0;
-  while (isPrime(n * n + a * n + b) === true) {
+  while (isPrime(n * n + a * n + b)) {
     n += 1;
   }
 

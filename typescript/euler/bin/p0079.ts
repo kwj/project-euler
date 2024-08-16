@@ -8,13 +8,13 @@ const dfs = (
   v: string,
 ): string[] => {
   const visit = (temp: string[], visited: string[], node: string): string[] => {
-    if (temp.includes(node) === true) {
+    if (temp.includes(node)) {
       throw new Error("cycle path is found");
     }
-    if (visited.includes(node) === true) {
+    if (visited.includes(node)) {
       return visited;
     }
-    if (graph.has(node) === true) {
+    if (graph.has(node)) {
       let acc = visited;
       for (const v of graph.get(node)!) {
         acc = visit([node].concat(temp), acc, v);

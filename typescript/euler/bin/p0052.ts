@@ -21,7 +21,7 @@ export const compute = (): string => {
     const lower = 10 ** (ndigits - 1);
     const upper = Math.trunc((10 ** ndigits) / 6);
     for (const n of range(lower, upper + 1)) {
-      if (checkNum(n) === true) {
+      if (checkNum(n)) {
         return String(n);
       }
     }

@@ -12,7 +12,7 @@ import { isPentagonal } from "../lib/math.ts";
 //  - They are congruent to 'n' modulo 3.
 // note: 'n' and '3n-1' are co-prime numbers.
 const getDivisors = (n: number): number[] =>
-  pfactorsToDivisors([...primeFactors(n), ...primeFactors(3 * n - 1)])
+  pfactorsToDivisors(primeFactors(n).concat(primeFactors(3 * n - 1)))
     .filter((x) => x < n && x % 3 === n % 3);
 
 // d(3d-1) = (k-j)(3(k+j)-1)
@@ -35,7 +35,7 @@ export const compute = (): string => {
         if ((r1 + tmp) % 2 === 0) {
           const k = trunc((r1 + tmp) / 2);
           const j = k - r1;
-          if (isPentagonal(pent(k) + pent(j)) === true) {
+          if (isPentagonal(pent(k) + pent(j))) {
             return String(trunc(lhs / 2));
           }
         }

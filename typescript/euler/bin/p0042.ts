@@ -20,7 +20,7 @@ export const compute = (data: string): string => {
   const keywords = data.replaceAll('"', "").split(",");
 
   return String(
-    calcScore(keywords).filter((x) => isTriangle(x) === true).length,
+    calcScore(keywords).filter((x) => isTriangle(x)).length,
   );
 };
 

@@ -13,7 +13,7 @@ class SquareTbl {
   }
 
   get(k: number): Set<string> {
-    if (this.tbl.has(k) === true) {
+    if (this.tbl.has(k)) {
       return this.tbl.get(k)!;
     } else {
       const sqSet = new Set(
@@ -34,7 +34,7 @@ const findSquares = (w1: string, w2: string, sqSet: Set<string>): number[] => {
 
   for (const sq of sqSet.values()) {
     for (const n of makeNumber(w1, w2, sq)) {
-      if (sqSet.has(n) === true) {
+      if (sqSet.has(n)) {
         result.add(Number(n));
         result.add(Number(sq));
       }
@@ -77,7 +77,7 @@ export const compute = (data: string): string => {
     a: [number, string, string],
     b: [number, string, string],
   ): boolean => {
-    return a[0] === b[0] && a[1] === b[1] ? true : false;
+    return a[0] === b[0] && a[1] === b[1];
   };
 
   let numLst: number[] = [];
@@ -85,7 +85,7 @@ export const compute = (data: string): string => {
   const words = parseData(data);
   for (const i of range(0, words.length - 1)) {
     for (const j of range(i + 1, words.length)) {
-      if (isAnagram(words[i], words[j]) === false) {
+      if (!isAnagram(words[i], words[j])) {
         continue;
       }
       numLst = numLst.concat(

@@ -42,7 +42,7 @@ const makeCands = (): [number, number][] => {
 export const compute = (): string => {
   const n_set = new Set();
   for (const [n, prod] of makeCands()) {
-    if (isPandigitalNZ(n) === true) {
+    if (isPandigitalNZ(n)) {
       n_set.add(prod);
     }
   }
