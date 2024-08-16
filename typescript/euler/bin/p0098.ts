@@ -1,106 +1,104 @@
 // project euler: problem 98
 
-import { unzip, zip } from "@std/collections";
-import { combinations } from "combinatorics/mod.ts";
+import { zip } from "@std/collections";
 import { assetData } from "../lib/asset.ts";
-import { isqrt } from "../lib/math.ts";
-import { assocGroupMap, dedupSort, numOfDigits } from "../lib/util.ts";
+import { isqrt, maxLst } from "../lib/math.ts";
+import { dedupSort, range } from "../lib/util.ts";
 
-const selectKeywords = (words: string[]) => {
-  const makeKey = (word: string): string => word.split("").sort().join("");
+class SquareTbl {
+  tbl: Map<number, Set<string>>;
 
-  const makeKWinfo = (
-    tplLst: [string, string][],
-  ): [number, [string, string[]][]] => {
-    const work = assocGroupMap(tplLst);
-    const [keys, _] = unzip(
-      [...work.entries()].filter(([_, vLst]) => vLst.length === 1),
-    );
-    for (const key of keys) {
-      work.delete(key);
+  constructor() {
+    this.tbl = new Map<number, Set<string>>();
+  }
+
+  get(k: number): Set<string> {
+    if (this.tbl.has(k) === true) {
+      return this.tbl.get(k)!;
+    } else {
+      const sqSet = new Set(
+        range(isqrt(10 ** (k - 1)), isqrt(10 ** k - 1) + 1)
+          .map((x) => x * x)
+          .filter((x) => x >= 10 ** (k - 1))
+          .map((x) => String(x)),
+      );
+      this.tbl.set(k, sqSet);
+
+      return sqSet;
+    }
+  }
+}
+
+const findSquares = (w1: string, w2: string, sqSet: Set<string>): number[] => {
+  const result: Set<number> = new Set();
+
+  for (const sq of sqSet.values()) {
+    for (const n of makeNumber(w1, w2, sq)) {
+      if (sqSet.has(n) === true) {
+        result.add(Number(n));
+        result.add(Number(sq));
+      }
+    }
+  }
+
+  return Array.from(result.values());
+};
+
+const makeNumber = (w1: string, w2: string, sq: string): string[] => {
+  const lookup = (ch: string, map: [string, string][]): string => {
+    for (const [k, v] of map) {
+      if (k === ch) {
+        return v;
+      }
     }
 
-    const result = [...work.entries()].sort((a, b) =>
-      b[0].length - a[0].length
-    );
-
-    return [result[0][0].length, result];
+    return "";
   };
 
-  return makeKWinfo(words.map((x) => [makeKey(x), x]));
-};
-
-const makeSquareTbl = (
-  digits: number,
-): [Map<number, string[]>, Map<number, string[]>] => {
-  const limit = isqrt(10 ** digits - 1);
-  const work: [number, string][] = [];
-
-  let n = 1;
-  while (n <= limit) {
-    const sq = n * n;
-    work.push([numOfDigits(sq), String(sq)]);
-    n += 1;
+  const transPair = dedupSort(zip(w1.split(""), sq.split("")));
+  if (transPair.length !== dedupSort(w1.split("")).length) {
+    return [];
+  }
+  if (transPair.length !== dedupSort(transPair.map(([_, x]) => x)).length) {
+    return [];
   }
 
-  const sq_tbl = assocGroupMap(work);
-  const sq_uniq_tbl = new Map<number, string[]>();
-  for (const [k, vLst] of sq_tbl.entries()) {
-    const uniq_vLst = vLst.filter((x) =>
-      x.length === dedupSort(x.split("")).length
-    );
-    if (uniq_vLst.length !== 0) {
-      sq_uniq_tbl.set(k, uniq_vLst);
-    }
-  }
-
-  return [sq_tbl, sq_uniq_tbl];
-};
-
-const translate = (s: string, transMap: Map<string, string[]>): string => {
-  const result: string[] = [];
-  for (const ch of s.split("")) {
-    result.push(transMap.get(ch)![0]);
-  }
-
-  return result.join("");
+  return [w2.split("").map((x) => lookup(x, transPair)).join("")];
 };
 
 export const compute = (data: string): string => {
-  const checkPair = (w1: string, w2: string): number | undefined => {
-    const ndigits = w1.length;
-    const tbl = (ndigits === dedupSort(w1.split("")).length)
-      ? sq_uniq_tbl
-      : sq_tbl;
+  const parseData = (data: string): [number, string, string][] => {
+    const keywords = data.replaceAll('"', "").split(",");
 
-    for (const sq of tbl.get(ndigits)!) {
-      const transMap = assocGroupMap(zip(w1.split(""), sq.split("")));
-      if (transMap.size === ndigits) {
-        const w2_trans = translate(w2, transMap);
-        if (tbl.get(ndigits)!.includes(w2_trans) === true) {
-          return Math.max(Number(translate(w1, transMap)), Number(w2_trans));
-        }
-      }
-    }
-
-    return undefined;
+    return keywords.map((w) => [w.length, w.split("").sort().join(""), w]);
   };
 
-  const words = data.replaceAll('"', "").split(",");
-  const [maxDigits, kw] = selectKeywords(words);
-  const [sq_tbl, sq_uniq_tbl] = makeSquareTbl(maxDigits);
+  const isAnagram = (
+    a: [number, string, string],
+    b: [number, string, string],
+  ): boolean => {
+    return a[0] === b[0] && a[1] === b[1] ? true : false;
+  };
 
-  const [_, wLst] = unzip(kw);
-  for (const v of wLst) {
-    for (const [w1, w2] of combinations(v, 2)) {
-      const result = checkPair(w1, w2);
-      if (result !== undefined) {
-        return String(result);
+  let numLst: number[] = [];
+  const sqTbl = new SquareTbl();
+  const words = parseData(data);
+  for (const i of range(0, words.length - 1)) {
+    for (const j of range(i + 1, words.length)) {
+      if (isAnagram(words[i], words[j]) === false) {
+        continue;
       }
+      numLst = numLst.concat(
+        findSquares(words[i][2], words[j][2], sqTbl.get(words[i][0])!),
+      );
     }
   }
 
-  throw new Error("not reached");
+  if (numLst.length === 0) {
+    throw new Error("there is no answer");
+  } else {
+    return String(maxLst(numLst));
+  }
 };
 
 export const solve = (): string => {
