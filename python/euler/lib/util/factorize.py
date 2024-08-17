@@ -73,7 +73,8 @@ def num_of_divisors(num: int) -> int:
 
 # divisor function
 # https://en.wikipedia.org/wiki/Divisor_function
-def get_sigma_tbl(z: int, upper: int) -> list[int]:
+def sigma_tbl(z: int, upper: int) -> list[int]:
+    """Note: This function returns a list which size is 'upper + 1'."""
     p_lst = primes(upper)
     result = [1] * (upper + 1)
 
@@ -94,4 +95,15 @@ def get_sigma_tbl(z: int, upper: int) -> list[int]:
                 result[q * n] = result[q] * result[n]
             q *= p
 
+    result[0] = 0
+
     return result
+
+
+def aliquot_sum_tbl(upper: int) -> list[int]:
+    """Note: This function returns a list which size is 'upper + 1'."""
+    tbl = sigma_tbl(1, upper)
+    for i in range(1, upper + 1):
+        tbl[i] -= i
+
+    return tbl

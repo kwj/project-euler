@@ -1,6 +1,6 @@
 # project euler: problem 95
 
-from euler.lib.util import get_sigma_tbl
+from euler.lib.util import aliquot_sum_tbl
 
 
 def compute(limit: int) -> str:
@@ -8,10 +8,7 @@ def compute(limit: int) -> str:
         for i in indices:
             chain_tbl[i] = v
 
-    next_tbl = get_sigma_tbl(1, limit)
-    for i in range(limit + 1):
-        next_tbl[i] -= i
-
+    next_tbl = aliquot_sum_tbl(limit)
     chain_tbl = [0] * (limit + 1)
     max_length = 0
 

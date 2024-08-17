@@ -8,12 +8,13 @@ from .digits import (
     undigits,
 )
 from .factorize import (
+    aliquot_sum_tbl,
     divisors,
     factorize,
-    get_sigma_tbl,
     num_of_divisors,
     pfactors_to_divisors,
     pfactors_to_num,
+    sigma_tbl,
 )
 from .figurate_num import is_hexagonal, is_pentagonal, is_square, is_triangular
 from .heap_queue import HeapQueue
