@@ -23,7 +23,7 @@ searchRings' n_gon weight =
     -- ring :: [Int]
     --    +-+---     ---+-+-+   X: first selected inner node (last ring)
     --    |Z|    ...    |Y|X|   Y: first selected outer node (last $ init ring)
-    --    +-+---     ---+-+-+   Z: last selelected inner node (head ring)
+    --    +-+---     ---+-+-+   Z: last selected inner node (head ring)
     --     0
     --
     --     [Y]
