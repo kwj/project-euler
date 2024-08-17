@@ -51,13 +51,13 @@ function is_valid(x, y, num_bittbl, n_gon)
     (0 < x <= n_gon * 2 && 0 < y <= n_gon * 2) && x != y && (((1 << x) | (1 << y)) & num_bittbl) == 0
 end
 
-function dfs(n_gon, idx, num_bittbl, r, e_weight, result)
+function dfs(n_gon, idx, num_bittbl, r, total, result)
     # num_bittbl: 0x11111111110
     #               ^        ^
     #               10  ...  1
     start_pos = 2
     if idx == (n_gon * 2 - 1)
-        tmp = e_weight - r[1] - r[idx]
+        tmp = total - r[1] - r[idx]
         if (0 < tmp <= n_gon * 2) && tmp > r[start_pos] && (1 << tmp) & num_bittbl == 0
             r[idx + 1] = tmp
             s = ""
@@ -70,7 +70,7 @@ function dfs(n_gon, idx, num_bittbl, r, e_weight, result)
         return
     else
         for external_node = 1:(n_gon * 2)
-            internal_node = e_weight - r[idx] - external_node
+            internal_node = total - r[idx] - external_node
             if is_valid(external_node, internal_node, num_bittbl, n_gon) == false
                 continue
             end
@@ -79,7 +79,7 @@ function dfs(n_gon, idx, num_bittbl, r, e_weight, result)
 
             # pruning: if starting node is the smallest external node, continue to search
             if r[start_pos] <= external_node
-                dfs(n_gon, idx + 2, ((1 << external_node) | (1 << internal_node)) | num_bittbl, r, e_weight, result)
+                dfs(n_gon, idx + 2, ((1 << external_node) | (1 << internal_node)) | num_bittbl, r, total, result)
             end
         end
         return
@@ -90,12 +90,12 @@ function solve_by_backtracking(n_gon)
     ring = Array{Int}(undef, n_gon * 2 + 1)
     result = Array{String}(undef, 0)
 
-    # The minimum weight of the line on '10' exists is 1 + 2 + (n_gon * 2) = n_gon * 2 + 3.
-    # The maximum weight of the line on '1' exsits is 1 + (n_gon * 2 - 1) + (n_gon * 2) = n_gon * 4.
-    for e_weight = (n_gon * 2 + 3):(n_gon * 4)
+    # The minimum total of the line on '10' exists is 1 + 2 + (n_gon * 2) = n_gon * 2 + 3.
+    # The maximum total of the line on '1' exsits is 1 + (n_gon * 2 - 1) + (n_gon * 2) = n_gon * 4.
+    for total = (n_gon * 2 + 3):(n_gon * 4)
         for n = 1:(n_gon * 2)
             ring[1] = ring[end] = n
-            dfs(n_gon, 1, (1 << n), ring, e_weight, result)
+            dfs(n_gon, 1, (1 << n), ring, total, result)
         end
     end
 

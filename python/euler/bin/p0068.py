@@ -2,17 +2,17 @@
 
 
 def all_rings(n_gon: int) -> list[str]:
-    # weight: sum of each node on line
-    #   minimum weight: (n_gon * 2) + 1 + 2 = n_gon * 2 + 3
-    #   maximum weight: 1 + (n_gon * 2 - 1) + (n_gon * 2) = n_gon * 4
+    # total: sum of each node on line
+    #   minimum total: (n_gon * 2) + 1 + 2 = n_gon * 2 + 3
+    #   maximum total: 1 + (n_gon * 2 - 1) + (n_gon * 2) = n_gon * 4
     result: list[str] = []
-    for weight in range(n_gon * 2 + 3, n_gon * 4 + 1):
-        result += find_rings(n_gon, weight)
+    for total in range(n_gon * 2 + 3, n_gon * 4 + 1):
+        result += find_rings(n_gon, total)
 
     return result
 
 
-def find_rings(n_gon: int, weight: int) -> list[str]:
+def find_rings(n_gon: int, total: int) -> list[str]:
     numbers = list(range(1, n_gon * 2 + 1))
     rings: list[str] = []
 
@@ -45,17 +45,17 @@ def find_rings(n_gon: int, weight: int) -> list[str]:
         result: list[tuple[list[int], list[int]]] = []
 
         if len(rest) == 1:
-            n = rest[0]
-            if n > ring[1] and n + ring[0] + ring[-1] == weight:
+            outer = rest[0]
+            if outer > ring[1] and outer + ring[0] + ring[-1] == total:
                 # a magic `n-gon` ring found
-                rings.append(make_str(ring + [n, ring[0]]))
+                rings.append(make_str(ring + [outer, ring[0]]))
         else:
             for outer in rest:
                 if (len(ring) == 1 and outer > n_gon + 1) or (
                     len(ring) > 1 and outer < ring[1]
                 ):
                     continue
-                inner = weight - outer - ring[-1]
+                inner = total - outer - ring[-1]
                 if outer == inner:
                     continue
                 if inner not in rest:

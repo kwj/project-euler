@@ -7,12 +7,12 @@
 import { range } from "../lib/util.ts";
 
 const allRings = (nGon: number): string[] => {
-  // weight: sum of each node on line
-  //   minimum weight: (n_gon * 2) + 1 + 2 = n_gon * 2 + 3
-  //   maximum weight: 1 + (n_gon * 2 - 1) + (n_gon * 2) = n_gon * 4
+  // total: sum of each node on line
+  //   minimum total: (n_gon * 2) + 1 + 2 = n_gon * 2 + 3
+  //   maximum total: 1 + (n_gon * 2 - 1) + (n_gon * 2) = n_gon * 4
   let result: string[] = [];
-  for (const weight of range(nGon * 2 + 3, nGon * 4 + 1)) {
-    result = result.concat(findRings(nGon, weight));
+  for (const total of range(nGon * 2 + 3, nGon * 4 + 1)) {
+    result = result.concat(findRings(nGon, total));
   }
 
   return result;
@@ -20,7 +20,7 @@ const allRings = (nGon: number): string[] => {
 
 const deleteElmnt = <T>(elm: T, arr: T[]): T[] => arr.filter((x) => x !== elm);
 
-const findRings = (nGon: number, weight: number): string[] => {
+const findRings = (nGon: number, total: number): string[] => {
   const numbers = range(1, nGon * 2 + 1);
   const rings: string[] = []; // rings found
 
@@ -54,10 +54,10 @@ const findRings = (nGon: number, weight: number): string[] => {
     const states: [number[], number[]][] = [];
 
     if (rest.length === 1) {
-      const n = rest[0];
-      if (n > ring[1] && n + ring[0] + ring.at(-1)! === weight) {
+      const outer = rest[0];
+      if (outer > ring[1] && outer + ring[0] + ring.at(-1)! === total) {
         // a magic n-gon ring found
-        rings.push(makeStr([...ring, n, ring[0]]));
+        rings.push(makeStr([...ring, outer, ring[0]]));
       }
     } else {
       for (const outer of rest) {
@@ -67,7 +67,7 @@ const findRings = (nGon: number, weight: number): string[] => {
         ) {
           continue;
         }
-        const inner = weight - outer - ring.at(-1)!;
+        const inner = total - outer - ring.at(-1)!;
         if (outer === inner) {
           continue;
         }
