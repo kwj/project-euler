@@ -26,7 +26,7 @@ def find_rings(n_gon: int, weight: int) -> list[str]:
     # ring :: list[int]
     #   +-+-+--     ---+-+-+   X: first selected inner node -- ring[0]
     #   |X|Y|   ...    | |Z|   Y: first selected outer node -- ring[1]
-    #   +-+-+--     ---+-+-+   Z: last selected inner node -- ring.at(-1)
+    #   +-+-+--     ---+-+-+   Z: last selected inner node -- ring[-1]
     #    0
     #
     #     [Y]
