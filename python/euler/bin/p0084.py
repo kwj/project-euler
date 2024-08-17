@@ -202,4 +202,4 @@ def compute(faces: int, n_attempts: int) -> str:
 
 
 def solve() -> str:
-        return compute(4, 1_000_000)
+    return compute(4, 1_000_000)
