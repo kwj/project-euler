@@ -84,14 +84,14 @@ const findRings = (nGon: number, weight: number): string[] => {
     return states;
   };
 
-  let queue: [number[], number[]][] = [];
+  let stack: [number[], number[]][] = [];
   for (const x of numbers) {
-    queue.push([[x], deleteElmnt(x, numbers)]);
+    stack.push([[x], deleteElmnt(x, numbers)]);
   }
 
-  while (queue.length > 0) {
-    const state = queue.pop()!;
-    queue = queue.concat(nextStates(state));
+  while (stack.length > 0) {
+    const state = stack.pop()!;
+    stack = stack.concat(nextStates(state));
   }
 
   return rings;

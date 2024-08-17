@@ -67,15 +67,15 @@ def find_rings(n_gon: int, weight: int) -> list[str]:
 
         return result
 
-    queue: list[tuple[list[int], list[int]]] = []
+    stack: list[tuple[list[int], list[int]]] = []
     for x in numbers:
         tmp = numbers[:]
         tmp.remove(x)
-        queue.append(([x], tmp))
+        stack.append(([x], tmp))
 
-    while len(queue) > 0:
-        state = queue.pop()
-        queue += next_states(state)
+    while len(stack) > 0:
+        state = stack.pop()
+        stack += next_states(state)
 
     return rings
 
