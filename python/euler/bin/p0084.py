@@ -57,9 +57,6 @@ BACK3 = 44
 
 # Classes
 class Pile:
-    cards: list[int] = []
-    idx = 0
-
     def __init__(self, lst: list[int]) -> None:
         assert len(lst) > 0, 'empty list'
         self.cards = lst
@@ -185,10 +182,10 @@ def compute(faces: int, n_attempts: int) -> str:
         next_sq = dice.roll(current_sq)
         if next_sq == G2J:
             next_sq = JAIL
-        elif next_sq == CC1 or next_sq == CC2 or next_sq == CC3:
-            next_sq = c_chest.get(next_sq)
-        elif next_sq == CH1 or next_sq == CH2 or next_sq == CH3:
+        if next_sq == CH1 or next_sq == CH2 or next_sq == CH3:
             next_sq = c_card.get(next_sq)
+        if next_sq == CC1 or next_sq == CC2 or next_sq == CC3:
+            next_sq = c_chest.get(next_sq)
 
         counter_tbl[next_sq] += 1
         current_sq = next_sq
