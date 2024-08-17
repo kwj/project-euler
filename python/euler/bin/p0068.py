@@ -1,5 +1,97 @@
 # project euler: problem 68
 
+
+def all_rings(n_gon: int) -> list[str]:
+    # weight: sum of each node on line
+    #   minimum weight: (n_gon * 2) + 1 + 2 = n_gon * 2 + 3
+    #   maximum weight: 1 + (n_gon * 2 - 1) + (n_gon * 2) = n_gon * 4
+    result: list[str] = []
+    for weight in range(n_gon * 2 + 3, n_gon * 4 + 1):
+        result += find_rings(n_gon, weight)
+
+    return result
+
+
+def find_rings(n_gon: int, weight: int) -> list[str]:
+    numbers = list(range(1, n_gon * 2 + 1))
+    rings: list[str] = []
+
+    def make_str(ring: list[int]) -> str:
+        result = ""
+        for i in range(0, n_gon * 2, 2):
+            result = '{}{}{}{}'.format(result, ring[i + 1], ring[i], ring[i + 2])
+
+        return result
+
+    # ring :: list[int]
+    #   +-+-+--     ---+-+-+   X: first selected inner node -- ring[0]
+    #   |X|Y|   ...    | |Z|   Y: first selected outer node -- ring[1]
+    #   +-+-+--     ---+-+-+   Z: last selected inner node -- ring.at(-1)
+    #    0
+    #
+    #     [Y]
+    #       \
+    #        [X]   *
+    #       /   \ /
+    #     ??     *
+    #    / \    /
+    #  ??  [Z]-*-- *
+    #        \
+    #         ??
+    def next_states(
+        state: tuple[list[int], list[int]]
+    ) -> list[tuple[list[int], list[int]]]:
+        ring, rest = state
+        result: list[tuple[list[int], list[int]]] = []
+
+        if len(rest) == 1:
+            n = rest[0]
+            if n > ring[1] and n + ring[0] + ring[-1] == weight:
+                # a magic `n-gon` ring found
+                rings.append(make_str(ring + [n, ring[0]]))
+        else:
+            for outer in rest:
+                if (len(ring) == 1 and outer > n_gon + 1) or (
+                    len(ring) > 1 and outer < ring[1]
+                ):
+                    continue
+                inner = weight - outer - ring[-1]
+                if outer == inner:
+                    continue
+                if inner not in rest:
+                    continue
+                tmp = rest[:]
+                tmp.remove(outer)
+                tmp.remove(inner)
+                result.append((ring + [outer, inner], tmp))
+
+        return result
+
+    queue: list[tuple[list[int], list[int]]] = []
+    for x in numbers:
+        tmp = numbers[:]
+        tmp.remove(x)
+        queue.append(([x], tmp))
+
+    while len(queue) > 0:
+        state = queue.pop()
+        queue += next_states(state)
+
+    return rings
+
+
+def compute(n_gon: int) -> str:
+    result = sorted(all_rings(n_gon))
+    if n_gon == 5:
+        result = list(filter(lambda x: len(x) == 16, result))
+
+    return result[-1]
+
+
+def solve() -> str:
+    return compute(5)
+
+
 #   This problem can be solved with pen and paper.
 #   No computer is needed.
 #
@@ -153,32 +245,3 @@
 #         6,5,3;10,3,1;9,1,4;8,4,2;7,2,5
 #       case #2-4 <b>
 #         6,3,5;7,5,2;8,2,4;9,4,1;10,1;3
-#
-# ----
-#   I'll use brute force with the following conditions.
-#
-#   list [a0, a1, a2, a3, a4, a5, a6, a7, a8, a9]
-#    - one of {a3, a5, a7, a9} is 10
-#    - a0 < {a3, a5, a7, a9}
-#    - each lines (e1..e5) have same weight
-
-
-from itertools import permutations
-
-
-def compute() -> str:
-    result = []
-    for a0, a1, a2, a3, a4, a5, a6, a7, a8, a9 in permutations(range(1, 11)):
-        if a0 > a3 or a0 > a5 or a0 > a7 or a0 > a9:
-            continue
-        if 10 not in {a3, a5, a7, a9}:
-            continue
-        ring = [[a0, a1, a2], [a3, a2, a4], [a5, a4, a6], [a7, a6, a8], [a9, a8, a1]]
-        if len({sum(edge) for edge in ring}) == 1:
-            result.append(''.join(''.join(map(str, edge)) for edge in ring))
-
-    return list(reversed(result))[0]
-
-
-def solve() -> str:
-    return compute()
