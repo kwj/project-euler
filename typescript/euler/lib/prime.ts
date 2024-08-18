@@ -88,16 +88,24 @@ const findD = (n: number): bigint | undefined => {
 };
 
 const lucasTest = (num: number): boolean => {
+  // > 2 ** 31
+  // 2147483648
+  // > 2 ** 31 >> 1
+  // -1073741824
+  // > 2 ** 31 - 1
+  // 2147483647
+  // > 2 ** 31 - 1 >> 1
+  // 1073741823
   const shiftR = (x: number, s: number): number => {
-    if (x <= 2147483647) {
-      return x >> s;
-    } else {
-      while (s > 0) {
-        x = Math.trunc(x / 2);
-        s = s - 1;
+    while (s > 0) {
+      if (x <= 2147483647) {
+        x >>= s;
+        break;
       }
-      return x;
+      x = Math.trunc(x / 2);
+      s -= 1;
     }
+    return x;
   };
 
   const absBigint = (x: bigint): bigint => {
@@ -191,6 +199,10 @@ const lucasTest = (num: number): boolean => {
 };
 
 export const isPrime = (n: number): boolean => {
+  if (n > Number.MAX_SAFE_INTEGER) {
+    throw new RangeError('Must not be greater than MAX_SAFE_INTEGER(2^53-1).');
+  }
+
   // all even numbers except 2 are composite.
   if (n % 2 === 0) {
     return n === 2;
