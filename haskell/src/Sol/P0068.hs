@@ -1,6 +1,6 @@
 module Sol.P0068 (compute, solve) where
 
-import Data.List (delete, sortBy)
+import Data.List (delete)
 
 import Mylib.Util (headExn, initExn, lastExn)
 
@@ -58,9 +58,8 @@ listToDigitString =
 
 compute :: Int -> String
 compute n_gon =
-    headExn
-        . sortBy (flip compare)
-        $ if n_gon == 5
+    maximum $
+        if n_gon == 5
             then
                 -- only 16-digit strings when n_gon == 5
                 filter ((== 16) . length) $ listToDigitString <$> searchRings n_gon
