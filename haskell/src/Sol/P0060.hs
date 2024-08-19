@@ -7,7 +7,7 @@ The following is a result on my Raspberry Pi 4.
 % cabal v2-run pe-solver -- 60
 [Problem 60]
 Answer: 26033
-Elapsed time: 9.548267 sec.
+Elapsed time: 4.853478 sec.
 -}
 
 import Control.Applicative (Alternative, empty, (<|>))
