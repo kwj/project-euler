@@ -200,7 +200,7 @@ const lucasTest = (num: number): boolean => {
 
 export const isPrime = (n: number): boolean => {
   if (n > Number.MAX_SAFE_INTEGER) {
-    throw new RangeError('Must not be greater than MAX_SAFE_INTEGER(2^53-1).');
+    throw new RangeError("Must not be greater than MAX_SAFE_INTEGER(2^53-1).");
   }
 
   // all even numbers except 2 are composite.
