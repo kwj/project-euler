@@ -1,9 +1,12 @@
 // project euler: problem 60
 
 /*
-  This implementation assumes an upper limit of prime numbers as MAX_SAFE_INTEGER
-  and also confirms the answer is the smallest sum. So, it is a bit slow.
-  The following is a result with Deno 1.45.5 on Raspberry Pi 4.
+  This implementation assumes Infinity as the initial value of the current smallest sum.
+  Search for cliques and update the current smallest sum if a clique which has smaller sum found.
+  And then, it terminates to search when a prime number under checked becomes to be equal to or
+  larger than the current smallest sum. So, it can guarantee the sum is smallest.
+
+  Instead, it is a bit slow. The following is a result with Deno 1.45.5 on Raspberry Pi 4.
 
   $ ./solve.sh 60
   Task solve deno run --quiet --allow-hrtime --allow-read --allow-net ./main.ts "60"
@@ -79,7 +82,7 @@ export const compute = (groupSize: number): string => {
   // primeSet[1] and primeSet[2] hold prime numbers in ascending order.
   const primeSet = [[], [3], [3]];
   const tbl = new Map<number, Set<number>>();
-  let answer = Number.MAX_SAFE_INTEGER;
+  let answer = Infinity;
 
   let prime: number;
   while ((prime = p_gen.next().value!) < answer) {
