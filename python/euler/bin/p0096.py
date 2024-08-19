@@ -53,7 +53,7 @@ class Grid:
 
     # We make a grid as dictionary which values are immutable data, string.
     # The result is an easy backtracked search with a shallow copy of the dictionary.
-    def _create_grid(self) -> bool:
+    def setup_grid(self) -> bool:
         self._grid = dict((p, '123456789') for p in POS)
         for pos, ch in zip(POS, self._data):
             if ch != '0':
@@ -131,10 +131,7 @@ class Grid:
         return None
 
     def solve(self) -> dict[str, str] | None:
-        if self._create_grid() is False:
-            assert False, 'invalid data'
-        else:
-            return self._solve(self._grid.copy())
+        return self._solve(self._grid)
 
 
 def parse_data(fh: IO) -> list[str]:
@@ -157,18 +154,23 @@ def parse_data(fh: IO) -> list[str]:
         if len(acc) == 9:
             result.append(trim(flatten(acc)))
 
-    assert all([len(s) == 81 for s in result]), 'invalid data'
+    assert all([len(s) == 81 for s in result]), 'invalid data file'
     return result
 
 
 def compute(fh: IO) -> str:
     puzzles = parse_data(fh)
     acc = 0
-    for problem in puzzles:
+    for idx, problem in enumerate(puzzles):
         grid = Grid(problem)
+        if grid.setup_grid() is False:
+            assert False, 'invalid data: Grid {}'.format(idx + 1)
+
         d = grid.solve()
         if d is not None:
             acc += int(d['R0C0'] + d['R0C1'] + d['R0C2'])
+        else:
+            print('Warning: No answer found: Grod {}'.format(idx + 1))
 
     return str(acc)
 

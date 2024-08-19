@@ -233,17 +233,16 @@ const parseData = (data: string): string[] => {
     result.push(trim(acc));
   }
 
+  if (result.some((x) => x.length !== 81)) {
+    throw new Error("Invalid data file");
+  }
+
   return result;
 };
 
 export const compute = (data: string): string => {
   let acc = 0;
   for (const [idx, problem] of parseData(data).entries()) {
-    if (problem.length !== 81) {
-      console.log("Invalid data format: Grid", idx + 1);
-      continue;
-    }
-
     const grid = new Grid(problem);
     if (!grid.setupGrid()) {
       console.log("Invalid data: Grid", idx + 1);
