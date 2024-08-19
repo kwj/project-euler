@@ -82,7 +82,7 @@ export const compute = (groupSize: number): string => {
   let answer = Number.MAX_SAFE_INTEGER;
 
   let prime: number;
-  while ((prime = p_gen.next().value as number) < answer) {
+  while ((prime = p_gen.next().value!) < answer) {
     const idx = prime % 3;
     const nbrLst = findNbrs(prime, primeSet[idx], answer);
     tbl.set(prime, new Set(nbrLst));

@@ -10,7 +10,7 @@ const divLoop = (a: number, b: number): number => {
       return 0;
     }
     if (rems.has(a)) {
-      return (cnt - (rems.get(a) as number));
+      return (cnt - (rems.get(a)!));
     } else {
       rems.set(a, cnt);
       a = (a * 10) % b;

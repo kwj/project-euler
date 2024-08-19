@@ -58,7 +58,7 @@ export const compute = (data: string): string => {
   pq.push([distTbl[0][0], [0, 0]]);
 
   while (!pq.isEmpty()) {
-    const [d, [i, j]] = pq.pop() as [number, [number, number]];
+    const [d, [i, j]] = pq.pop()!;
     for (const [x, y] of nbrTbl[i][j]) {
       const new_d = d + matrix[x][y];
       if (new_d < distTbl[x][y]) {

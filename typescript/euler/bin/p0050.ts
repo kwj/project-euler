@@ -7,7 +7,7 @@ const cumSumGenerator = function* (): Generator<number, void, void> {
   let acc = 0;
   const p_gen = primeGenerator();
   while (true) {
-    acc += p_gen.next().value as number;
+    acc += p_gen.next().value!;
     yield acc;
   }
   // not reached
@@ -19,7 +19,7 @@ const initCumSumLst = (
 ): number[] => {
   const lst = [0];
   while (lst.at(-1)! < limit) {
-    lst.push(cs_gen.next().value as number);
+    lst.push(cs_gen.next().value!);
   }
 
   return lst;
@@ -42,7 +42,7 @@ export const compute = (limit: number): string => {
       consecLength += lst.length - 1;
       ans = lst[0] - begin;
     }
-    cs_lst.push(cs_gen.next().value as number);
+    cs_lst.push(cs_gen.next().value!);
     i += 1;
   }
 

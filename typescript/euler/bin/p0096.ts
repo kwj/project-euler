@@ -249,10 +249,7 @@ export const compute = (data: string): string => {
   for (const problem of parseData(data)) {
     const grid = new Grid(problem);
     const d = grid.solve();
-    acc += Number(
-      d.get("R0C0") as string + d.get("R0C1") as string +
-      d.get("R0C2") as string,
-    );
+    acc += Number(d.get("R0C0")! + d.get("R0C1")! + d.get("R0C2")!);
   }
 
   return String(acc);

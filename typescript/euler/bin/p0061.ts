@@ -22,7 +22,7 @@ const makePolygonalTbl = () => {
 
     while (true) {
       j += 1;
-      const num = (fn.get(i) as (n: number) => number)(j);
+      const num = fn.get(i)!(j);
       if (num < 1_000) {
         continue;
       } else if (num >= 10_000) {
@@ -51,11 +51,11 @@ const findCycle = (
     }
 
     const nextHop = nextRoute[0];
-    const nextMap = polyTbl.get(nextHop) as Map<number, number[]>;
+    const nextMap = polyTbl.get(nextHop)!;
     if (!nextMap.has(path[0])) {
       return undefined;
     }
-    for (const nextNum of nextMap.get(path[0]) as number[]) {
+    for (const nextNum of nextMap.get(path[0])!) {
       const result = dfs(nextRoute.slice(1), [nextNum].concat(path));
       if (result !== undefined) {
         return result;

@@ -28,7 +28,7 @@ export const compute = (limit: number): string => {
   const p_gen = primeGenerator();
   let acc = 1;
   while (true) {
-    const next_p = p_gen.next().value as number;
+    const next_p = p_gen.next().value!;
     if (acc * next_p > limit) {
       break;
     }

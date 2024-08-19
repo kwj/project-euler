@@ -106,7 +106,7 @@ export const minFactor = (n: number): number => {
   } else {
     const p_gen = primeGenerator(3);
     while (true) {
-      const p = p_gen.next().value as number;
+      const p = p_gen.next().value!;
       if (n % p === 0) {
         return p;
       }

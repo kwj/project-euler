@@ -7,7 +7,7 @@ export const compute = (limit: number): string => {
   const p_gen = primeGenerator();
 
   for (let i = 0; i < limit; i++) {
-    answer = p_gen.next().value as number;
+    answer = p_gen.next().value!;
   }
 
   return String(answer);

@@ -7,7 +7,7 @@ import { range } from "../lib/util.ts";
 
 const calcScore = (words: string[]): number[] => {
   const score = (word: string): number =>
-    sum(word.split("").map((x) => tbl.get(x) as number));
+    sum(word.split("").map((x) => tbl.get(x)!));
 
   const AtoZ = range("A".charCodeAt(0), "Z".charCodeAt(0) + 1)
     .map((x) => String.fromCharCode(x));

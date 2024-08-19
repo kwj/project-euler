@@ -7,7 +7,7 @@ const plstGenerator = function* (): Generator<number[], void, unknown> {
   const p_gen = primeGenerator();
   const plst: number[] = [];
   while (true) {
-    plst.push(p_gen.next().value as number);
+    plst.push(p_gen.next().value!);
     yield plst;
   }
 };
@@ -17,7 +17,7 @@ export const compute = (boundary: number): string => {
   let plst: number[] = [];
 
   while (true) {
-    plst = plst_gen.next().value as number[];
+    plst = plst_gen.next().value!;
     const tbl: number[] = new Array(plst.length + 1).fill(0);
     tbl[0] = 1;
     for (const i of plst) {
