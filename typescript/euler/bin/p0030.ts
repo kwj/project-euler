@@ -56,12 +56,7 @@ const searchFromRhs = (): number => {
   const powTbl = [0, 1, 32, 243, 1024, 3125, 7776, 16807, 32768, 59049];
   let acc = 0;
   for (const ndigits of range(2, 7)) {
-    for (
-      const lst of combinationsWithReplacement(
-        range(0, 10),
-        ndigits,
-      ) as Generator<number[]>
-    ) {
+    for (const lst of combinationsWithReplacement(range(0, 10), ndigits)) {
       const n = sum(lst.map((x) => powTbl[x]));
       if (toDigitLst(n).toString() === lst.toString()) {
         acc += n;
