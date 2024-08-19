@@ -72,7 +72,7 @@ class Grid {
     this.data = data;
   }
 
-  createGrid(): boolean {
+  setupGrid(): boolean {
     for (const [pos, ch] of zip(POS, this.data.split(""))) {
       if (ch !== "0") {
         if (!this.decideNum(this.grid, pos, ch)) {
@@ -89,12 +89,12 @@ class Grid {
     grid: Map<string, string>,
     pos: string,
     num: string,
-  ): Map<string, string> | boolean {
+  ): Map<string, string> | undefined {
     const otherNums = grid.get(pos)!.replace(num, "");
     if (otherNums.split("").every((n) => this.removeNum(grid, pos, n))) {
       return grid;
     } else {
-      return false;
+      return undefined;
     }
   }
 
@@ -147,38 +147,34 @@ class Grid {
     return true;
   }
 
-  _solve(grid: Map<string, string> | boolean): Map<string, string> | boolean {
-    if (grid === false) {
-      return false;
+  _solve(
+    grid: Map<string, string> | undefined,
+  ): Map<string, string> | undefined {
+    if (grid === undefined) {
+      return undefined;
     }
 
-    const cells: [number, string][] = POS.map((
-      p,
-    ) => [(grid as Map<string, string>).get(p)!.length, p]);
+    // an answer found
+    const cells: [number, string][] = POS.map((p) => [grid.get(p)!.length, p]);
     if (cells.every((c) => c[0] === 1)) {
       return grid;
     }
 
+    // select the cell with the smallest number of candidates and continue the search
     const [_, pos] =
       cells.filter((c) => c[0] > 1).sort((a, b) => a[0] - b[0])[0];
-    for (const num of (grid as Map<string, string>).get(pos)!) {
-      const result = this._solve(
-        this.decideNum(new Map(grid as Map<string, string>), pos, num),
-      );
-      if (result !== false) {
+    for (const num of grid.get(pos)!) {
+      const result = this._solve(this.decideNum(new Map(grid), pos, num));
+      if (result) {
         return result;
       }
     }
 
-    return false;
+    return undefined;
   }
 
-  solve(): Map<string, string> {
-    if (!this.createGrid()) {
-      throw new Error("invalid data");
-    } else {
-      return this._solve(new Map(this.grid)) as Map<string, string>;
-    }
+  solve(): Map<string, string> | undefined {
+    return this._solve(this.grid);
   }
 
   // for debug
@@ -237,19 +233,29 @@ const parseData = (data: string): string[] => {
     result.push(trim(acc));
   }
 
-  if (result.some((x) => x.length !== 81)) {
-    throw new Error("invalid data");
-  }
-
   return result;
 };
 
 export const compute = (data: string): string => {
   let acc = 0;
-  for (const problem of parseData(data)) {
+  for (const [idx, problem] of parseData(data).entries()) {
+    if (problem.length !== 81) {
+      console.log("Invalid data format: Grid", idx + 1);
+      continue;
+    }
+
     const grid = new Grid(problem);
+    if (!grid.setupGrid()) {
+      console.log("Invalid data: Grid", idx + 1);
+      continue;
+    }
+
     const d = grid.solve();
-    acc += Number(d.get("R0C0")! + d.get("R0C1")! + d.get("R0C2")!);
+    if (d) {
+      acc += Number(d.get("R0C0")! + d.get("R0C1")! + d.get("R0C2")!);
+    } else {
+      console.log("No answer found: Grod", idx + 1);
+    }
   }
 
   return String(acc);
