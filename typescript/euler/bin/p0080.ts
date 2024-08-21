@@ -23,7 +23,7 @@ export const compute = (limit: number, digit: number): string => {
     }
     // deno-fmt-ignore
     acc += sum(
-      String(isqrt(const_pow_of_10 * BigInt(n))).split("").map((x) => Number(x)),
+      String(isqrt(const_pow_of_10 * BigInt(n))).split("").slice(0, digit).map((x) => Number(x)),
     );
   }
 

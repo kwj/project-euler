@@ -13,12 +13,13 @@ fn compute(limit: i64, n_digits: u32) -> i64 {
     let power_10 = BigUint::from(10_u32).pow((n_digits - 1) * 2);
     (1..=limit)
         .filter(|&x| !math::is_square(x))
-        .map(|x| power_10.clone() * x as u32)
+        .map(|x| (power_10.clone() * x as u32).sqrt())
         .map(|x| {
-            x.sqrt()
-                .to_radix_le(10)
-                .into_iter()
-                .map(|y| y as i64)
+            x.to_radix_le(10)
+                .iter()
+                .rev()
+                .take(n_digits as usize)
+                .map(|&x| x as i64)
                 .sum::<i64>()
         })
         .sum::<i64>()

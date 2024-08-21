@@ -23,6 +23,8 @@ let compute upper n_digit =
     else
       Z.(sqrt (const_pow_of_10 * ~$n))
       |> Euler.Util.z_digits
+      |> List.rev
+      |> Fn.flip List.take n_digit
       |> List.sum (module Int) ~f:Fn.id)
   |> List.sum (module Int) ~f:Fn.id
 ;;

@@ -12,5 +12,6 @@
           (filter #(not (math/square? %)))
           (map #(math/isqrt (* % pow10))) ; Use math/isqrt because bigint value.
           (map #(util/digits %))
+          (map #(take n-digit (reverse %)))
           (map #(apply + %))
           (apply +)))))
