@@ -10,7 +10,7 @@ fn solve() -> String {
 
 fn compute(limit: i64) -> i64 {
     let mut cs_gen: CumSumPrime = Default::default();
-    let mut cs_lst: Vec<i64> = cs_gen.get_initial_lst(limit);
+    let mut cs_lst: Vec<i64> = cs_gen.initial_lst(limit);
 
     let mut ans: i64 = 0;
     let mut i: usize = 0;
@@ -51,12 +51,19 @@ impl Iterator for CumSumPrime {
 }
 
 impl CumSumPrime {
-    fn get_initial_lst(&mut self, limit: i64) -> Vec<i64> {
-        let mut lst: Vec<i64> = vec![0];
+    fn initial_lst(&mut self, limit: i64) -> Vec<i64> {
+        use std::iter;
 
-        while *(lst.last().unwrap()) < limit {
-            lst.push(self.next().unwrap());
-        }
+        let mut lst = iter::from_fn(|| {
+            if self.cumsum < limit {
+                self.next()
+            } else {
+                None
+            }
+        })
+        .collect::<Vec<_>>();
+
+        lst.insert(0, 0);
         lst
     }
 }
