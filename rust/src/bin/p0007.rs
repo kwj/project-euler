@@ -9,11 +9,7 @@ fn solve() -> String {
 fn compute(nth: i64) -> i64 {
     use euler::math::primes;
 
-    let mut x: i64 = 1;
-    for _ in 0..nth {
-        x = primes::next_prime(x)
-    }
-    x
+    (0..nth).fold(1, |x, _| primes::next_prime(x))
 }
 
 #[cfg(test)]
