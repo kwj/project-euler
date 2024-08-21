@@ -10,12 +10,10 @@ fn compute(limit: i64, n_digits: u32) -> i64 {
     use euler::math;
     use num_bigint::BigUint;
 
-    // BigUint::from(10_u32).pow(e) is a constant value, however it is not
-    // implement the `Copy` trait. This is why I calculate it every time.
-    let e = (n_digits - 1) * 2;
+    let power_10 = BigUint::from(10_u32).pow((n_digits - 1) * 2);
     (1..=limit)
-        .filter(|&x| math::isqrt(x).pow(2) != x)
-        .map(|x| BigUint::from(10_u32).pow(e) * x as u32)
+        .filter(|&x| !math::is_square(x))
+        .map(|x| power_10.clone() * x as u32)
         .map(|x| {
             x.sqrt()
                 .to_radix_le(10)
