@@ -9,11 +9,7 @@ fn solve() -> String {
 fn compute(upper: i64) -> i64 {
     use euler::math;
 
-    let mut answer = 1;
-    for n in 2..=upper {
-        answer = math::lcm(answer, n);
-    }
-    answer
+    (1..=upper).reduce(math::lcm).unwrap()
 }
 
 #[cfg(test)]
