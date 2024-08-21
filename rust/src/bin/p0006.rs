@@ -3,14 +3,19 @@
 euler::run_solver!(6);
 
 fn solve() -> String {
-    compute(1, 100).to_string()
+    compute(100).to_string()
 }
 
-fn compute(start: i64, stop: i64) -> i64 {
-    let sum_of_squares = (start..=stop).map(|x| x.pow(2)).sum::<i64>();
-    let square_of_sum = (start..=stop).sum::<i64>().pow(2);
+fn compute(upper: i64) -> i64 {
+    (sum_of_squares(upper) - square_of_sum(upper)).abs()
+}
 
-    (sum_of_squares - square_of_sum).abs()
+fn sum_of_squares(n: i64) -> i64 {
+    n * (n + 1) * (2 * n + 1) / 6
+}
+
+fn square_of_sum(n: i64) -> i64 {
+    (n * (n + 1) / 2).pow(2)
 }
 
 #[cfg(test)]
@@ -19,11 +24,11 @@ mod tests {
 
     #[test]
     fn p0006_one_to_ten() {
-        assert_eq!(compute(1, 10), 2640);
+        assert_eq!(compute(10), 2640);
     }
 
     #[test]
     fn p0006_one_to_one_hundred() {
-        assert_eq!(compute(1, 100), 25164150);
+        assert_eq!(compute(100), 25164150);
     }
 }
