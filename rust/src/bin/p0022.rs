@@ -2,16 +2,14 @@
 
 euler::run_solver!(22);
 
+static FILE_DATA: &str = include_str!("../../assets/0022_names.txt");
+
 fn solve() -> String {
-    compute("./assets/p022_names.txt").to_string()
+    compute(FILE_DATA).to_string()
 }
 
-fn compute(fname: &str) -> i64 {
-    let data = match euler::read_line(fname) {
-        Err(error) => panic!("Problem reading the file {}: {:?}", fname, error),
-        Ok(s) => s,
-    };
-    let mut names = parse_data(&data);
+fn compute(data: &str) -> i64 {
+    let mut names = parse_data(data);
 
     names.sort();
     names
@@ -40,6 +38,6 @@ mod tests {
 
     #[test]
     fn p0022() {
-        assert_eq!(compute("./assets/p022_names.txt"), 871198282);
+        assert_eq!(compute(super::FILE_DATA), 871198282);
     }
 }

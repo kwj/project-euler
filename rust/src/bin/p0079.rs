@@ -8,51 +8,42 @@
 */
 
 use std::collections::HashMap;
-use std::fs::File;
-use std::io::{BufReader, Lines};
 
 euler::run_solver!(79);
 
+static FILE_DATA: &str = include_str!("../../assets/0079_keylog.txt");
+
 fn solve() -> String {
-    compute("./assets/p079_keylog.txt").to_string()
+    compute(FILE_DATA).to_string()
 }
 
-fn compute(fname: &str) -> i64 {
+fn compute(data: &str) -> i64 {
     use euler::math;
 
-    let data_it = match euler::read_lines(fname) {
-        Ok(it) => it,
-        Err(error) => panic!("Problem reading the file {}: {:?}", fname, error),
-    };
-    let mut graph = match parse_data(data_it) {
-        Ok(graph) => graph,
-        Err(error) => panic!("Problem parsing the file {}: {:?}", fname, error),
-    };
-
+    let mut graph = parse_data(data);
     let mut acc: Vec<i64> = Vec::new();
     let keys: Vec<i64> = graph.keys().copied().collect();
+
     for v in keys {
         acc = dfs(&mut graph, &mut acc, v);
     }
-    //acc.into_iter().rev().fold(String::new(), |acc, x| )
-
     acc.reverse();
 
     math::undigits(&acc)
 }
 
-fn parse_data(it: Lines<BufReader<File>>) -> Result<HashMap<i64, Vec<i64>>, std::io::Error> {
+fn parse_data(data: &str) -> HashMap<i64, Vec<i64>> {
     let mut ret: HashMap<i64, Vec<i64>> = HashMap::new();
 
-    for line_result in it {
-        let v = line_result?
+    for line in data.lines() {
+        let v = line
             .chars()
             .map(|ch| ch.to_digit(10).unwrap() as i64)
             .collect::<Vec<i64>>();
         ret.entry(v[0]).or_default().extend(vec![v[1], v[2]]);
         ret.entry(v[1]).or_default().push(v[2]);
     }
-    Ok(ret)
+    ret
 }
 
 fn dfs(graph: &mut HashMap<i64, Vec<i64>>, perm: &mut [i64], v: i64) -> Vec<i64> {
@@ -84,6 +75,6 @@ mod tests {
 
     #[test]
     fn p0079() {
-        assert_eq!(compute("./assets/p079_keylog.txt"), 73162890);
+        assert_eq!(compute(super::FILE_DATA), 73162890);
     }
 }

@@ -23,25 +23,17 @@
 */
 
 use regex::Regex;
-use std::fs::File;
-use std::io::{BufReader, Lines};
 
 euler::run_solver!(89);
 
+static FILE_DATA: &str = include_str!("../../assets/0089_roman.txt");
+
 fn solve() -> String {
-    compute("./assets/p089_roman.txt").to_string()
+    compute(FILE_DATA).to_string()
 }
 
-fn compute(fname: &str) -> usize {
-    let data_it = match euler::read_lines(fname) {
-        Ok(it) => it,
-        Err(error) => panic!("Problem reading the file {}: {:?}", fname, error),
-    };
-    let lines = match parse_data(data_it) {
-        Ok(lines) => lines,
-        Err(error) => panic!("Problem parsing the file {}: {:?}", fname, error),
-    };
-
+fn compute(data: &str) -> usize {
+    let lines = parse_data(data);
     let re_step1 = Regex::new(r"IIIIIIIII|XXXXXXXXX|CCCCCCCCC").unwrap();
     let re_step2 = Regex::new(r"VIIII|LXXXX|DCCCC").unwrap();
     let re_step3 = Regex::new(r"IIIII|XXXXX|CCCCC").unwrap();
@@ -60,13 +52,13 @@ fn replace_numbers(line: &str, re1: &Regex, re2: &Regex, re3: &Regex, re4: &Rege
     re4.replace_all(&s3, "##").to_string()
 }
 
-fn parse_data(it: Lines<BufReader<File>>) -> Result<Vec<String>, std::io::Error> {
+fn parse_data(data: &str) -> Vec<String> {
     let mut ret: Vec<String> = Vec::new();
 
-    for line_result in it {
-        ret.push(line_result?);
+    for line in data.lines() {
+        ret.push(line.to_string());
     }
-    Ok(ret)
+    ret
 }
 
 #[cfg(test)]
@@ -75,6 +67,6 @@ mod tests {
 
     #[test]
     fn p0089() {
-        assert_eq!(compute("./assets/p089_roman.txt"), 743);
+        assert_eq!(compute(super::FILE_DATA), 743);
     }
 }

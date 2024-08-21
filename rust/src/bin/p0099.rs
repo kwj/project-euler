@@ -1,24 +1,15 @@
 // Project Euler: Problem 99
 
-use std::fs::File;
-use std::io::{BufReader, Lines};
-
 euler::run_solver!(99);
 
+static FILE_DATA: &str = include_str!("../../assets/0099_base_exp.txt");
+
 fn solve() -> String {
-    compute("./assets/p099_base_exp.txt").to_string()
+    compute(FILE_DATA).to_string()
 }
 
-fn compute(fname: &str) -> usize {
-    let data_it = match euler::read_lines(fname) {
-        Ok(it) => it,
-        Err(error) => panic!("Problem reading the file {}: {:?}", fname, error),
-    };
-    let pairs = match parse_data(data_it) {
-        Ok(pairs) => pairs,
-        Err(error) => panic!("Problem parsing the file {}: {:?}", fname, error),
-    };
-
+fn compute(data: &str) -> usize {
+    let pairs = parse_data(data);
     let mut ans: usize = 0;
     let mut max_value: f64 = 0.0;
     for (idx, (base, exp)) in pairs.into_iter().enumerate() {
@@ -31,17 +22,14 @@ fn compute(fname: &str) -> usize {
     ans + 1
 }
 
-fn parse_data(it: Lines<BufReader<File>>) -> Result<Vec<(f64, f64)>, std::io::Error> {
+fn parse_data(data: &str) -> Vec<(f64, f64)> {
     let mut ret: Vec<(f64, f64)> = Vec::new();
 
-    for line_result in it {
-        let pair: Vec<_> = line_result?
-            .split(',')
-            .map(|s| s.parse::<f64>().unwrap())
-            .collect();
+    for line in data.lines() {
+        let pair: Vec<_> = line.split(',').map(|s| s.parse::<f64>().unwrap()).collect();
         ret.push((pair[0], pair[1]));
     }
-    Ok(ret)
+    ret
 }
 
 #[cfg(test)]
@@ -50,6 +38,6 @@ mod tests {
 
     #[test]
     fn p0099() {
-        assert_eq!(compute("./assets/p099_base_exp.txt"), 709);
+        assert_eq!(compute(super::FILE_DATA), 709);
     }
 }

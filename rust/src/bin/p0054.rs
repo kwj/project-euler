@@ -36,25 +36,17 @@
 
 use std::cmp::Ordering;
 use std::collections::HashMap;
-use std::fs::File;
-use std::io::{BufReader, Lines};
 
 euler::run_solver!(54);
 
+static FILE_DATA: &str = include_str!("../../assets/0054_poker.txt");
+
 fn solve() -> String {
-    compute("./assets/p054_poker.txt").to_string()
+    compute(FILE_DATA).to_string()
 }
 
-fn compute(fname: &str) -> i64 {
-    let data_it = match euler::read_lines(fname) {
-        Ok(it) => it,
-        Err(error) => panic!("Problem reading the file {}: {:?}", fname, error),
-    };
-    let all_hands = match parse_data(data_it) {
-        Ok(hands) => hands,
-        Err(error) => panic!("Problem parsing the file {}: {:?}", fname, error),
-    };
-
+fn compute(data: &str) -> i64 {
+    let all_hands = parse_data(data);
     let mut _p1: i64 = 0;
     let mut _p2: i64 = 0;
     let mut _draw: i64 = 0;
@@ -74,7 +66,7 @@ fn compute(fname: &str) -> i64 {
     _p1
 }
 
-fn parse_data(it: Lines<BufReader<File>>) -> Result<Vec<Vec<(i64, char)>>, std::io::Error> {
+fn parse_data(data: &str) -> Vec<Vec<(i64, char)>> {
     let card_num: HashMap<char, i64> = HashMap::from([
         ('2', 2),
         ('3', 3),
@@ -92,8 +84,8 @@ fn parse_data(it: Lines<BufReader<File>>) -> Result<Vec<Vec<(i64, char)>>, std::
     ]);
     let mut ret: Vec<Vec<(i64, char)>> = Vec::new();
 
-    for line_result in it {
-        let cards: Vec<(i64, char)> = line_result?
+    for line in data.lines() {
+        let cards: Vec<(i64, char)> = line
             .split_ascii_whitespace()
             .map(|card| {
                 (
@@ -104,7 +96,7 @@ fn parse_data(it: Lines<BufReader<File>>) -> Result<Vec<Vec<(i64, char)>>, std::
             .collect();
         ret.push(cards);
     }
-    Ok(ret)
+    ret
 }
 
 fn judge(p1: Vec<i64>, p2: Vec<i64>) -> i64 {
@@ -201,6 +193,6 @@ mod tests {
 
     #[test]
     fn p0054() {
-        assert_eq!(compute("./assets/p054_poker.txt"), 376);
+        assert_eq!(compute(super::FILE_DATA), 376);
     }
 }

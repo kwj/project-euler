@@ -2,18 +2,16 @@
 
 euler::run_solver!(42);
 
+static FILE_DATA: &str = include_str!("../../assets/0042_words.txt");
+
 fn solve() -> String {
-    compute("./assets/p042_words.txt").to_string()
+    compute(FILE_DATA).to_string()
 }
 
-fn compute(fname: &str) -> i64 {
+fn compute(data: &str) -> i64 {
     use euler::math;
 
-    let data = match euler::read_line(fname) {
-        Err(error) => panic!("Problem reading the file {}: {:?}", fname, error),
-        Ok(s) => s,
-    };
-    let names = parse_data(&data);
+    let names = parse_data(data);
 
     names
         .into_iter()
@@ -41,6 +39,6 @@ mod tests {
 
     #[test]
     fn p0042() {
-        assert_eq!(compute("./assets/p042_words.txt"), 162);
+        assert_eq!(compute(super::FILE_DATA), 162);
     }
 }

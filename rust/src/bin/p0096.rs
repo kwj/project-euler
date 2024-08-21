@@ -100,8 +100,10 @@
 */
 
 use regex::Regex;
-use std::fs::File;
-use std::io::{BufReader, Lines};
+
+euler::run_solver!(96);
+
+static FILE_DATA: &str = include_str!("../../assets/0096_sudoku.txt");
 
 const NUM_OF_CELLS: usize = 81;
 
@@ -128,21 +130,12 @@ const ADJACENT_CELLS: [u128; NUM_OF_CELLS] = {
     tbl
 };
 
-euler::run_solver!(96);
-
 fn solve() -> String {
-    compute("./assets/p096_sudoku.txt").to_string()
+    compute(FILE_DATA).to_string()
 }
 
-fn compute(fname: &str) -> usize {
-    let data_it = match euler::read_lines(fname) {
-        Ok(it) => it,
-        Err(error) => panic!("Problem reading the file {}: {:?}", fname, error),
-    };
-    let puzzles = match parse_data(data_it) {
-        Ok(puzzles) => puzzles,
-        Err(error) => panic!("Problem parsing the file {}: {:?}", fname, error),
-    };
+fn compute(data: &str) -> usize {
+    let puzzles = parse_data(data);
     let grids = check_data(&puzzles);
 
     let mut ans: usize = 0;
@@ -167,18 +160,17 @@ fn compute(fname: &str) -> usize {
     ans
 }
 
-fn parse_data(it: Lines<BufReader<File>>) -> Result<Vec<Vec<usize>>, std::io::Error> {
+fn parse_data(data: &str) -> Vec<Vec<usize>> {
     let re_data = Regex::new(r"^[0-9.]").unwrap();
     let re_sep = Regex::new(r"^-").unwrap();
 
     let mut ret: Vec<Vec<usize>> = Vec::new();
     let mut acc: Vec<String> = Vec::new();
 
-    for line_result in it {
-        let s = line_result?;
-        if re_data.is_match(&s) {
-            acc.push(s);
-        } else if re_sep.is_match(&s) {
+    for line in data.lines() {
+        if re_data.is_match(line) {
+            acc.push(line.to_string());
+        } else if re_sep.is_match(line) {
             continue;
         } else if !acc.is_empty() {
             ret.push(process_data(&acc));
@@ -188,7 +180,7 @@ fn parse_data(it: Lines<BufReader<File>>) -> Result<Vec<Vec<usize>>, std::io::Er
     if !acc.is_empty() {
         ret.push(process_data(&acc));
     }
-    Ok(ret)
+    ret
 }
 
 fn process_data(data: &[String]) -> Vec<usize> {
@@ -287,6 +279,6 @@ mod tests {
 
     #[test]
     fn p0096() {
-        assert_eq!(compute("./assets/p096_sudoku.txt"), 24702);
+        assert_eq!(compute(super::FILE_DATA), 24702);
     }
 }

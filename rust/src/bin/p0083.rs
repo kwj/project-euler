@@ -4,25 +4,18 @@
   https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 */
 
-use std::fs::File;
-use std::io::{BufReader, Lines};
 use std::{cmp::Ordering, collections::BinaryHeap};
 
 euler::run_solver!(83);
 
+static FILE_DATA: &str = include_str!("../../assets/0083_matrix.txt");
+
 fn solve() -> String {
-    compute("./assets/p083_matrix.txt").to_string()
+    compute(FILE_DATA).to_string()
 }
 
-fn compute(fname: &str) -> i64 {
-    let data_it = match euler::read_lines(fname) {
-        Ok(it) => it,
-        Err(error) => panic!("Problem reading the file {}: {:?}", fname, error),
-    };
-    let matrix = match parse_data(data_it) {
-        Ok(matrix) => matrix,
-        Err(error) => panic!("Problem parsing the file {}: {:?}", fname, error),
-    };
+fn compute(data: &str) -> i64 {
+    let matrix = parse_data(data);
     let nbr_tbl = make_neighbor_tbl(matrix.len(), matrix[0].len());
     let mut dist_tbl = make_distance_tbl(matrix.len(), matrix[0].len());
     dist_tbl[0][0] = matrix[0][0];
@@ -52,17 +45,13 @@ fn compute(fname: &str) -> i64 {
     dist_tbl[dist_tbl.len() - 1][dist_tbl[0].len() - 1]
 }
 
-fn parse_data(it: Lines<BufReader<File>>) -> Result<Vec<Vec<i64>>, std::io::Error> {
+fn parse_data(data: &str) -> Vec<Vec<i64>> {
     let mut ret: Vec<Vec<i64>> = Vec::new();
 
-    for line_result in it {
-        let row = line_result?
-            .split(',')
-            .map(|s| s.parse::<i64>().unwrap())
-            .collect();
-        ret.push(row);
+    for line in data.lines() {
+        ret.push(line.split(',').map(|s| s.parse::<i64>().unwrap()).collect());
     }
-    Ok(ret)
+    ret
 }
 
 fn make_neighbor_tbl(n_rows: usize, n_cols: usize) -> Vec<Vec<Vec<(usize, usize)>>> {
@@ -113,6 +102,6 @@ mod tests {
 
     #[test]
     fn p0083() {
-        assert_eq!(compute("./assets/p083_matrix.txt"), 425185);
+        assert_eq!(compute(super::FILE_DATA), 425185);
     }
 }

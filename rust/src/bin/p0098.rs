@@ -5,18 +5,15 @@ use std::collections::HashMap;
 
 euler::run_solver!(98);
 
+static FILE_DATA: &str = include_str!("../../assets/0098_words.txt");
+
 fn solve() -> String {
-    compute("./assets/p098_words.txt").to_string()
+    compute(FILE_DATA).to_string()
 }
 
-fn compute(fname: &str) -> i64 {
-    let data = match euler::read_line(fname) {
-        Err(error) => panic!("Problem reading the file {}: {:?}", fname, error),
-        Ok(s) => s,
-    };
-
+fn compute(data: &str) -> i64 {
     let mut word_tbl: HashMap<String, Vec<String>> = HashMap::new();
-    for w in parse_data(&data) {
+    for w in parse_data(data) {
         let mut tmp: Vec<_> = w.chars().collect();
         tmp.sort();
         let key: String = tmp.into_iter().collect();
@@ -116,6 +113,6 @@ mod tests {
 
     #[test]
     fn p0098() {
-        assert_eq!(compute("./assets/p098_words.txt"), 18769);
+        assert_eq!(compute(super::FILE_DATA), 18769);
     }
 }

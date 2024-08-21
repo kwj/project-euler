@@ -2,18 +2,16 @@
 
 euler::run_solver!(59);
 
+static FILE_DATA: &str = include_str!("../../assets/0059_cipher.txt");
+
 fn solve() -> String {
-    compute("./assets/p059_cipher.txt").to_string()
+    compute(FILE_DATA).to_string()
 }
 
-fn compute(fname: &str) -> i64 {
+fn compute(data: &str) -> i64 {
     use itertools::Itertools;
 
-    let data = match euler::read_line(fname) {
-        Err(error) => panic!("Problem reading the file {}: {:?}", fname, error),
-        Ok(s) => s,
-    };
-    let cipher_text = parse_data(&data);
+    let cipher_text = parse_data(data);
     let mut ans = 0_i64;
     let mut max_score = 0_i64;
 
@@ -67,6 +65,6 @@ mod tests {
 
     #[test]
     fn p0059() {
-        assert_eq!(compute("./assets/p059_cipher.txt"), 129448);
+        assert_eq!(compute(super::FILE_DATA), 129448);
     }
 }
