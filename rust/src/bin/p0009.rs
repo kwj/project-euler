@@ -17,18 +17,19 @@ fn solve() -> String {
     compute(1_000).to_string()
 }
 
-fn compute(perim: i64) -> i64 {
+fn compute(mut perim: i64) -> i64 {
     use euler::math;
 
-    for m in 2..=math::isqrt(perim / 2) {
-        if (perim / 2) % m != 0 {
+    perim /= 2;
+    for m in 2..=math::isqrt(perim) {
+        if perim % m != 0 {
             continue;
         }
         // assume that x = m + n where x is odd number
         let mut x = m + 1 + (m % 2);
-        while x < 2 * m && x <= (perim / 2) / m {
-            if math::gcd(m, x) == 1 && (perim / 2) / m % x == 0 {
-                let k = (perim / 2) / m / x;
+        while x < 2 * m && x <= perim / m {
+            if math::gcd(m, x) == 1 && perim / m % x == 0 {
+                let k = perim / m / x;
                 let n = x - m;
                 return k.pow(3) * (m.pow(4) - n.pow(4)) * 2 * m * n;
             }
