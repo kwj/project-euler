@@ -23,44 +23,44 @@ const DATA: &str = "
     01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48
 ";
 
-enum Dir {
-    Right,
-    Down,
-    UpperRight,
-    DownRight,
-}
-
 euler::run_solver!(11);
 
 fn solve() -> String {
     compute(4).to_string()
 }
 
-fn compute(n_nums: usize) -> i64 {
-    use std::cmp;
-
+fn compute(n_nums: i64) -> i64 {
     let grid = get_grid();
-    let row_size = grid.len();
-    let col_size = grid[0].len();
-    let mut ans: i64 = 0;
+    let row_size = grid.len() as i64;
+    let col_size = grid[0].len() as i64;
 
-    for row in 0..row_size {
-        for col in 0..col_size {
-            if row <= row_size - n_nums {
-                ans = cmp::max(ans, product(&grid, row, col, n_nums, Dir::Down));
-                if col <= col_size - n_nums {
-                    ans = cmp::max(ans, product(&grid, row, col, n_nums, Dir::DownRight));
-                }
-            }
-            if col <= col_size - n_nums {
-                ans = cmp::max(ans, product(&grid, row, col, n_nums, Dir::Right));
-                if row >= n_nums - 1 {
-                    ans = cmp::max(ans, product(&grid, row, col, n_nums, Dir::UpperRight));
-                }
-            }
+    let value_at = |r: i64, c: i64| -> i64 {
+        if r < 0 || r >= row_size || c < 0 || c >= col_size {
+            0
+        } else {
+            grid[r as usize][c as usize]
         }
-    }
-    ans
+    };
+
+    let products = |r: i64, c: i64, length: i64| -> Vec<i64> {
+        let mut v_r: i64 = 1; // Right
+        let mut v_d: i64 = 1; // Down
+        let mut v_ur: i64 = 1; // Upper Right
+        let mut v_dr: i64 = 1; // Down Right
+
+        for i in 0..length {
+            v_r *= value_at(r, c + i);
+            v_d *= value_at(r + i, c);
+            v_ur *= value_at(r - i, c + i);
+            v_dr *= value_at(r + i, c + i);
+        }
+        vec![v_r, v_d, v_ur, v_dr]
+    };
+
+    itertools::iproduct!(0..row_size, 0..col_size)
+        .flat_map(|(r, c)| products(r, c, n_nums))
+        .max()
+        .unwrap()
 }
 
 fn get_grid() -> Vec<Vec<i64>> {
@@ -72,19 +72,6 @@ fn get_grid() -> Vec<Vec<i64>> {
                 .collect()
         })
         .collect()
-}
-
-fn product(grid: &[Vec<i64>], r_pos: usize, c_pos: usize, length: usize, dir: Dir) -> i64 {
-    let mut v: i64 = 1;
-    for i in 0..length {
-        match dir {
-            Dir::Right => v *= grid[r_pos][c_pos + i],
-            Dir::Down => v *= grid[r_pos + i][c_pos],
-            Dir::UpperRight => v *= grid[r_pos - i][c_pos + i],
-            Dir::DownRight => v *= grid[r_pos + i][c_pos + i],
-        };
-    }
-    v
 }
 
 #[cfg(test)]
