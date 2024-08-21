@@ -10,8 +10,7 @@ fn solve() -> String {
 
 fn compute(upper: u32) -> usize {
     (1..=upper)
-        .map(|n| is_rychrel(BigUint::from(n)))
-        .filter(|&x| x)
+        .filter(|&n| is_rychrel(BigUint::from(n)))
         .count()
 }
 
