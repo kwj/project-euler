@@ -68,7 +68,7 @@ fn get_grid() -> Vec<Vec<i64>> {
         .lines()
         .map(|s| {
             s.split_whitespace()
-                .filter_map(|x| x.parse::<i64>().ok())
+                .map(|x| x.parse::<i64>().unwrap())
                 .collect()
         })
         .collect()
