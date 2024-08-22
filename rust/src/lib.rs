@@ -70,12 +70,10 @@ where
 macro_rules! run_solver {
     ($x:literal) => {
         fn main() {
-            use std::time::Instant;
-            let now = Instant::now();
+            println!("[Problem {}]", $x);
+            let now = std::time::Instant::now();
             let result = solve();
             let elapsed_time = now.elapsed();
-
-            println!("[Problem {}]", $x);
             println!("Answer: {}", result);
             println!(
                 "Elapsed time: {}.{:06} sec.",
