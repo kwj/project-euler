@@ -25,42 +25,29 @@ fn solve() -> String {
 }
 
 fn compute() -> i64 {
+    use std::cmp;
+
     let triangle: Vec<Vec<i64>> = DATA
         .trim()
         .lines()
         .map(|s| {
-            s.trim()
-                .split_ascii_whitespace()
-                .map(|s| s.parse::<i64>().unwrap())
+            s.split_whitespace()
+                .map(|elm| elm.parse::<i64>().unwrap())
                 .collect()
         })
-        .rev()
         .collect();
 
-    let mut prev = triangle[0].clone();
-    for lst in &triangle[1..] {
-        let selected = select_leaf(&prev);
-        prev = lst
-            .iter()
-            .zip(selected.iter())
-            .map(|(&x, &y)| x + y)
-            .collect();
-    }
-    prev[0]
-}
-
-fn select_leaf(lst: &[i64]) -> Vec<i64> {
-    use std::cmp;
-
-    let mut result: Vec<i64> = Vec::new();
-    let mut prev = lst[0];
-
-    for i in lst.iter() {
-        result.push(cmp::max(prev, *i));
-        prev = *i;
-    }
-    result.remove(0);
-    result
+    triangle
+        .into_iter()
+        .rev()
+        .reduce(|acc, e| {
+            acc.windows(2)
+                .map(|v| cmp::max(v[0], v[1]))
+                .zip(e)
+                .map(|(e1, e2)| e1 + e2)
+                .collect()
+        })
+        .unwrap()[0]
 }
 
 #[cfg(test)]

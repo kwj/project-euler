@@ -9,45 +9,29 @@ fn solve() -> String {
 }
 
 fn compute(data: &str) -> i64 {
-    let triangle = parse_data(data);
-    let mut prev = triangle[0].clone();
+    use std::cmp;
 
-    for lst in &triangle[1..] {
-        let selected = select_leaf(&prev);
-        prev = lst
-            .iter()
-            .zip(selected.iter())
-            .map(|(&x, &y)| x + y)
-            .collect();
-    }
-    prev[0]
+    parse_data(data)
+        .into_iter()
+        .rev()
+        .reduce(|acc, e| {
+            acc.windows(2)
+                .map(|v| cmp::max(v[0], v[1]))
+                .zip(e)
+                .map(|(e1, e2)| e1 + e2)
+                .collect()
+        })
+        .unwrap()[0]
 }
 
 fn parse_data(data: &str) -> Vec<Vec<i64>> {
-    let mut ret: Vec<Vec<i64>> = Vec::new();
-
-    for line in data.lines() {
-        let line: Vec<i64> = line
-            .split_ascii_whitespace()
-            .map(|s| s.parse::<i64>().unwrap())
-            .collect();
-        ret.insert(0, line);
-    }
-    ret
-}
-
-fn select_leaf(lst: &[i64]) -> Vec<i64> {
-    use std::cmp;
-
-    let mut result: Vec<i64> = Vec::new();
-    let mut prev = lst[0];
-
-    for i in lst.iter() {
-        result.push(cmp::max(prev, *i));
-        prev = *i;
-    }
-    result.remove(0);
-    result
+    data.lines()
+        .map(|s| {
+            s.split_ascii_whitespace()
+                .map(|elm| elm.parse::<i64>().unwrap())
+                .collect()
+        })
+        .collect()
 }
 
 #[cfg(test)]
