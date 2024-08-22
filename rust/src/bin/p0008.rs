@@ -44,8 +44,7 @@ fn compute(n_digits: usize) -> i64 {
 
 fn max_prod(s: &str, n_digits: usize) -> i64 {
     s.chars()
-        .filter_map(|c| c.to_digit(10))
-        .map(|n| n as i64)
+        .map(|c| c.to_digit(10).unwrap() as i64)
         .collect::<Vec<_>>()
         .windows(n_digits)
         .map(|x| x.iter().product())
