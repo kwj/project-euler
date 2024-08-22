@@ -116,7 +116,7 @@ fn compute(n_digits: usize) -> String {
         .trim()
         .lines()
         .map(|s| s.trim().parse::<BigUint>().unwrap())
-        .fold(BigUint::from(0_u32), |acc: BigUint, n| acc + n)
+        .sum::<BigUint>()
         .to_string();
     String::from(&ans[0..n_digits])
 }
