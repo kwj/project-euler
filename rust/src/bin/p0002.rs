@@ -25,14 +25,14 @@ fn solve() -> String {
 }
 
 fn compute(limit: i64) -> i64 {
-    let mut a = 8;
-    let mut b = 2;
-    let mut acc = b;
-    while a <= limit {
-        acc += a;
-        (a, b) = (4 * a + b, a);
-    }
-    acc
+    let mut tpl: (i64, i64) = (2, 8);
+    std::iter::from_fn(|| {
+        let (a, b) = tpl;
+        tpl = (b, 4 * b + a);
+        Some(a)
+    })
+    .take_while(|&x| x <= limit)
+    .sum()
 }
 
 #[cfg(test)]
