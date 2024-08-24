@@ -8,4 +8,4 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-deno task --config ./euler/deno.json solve $@
+deno run --config ./euler/deno.json solver $@

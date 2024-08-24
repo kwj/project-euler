@@ -2,7 +2,7 @@
 
 ## How to run
 
-The [Deno](https://deno.com) runtime is required. These solutions will not work with the Node.js runtime.
+The [Deno](https://deno.com) runtime is required. These solutions will not work at other runtimes as is.
 
 ```console
 sh solve.sh <problem_number> [problem_number ...]
@@ -26,9 +26,9 @@ These solutions were confirmed to work in the following version.
 
 ```console
 $ deno --version
-deno 1.44.0 (release, aarch64-unknown-linux-gnu)
-v8 12.6.228.3
-typescript 5.4.5
+deno 1.46.1 (stable, release, aarch64-unknown-linux-gnu)
+v8 12.9.202.2-rusty
+typescript 5.5.2
 ```
 
 I used the following libraries/packages in addition to the runtime APIs part of Deno.
