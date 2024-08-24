@@ -1,18 +1,12 @@
 # project euler: problem 1
 
 
-def sum_of_multiples(n: int, ulimit: int) -> int:
-    upper = ulimit - 1
-
-    return (n + (upper - (upper % n))) * (upper // n) // 2
-
-
 def compute(ulimit: int) -> str:
-    return str(
-        sum_of_multiples(3, ulimit)
-        + sum_of_multiples(5, ulimit)
-        - sum_of_multiples(15, ulimit)
-    )
+    def sum_of_multiples(n: int) -> int:
+        tmp = (ulimit - 1) // n
+        return (1 + tmp) * tmp // 2 * n
+
+    return str(sum_of_multiples(3) + sum_of_multiples(5) - sum_of_multiples(15))
 
 
 def solve() -> str:

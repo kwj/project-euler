@@ -2,17 +2,13 @@ package p0001
 
 import "strconv"
 
-func sumMultiples(n, limit uint) uint {
-	limit--
-
-	return (n + (limit - (limit % n))) * (limit / n) / 2
-}
-
 func compute(limit uint) string {
-	return strconv.FormatUint(
-		uint64(sumMultiples(3, limit)+sumMultiples(5, limit)-sumMultiples(15, limit)),
-		10,
-	)
+	var f = func(x uint) uint {
+		var tmp = (limit - 1) / x
+		return (1 + tmp) * tmp / 2 * x
+	}
+
+	return strconv.FormatUint(uint64(f(3)+f(5)-f(15)), 10)
 }
 
 func Solve() string {

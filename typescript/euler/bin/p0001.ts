@@ -1,15 +1,12 @@
 // project euler: problem 1
 
-const sumMultiple = (n: number, limit: number): number => {
-  const trunc = Math.trunc;
-  const upper = limit - 1;
+export const compute = (limit: number): string => {
+  const sumMultiples = (n: number): number => {
+    const tmp = Math.trunc((limit - 1) / n);
+    return Math.trunc((1 + tmp) * tmp * n / 2);
+  };
 
-  return trunc((n + (upper - (upper % n))) * trunc(upper / n) / 2);
+  return String(sumMultiples(3) + sumMultiples(5) - sumMultiples(15));
 };
-
-export const compute = (limit: number): string =>
-  String(
-    sumMultiple(3, limit) + sumMultiple(5, limit) - sumMultiple(15, limit),
-  );
 
 export const solve = (): string => compute(1_000);

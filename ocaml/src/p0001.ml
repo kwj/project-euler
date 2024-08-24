@@ -2,13 +2,12 @@
 
 open Core
 
-let sum_of_mults n limit =
-  let tmp = limit / n in
-  (1 + tmp) * tmp / 2 * n
-;;
-
 let compute limit =
-  sum_of_mults 3 (limit - 1) + sum_of_mults 5 (limit - 1) - sum_of_mults 15 (limit - 1)
+  let f n =
+    let tmp = (limit - 1) / n in
+    (1 + tmp) * tmp / 2 * n
+  in
+  f 3 + f 5 - f 15
 ;;
 
 let solve () = compute 1_000 |> Int.to_string

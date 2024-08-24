@@ -6,14 +6,13 @@ fn solve() -> String {
     compute(1000).to_string()
 }
 
-fn compute(mut limit: i64) -> i64 {
-    limit -= 1;
-    sum_of_mults(3, limit) + sum_of_mults(5, limit) - sum_of_mults(15, limit)
-}
+fn compute(limit: i64) -> i64 {
+    let f = |x: i64| -> i64 {
+        let tmp = (limit - 1) / x;
+        (1 + tmp) * tmp / 2 * x
+    };
 
-fn sum_of_mults(n: i64, ulimit: i64) -> i64 {
-    let tmp = ulimit / n;
-    (1 + tmp) * tmp / 2 * n
+    f(3) + f(5) - f(15)
 }
 
 #[cfg(test)]
