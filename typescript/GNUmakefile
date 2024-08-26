@@ -11,7 +11,7 @@ usage:
 
 .PHONY: test
 test:
-	@deno run --config ./euler/deno.json test
+	@deno task --config ./euler/deno.json test
 
 .PHONY: clean
 clean:
