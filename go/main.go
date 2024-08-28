@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"slices"
 	"time"
 
 	"pe-solver/internal/sol/p0001"
@@ -211,11 +212,10 @@ var tbl = map[string]func() string{
 }
 
 func runSolver(n string, fn func() string) {
+	fmt.Printf("[Problem %s]\n", n)
 	t0 := time.Now()
 	result := fn()
 	elapsedTime := time.Since(t0)
-
-	fmt.Printf("[Problem %s]\n", n)
 	fmt.Printf("Answer: %s\n", result)
 	fmt.Printf("Elapsed time: %s\n\n", elapsedTime)
 }
@@ -227,7 +227,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	for _, x := range os.Args[1:] {
+	for x := range slices.Values(os.Args[1:]) {
 		fn, ok := tbl[x]
 		if ok {
 			runSolver(x, fn)
