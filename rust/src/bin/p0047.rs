@@ -9,8 +9,12 @@ fn solve() -> String {
 fn compute(nfactors: i64) -> i64 {
     use euler::math;
 
+    debug_assert!(nfactors > 1);
+
     let mut cnt = 0;
-    for x in 1_i64.. {
+
+    // '6' is the smallest product of two distinct prime factors
+    for x in 6_i64.. {
         if math::factorize(x).len() as i64 != nfactors {
             cnt = 0;
         } else if cnt == nfactors - 1 {
