@@ -14,11 +14,13 @@ fn compute(upper: i64) -> i64 {
         if d <= max_length {
             break;
         }
-        let repetend_length = find_repetend_length(d);
-        if repetend_length > max_length {
-            (max_length, ans) = (repetend_length, pp(d));
+        if let Some(tpl) = find_repetend_length(d) {
+            if tpl.0 > max_length {
+                (max_length, ans) = tpl;
+            }
         }
     }
+
     ans
 }
 
@@ -30,10 +32,11 @@ fn pp(mut n: i64) -> i64 {
     while n % 5 == 0 {
         n /= 5;
     }
+
     n
 }
 
-fn find_repetend_length(mut n: i64) -> i64 {
+fn find_repetend_length(mut n: i64) -> Option<(i64, i64)> {
     use euler::math;
 
     // This function is not strictly correct Carmichael function
@@ -41,17 +44,18 @@ fn find_repetend_length(mut n: i64) -> i64 {
     fn carmichael(n: i64) -> i64 {
         math::factorize(n)
             .into_iter()
-            .map(|(b, e)| (b - 1) * b.pow((e - 1) as u32))
-            .fold(1, math::lcm)
+            .map(|(b, e)| (b - 1) * b.pow(e - 1))
+            .reduce(math::lcm)
+            .unwrap()
     }
 
     n = pp(n);
     if n == 1 {
-        return 0;
+        return None;
     }
     for k in math::divisors(carmichael(n)) {
         if math::powmod(10, k, n) == 1 {
-            return k;
+            return Some((k, n));
         }
     }
 
