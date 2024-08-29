@@ -16,8 +16,9 @@ fn solve() -> String {
     compute(500).to_string()
 }
 
-fn compute(thr: i64) -> i64 {
+fn compute(thr: u32) -> i64 {
     let mut n: i64 = 1;
+
     loop {
         if num_of_divs(n) * num_of_divs((n + 1) / 2) > thr {
             break;
@@ -28,19 +29,19 @@ fn compute(thr: i64) -> i64 {
         }
         n += 1;
     }
+
     (n * (n + 1)) / 2
 }
 
-fn num_of_divs(n: i64) -> i64 {
+fn num_of_divs(n: i64) -> u32 {
     use euler::math;
+
+    debug_assert!(n > 0);
 
     if n == 1 {
         1
     } else {
-        math::factorize(n)
-            .into_iter()
-            .map(|(_, x)| x + 1)
-            .product::<i64>()
+        math::factorize(n).into_iter().map(|(_, x)| x + 1).product()
     }
 }
 

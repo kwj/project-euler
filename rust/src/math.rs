@@ -76,45 +76,55 @@ pub fn isqrt(n: i64) -> i64 {
     }
 }
 
-pub fn factorize(mut n: i64) -> Vec<(i64, i64)> {
-    assert!(n > 0);
-    if n == 1 {
-        return vec![(1, 1)];
-    }
+pub fn prime_factors(mut n: i64) -> Vec<i64> {
+    assert!(n > 1);
 
-    let mut result: Vec<(i64, i64)> = Vec::new();
+    let mut result: Vec<i64> = Vec::new();
     for b in [2, 3, 5].into_iter() {
-        let mut e = 0;
         while n % b == 0 {
-            e += 1;
+            result.push(b);
             n /= b;
         }
-        if e != 0 {
-            result.push((b, e));
-        }
-    }
-
-    let diff = [4, 2, 4, 2, 4, 6, 2, 6];
-    let mut b = 7;
-    let mut idx = 0;
-    let limit = isqrt(n);
-
-    while b <= limit {
-        let mut e = 0;
-        while (n % b) == 0 {
-            e += 1;
-            n /= b;
-        }
-        if e != 0 {
-            result.push((b, e));
-        }
-        b += diff[idx];
-        idx = (idx + 1) % diff.len();
     }
 
     if n != 1 {
-        result.push((n, 1))
+        let diff = [4, 2, 4, 2, 4, 6, 2, 6];
+        let mut b = 7;
+        let mut idx = 0;
+        let mut q = n / b;
+
+        while q >= b {
+            if (n % b) == 0 {
+                result.push(b);
+                n = q;
+            } else {
+                b += diff[idx];
+                idx = (idx + 1) % diff.len();
+            }
+            q = n / b;
+        }
+        result.push(n);
     }
+
+    result
+}
+
+pub fn factorize(n: i64) -> Vec<(i64, u32)> {
+    let lst = prime_factors(n);
+    let mut b = lst[0];
+    let mut e = 1_u32;
+    let mut result: Vec<(i64, u32)> = Vec::new();
+
+    for &x in lst[1..].iter() {
+        if x == b {
+            e += 1;
+        } else {
+            result.push((b, e));
+            b = x;
+            e = 1;
+        }
+    }
+    result.push((b, e));
 
     result
 }
@@ -123,7 +133,7 @@ pub fn divisors(num: i64) -> Vec<i64> {
     let mut lst: Vec<i64> = vec![1];
     for (b, e) in factorize(num) {
         let mut acc_lst: Vec<i64> = Vec::new();
-        for m in (1..=e).map(|x| b.pow(x as u32)) {
+        for m in (1..=e).map(|x| b.pow(x)) {
             lst.iter().map(|x| x * m).for_each(|x| acc_lst.push(x))
         }
         lst.extend(acc_lst);
