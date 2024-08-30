@@ -22,7 +22,7 @@ const divLoop = (a: number, b: number): number => {
 export const compute = (limit: number): string => {
   let maxCycle = 0;
   let n = 0;
-  for (const i of range(limit - 1, 1, -1)) {
+  for (const i of range(Math.trunc(limit / 2), limit).toReversed()) {
     if (i <= maxCycle) {
       break;
     }

@@ -5,7 +5,7 @@ import { range } from "../lib/util.ts";
 
 export const compute = (): string => {
   let ans = 0;
-  for (const a of range(99, 0, -1)) {
+  for (const a of range(1, 99 + 1).toReversed()) {
     // assume that x = 10 * n
     // x^y = (10 * n)^y = 10^y * n^y, so sum_of_digits(x^y) = sum_of_digits(n^y)
     // we can skip to check multiples of ten in this problem.
@@ -13,7 +13,7 @@ export const compute = (): string => {
       continue;
     }
 
-    for (const b of range(99, 0, -1)) {
+    for (const b of range(1, 99 + 1).toReversed()) {
       const p_str = String(BigInt(a) ** BigInt(b));
       if (p_str.length * 9 < ans) {
         break;

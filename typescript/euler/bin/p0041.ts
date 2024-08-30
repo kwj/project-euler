@@ -18,7 +18,9 @@ import { isPandigitalNZ, range } from "../lib/util.ts";
 // This implementation depends on the permutation lists are emitted in lexicographic ordering
 // according to the order of the input *iterable*.
 export const compute = (): string => {
-  for (const digits of [range(7, 0, -1), range(4, 0, -1)]) {
+  for (
+    const digits of [range(1, 7 + 1).toReversed(), range(1, 4 + 1).toReversed()]
+  ) {
     for (const nLst of permutations(digits)) {
       const n = nLst.reduce((x, y) => 10 * x + y);
       if (isPandigitalNZ(n) && isPrime(n)) {

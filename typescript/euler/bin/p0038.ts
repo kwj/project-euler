@@ -29,7 +29,7 @@ import { range } from "../lib/util.ts";
 export const compute = (): string => {
   let result = 918273645;
 
-  for (const x of range(9499, 9182, -1)) {
+  for (const x of range(9183, 9500).toReversed()) {
     const rem = x % 10;
     if (rem <= 1 || rem >= 8 || rem == 4 || rem == 5) {
       continue;

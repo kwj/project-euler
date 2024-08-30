@@ -9,20 +9,24 @@ export const compute = (digits: number): string => {
   }
 
   const nUpper = (10 ** digits) - 1;
-  const nLower = (10 ** (digits - 1)) - 1;
-  const blkUpperLimit = 10 ** (digits * 2);
+  const nLower = 10 ** (digits - 1);
+  const blkUpperLimit = 10 ** (digits * 2) - 1;
   const blkLowerLimit = digits > 1 ? 10 ** ((digits - 1) * 2) : 0;
   const blkWidth = 10 ** (digits * 2 - 2);
   const answer: number[] = [];
 
-  for (const blk_upper of range(blkUpperLimit, blkLowerLimit, -blkWidth)) {
-    const blk_lower = blk_upper - blkWidth;
-    for (const x of range(nUpper, nLower, -1)) {
+  for (
+    const blk_lower of range(blkLowerLimit, blkUpperLimit, blkWidth)
+      .toReversed()
+  ) {
+    const blk_upper = blk_lower + blkWidth - 1;
+    for (const x of range(nLower, nUpper + 1).toReversed()) {
       if (x * x < blk_lower) {
         break;
       }
       for (
-        const y of range(Math.min(Math.trunc(blk_upper / x), x), nLower, -1)
+        const y of range(nLower, Math.min(Math.trunc(blk_upper / x), x) + 1)
+          .toReversed()
       ) {
         const tmp = x * y;
         if (tmp < blk_lower) {
