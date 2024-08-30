@@ -29,16 +29,17 @@
 
 
 def compute() -> str:
-    lst = ['918273645']
-    for x in range(9183, 9500):
+    result = '918273645'
+    for x in reversed(range(9183, 9500)):
         rem = x % 10
         if rem <= 1 or rem >= 8 or rem == 4 or rem == 5:
             continue
-        s = str(x * (10**5) + x * 2)
+        s = str(x * 100002)
         if ''.join(sorted(s)) == '123456789':
-            lst.append(s)
+            result = s
+            break
 
-    return lst[-1]
+    return result
 
 
 def solve() -> str:

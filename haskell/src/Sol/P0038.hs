@@ -29,11 +29,12 @@ It is clear that the range of candidates is only [9183, 9499].
 Finally, the last digit of numbers is 0, 1, 4, 5, 8 or 9 can be excluded from candidates.
 -}
 
+import Data.List (find)
+
 import Mylib.Math (isPandigitalNZ)
-import Mylib.Util (headExn)
 
 f :: Int -> Int
-f n = n * 100_000 + n * 2
+f n = n * 100_002
 
 isPandigitalMultiples :: Int -> Bool
 isPandigitalMultiples n =
@@ -48,7 +49,10 @@ isPandigitalMultiples n =
 
 compute :: String
 compute =
-    show . f . headExn $ filter isPandigitalMultiples [9497, 9496 .. 9182]
+    show $
+        case find isPandigitalMultiples [9497, 9496 .. 9183] of
+            Just x -> f x
+            _ -> 918273645
 
 solve :: String
 solve = compute

@@ -36,20 +36,20 @@ import (
 )
 
 func compute() string {
-	lst := []int{918273645}
+	ans := 918273645
 	for i := 9499; i >= 9183; i-- {
 		rem := i % 10
 		if rem <= 1 || rem >= 8 || rem == 4 || rem == 5 {
 			continue
 		}
 
-		if x := i*100_000 + i*2; mylib.IsPandigitalNZ(x) {
-			lst = append(lst, x)
+		if x := i * 100_002; mylib.IsPandigitalNZ(x) {
+			ans = x
 			break
 		}
 	}
 
-	return strconv.FormatInt(int64(lst[len(lst)-1]), 10)
+	return strconv.FormatInt(int64(ans), 10)
 }
 
 func Solve() string {

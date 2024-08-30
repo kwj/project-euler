@@ -31,19 +31,20 @@ module Prob0038
 import ..Util: is_pandigital_nz
 
 function solve_0038()
-    answer = [918273645]
-    for x = 9183:9499
+    answer = 918273645
+    for x = reverse(9183:9499)
         rem = x % 10
         if rem <= 1 || rem >= 8 || rem == 4 || rem == 5
             continue
         end
-        n = x * 10^5 + 2x
+        n = x * 100002
         if is_pandigital_nz(n) == true
-            push!(answer, n)
+            answer = n
+            break
         end
     end
 
-    maximum(answer)
+    answer
 end
 
 end #module

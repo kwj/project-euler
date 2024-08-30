@@ -28,20 +28,15 @@
 open Core
 
 let compute () =
-  let rec get_pandigital_numbers cands = function
-    | [] -> cands
-    | x :: xs ->
-      (* x * 10^5 + x * 2 -> x * 100002 *)
-      let n = x * 100002 in
-      let rem = x mod 10 in
-      if (rem = 2 || rem = 3 || rem = 6 || rem = 7) && Euler.Math.is_pandigital_nz n
-      then get_pandigital_numbers (n :: cands) xs
-      else get_pandigital_numbers cands xs
+  let g x = x * 100002 in
+  let is_pandigital x =
+    let rem = x mod 10 in
+    (rem = 2 || rem = 3 || rem = 6 || rem = 7) && Euler.Math.is_pandigital_nz (g x)
   in
   List.range 9183 9499 ~stop:`inclusive
-  |> get_pandigital_numbers [ 918273645 ]
-  |> List.max_elt ~compare:Int.compare
-  |> Option.value_exn
+  |> List.rev
+  |> List.find ~f:is_pandigital
+  |> Option.value_map ~default:918273645 ~f:g
 ;;
 
 let solve () = compute () |> Int.to_string

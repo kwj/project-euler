@@ -34,18 +34,21 @@ fn solve() -> String {
 fn compute() -> i64 {
     use euler::math;
 
-    let mut ans: Vec<i64> = vec![918273645];
-    for x in 9183_i64..9500 {
+    let mut ans = 918273645_i64;
+
+    for x in (9183_i64..9500).rev() {
         let rem = x % 10;
         if rem <= 1 || rem >= 8 || rem == 4 || rem == 5 {
             continue;
         }
         let n = x * 100002;
         if math::is_pandigital_nz(n) {
-            ans.push(n);
+            ans = n;
+            break;
         }
     }
-    ans.into_iter().max().unwrap()
+
+    ans
 }
 
 #[cfg(test)]

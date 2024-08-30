@@ -34,7 +34,7 @@ export const compute = (): string => {
     if (rem <= 1 || rem >= 8 || rem == 4 || rem == 5) {
       continue;
     }
-    const tmp = x * (10 ** 5) + x * 2;
+    const tmp = x * 100002;
     if (String(tmp).split("").sort().join("") === "123456789") {
       result = tmp;
       break;
