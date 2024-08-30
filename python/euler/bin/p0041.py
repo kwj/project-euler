@@ -19,7 +19,7 @@ from euler.lib.util import is_pandigital_nz
 # This implementation depends on the permutation lists are emitted in lexicographic ordering
 # according to the order of the input *iterable*.
 def compute() -> str:
-    for digits in [range(7, 0, -1), range(4, 0, -1)]:
+    for digits in [reversed(range(1, 7 + 1)), reversed(range(1, 4 + 1))]:
         for n_lst in permutations(digits):
             n = reduce(lambda x, y: 10 * x + y, n_lst)
             if is_pandigital_nz(n) and is_prime(n):

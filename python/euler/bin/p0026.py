@@ -34,7 +34,7 @@ def find_repetend_length(d: int) -> int:
 def compute(limit: int) -> str:
     max_length = 0
     answer = 0
-    for i in range(limit - 1, ((limit // 2) - 1), -1):
+    for i in reversed(range(limit // 2, limit)):
         if i <= max_length:
             break
         repetend_length = find_repetend_length(i)
