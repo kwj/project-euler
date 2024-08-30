@@ -1,5 +1,8 @@
 (ns project-euler.core
-  (:require [clojure.main :as main])
+  (:require [clojure.main :as main]
+            project-euler.lib.math
+            project-euler.lib.math.prime
+            project-euler.lib.util)
   (:gen-class))
 
 (defn solve
