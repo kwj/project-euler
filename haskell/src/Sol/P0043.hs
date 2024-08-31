@@ -12,11 +12,11 @@ compute =
     aux (d : ds) lst =
         aux
             ds
-            [ [x] ++ s
+            [ x : s
             | x <- "0123456789"
             , s <- lst
             , notElem x s
-            , mod (read (take 3 ([x] ++ s)) :: Int) d == 0
+            , mod (read (take 3 (x : s)) :: Int) d == 0
             ]
 
 solve :: String
