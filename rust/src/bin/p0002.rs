@@ -25,13 +25,15 @@ fn solve() -> String {
 }
 
 fn compute(limit: i64) -> i64 {
-    let mut a = 8;
-    let mut b = 2;
-    let mut acc = b;
+    let mut a = 2;
+    let mut b = 8;
+    let mut acc = 0;
+
     while a <= limit {
         acc += a;
-        (a, b) = (4 * a + b, a);
+        (a, b) = (b, 4 * b + a);
     }
+
     acc
 }
 
@@ -40,12 +42,17 @@ mod tests {
     use super::compute;
 
     #[test]
-    fn p0002_under_100() {
+    fn p0002_4_or_less() {
+        assert_eq!(compute(4), 2);
+    }
+
+    #[test]
+    fn p0002_100_or_less() {
         assert_eq!(compute(100), 44);
     }
 
     #[test]
-    fn p0002_under_four_million() {
+    fn p0002_four_million_or_less() {
         assert_eq!(compute(4_000_000), 4613732);
     }
 }
