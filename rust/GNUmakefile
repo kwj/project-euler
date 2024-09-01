@@ -19,7 +19,7 @@ build:
 
 .PHONY: test
 test:
-	@cargo test --release --package euler tests
+	@cargo test --package euler tests
 
 .PHONY: lint
 lint:
