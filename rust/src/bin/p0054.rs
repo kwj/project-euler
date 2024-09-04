@@ -47,23 +47,20 @@ fn solve() -> String {
 
 fn compute(data: &str) -> i64 {
     let all_hands = parse_data(data);
-    let mut _p1: i64 = 0;
-    let mut _p2: i64 = 0;
+    let mut _p1_win: i64 = 0;
+    let mut _p2_win: i64 = 0;
     let mut _draw: i64 = 0;
     for hands in all_hands {
-        let result = judge(
-            make_handinfo(hands[0..5].to_vec()),
-            make_handinfo(hands[5..10].to_vec()),
-        );
-        if result == 1 {
-            _p1 += 1;
-        } else if result == -1 {
-            _p2 += 1;
-        } else {
-            _draw += 1;
-        };
+        let hand_p1 = make_handinfo(&hands[0..5]);
+        let hand_p2 = make_handinfo(&hands[5..10]);
+        match hand_p1.cmp(&hand_p2) {
+            Ordering::Greater => _p1_win += 1,
+            Ordering::Less => _p2_win += 1,
+            Ordering::Equal => _draw += 1,
+        }
     }
-    _p1
+
+    _p1_win
 }
 
 fn parse_data(data: &str) -> Vec<Vec<(i64, char)>> {
@@ -96,18 +93,11 @@ fn parse_data(data: &str) -> Vec<Vec<(i64, char)>> {
             .collect();
         ret.push(cards);
     }
+
     ret
 }
 
-fn judge(p1: Vec<i64>, p2: Vec<i64>) -> i64 {
-    match p1.cmp(&p2) {
-        Ordering::Greater => 1,
-        Ordering::Less => -1,
-        Ordering::Equal => 0,
-    }
-}
-
-fn make_handinfo(cards: Vec<(i64, char)>) -> Vec<i64> {
+fn make_handinfo(cards: &[(i64, char)]) -> Vec<i64> {
     const HAND_RF: i64 = 9;
     const HAND_SF: i64 = 8;
     const HAND_FK: i64 = 7;
@@ -119,7 +109,7 @@ fn make_handinfo(cards: Vec<(i64, char)>) -> Vec<i64> {
     const HAND_OP: i64 = 1;
     const HAND_HC: i64 = 0;
 
-    let (nums, mut suits): (Vec<_>, Vec<_>) = cards.into_iter().unzip();
+    let (nums, mut suits): (Vec<_>, Vec<_>) = cards.iter().cloned().unzip();
 
     // Check if a flash or not
     suits.sort();
@@ -168,6 +158,7 @@ fn make_handinfo(cards: Vec<(i64, char)>) -> Vec<i64> {
             unreachable!();
         }
     }
+
     hand_n
 }
 
