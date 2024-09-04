@@ -1,8 +1,5 @@
 module Sol.P0050 (compute, solve) where
 
-import Data.List (findIndex)
-import Data.Maybe (fromJust)
-
 import Mylib.Prime (isPrime, primeNumbers)
 
 -- 0, 2, 5, 10, 17, 28, 41, 58, 77, 100, 129, ...
@@ -11,9 +8,9 @@ cumsumPrimes = scanl (+) 0 primeNumbers
 
 compute :: Int -> String
 compute limit =
-    show $ go 0 max_window_size
+    show $ go 0 max_offset
   where
-    max_window_size = pred . fromJust $ findIndex (>= limit) cumsumPrimes
+    max_offset = pred . length $ takeWhile (< limit) cumsumPrimes
 
     go :: Int -> Int -> Int
     go left k
