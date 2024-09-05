@@ -1208,7 +1208,7 @@ def kronecker_symbol(a: int, n: int) -> int:
 
     # a % n == b % n --> (a|n) == (b|n)
     while (a := a % n) > 0:
-        # Inside this loop, 'n' is an odd number and larger than or equal to 3.
+        # Inside this loop, 'n' is an odd number and is 3 or more.
 
         # (2a|n) = (2|n) * (a|n)
         # (2|n)
@@ -1223,9 +1223,8 @@ def kronecker_symbol(a: int, n: int) -> int:
 
         # From here on, 'a' is an odd number.
 
-        # If 'a' is equal to 1, (1|n) = (n|1) = 1.
-        # and then,
-        # 'x' and 'y' are odd number and are larger than or equal to 3.
+        # If `x` and `y` are odd numbers and are 3 or more,
+        #
         # (x|y)
         #  -(y|x)   [if x % 4 == 3 and y % 4 == 3]
         #   (y|x)   [otherwise]
