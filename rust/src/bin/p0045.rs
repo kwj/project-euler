@@ -29,20 +29,21 @@ fn solve() -> String {
     compute(3).to_string()
 }
 
-fn compute(mut nth: i64) -> i64 {
+fn compute(n_th: usize) -> i64 {
+    debug_assert!(n_th > 0);
+
     let mut x: i64 = 1;
     let mut y: i64 = 1;
 
-    loop {
+    let (_, b) = std::iter::from_fn(|| {
         (x, y) = (2 * x + 3 * y, x + 2 * y);
-        if x % 6 == 5 && y % 4 == 3 {
-            nth -= 1;
-            if nth == 0 {
-                break;
-            }
-        }
-    }
-    let j = (y + 1) / 4;
+        Some((x, y))
+    })
+    .filter(|(x, y)| x % 6 == 5 && y % 4 == 3)
+    .nth(n_th - 1)
+    .unwrap();
+
+    let j = (b + 1) / 4;
     j * (2 * j - 1)
 }
 
