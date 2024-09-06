@@ -8,32 +8,27 @@
 open Core
 
 let parse_data data =
-  List.map ~f:(fun l -> Str.split (Str.regexp ",") l) data
-  |> List.map ~f:(fun l -> Array.of_list (Int.max_value :: List.map ~f:Int.of_string l))
+  List.map ~f:(fun l -> Str.split (Str.regexp ",") l |> List.map ~f:Int.of_string) data
 ;;
 
 let compute data =
-  let rec loop work_arr = function
-    | [] -> work_arr.(Array.length work_arr - 1)
-    | arr :: xs ->
-      for i = 1 to Array.length arr - 1 do
-        if arr.(i - 1) < work_arr.(i)
-        then arr.(i) <- arr.(i) + arr.(i - 1)
-        else arr.(i) <- arr.(i) + work_arr.(i)
-      done;
-      loop arr xs
+  let aux_rightward prev crnt =
+    List.folding_map (List.zip_exn prev crnt) ~init:Int.max_value ~f:(fun acc (p, c) ->
+      let x = c + Int.min acc p in
+      (x, x))
   in
-  let init_arr arr =
-    for i = 2 to Array.length arr - 1 do
-      arr.(i) <- arr.(i) + arr.(i - 1)
-    done;
-    arr
-  in
-  let arr_lst = parse_data data in
-  loop (init_arr (List.hd_exn arr_lst)) (List.tl_exn arr_lst)
+  let matrix = parse_data data in
+  List.fold
+    (List.tl_exn matrix)
+    ~init:
+      (List.folding_map (List.hd_exn matrix) ~init:0 ~f:(fun acc x -> (acc + x, acc + x)))
+    ~f:aux_rightward
+  |> List.last_exn
 ;;
 
-let solve fname = compute (Euler.Task.read_file fname) |> Int.to_string
+let solve fname =
+  compute (Euler.Task.read_file fname) |> Int.to_string
+;;
 
 (* Test *)
 

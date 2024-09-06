@@ -11,27 +11,28 @@ let parse_data data =
   List.map ~f:(fun l -> Str.split (Str.regexp ",") l) data
   |> List.map ~f:(List.map ~f:Int.of_string)
   |> List.transpose_exn
-  |> List.map ~f:Array.of_list
 ;;
 
 let compute data =
-  let rec loop work_arr = function
-    | [] ->
-      Array.stable_sort work_arr ~compare;
-      work_arr.(0)
-    | arr :: xs ->
-      let len = Array.length work_arr in
-      work_arr.(0) <- work_arr.(0) + arr.(0);
-      for i = 1 to len - 1 do
-        work_arr.(i) <- min (work_arr.(i) + arr.(i)) (work_arr.(i - 1) + arr.(i))
-      done;
-      for i = len - 2 downto 0 do
-        work_arr.(i) <- min work_arr.(i) (work_arr.(i + 1) + arr.(i))
-      done;
-      loop work_arr xs
+  let aux_rightward prev crnt =
+    List.folding_map (List.zip_exn prev crnt) ~init:Int.max_value ~f:(fun acc (p, c) ->
+      let x = c + Int.min acc p in
+      (x, x))
   in
-  let arr_lst = parse_data data in
-  loop (List.hd_exn arr_lst) (List.tl_exn arr_lst)
+  let aux_leftward crnt work =
+    List.folding_map
+      (List.zip_exn crnt work |> List.rev)
+      ~init:(List.last_exn work)
+      ~f:(fun acc (c, w) ->
+        let x = Int.min (c + acc) w in
+        (x, x))
+    |> List.rev
+  in
+  let matrix = parse_data data in
+  List.fold (List.tl_exn matrix) ~init:(List.hd_exn matrix) ~f:(fun prev crnt ->
+    aux_rightward prev crnt |> aux_leftward crnt)
+  |> List.min_elt ~compare:Int.compare
+  |> Option.value_exn
 ;;
 
 let solve fname = compute (Euler.Task.read_file fname) |> Int.to_string
