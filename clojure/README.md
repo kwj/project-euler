@@ -2,34 +2,35 @@
 
 ## How to use
 
-### REPL
-
 You can try out solutions in a REPL.
 Please start a REPL session according to the environment you are using.
 
-- [Clojure CLI] `clj -A:dev`
-- [Leiningen] `lein repl`
+- [Clojure CLI] `clj`
 
 The `project-euler.core/solve` function can run each solution.
-The following example shows how to run the solution program for Problem 1.
+The following example shows how to run the solver for Problem 1 with the Clojure CLI.
 
 ```console
-project-euler.core=> (solve 1)
+user=> (require '[project-euler.core :as pe])
+nil
+user=> (pe/solve 1)
 *****
-project-euler.core=>
+user=>
 ```
 
-### Uber-JAR
-
-You can also create a Uber-JAR file and run it.
+The `project-euler.core/-main` function may be executed to run the solver I/F.
 
 ```console
+$ clj -M -m project-euler.core
 Enter a problem number: 1
-"Elapsed time: 952.566413 msecs"
+"Elapsed time: 55.562357 msecs"
 *****
 Enter a problem number:
+
 ```
+
+In other words, you can create an Uber-JAR file.
 
 ## Notes
 
-These solutions were confirmed to work with Clojure 1.11.1.
+These solutions were confirmed to work with Clojure 1.12.0.

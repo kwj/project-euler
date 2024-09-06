@@ -4,7 +4,7 @@
    [project-euler.lib.util :as util]))
 
 (defn- parse-data
-  ^"[[J" [data]
+  ^long/2 [data]
   (->> (map #(str/split % #",") data)
        (map #(map parse-long %))
        (map #(into-array Long/TYPE %))
@@ -21,7 +21,7 @@
             items)))
 
 (defn- make-distance-tbl
-  ^"[[J" [n-rows n-cols]
+  ^long/2 [n-rows n-cols]
   (into-array (reduce (fn [acc _] (conj acc (long-array (repeat n-cols Long/MAX_VALUE)))) '() (range n-rows))))
 
 (defn solve

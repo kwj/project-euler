@@ -72,13 +72,13 @@
     (->> (seq tmp)
          (mapv #(/ % (* n-faces n-faces))))))
 
-(defn- go-steady "[[D"
-  [matrix]
-  (loop [^"[[D" prev matrix
+(defn- go-steady
+  ^double/2 [^double/2 matrix]
+  (loop [^double/2 prev matrix
          cnt 20] ; 2^20 = 1048576
     (if (zero? cnt)
       prev
-      (let [^"[[D" work (make-array Double/TYPE 120 120)]
+      (let [^double/2 work (make-array Double/TYPE 120 120)]
         (doseq [x (range 120)
                 y (range 120)
                 :let [v (->> (range 120)
@@ -94,7 +94,7 @@
   ([n-faces]
    (let [dice-prblty-no-dbl (make-dice-prblty-no-dbl n-faces)
          dice-prblty-dbl (make-dice-prblty-dbl n-faces)
-         ^"[[D" stoch-matrix (make-array Double/TYPE 120 120)]
+         ^double/2 stoch-matrix (make-array Double/TYPE 120 120)]
 
      ;; No doubles occurred
      ;; -> setup 's00', 's10' and 's20'
@@ -171,7 +171,7 @@
                  (double (- (aget ^doubles (aget stoch-matrix x) (+ chest offset))
                             (/ prblty 8.0)))))))
 
-     (let [result (->> (aget ^"[[D" (go-steady stoch-matrix) 0)
+     (let [result (->> (aget ^double/2 (go-steady stoch-matrix) 0)
                        (vec)
                        (partition 40)
                        (apply mapv +))]
