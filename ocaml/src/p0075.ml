@@ -76,6 +76,8 @@ let solve () = compute 1_500_000 |> Int.to_string
 
 let%test_unit "Singular Integer Right Triangles (L <= 48)" =
   [%test_eq: int] (compute 48) 6
+;;
+
 let%test_unit "Singular Integer Right Triangles (L <= 1500000)" =
   [%test_eq: int] (compute 1_500_000) 161667
 ;;

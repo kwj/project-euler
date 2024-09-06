@@ -131,9 +131,7 @@ let compute str_lst =
   loop (parse_data str_lst) 1 0
 ;;
 
-let solve fname =
-  compute (Euler.Task.read_file fname) |> Int.to_string
-;;
+let solve fname = compute (Euler.Task.read_file fname) |> Int.to_string
 
 (* Test *)
 

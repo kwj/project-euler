@@ -72,9 +72,7 @@ let compute data =
   loop ()
 ;;
 
-let solve fname =
-  compute (Euler.Task.read_file fname) |> Int.to_string
-;;
+let solve fname = compute (Euler.Task.read_file fname) |> Int.to_string
 
 (* Test *)
 

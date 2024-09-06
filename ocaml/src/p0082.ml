@@ -34,9 +34,7 @@ let compute data =
   loop (List.hd_exn arr_lst) (List.tl_exn arr_lst)
 ;;
 
-let solve fname =
-  compute (Euler.Task.read_file fname) |> Int.to_string
-;;
+let solve fname = compute (Euler.Task.read_file fname) |> Int.to_string
 
 (* Test *)
 
