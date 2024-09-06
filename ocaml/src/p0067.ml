@@ -2,12 +2,7 @@
 
 open Core
 
-let rec select_leaf lst =
-  match lst with
-  | [ x; y ] -> [ Int.max x y ]
-  | x :: (y :: _ as tl) -> Int.max x y :: select_leaf tl
-  | _ -> failwith "the length of list is lower than 2"
-;;
+let select_leaf lst = List.map2_exn (List.tl_exn lst) (List.drop_last_exn lst) ~f:Int.max
 
 let calc_from_bottom l_lst =
   List.fold_right
