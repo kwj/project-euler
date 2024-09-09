@@ -31,7 +31,7 @@ pairablePrimes :: Int -> Int -> [Int]
 pairablePrimes p limit =
     [x | x <- takeWhile (\n -> n + p < limit && n < p) ascPrimes, isPair x]
   where
-    upper_p = 10 ^ (numOfDigits p 10)
+    upper_p = 10 ^ numOfDigits p 10
     ascPrimes =
         if p `mod` 3 == 1
             then primes_rem1
@@ -41,7 +41,7 @@ pairablePrimes p limit =
     isPair x =
         isPrime (x * upper_p + p) && isPrime (p * upper_x + x)
       where
-        upper_x = 10 ^ (numOfDigits x 10)
+        upper_x = 10 ^ numOfDigits x 10
 
 findCliques :: [Int] -> Int -> M.IntMap S.IntSet -> [[Int]]
 findCliques dscNbrs size tbl =
@@ -92,7 +92,7 @@ compute groupSize =
 
     updateMinSum :: Int -> [[Int]] -> Int -> Int
     updateMinSum p cliques current =
-        min current (minimum $ (sum . (p :)) <$> cliques)
+        min current (minimum $ sum . (p :) <$> cliques)
 
 solve :: String
 solve = compute 5

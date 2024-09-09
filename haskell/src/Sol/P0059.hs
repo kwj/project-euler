@@ -30,8 +30,7 @@ score =
         | otherwise = 1
 
 decodeData :: [Int] -> [Int] -> [Char]
-decodeData key encData =
-    zipWith (\a b -> chr $ xor a b) (cycle key) encData
+decodeData key = zipWith (\a b -> chr $ xor a b) (cycle key)
 
 compute :: String
 compute =
@@ -39,10 +38,9 @@ compute =
         . foldl (\acc c -> acc + ord c) 0
         . maximumBy (compare `on` score)
         . filter (all isValidChar) -- pruning
-        $ zipWith
-            (\key encData -> decodeData key encData)
+        $ map
+            (`decodeData` parseData (BS.unpack fileData))
             (cartesianProduct $ replicate 3 [ord 'a' .. ord 'z'])
-            (repeat $ parseData (BS.unpack fileData))
   where
     isValidChar :: Char -> Bool
     isValidChar x = any ($ x) [isPrint, isSpace]

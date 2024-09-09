@@ -22,7 +22,7 @@ compute perim =
     pairs =
         [ (m', n')
         | m' <- [2 .. isqrt halfPerim]
-        , n' <- [(mod m' 2) + 1, (mod m' 2) + 3 .. min (m' - 1) ((div 500 m') - m')]
+        , n' <- [mod m' 2 + 1, mod m' 2 + 3 .. min (m' - 1) (div 500 m' - m')]
         , gcd m' n' == 1
         , mod halfPerim m' == 0
         , mod halfPerim (m' + n') == 0

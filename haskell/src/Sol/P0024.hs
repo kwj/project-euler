@@ -11,7 +11,7 @@ compute nth =
     aux :: [Int] -> Int -> Int -> Int
     aux [] _ acc = acc
     aux xs idx acc =
-        aux (hd ++ (drop 1 tl)) (idx `mod` blk) (10 * acc + xs !! cnt)
+        aux (hd ++ drop 1 tl) (idx `mod` blk) (10 * acc + xs !! cnt)
       where
         blk = factorial (pred $ length xs)
         cnt = idx `div` blk

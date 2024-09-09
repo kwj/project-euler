@@ -13,10 +13,10 @@ replaceAtIndexes src indexes elm =
   where
     aux :: [(Int, a)] -> [Int] -> [a] -> [a]
     aux [] _ acc = reverse acc
-    aux (x : xs) [] acc = aux xs [] ((snd x) : acc)
+    aux (x : xs) [] acc = aux xs [] (snd x : acc)
     aux (x : xs) idx@(i : is) acc
         | fst x == i = aux xs is (elm : acc)
-        | otherwise = aux xs idx ((snd x) : acc)
+        | otherwise = aux xs idx (snd x : acc)
 
 isFamily :: Int -> Int -> Bool
 isFamily familySize p =
@@ -32,7 +32,8 @@ isFamily familySize p =
 
     masks :: Int -> [[Int]]
     masks n =
-        filter (\mask -> length mask >= 3 && length mask `mod` 3 == 0 && mask !! 0 /= 0)
+        filter
+            (\mask -> length mask >= 3 && length mask `mod` 3 == 0 && headExn mask /= 0)
             . powerset
             $ elemIndices n p_digits
 

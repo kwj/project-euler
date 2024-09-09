@@ -20,8 +20,8 @@ nextNumber = aux 0
     aux acc x = aux (acc + factTbl ! (x `mod` 10)) (x `div` 10)
 
 chainLength :: Int -> Int
-chainLength n =
-    aux S.empty n
+chainLength =
+    aux S.empty
   where
     aux :: S.IntSet -> Int -> Int
     aux set x
@@ -35,7 +35,7 @@ countNumbers lst
         factorial (length lst) `div` denom lst
     | otherwise =
         factorial (length lst) `div` denom lst
-            - (factorial $ length (drop 1 lst)) `div` denom (drop 1 lst)
+            - factorial (length (drop 1 lst)) `div` denom (drop 1 lst)
   where
     denom = foldl (\acc x -> acc * factorial (length x)) 1 . group
 

@@ -15,8 +15,8 @@ import Mylib.Util (headExn)
 
 numberOfDivisors :: Int -> Int
 numberOfDivisors x
-    | odd x = (ndivs x) * (ndivs (div (x + 1) 2))
-    | otherwise = (ndivs (div x 2)) * (ndivs (x + 1))
+    | odd x = ndivs x * ndivs (div (x + 1) 2)
+    | otherwise = ndivs (div x 2) * ndivs (x + 1)
   where
     ndivs = length . divisors
 

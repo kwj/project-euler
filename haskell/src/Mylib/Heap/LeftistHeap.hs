@@ -34,7 +34,7 @@ instance Heap LeftistHeap where
             else makeTree y l2 (merge r2 h1)
 
     insert :: Ord a => a -> LeftistHeap a -> LeftistHeap a
-    insert x h = merge (Tree 1 x Empty Empty) h
+    insert x = merge (Tree 1 x Empty Empty)
 
     peek :: Ord a => LeftistHeap a -> a
     peek Empty = error "empty heap"

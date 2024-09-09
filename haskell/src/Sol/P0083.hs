@@ -91,19 +91,18 @@ findMinCost matrix start goal
     neighborTbl :: NeighborTbl
     neighborTbl =
         listArray ix $
-            map
-                ( \(r, c) ->
+            [ ( \(x, y) ->
                     filter
                         (inRange ix)
-                        [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)]
+                        [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
                         -- If the following list is used instead, this solver
                         -- will be able to address the problem 81.
                         -- [(r + 1, c), (r, c + 1)]
-                )
-                [ (r, c)
-                | r <- [fst $ fst ix .. fst $ snd ix]
-                , c <- [snd $ fst ix .. snd $ snd ix]
-                ]
+              )
+                (r, c)
+            | r <- [fst $ fst ix .. fst $ snd ix]
+            , c <- [snd $ fst ix .. snd $ snd ix]
+            ]
 
     dijkstra :: (PQueue, CostMap) -> CostMap
     dijkstra (pq, cmap)

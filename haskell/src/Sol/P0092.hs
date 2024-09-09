@@ -19,7 +19,7 @@ compute limit =
         . sum
         $ (numerator `div`) <$> denominators
   where
-    ndigits = (numOfDigits limit 10) - 1
+    ndigits = numOfDigits limit 10 - 1
     squares = [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
     denominators =
         [ product . map (factorial . length) . group $ pat

@@ -6,9 +6,7 @@ import Mylib.Util (digits, headExn)
 
 isPermutedMultiples :: Int -> Bool
 isPermutedMultiples n =
-    all
-        (== (sort $ digits n))
-        (sort . digits . (n *) <$> [2 .. 6])
+    all ((== (sort $ digits n)) . sort . digits . (n *)) [2 .. 6]
 
 compute :: String
 compute =

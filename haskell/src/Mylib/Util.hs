@@ -38,7 +38,7 @@ bitLength = length . takeWhile (> 0) . iterate (`div` 2)
 {-# SPECIALIZE bitLength :: Integer -> Int #-}
 
 partitionByStep :: Int -> Int -> [a] -> [[a]]
-partitionByStep n step ~lst =
+partitionByStep n step lst =
     if length xs == n then xs : partitionByStep n step (drop step lst) else []
   where
     xs = take n lst
@@ -52,14 +52,14 @@ digits = unfoldr aux
 {-# SPECIALIZE digits :: Integer -> [Integer] #-}
 
 undigits :: Integral int => [int] -> int
-undigits lst = foldr (\x acc -> acc * 10 + x) 0 lst
+undigits = foldr (\x acc -> acc * 10 + x) 0
 {-# SPECIALIZE undigits :: [Int] -> Int #-}
 {-# SPECIALIZE undigits :: [Integer] -> Integer #-}
 
 wordsWhen :: (Char -> Bool) -> String -> [String]
 wordsWhen p s =
     aux (break p s) []
-    where
+  where
     aux :: (String, String) -> [String] -> [String]
     aux ("", "") acc = reverse acc
     aux ("", tl) acc = aux (break p (drop 1 tl)) acc

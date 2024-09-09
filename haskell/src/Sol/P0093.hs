@@ -59,6 +59,7 @@ fourArithmeticOps x y
     | otherwise =
         [x + y, x - y, y - x, x * y, x / y, y / x]
 
+{- HLINT ignore case_1 "Use head" -}
 case_1 :: ([Ratio Int], [Ratio Int]) -> [Ratio Int]
 case_1 (lst1, lst2) =
     let res1 = d1d2 >>= fourArithmeticOps d3 >>= fourArithmeticOps d4
@@ -69,6 +70,7 @@ case_1 (lst1, lst2) =
     d3 = lst2 !! 0
     d4 = lst2 !! 1
 
+{- HLINT ignore case_2 "Use head" -}
 case_2 :: ([Ratio Int], [Ratio Int]) -> [Ratio Int]
 case_2 (lst1, lst2) =
     concat $ liftA2 fourArithmeticOps d1d2 d3d4
@@ -84,8 +86,8 @@ makeIntNumbers =
     aux lst =
         l1 ++ l2
       where
-        l1 = case_1 =<< (id &&& (lst \\)) <$> combinations 2 lst
-        l2 = case_2 =<< (id &&& (lst \\)) <$> map (: [headExn lst]) (tailExn lst)
+        l1 = case_1 . (id &&& (lst \\)) =<< combinations 2 lst
+        l2 = case_2 . (id &&& (lst \\)) =<< map (: [headExn lst]) (tailExn lst)
 
 countConsecNumbers :: [Ratio Int] -> Int
 countConsecNumbers lst =

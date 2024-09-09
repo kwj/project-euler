@@ -16,13 +16,14 @@ fileData = $(FE.makeRelativeToProject "resources/0099_base_exp.txt" >>= FE.embed
 parseData :: String -> [[Double]]
 parseData = map (map (read :: String -> Double) . wordsWhen (== ',')) . lines
 
+{- HLINT ignore compute "Use head" -}
 compute :: String
 compute =
     show
         . fst
         . maximumBy (compare `on` snd)
         . zip [1 :: Int ..]
-        $ (\lst -> (lst !! 1) * (log (lst !! 0))) <$> parseData (BS.unpack fileData)
+        $ (\lst -> (lst !! 1) * log (lst !! 0)) <$> parseData (BS.unpack fileData)
 
 solve :: String
 solve = compute

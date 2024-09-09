@@ -38,7 +38,7 @@ compute =
     aux k =
         sum
             . map fst
-            . filter (\(n, lst) -> (sort $ digits n) == lst)
+            . filter (\(n, lst) -> sort (digits n) == lst)
             . map (sum . map (factTbl !) &&& id)
             $ combinationsWithRepetition k [0 .. 9]
 

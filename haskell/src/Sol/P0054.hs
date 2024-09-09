@@ -74,7 +74,7 @@ getHand cards
     | checkStraight nums >= 0 =
         4 : handNums -- Straight: 4
     | otherwise =
-        (fromJust $ elemIndex handPattern allHandPatterns) : handNums
+        fromJust (elemIndex handPattern allHandPatterns) : handNums
   where
     nums = sortBy (comparing Down) $ chToNum . (!! 0) <$> cards
     suits = nub $ (!! 1) <$> cards
@@ -88,7 +88,7 @@ compute :: String
 compute =
     show
         . length
-        . filter (\(player1, player2) -> (getHand player1) > (getHand player2)) -- Player 1 wins
+        . filter (\(player1, player2) -> getHand player1 > getHand player2) -- Player 1 wins
         $ parseData (BS.unpack fileData)
 
 solve :: String

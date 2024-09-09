@@ -47,14 +47,14 @@ mults10 =
 countLetters :: Int -> Int
 countLetters n
     | n <= 0 || n > 1000 = error "range error"
-    | n == 1000 = (under20 ! 1) + (length "thousand")
+    | n == 1000 = (under20 ! 1) + length "thousand"
     | n < 20 = under20 ! n
-    | n < 100 = (mults10 ! (div n 10)) + (under20 ! (mod n 10))
+    | n < 100 = (mults10 ! div n 10) + (under20 ! mod n 10)
     | otherwise =
         let (q, r) = (div n 100, mod n 100)
          in case r of
-                0 -> (under20 ! q) + (length "hundred")
-                _ -> (under20 ! q) + (length "hundred") + (length "and") + (countLetters r)
+                0 -> (under20 ! q) + length "hundred"
+                _ -> (under20 ! q) + length "hundred" + length "and" + countLetters r
 
 compute :: Int -> String
 compute limit =

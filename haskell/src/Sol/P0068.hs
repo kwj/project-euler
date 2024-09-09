@@ -39,16 +39,16 @@ searchRings' n_gon total =
     aux ring [last_number] =
         [ [last_number, headExn ring, lastExn ring]
         | total == last_number + headExn ring + lastExn ring
-        , last_number > (lastExn $ initExn ring)
+        , last_number > lastExn (initExn ring)
         ]
     aux ring rest =
         [ outer : headExn ring : inner : result
         | outer <- rest
-        , length ring > 1 && outer > (lastExn $ initExn ring)
+        , length ring > 1 && outer > lastExn (initExn ring)
             || length ring == 1 && outer <= n_gon + 1
         , let inner = total - headExn ring - outer
         , outer /= inner
-        , elem inner rest
+        , inner `elem` rest
         , result <- aux (inner : outer : ring) (delete inner (delete outer rest))
         ]
 

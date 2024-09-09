@@ -17,7 +17,7 @@ import Control.Monad (guard)
 import Data.Char (digitToInt)
 import Data.Function (on)
 import Data.List (minimumBy)
-import Data.Maybe (catMaybes)
+import Data.Maybe (mapMaybe)
 
 import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
 import qualified Data.FileEmbed as FE (embedFile, makeRelativeToProject)
@@ -33,7 +33,7 @@ fileData = $(FE.makeRelativeToProject "resources/0096_sudoku.txt" >>= FE.embedFi
 
 parseData :: String -> [Grid]
 parseData =
-    (map . map . map) digitToInt . map (drop 1) . partitionByStep 10 10 . lines
+    map (map (map digitToInt) . drop 1) . partitionByStep 10 10 . lines
 
 findSolution :: Grid -> Maybe Grid
 findSolution grid =
@@ -48,7 +48,7 @@ dfs f (x : xs)
         dfs f (f x ++ xs)
 
 isCompleted :: Grid -> Bool
-isCompleted = (all . all) (/= 0)
+isCompleted = all (notElem 0)
 
 makeTentativeGrids :: Grid -> [Grid]
 makeTentativeGrids grid =
@@ -102,11 +102,8 @@ get3digitNumber grid =
 
 compute :: String
 compute =
-    show
-        . sum
-        . map get3digitNumber
-        . catMaybes
-        $ findSolution <$> parseData (BS.unpack fileData)
+    (show . sum . map get3digitNumber)
+        (mapMaybe findSolution (parseData (BS.unpack fileData)))
 
 solve :: String
 solve = compute

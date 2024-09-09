@@ -14,9 +14,9 @@ compute limit =
     isCircularPrime n =
         all
             isPrime
-            (drop 1 . take (k + 1) $ iterate (\x -> (mod x 10) * d + (div x 10)) n)
+            (drop 1 . take (k + 1) $ iterate (\x -> mod x 10 * d + div x 10) n)
       where
-        k = (numOfDigits n 10) - 1
+        k = numOfDigits n 10 - 1
         d = 10 ^ k
 
 solve :: String

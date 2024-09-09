@@ -33,13 +33,14 @@ nextStates :: Pos -> Percentage -> Int -> [(Pos, Percentage)]
 nextStates _ 0 _ = []
 nextStates (sq, dbl) pct nfaces =
     chanceCard
-        =<< communityChest
-        =<< (\(st, p) -> if toEnum (fst st) /= G2J then (st, p) else ((fromEnum JAIL, 0), p))
-            . (\(st, p) -> if snd st /= 3 then (st, p) else ((fromEnum JAIL, 0), p))
-            <$> next_state
+        =<< ( communityChest
+                . (\(st, p) -> if toEnum (fst st) /= G2J then (st, p) else ((fromEnum JAIL, 0), p))
+                . (\(st, p) -> if snd st /= 3 then (st, p) else ((fromEnum JAIL, 0), p))
+                =<< next_state
+            )
   where
     next_state =
-        [ ((next_sq, next_dbl), pct / (fromIntegral (nfaces * nfaces)))
+        [ ((next_sq, next_dbl), pct / fromIntegral (nfaces * nfaces))
         | d1 <- [1 .. nfaces]
         , d2 <- [1 .. nfaces]
         , let next_sq = (sq + d1 + d2) `mod` nSquares
@@ -58,7 +59,7 @@ nextStates (sq, dbl) pct nfaces =
                     , fromEnum (nextU square), (fst next_pos + (nSquares - 3)) `mod` nSquares, fst next_pos, fst next_pos
                     , fst next_pos, fst next_pos, fst next_pos, fst next_pos
                     ]
-             in (\c -> ((c, snd next_pos), next_pct / (fromIntegral $ length cards))) <$> cards
+             in (\c -> ((c, snd next_pos), next_pct / fromIntegral (length cards))) <$> cards
       where
         square = toEnum (fst next_pos) :: Squares
 
@@ -85,7 +86,7 @@ nextStates (sq, dbl) pct nfaces =
                     , fst next_pos, fst next_pos, fst next_pos, fst next_pos
                     , fst next_pos, fst next_pos, fst next_pos, fst next_pos
                     ]
-             in (\c -> ((c, snd next_pos), next_pct / (fromIntegral $ length cards))) <$> cards
+             in (\c -> ((c, snd next_pos), next_pct / fromIntegral (length cards))) <$> cards
       where
         square = toEnum (fst next_pos) :: Squares
 {- FOURMOLU_ENABLE -}

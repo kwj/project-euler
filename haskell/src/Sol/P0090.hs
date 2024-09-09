@@ -14,6 +14,7 @@ squares =
     , (8, 1) -- 9^2
     ]
 
+{- HLINT ignore isContained "Use head" -}
 isContained :: [[Int]] -> (Int, Int) -> Bool
 isContained twoDice sq =
     elem (fst sq) (twoDice !! 0) && elem (snd sq) (twoDice !! 1)

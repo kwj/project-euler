@@ -54,7 +54,7 @@ pfSequences :: Int -> Int -> [[(Int, Int)]]
 pfSequences x y =
     unfoldr
         ( \pfLst ->
-            if length pfLst == 1 && snd (pfLst !! 0) == 1
+            if length pfLst == 1 && snd (headExn pfLst) == 1
                 then Nothing
                 else Just (reverse pfLst, next_pfLst pfLst)
         )
@@ -62,13 +62,13 @@ pfSequences x y =
   where
     next_pfLst :: [(Int, Int)] -> [(Int, Int)]
     next_pfLst pfSeq
-        | e > 1 = (b, e - 1) : (drop 1 pfSeq)
+        | e > 1 = (b, e - 1) : drop 1 pfSeq
         | otherwise =
             let (tmp_b, tmp_e) = headExn (drop 1 pfSeq)
                 prev_p = prevPrime b
              in if prev_p == tmp_b
-                    then aux ((tmp_b, tmp_e + 1) : (drop 2 pfSeq))
-                    else aux ((prev_p, 1) : (drop 1 pfSeq))
+                    then aux ((tmp_b, tmp_e + 1) : drop 2 pfSeq)
+                    else aux ((prev_p, 1) : drop 1 pfSeq)
       where
         (b, e) = headExn pfSeq
 
@@ -80,10 +80,10 @@ pfSequences x y =
                 let prev_p = prevPrime (tmp + 1)
                  in if prev_p > b
                         then (prev_p, 1) : pfSeq
-                        else (b, e + 1) : (drop 1 pfSeq)
+                        else (b, e + 1) : drop 1 pfSeq
       where
         (b, e) = headExn pfSeq
-        tmp = limit `div` (prod pfSeq)
+        tmp = limit `div` prod pfSeq
 
 compute :: String
 compute =
@@ -114,7 +114,7 @@ compute =
 
     isPermutation :: Int -> Int -> Bool
     isPermutation a b =
-        (sort $ digits a) == (sort $ digits b)
+        sort (digits a) == sort (digits b)
 
 solve :: String
 solve = compute

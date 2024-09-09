@@ -1,5 +1,6 @@
 module Sol.P0066 (compute, solve) where
 
+import Data.Bifunctor (first)
 import Data.Function (on)
 import Data.List (maximumBy)
 import Data.Ratio (numerator, (%))
@@ -37,8 +38,7 @@ compute limit =
     show
         . snd
         . maximumBy (compare `on` fst)
-        . map (\(lst, n) -> ((numerator' lst), n))
-        . map (\tpl -> ((aux $ fst tpl), snd tpl))
+        . map (first (numerator' . aux))
         . filter (not . null . snd . fst)
         $ zip (continuedFraction <$> [1 .. limit]) [(1 :: Int) ..]
   where

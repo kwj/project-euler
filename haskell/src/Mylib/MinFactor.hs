@@ -15,7 +15,7 @@ minFactor n
     | n < 1 = error "argument must be a positive number"
     | even n = 2
     | n <= 65535 =
-        let tmp = minFactorTbl ! (shiftR n 1)
+        let tmp = minFactorTbl ! shiftR n 1
          in if tmp == 1 then n else tmp
     | otherwise = minFactor' n P.primes
 

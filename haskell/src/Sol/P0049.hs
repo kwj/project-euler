@@ -29,6 +29,7 @@ makePrimeTbl ndigits =
         | M.member key m = addEntry (M.update (Just . (val :)) key m) rest
         | otherwise = addEntry (M.insert key [val] m) rest
 
+{- HLINT ignore findNumbers "Use head" -}
 findNumbers :: [[Int]] -> [Int]
 findNumbers llst
     | length cands == 1 = reverse $ headExn cands

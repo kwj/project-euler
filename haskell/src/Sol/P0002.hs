@@ -16,7 +16,7 @@ f(k) = f(k-1) + f(k-2)
      = 4f(k-3) - f(k-4) + f(k-4) + f(k-6)
      = 4f(k-3) + f(k-6)
 -->
-# even fibonacci numbers
+even fibonacci numbers
 E(n) = 4*E(n-1) + E(n-2)
 
 -->

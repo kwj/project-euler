@@ -12,7 +12,7 @@ compute =
     aux a 0 answer = aux (pred a) 99 answer
     aux a b answer =
         let tmp = a ^ b
-         in if (numOfDigits tmp 10) * 9 < answer
+         in if numOfDigits tmp 10 * 9 < answer
                 then aux (pred a) 99 answer
                 else aux a (pred b) (max answer (fromIntegral (sum $ digits tmp)))
 

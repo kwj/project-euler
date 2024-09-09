@@ -32,7 +32,7 @@ compute =
       where
         (x, xs) =
             mapAccumL
-                (\a tpl -> (snd tpl + (min a (fst tpl)), a))
+                (\a tpl -> (snd tpl + min a (fst tpl), a))
                 maxBound
                 (zip prev crnt)
 

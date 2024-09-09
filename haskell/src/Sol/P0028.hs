@@ -22,9 +22,7 @@ Answer: 1 + sum_{n=1}^{(1001-1)/2} (16n**2 + 4n + 4)
 
 compute :: Int -> String
 compute sideLen =
-    show
-        . foldr (+) 1
-        $ f <$> [1 .. (div (sideLen - 1) 2)]
+    show (foldr ((+) . f) 1 [1 .. (div (sideLen - 1) 2)])
   where
     f :: Int -> Int
     f x = 16 * x * x + 4 * x + 4

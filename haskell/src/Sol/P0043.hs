@@ -15,7 +15,7 @@ compute =
             [ x : s
             | x <- "0123456789"
             , s <- lst
-            , notElem x s
+            , x `notElem` s
             , mod (read (take 3 (x : s)) :: Int) d == 0
             ]
 

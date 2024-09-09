@@ -5,7 +5,7 @@ module Sol.P0098 (compute, solve) where
 import Control.Monad (guard)
 import Data.Array.IArray (Array, listArray, (!))
 import Data.List (nub, singleton, sort)
-import Data.Maybe (catMaybes)
+import Data.Maybe (mapMaybe)
 
 import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
 import qualified Data.FileEmbed as FE (embedFile, makeRelativeToProject)
@@ -29,19 +29,20 @@ findSquare :: String -> String -> [Int]
 findSquare w1 w2 = do
     sq <- squares
     n <- makeNumber w1 w2 sq
-    guard (elem n squares)
+    guard (n `elem` squares)
     [sq, n]
   where
     squares = ndigitSquares $ length w1
 
 makeNumber :: String -> String -> Int -> [Int]
 makeNumber w1 w2 sq
-    | length trans_map /= (length $ nub w1) =
+    | length trans_map /= length (nub w1) =
         []
     | length trans_map /= (length . nub $ snd <$> trans_map) =
         []
     | otherwise =
-        singleton . undigits . reverse . catMaybes $ flip lookup trans_map <$> w2
+        (singleton . undigits . reverse)
+            (mapMaybe (`lookup` trans_map) w2)
   where
     trans_map = nub $ zip w1 (reverse $ digits sq)
 

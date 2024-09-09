@@ -36,7 +36,8 @@ powerModW64 b e m = powerModW64' b e m 1
 powerModW64' :: Word64 -> Int -> Word64 -> Word64 -> Word64
 powerModW64' b e m result
     | e == 0 = result
-    | testBit e 0 = powerModW64' ((b * b) `mod` m) (shiftR e 1) m ((result * b) `mod` m)
+    | testBit e 0 =
+        powerModW64' ((b * b) `mod` m) (shiftR e 1) m ((result * b) `mod` m)
     | otherwise = powerModW64' ((b * b) `mod` m) (shiftR e 1) m result
 
 {- FOURMOLU_DISABLE -}
@@ -142,7 +143,7 @@ lucasSeq n d u v q qk delta x
 isPrime :: Int -> Bool
 isPrime n
     | even n = n == 2
-    | n <= 65535 = if n < 2 then False else minFactorTbl ! (shiftR n 1) == 1 -- (2^16 - 1) = 65535
+    | n <= 65535 = (n >= 2) && (minFactorTbl ! shiftR n 1 == 1) -- (2^16 - 1) = 65535
     | mod n 3 == 0 = False
     | mod n 5 == 0 = False
     | mod n 7 == 0 = False
@@ -208,7 +209,7 @@ nextPrime n
     | otherwise =
         let idx =
                 if numberToIndex n /= numberToIndex (n + 1)
-                    then (numberToIndex n) + 1
+                    then numberToIndex n + 1
                     else numberToIndex n
          in fromMaybe (error "") $ find isPrime $ map indexToNumber [idx ..]
 
@@ -220,7 +221,7 @@ prevPrime n
     | n <= 7 = 5
     | n <= 11 = 7
     | otherwise =
-        let idx = (numberToIndex n) - 1
+        let idx = numberToIndex n - 1
          in fromMaybe (error "")
                 . find isPrime
                 . map indexToNumber

@@ -31,7 +31,7 @@ findRepetendLength n
         0
     | otherwise =
         headExn
-            . filter ((== 1) . (flip .) powerModExn 10 d)
+            . filter ((== 1) . (flip . powerModExn) 10 d)
             . divisors
             $ carmichael d
   where
@@ -48,9 +48,11 @@ compute limit =
             answer
         | otherwise =
             let tmp = findRepetendLength x
-             in case tmp > max_length of
-                    True -> aux xs tmp (pp x)
-                    False -> aux xs max_length answer
+             in if tmp > max_length
+                    then
+                        aux xs tmp (pp x)
+                    else
+                        aux xs max_length answer
 
 solve :: String
 solve = compute 1_000

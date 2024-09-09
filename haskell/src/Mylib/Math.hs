@@ -65,7 +65,8 @@ powerMod b e m
 powerMod' :: Integer -> Int -> Integer -> Integer -> Integer
 powerMod' b e m result
     | e == 0 = result
-    | testBit e 0 = powerMod' ((b * b) `mod` m) (shiftR e 1) m ((result * b) `mod` m)
+    | testBit e 0 =
+        powerMod' ((b * b) `mod` m) (shiftR e 1) m ((result * b) `mod` m)
     | otherwise = powerMod' ((b * b) `mod` m) (shiftR e 1) m result
 
 powerModExn :: Int -> Int -> Int -> Int
@@ -144,7 +145,7 @@ binomial _ 0 = 1
 binomial n k
     | n == k = 1
     | n < k = 0
-    | (div n 2) < k = binomial n (n - k)
+    | div n 2 < k = binomial n (n - k)
     | otherwise = foldl (\acc i -> acc * (n - k + i) `div` i) 1 [1 .. k]
 {-# SPECIALIZE binomial :: Int -> Int -> Int #-}
 {-# SPECIALIZE binomial :: Integer -> Integer -> Integer #-}
@@ -166,7 +167,7 @@ maxPower n base =
 {-# SPECIALIZE maxPower :: Integer -> Integer -> Int #-}
 
 numOfDigits :: Integral int => int -> int -> Int
-numOfDigits n base = (maxPower n base) + 1
+numOfDigits n base = maxPower n base + 1
 {-# SPECIALIZE numOfDigits :: Int -> Int -> Int #-}
 {-# SPECIALIZE numOfDigits :: Integer -> Integer -> Int #-}
 
@@ -178,7 +179,7 @@ getCTZ n = getCTZ' n 0
 {-# SPECIALIZE getCTZ :: Integer -> Int #-}
 
 isPalindrome :: Integral int => int -> int -> Bool
-isPalindrome n base = (isPalindrome' n 0) == n
+isPalindrome n base = isPalindrome' n 0 == n
   where
     isPalindrome' x acc =
         if x == 0
@@ -191,7 +192,7 @@ isPalindrome n base = (isPalindrome' n 0) == n
 
 isPandigital :: Int -> Bool
 isPandigital n =
-    (makeBits n 0) == (shiftL 1 ((maxPower n 10) + 1)) - 1
+    makeBits n 0 == shiftL 1 (maxPower n 10 + 1) - 1
   where
     makeBits :: Int -> Int -> Int
     makeBits 0 bits = bits
@@ -204,7 +205,7 @@ isPandigitalNZ n =
     checkZero :: Int -> Bool
     checkZero 0 = True
     checkZero i
-        | (mod i 10) == 0 = False
+        | mod i 10 == 0 = False
         | otherwise = checkZero (div i 10)
 
 isTriangular :: Integral int => int -> Bool

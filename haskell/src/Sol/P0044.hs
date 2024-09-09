@@ -31,7 +31,7 @@ checkConditions d =
         | r1 <- getDivisors d
         , let r2 = lhs `div` r1
         , mod r2 3 == 2
-        , mod (r1 + (r2 + 1) `div` 3) 2 == 0
+        , even (r1 + (r2 + 1) `div` 3)
         ]
 
     isSumPentagonal :: (Int, Int) -> Bool

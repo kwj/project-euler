@@ -31,17 +31,17 @@ compute =
 
     auxRightward :: [Int] -> [Int] -> [Int]
     auxRightward prev crnt =
-        (drop 1 xs) ++ [x]
+        drop 1 xs ++ [x]
       where
         (x, xs) =
             mapAccumL
-                (\a tpl -> (snd tpl + (min a (fst tpl)), a))
+                (\a tpl -> (snd tpl + min a (fst tpl), a))
                 maxBound
                 (zip prev crnt)
 
     auxLeftward :: [Int] -> [Int] -> [Int]
     auxLeftward crnt work =
-        x : (initExn xs)
+        x : initExn xs
       where
         (x, xs) =
             mapAccumR

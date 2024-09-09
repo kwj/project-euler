@@ -16,19 +16,19 @@ block #n: n-digits number
 
 import Mylib.Util (digits, headExn)
 
+blocks :: [(Int, Int)]
+blocks = iterate (\(x, y) -> (x + 1, y + (x + 1) * 9 * 10 ^ x)) (1, 9)
+
 getBlock :: Int -> (Int, Int)
 getBlock nth =
-    headExn . snd $ break ((nth <=) . snd) blocks
-  where
-    blocks :: [(Int, Int)]
-    blocks = iterate (\(x, y) -> (x + 1, y + (x + 1) * 9 * 10 ^ x)) (1, 9)
+    headExn (dropWhile ((nth >) . snd) blocks)
 
 d :: Int -> Int
 d nth =
     digits n !! idx
   where
     (ndigits, maxNth) = getBlock nth
-    n = 10 ^ ndigits - 1 - (div (maxNth - nth) ndigits)
+    n = 10 ^ ndigits - 1 - div (maxNth - nth) ndigits
     idx = mod (maxNth - nth) ndigits
 
 compute :: String

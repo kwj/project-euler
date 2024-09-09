@@ -14,9 +14,7 @@ isLychrel n =
     aux n1 n2 cnt =
         let next_n = n1 + n2
             tmp = reverseNumber next_n
-         in if next_n == tmp
-                then False
-                else aux next_n tmp (pred cnt)
+         in ((next_n /= tmp) && aux next_n tmp (pred cnt))
 
 compute :: Integer -> String
 compute limit =

@@ -24,12 +24,10 @@ compute =
   where
     cands =
         filter ((== 6) . length) $ -- each number in the cycle is different
-            map
-                nub
-                [ x : rest
-                | x <- polygonalNumbers 8 -- start searching from octagonal numbers
-                , rest <- searchRest [x] (polygonalNumbers <$> [3 .. 7])
-                ]
+            [ nub (x : rest)
+            | x <- polygonalNumbers 8 -- start searching from octagonal numbers
+            , rest <- searchRest [x] (polygonalNumbers <$> [3 .. 7])
+            ]
 
     polygonalNumbers :: Int -> [Int]
     polygonalNumbers s =

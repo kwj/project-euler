@@ -30,8 +30,8 @@ import Data.Maybe (fromJust)
 -- definition is used. Please see the following link for details.
 -- https://wiki.haskell.org/Arrays#Unboxed_arrays
 
-expand_partition_array :: Int -> Array Int Int -> Int -> Array Int Int
-expand_partition_array denom old_array new_end =
+expandPartitionArray :: Int -> Array Int Int -> Int -> Array Int Int
+expandPartitionArray denom old_array new_end =
     new_array
   where
     new_array =
@@ -64,7 +64,7 @@ compute denom =
         . asum
         . map (find ((== 0) . snd) . assocs)
         $ scanl
-            (expand_partition_array denom)
+            (expandPartitionArray denom)
             seed_array
             (iterate (* 2) initial_block_size)
   where

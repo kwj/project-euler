@@ -9,7 +9,7 @@ compute ndigits =
     show
         . fst
         . headExn
-        . dropWhile ((< 10 ^ (pred ndigits)) . snd)
+        . dropWhile ((< 10 ^ pred ndigits) . snd)
         $ zip [1 :: Int ..] fibs
   where
     fibs :: [Integer]

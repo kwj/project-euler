@@ -31,13 +31,13 @@ compute limit =
 
     sqLst =
         flip pow 2
-            <$> takeWhile (<= floor ((fromIntegral limit) ** (1 / 2 :: Double))) primeNumbers
+            <$> takeWhile (<= floor (fromIntegral limit ** (1 / 2 :: Double))) primeNumbers
     cbLst =
         flip pow 3
-            <$> takeWhile (<= floor ((fromIntegral limit) ** (1 / 3 :: Double))) primeNumbers
+            <$> takeWhile (<= floor (fromIntegral limit ** (1 / 3 :: Double))) primeNumbers
     quLst =
         flip pow 4
-            <$> takeWhile (<= floor ((fromIntegral limit) ** (1 / 4 :: Double))) primeNumbers
+            <$> takeWhile (<= floor (fromIntegral limit ** (1 / 4 :: Double))) primeNumbers
 
 solve :: String
 solve = compute 50_000_000

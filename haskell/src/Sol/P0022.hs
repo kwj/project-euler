@@ -21,12 +21,12 @@ compute =
     show
         . sum
         $ zipWith
-            (\idx s -> score idx s)
+            score
             [1 ..]
             (sort $ parseData (BS.unpack fileData))
   where
     score :: Int -> [Char] -> Int
-    score i s = i * (sum $ (\c -> ord c - ord 'A' + 1) <$> s)
+    score i s = i * sum ((\c -> ord c - ord 'A' + 1) <$> s)
 
 solve :: String
 solve = compute

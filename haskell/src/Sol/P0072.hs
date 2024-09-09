@@ -24,7 +24,7 @@ sumPhi f n =
     v2 =
         sum $
             (\d -> ((n `div` d) - (n `div` (d + 1))) * f d)
-                <$> [1 .. n `div` ((isqrt n) + 1)]
+                <$> [1 .. n `div` (isqrt n + 1)]
 
 compute :: Int -> String
 compute limit =
