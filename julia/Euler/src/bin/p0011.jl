@@ -30,26 +30,28 @@ function solve_0011(len::Int = 4)
     # size(data) -> num of rows, num of columns
     (ROW, COL) = size(data)
 
+    @assert len > 0 && (len <= ROW || len <= COL) "Range Error"
+
     answer = Int[]
     for r = 1:ROW, c = 1:COL
         # right
         if c <= COL - len + 1
-            push!(answer, prod(data[r, c + i] for i = 0:3))
+            push!(answer, prod(data[r, c + i] for i = range(0, len - 1)))
         end
 
         # down
         if r <= ROW - len + 1
-            push!(answer, prod(data[r + i, c] for i = 0:3))
+            push!(answer, prod(data[r + i, c] for i = range(0, len - 1)))
         end
 
         # upper right
         if r >= len && c <= COL - len + 1
-            push!(answer, prod(data[r - i, c + i] for i = 0:3))
+            push!(answer, prod(data[r - i, c + i] for i = range(0, len - 1)))
         end
 
         # down right
         if r <= ROW - len + 1 && c <= COL - len + 1
-            push!(answer, prod(data[r + i, c + i] for i = 0:3))
+            push!(answer, prod(data[r + i, c + i] for i = range(0, len - 1)))
         end
     end
 
