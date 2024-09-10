@@ -113,8 +113,8 @@ const kvGenerator = function* (
 
 export const compute = (limit: number): string => {
   const tbl = new Map<number, number>();
-  const kv_gen = kvGenerator(limit * 2);
-  for (const [k, v] of kv_gen) {
+
+  for (const [k, v] of kvGenerator(limit * 2)) {
     if (k <= limit && (!tbl.has(k) || tbl.get(k)! > v)) {
       tbl.set(k, v);
     }

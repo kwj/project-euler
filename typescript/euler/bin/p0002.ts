@@ -26,10 +26,9 @@ const evenFibGen = function* (): Generator<number, void, void> {
 };
 
 export const compute = (limit: number): string => {
-  const fib_gen = evenFibGen();
   let result = 0;
 
-  for (const n of fib_gen) {
+  for (const n of evenFibGen()) {
     if (n > limit) {
       break;
     }

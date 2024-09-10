@@ -109,8 +109,8 @@ export const compute = (): string => {
       // pruning: end of search
       break;
     }
-    const pf_gen = pfGenerator([p, prevPrime(Math.trunc(LIMIT / p) + 1)]);
-    for (const pfLst of pf_gen) {
+
+    for (const pfLst of pfGenerator([p, prevPrime(Math.trunc(LIMIT / p) + 1)])) {
       if (getRatio(pfLst.slice(0, 2)) > pq.peek()![0]) {
         // pruning: skip to the next prime smaller than 'p'
         break;
