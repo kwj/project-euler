@@ -15,19 +15,20 @@ fn compute() -> i64 {
 
     // The reason for using rev() is to start with a route that has fewer options.
     for route in (3..=7).rev().permutations(5) {
+        // according to the problem statement, only one cycle exists
         if let Some(x) = find_cycle(&route, &polynum_tbl) {
-            // sum(100*x{1} + x{2}, 100*x{2} + x{3}, ..., 100*x{n} + x{1}) = sum(x{1}, x{2}, ..., x{n}) * 101
+            // sum(100*x{1} + x{2}, 100*x{2} + x{3}, ..., 100*x{n} + x{1})
+            //   = sum(x{1}, x{2}, ..., x{n}) * 101
             return x.iter().sum::<i64>() * 101;
         }
     }
 
-    // Not reached on this problem
     unreachable!();
 }
 
 fn find_cycle(
-    route: &[i64],
-    polynum_tbl: &HashMap<i64, HashMap<i64, Vec<i64>>>,
+    route: &[usize],
+    polynum_tbl: &HashMap<usize, HashMap<i64, Vec<i64>>>,
 ) -> Option<Vec<i64>> {
     fn is_distinct_numbers(nums: &[i64]) -> bool {
         let mut tmp: HashSet<i64> = HashSet::new();
@@ -38,9 +39,9 @@ fn find_cycle(
     }
 
     fn dfs(
-        route: &[i64],
+        route: &[usize],
         tracks: Vec<i64>,
-        tbl: &HashMap<i64, HashMap<i64, Vec<i64>>>,
+        tbl: &HashMap<usize, HashMap<i64, Vec<i64>>>,
     ) -> Option<Vec<i64>> {
         if route.is_empty() {
             if tracks[0] == *tracks.last().unwrap() && is_distinct_numbers(&tracks) {
@@ -70,38 +71,29 @@ fn find_cycle(
             }
         }
     }
+
     None
 }
 
-fn make_polynum_tbl() -> HashMap<i64, HashMap<i64, Vec<i64>>> {
-    fn get_polynum(poly: i64, n: i64) -> i64 {
-        match poly {
-            3 => n * (n - 1) / 2,
-            4 => n * n,
-            5 => n * (3 * n - 1) / 2,
-            6 => n * (2 * n - 1),
-            7 => n * (5 * n - 3) / 2,
-            8 => n * (3 * n - 2),
-            _ => unreachable!(),
-        }
-    }
-
-    let mut tbl: HashMap<i64, HashMap<i64, Vec<i64>>> = HashMap::new();
-    for i in 3_i64..=8 {
+fn make_polynum_tbl() -> HashMap<usize, HashMap<i64, Vec<i64>>> {
+    let mut tbl: HashMap<usize, HashMap<i64, Vec<i64>>> = HashMap::new();
+    for p in 3..=8 {
         let mut x: HashMap<i64, Vec<i64>> = HashMap::new();
-        let mut j = 0_i64;
-        loop {
-            j += 1;
-            let n = get_polynum(i, j);
-            if n < 1_000 || n % 100 < 10 {
-                continue;
-            } else if n >= 10_000 {
-                break;
-            }
+        for n in (1_i64..)
+            .step_by(p - 2)
+            .scan(0, |state, x| {
+                *state += x;
+                Some(*state)
+            })
+            .skip_while(|&x| x < 1_000)
+            .take_while(|&x| x < 10_000)
+            .filter(|&x| x % 100 > 10)
+        {
             x.entry(n / 100).or_default().push(n % 100);
         }
-        tbl.insert(i, x);
+        tbl.insert(p, x);
     }
+
     tbl
 }
 
