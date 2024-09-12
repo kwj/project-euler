@@ -1,7 +1,8 @@
 # project euler: problem 18
 
-from collections.abc import Callable, Iterator
+from collections.abc import Callable
 from functools import reduce
+from itertools import pairwise
 from operator import add
 
 # fmt: off
@@ -25,14 +26,10 @@ data = [
 # fmt: on
 
 
-def select_item(fn: Callable[..., int], lst: list[int]) -> Iterator[int]:
-    return map(fn, lst, lst[1:])
-
-
 def compute(fn: Callable[..., int], nums: list[list[int]]) -> str:
-    result = reduce(lambda x, y: list(map(add, select_item(fn, x), y)), reversed(nums))
-
-    return str(result[0])
+    return str(
+        reduce(lambda x, y: list(map(add, map(fn, pairwise(x)), y)), reversed(nums))[0]
+    )
 
 
 def solve() -> str:
