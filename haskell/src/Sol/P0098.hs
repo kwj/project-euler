@@ -41,8 +41,7 @@ makeNumber w1 w2 sq
     | length trans_map /= (length . nub $ snd <$> trans_map) =
         []
     | otherwise =
-        (singleton . undigits . reverse)
-            (mapMaybe (`lookup` trans_map) w2)
+        singleton . undigits . reverse $ mapMaybe (`lookup` trans_map) w2
   where
     trans_map = nub $ zip w1 (reverse $ digits sq)
 
