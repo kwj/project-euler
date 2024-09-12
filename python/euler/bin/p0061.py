@@ -5,37 +5,23 @@
 
 from collections.abc import Iterator
 from functools import reduce
-from itertools import count, dropwhile, permutations
+from itertools import accumulate, count, dropwhile, permutations, takewhile
 from operator import concat
 
 
 def make_polygonal_tbl() -> dict[int, list[tuple[int, int]]]:
-    def make_polygonal_lst(i: int) -> Iterator[int]:
-        fn = {
-            3: lambda n: n * (n + 1) // 2,  # triangular number
-            4: lambda n: n * n,  # square number
-            5: lambda n: n * (3 * n - 1) // 2,  # pentagonal number
-            6: lambda n: n * (2 * n - 1),  # hexagonal number
-            7: lambda n: n * (5 * n - 3) // 2,  # heptagonal number
-            8: lambda n: n * (3 * n - 2),
-        }  # octagonal number
-
-        lst = []
-        for n in count(1):
-            if (p_num := fn[i](n)) >= 10_000:
-                break
-            lst.append(p_num)
-
-        return dropwhile(lambda x: x < 1_000, lst)
+    def polygonal_numbers(n: int) -> Iterator[int]:
+        return filter(
+            lambda x: x % 100 >= 10,
+            takewhile(
+                lambda x: x < 10_000,
+                dropwhile(lambda x: x < 1_000, accumulate(count(1, n - 2))),
+            ),
+        )
 
     tbl = dict()
     for i in range(3, 9):
-        tbl[i] = list(
-            filter(
-                lambda tpl: tpl[1] >= 10,
-                map(lambda n: (n // 100, n % 100), make_polygonal_lst(i)),
-            )
-        )
+        tbl[i] = list(map(lambda n: (n // 100, n % 100), polygonal_numbers(i)))
 
     return tbl
 
