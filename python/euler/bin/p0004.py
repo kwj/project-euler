@@ -6,7 +6,7 @@ from euler.lib.util import is_palindrome
 def compute(digits: int) -> str:
     assert digits > 0, 'range error'
     n_upper = (10**digits) - 1
-    n_lower = (10 ** (digits - 1))
+    n_lower = 10 ** (digits - 1)
     blk_upper_limit = 10 ** (digits * 2) - 1
     blk_lower_limit = 10 ** ((digits - 1) * 2) if digits > 1 else 0
     blk_width = 10 ** (digits * 2 - 2)
