@@ -92,5 +92,5 @@
        (= n-gon 5) (->> (filter #(= (count %) 16) rings)
                         (map parse-long)
                         (apply max))
-       :else (->> (map #(BigInteger. ^String %) rings)
+       :else (->> (map biginteger rings)
                   (apply max))))))
