@@ -21,8 +21,8 @@ func compute(ndigits int) string {
 	var blkWidth = mylib.Pow(10, (ndigits*2 - 2))
 	var answer = make([]int, 0, 1)
 
-	for blkUpper := blkUpperLimit; blkUpper > blkLowerLimit; blkUpper -= blkWidth {
-		var blkLower = blkUpper - blkWidth
+	for blkLower := blkUpperLimit - blkWidth; blkLower >= blkLowerLimit; blkLower -= blkWidth {
+		var blkUpper = blkLower + blkWidth - 1
 		for x := nUpper; x >= nLower; x-- {
 			if x*x < blkLower {
 				break
