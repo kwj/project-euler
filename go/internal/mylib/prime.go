@@ -318,7 +318,7 @@ func Primes(args ...int) []int {
 
 	capacity := int(math.Floor(float64(high) / math.Log(float64(high))))
 	if low > 2 {
-		capacity -= int(math.Floor(float64(low) / math.Log(float64(low))))
+		capacity -= int(math.Floor(float64(low-1) / math.Log(float64(low-1))))
 	}
 	lst := make([]int, 0, capacity)
 
