@@ -37,16 +37,22 @@ import (
 var ratZero = big.NewRat(0, 1)
 
 func fourOps(x1, x2 *big.Rat) []*big.Rat {
-	result := make([]*big.Rat, 0)
+	result := make([]*big.Rat, 0, 6)
 
-	result = append(result, new(big.Rat).Add(x1, x2))
-	result = append(result, new(big.Rat).Mul(x1, x2))
-	result = append(result, new(big.Rat).Sub(x1, x2))
-	result = append(result, new(big.Rat).Sub(x2, x1))
-	if x1.Cmp(ratZero) != 0 {
+	if x1.Cmp(ratZero) == 0 {
+		result = append(result, big.NewRat(0, 1))
+		result = append(result, x2)
+		result = append(result, new(big.Rat).Neg(x2))
+	} else if x2.Cmp(ratZero) == 0 {
+		result = append(result, big.NewRat(0, 1))
+		result = append(result, x1)
+		result = append(result, new(big.Rat).Neg(x1))
+	} else {
+		result = append(result, new(big.Rat).Add(x1, x2))
+		result = append(result, new(big.Rat).Mul(x1, x2))
+		result = append(result, new(big.Rat).Sub(x1, x2))
+		result = append(result, new(big.Rat).Sub(x2, x1))
 		result = append(result, new(big.Rat).Mul(x2, new(big.Rat).Inv(x1)))
-	}
-	if x2.Cmp(ratZero) != 0 {
 		result = append(result, new(big.Rat).Mul(x1, new(big.Rat).Inv(x2)))
 	}
 
