@@ -1,6 +1,7 @@
 package mylib
 
 import (
+	"math"
 	"math/big"
 )
 
@@ -308,14 +309,19 @@ func Primes(args ...int) []int {
 		low, high = 1, args[0]
 	case 2:
 		low, high = args[0], args[1]
-		if low < 1 || low > high {
+		if low > high {
 			panic("range error")
 		}
 	default:
 		panic("invalid arguments")
 	}
 
-	lst := make([]int, 0)
+	capacity := int(math.Floor(float64(high) / math.Log(float64(high))))
+	if low > 2 {
+		capacity -= int(math.Floor(float64(low) / math.Log(float64(low))))
+	}
+	lst := make([]int, 0, capacity)
+
 	if low <= 2 {
 		lst = append(lst, 2)
 	}
