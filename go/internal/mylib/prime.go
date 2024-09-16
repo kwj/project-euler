@@ -316,6 +316,8 @@ func Primes(args ...int) []int {
 		panic("invalid arguments")
 	}
 
+	// π(x) ~ x / log x
+	// https://en.wikipedia.org/wiki/Prime_number_theorem
 	capacity := int(math.Floor(float64(high) / math.Log(float64(high))))
 	if low > 2 {
 		capacity -= int(math.Floor(float64(low-1) / math.Log(float64(low-1))))
