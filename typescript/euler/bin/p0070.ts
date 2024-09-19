@@ -110,7 +110,9 @@ export const compute = (): string => {
       break;
     }
 
-    for (const pfLst of pfGenerator([p, prevPrime(Math.trunc(LIMIT / p) + 1)])) {
+    for (
+      const pfLst of pfGenerator([p, prevPrime(Math.trunc(LIMIT / p) + 1)])
+    ) {
       if (getRatio(pfLst.slice(0, 2)) > pq.peek()![0]) {
         // pruning: skip to the next prime smaller than 'p'
         break;
