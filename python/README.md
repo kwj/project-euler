@@ -26,4 +26,5 @@ python3 solve.py 22
   
 ## Notes
 
-Python 3.11 or later is required to run these solutions. It was confirmed to work with Python 3.11.5.
+These solutions probably work with Python 3.11 or later.
+I confirmed to work with Python 3.12.3.
