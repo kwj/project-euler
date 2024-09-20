@@ -200,6 +200,7 @@ indexToNumber idx
             , 149, 151, 157, 163, 167, 169, 173, 179, 181, 187, 191, 193, 197, 199, 209, 211]
 {- FOURMOLU_ENABLE -}
 
+-- Note: This implementation doesn't take overflow into account.
 nextPrime :: Int -> Int
 nextPrime n
     | n < 2 = 2
