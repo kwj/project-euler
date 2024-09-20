@@ -5,16 +5,11 @@ import Mylib.Math (powerModExn)
 import Mylib.Util (headExn)
 
 pp :: Int -> Int
-pp = div5 . div2
+pp = iterDiv 5 . iterDiv 2
   where
-    div2 :: Int -> Int
-    div2 x
-        | even x = div2 (div x 2)
-        | otherwise = x
-
-    div5 :: Int -> Int
-    div5 x
-        | mod x 5 == 0 = div5 (div x 5)
+    iterDiv :: Int -> Int -> Int
+    iterDiv divisor x
+        | x `mod` divisor == 0 = iterDiv divisor (x `div` divisor)
         | otherwise = x
 
 -- This implementation isn't a correct Carmichael function because
