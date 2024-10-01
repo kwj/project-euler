@@ -6,7 +6,6 @@
 from collections.abc import Iterator
 from functools import reduce
 from itertools import accumulate, count, dropwhile, permutations, takewhile
-from operator import concat
 
 
 def make_polygonal_tbl() -> dict[int, list[tuple[int, int]]]:
@@ -45,7 +44,9 @@ def find_cycles(
         if paths == []:
             # No next reachable node on the route
             return []
-        paths = reduce(concat, map(lambda lst: get_next_node(lst, route[0]), paths))  # type: ignore
+        paths = reduce(
+            lambda x, y: x + y, map(lambda lst: get_next_node(lst, route[0]), paths)
+        )
         route = route[1:]
 
     # Remove non-cycles
@@ -62,7 +63,8 @@ def compute() -> str:
     #   - Each elements in cycle is belong to different polygonal type
     #   - There is only one cycle exist
     cycles: list[list[tuple[int, int]]] = reduce(
-        concat, map(lambda route: find_cycles(p_tbl, route), route_patterns)  # type: ignore
+        lambda x, y: x + y,
+        map(lambda route: find_cycles(p_tbl, route), route_patterns),
     )
     cycles = list(filter(lambda lst: len(lst) == len(set(lst)), cycles))
 
