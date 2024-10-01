@@ -17,7 +17,7 @@ def find_rings(n_gon: int, total: int) -> list[str]:
     rings: list[str] = []
 
     def make_str(ring: list[int]) -> str:
-        result = ""
+        result = ''
         for i in range(0, n_gon * 2, 2):
             result = '{}{}{}{}'.format(result, ring[i + 1], ring[i], ring[i + 2])
 
@@ -39,7 +39,7 @@ def find_rings(n_gon: int, total: int) -> list[str]:
     #        \
     #         ??
     def next_states(
-        state: tuple[list[int], list[int]]
+        state: tuple[list[int], list[int]],
     ) -> list[tuple[list[int], list[int]]]:
         ring, rest = state
         result: list[tuple[list[int], list[int]]] = []

@@ -47,7 +47,7 @@ def product(row: int, col: int, dir: Dir) -> int:
             case Dir.DOWN_RIGHT:
                 v *= grid_arr[row + i][col + i]
             case _:
-                assert False, "Direction Error"
+                assert False, 'Direction Error'
 
     return v
 

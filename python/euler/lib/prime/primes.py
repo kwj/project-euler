@@ -1472,13 +1472,13 @@ def get_prime_tbl(low: int, high: int) -> list[bool]:
 def primes(*args: int) -> list[int]:
     match len(args):
         case 1:
-            assert args[0] > 1, "range error"
+            assert args[0] > 1, 'range error'
             low, high = 1, args[0]
         case 2:
             low, high = args
-            assert low > 0 and low <= high, "range error"
+            assert low > 0 and low <= high, 'range error'
         case _:
-            assert False, "invalid arguments"
+            assert False, 'invalid arguments'
 
     lst = []
     if low <= 2:

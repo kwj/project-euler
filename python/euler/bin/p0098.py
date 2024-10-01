@@ -13,7 +13,7 @@ def select_keywords(words: list[str]) -> tuple[int, list[tuple[str, list[str]]]]
         return ''.join(sorted(list(word)))
 
     def make_kw_info(
-        tpl_lst: Iterator[tuple[str, str]]
+        tpl_lst: Iterator[tuple[str, str]],
     ) -> tuple[int, list[tuple[str, list[str]]]]:
         work = assoc_group_dict(tpl_lst)
         del_list = []

@@ -3,7 +3,7 @@ from typing import Any
 
 
 class HeapQueue:
-    '''wrapper class of heapq'''
+    """wrapper class of heapq"""
 
     def __init__(self, desc: bool = False):
         self.__sign = 1 if desc is False else -1

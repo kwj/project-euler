@@ -34,7 +34,7 @@ def compute() -> str:
     while len(result) < 11:
         result += pickup_primes(lst)
         lst = make_next_lists(lst)
-    assert len(result) == 11, "many candidates"
+    assert len(result) == 11, 'many candidates'
 
     return str(sum(result))
 
