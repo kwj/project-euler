@@ -75,7 +75,7 @@ def find_cliques(
             result.append(group)
         else:
             for offset in range(0, len(desc_ps) - depth + 1):
-                if len(group) == 0 or all(desc_ps[offset] in tbl[x] for x in group):
+                if all(desc_ps[offset] in tbl[x] for x in group):
                     aux(group + [desc_ps[offset]], desc_ps[offset + 1 :], depth - 1)
 
     result: list[list[int]] = []

@@ -49,7 +49,7 @@ func findCliques(ascPrimes []int, size int, tbl map[int]intSet) [][]int {
 			result = append(result, group)
 		} else {
 			for idx, p := range slices.All(descPrimes[:len(descPrimes)-depth+1]) {
-				if len(group) == 0 || isAllPair(p, group) {
+				if isAllPair(p, group) {
 					aux(append(group, p), descPrimes[idx+1:], depth-1)
 				}
 			}

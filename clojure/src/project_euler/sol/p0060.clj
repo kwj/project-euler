@@ -39,8 +39,7 @@
                 (conj! result group)
                 (loop [ps ps]
                   (when (>= (count ps) depth)
-                    (when (or (zero? (count group))
-                              (every? #(contains? (get tbl %) (first ps)) group))
+                    (when (every? #(contains? (get tbl %) (first ps)) group)
                       (aux (conj group (first ps)) (rest ps) (dec depth)))
                     (recur (rest ps))))))]
       (aux '() desc-ps size))

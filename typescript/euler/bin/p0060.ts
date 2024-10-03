@@ -61,7 +61,7 @@ const findCliques = (
       result.push(clq);
     } else {
       for (const i of range(0, lst.length - depth + 1)) {
-        if (clq.length === 0 || clq.every((x) => tbl.get(x)!.has(lst[i]))) {
+        if (clq.every((x) => tbl.get(x)!.has(lst[i]))) {
           aux(clq.concat([lst[i]]), lst.slice(i + 1), depth - 1);
         }
       }
