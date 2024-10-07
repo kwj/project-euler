@@ -7,6 +7,9 @@ fn solve() -> String {
 }
 
 fn compute(limit: i64) -> i64 {
+    // the smallest right-angle triangle with integral length sides is {3, 4, 5}
+    debug_assert!(limit >= 12);
+
     let mut result: Vec<(usize, i64)> = Vec::new();
 
     for p in (2..=limit).step_by(2) {
@@ -22,8 +25,7 @@ fn compute(limit: i64) -> i64 {
         }
     }
 
-    result.sort_by(|&a, &b| (b.0).cmp(&(a.0)));
-    result[0].1
+    result.into_iter().max_by_key(|x| x.0).unwrap().1
 }
 
 fn check_pair(p: i64, a: i64) -> bool {
