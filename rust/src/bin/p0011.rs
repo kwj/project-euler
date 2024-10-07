@@ -30,6 +30,8 @@ fn solve() -> String {
 }
 
 fn compute(n_nums: i64) -> i64 {
+    debug_assert!(n_nums > 0);
+
     let grid = get_grid();
     let row_size = grid.len() as i64;
     let col_size = grid[0].len() as i64;
@@ -42,13 +44,13 @@ fn compute(n_nums: i64) -> i64 {
         }
     };
 
-    let products = |r: i64, c: i64, length: i64| -> Vec<i64> {
+    let products = |r: i64, c: i64| -> Vec<i64> {
         let mut v_r: i64 = 1; // Right
         let mut v_d: i64 = 1; // Down
         let mut v_ur: i64 = 1; // Upper Right
         let mut v_dr: i64 = 1; // Down Right
 
-        for i in 0..length {
+        for i in 0..n_nums {
             v_r *= value_at(r, c + i);
             v_d *= value_at(r + i, c);
             v_ur *= value_at(r - i, c + i);
@@ -58,7 +60,7 @@ fn compute(n_nums: i64) -> i64 {
     };
 
     itertools::iproduct!(0..row_size, 0..col_size)
-        .flat_map(|(r, c)| products(r, c, n_nums))
+        .flat_map(|(r, c)| products(r, c))
         .max()
         .unwrap()
 }

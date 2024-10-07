@@ -13,6 +13,9 @@ fn solve() -> String {
 
 fn compute(data: &str) -> i64 {
     let mut word_tbl: HashMap<String, Vec<String>> = HashMap::new();
+    let mut sq_tbl: HashMap<usize, Vec<String>> = HashMap::new();
+    let mut ans: i64 = 0;
+
     for w in parse_data(data) {
         let mut tmp: Vec<_> = w.chars().collect();
         tmp.sort();
@@ -20,11 +23,10 @@ fn compute(data: &str) -> i64 {
         word_tbl.entry(key).or_default().push(w);
     }
 
-    let mut ans: i64 = 0;
-    let mut sq_tbl: HashMap<usize, Vec<String>> = HashMap::new();
     for anagram_words in word_tbl.values().filter(|&words| words.len() > 1) {
         ans = cmp::max(ans, get_max_anagram(anagram_words, &mut sq_tbl));
     }
+
     ans
 }
 
@@ -51,8 +53,7 @@ fn get_max_anagram(words: &[String], tbl: &mut HashMap<usize, Vec<String>>) -> i
 
     fn aux(w1: &str, w2: &str, squares: &[String]) -> i64 {
         fn trans(tbl: &HashMap<char, char>, s: &str) -> String {
-            let ret = s
-                .chars()
+            s.chars()
                 .map(|ch| {
                     if tbl.contains_key(&ch) {
                         *tbl.get(&ch).unwrap()
@@ -60,8 +61,7 @@ fn get_max_anagram(words: &[String], tbl: &mut HashMap<usize, Vec<String>>) -> i
                         ch
                     }
                 })
-                .collect::<String>();
-            ret
+                .collect()
         }
 
         let mut ret: i64 = 0;

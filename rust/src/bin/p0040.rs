@@ -6,21 +6,25 @@ fn solve() -> String {
     compute().to_string()
 }
 
-fn compute() -> i64 {
-    d(1) * d(10) * d(100) * d(1_000) * d(10_000) * d(100_000) * d(1_000_000)
+fn compute() -> u32 {
+    [1, 10, 100, 1_000, 10_000, 100_000, 1_000_000]
+        .into_iter()
+        .map(d)
+        .product()
 }
 
-fn d(mut pos: i64) -> i64 {
+fn d(mut pos: u32) -> u32 {
     let mut n_digits = 1;
-    while pos > n_digits * 9 * (10_i64.pow(n_digits as u32 - 1)) {
-        pos -= n_digits * 9 * (10_i64.pow(n_digits as u32 - 1));
+
+    while pos > n_digits * 9 * (10_u32.pow(n_digits - 1)) {
+        pos -= n_digits * 9 * (10_u32.pow(n_digits - 1));
         n_digits += 1;
     }
     let q = (pos - 1) / n_digits;
     let r = (pos - 1) % n_digits;
-    let num = 10_i64.pow(n_digits as u32 - 1) + q;
+    let num = 10_u32.pow(n_digits - 1) + q;
 
-    (num / (10_i64.pow((n_digits - r - 1) as u32))) % 10
+    (num / (10_u32.pow(n_digits - r - 1))) % 10
 }
 
 #[cfg(test)]

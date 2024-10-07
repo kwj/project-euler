@@ -137,8 +137,8 @@ fn solve() -> String {
 fn compute(data: &str) -> usize {
     let puzzles = parse_data(data);
     let grids = check_data(&puzzles);
-
     let mut ans: usize = 0;
+
     for grid in grids {
         if let Some(sol) = sudoku_solover(&grid) {
             let mut acc: usize = 0;
@@ -157,6 +157,7 @@ fn compute(data: &str) -> usize {
             unreachable!();
         }
     }
+
     ans
 }
 
@@ -180,16 +181,17 @@ fn parse_data(data: &str) -> Vec<Vec<usize>> {
     if !acc.is_empty() {
         ret.push(process_data(&acc));
     }
+
     ret
 }
 
 fn process_data(data: &[String]) -> Vec<usize> {
     let re_rplc1 = Regex::new(r"[^0-9.]").unwrap();
     let re_rplc2 = Regex::new(r"\.").unwrap();
-
     let mut tmp = data
         .iter()
         .fold(String::new(), |acc, x| format!("{}{}", acc, x));
+
     tmp = re_rplc1.replace_all(&tmp, "").to_string();
     tmp = re_rplc2.replace_all(&tmp, "0").to_string();
     tmp.chars().map(|c| c as usize - '0' as usize).collect()
@@ -222,6 +224,7 @@ fn check_data(pazzles: &[Vec<usize>]) -> Vec<Vec<u128>> {
         }
         ret.push(grid);
     }
+
     ret
 }
 

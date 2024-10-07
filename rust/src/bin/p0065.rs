@@ -42,6 +42,8 @@ fn solve() -> String {
 fn compute(nth: u32) -> i64 {
     use num_bigint::BigUint;
 
+    debug_assert!(nth >= 3);
+
     fn c(i: u32) -> BigUint {
         if i % 3 != 0 {
             BigUint::from(1_u32)
@@ -50,11 +52,14 @@ fn compute(nth: u32) -> i64 {
         }
     }
 
-    let (mut n1, mut n2) = (BigUint::from(3_u32), BigUint::from(2_u32));
+    let mut x = BigUint::from(3_u32);
+    let mut y = BigUint::from(2_u32);
+
     for i in 3..=nth {
-        (n1, n2) = (c(i) * &n1 + n2, n1);
+        (x, y) = (c(i) * &x + y, x);
     }
-    n1.to_radix_le(10).into_iter().map(|x| x as i64).sum()
+
+    x.to_radix_le(10).into_iter().map(i64::from).sum()
 }
 
 #[cfg(test)]

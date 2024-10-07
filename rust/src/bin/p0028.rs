@@ -27,11 +27,13 @@ fn solve() -> String {
 }
 
 fn compute(length: i64) -> i64 {
-    let mut ans = 1_i64;
-    for n in 1..=((length - 1) / 2) {
-        ans += 16 * n * n + 4 * n + 4;
+    debug_assert!(length.is_positive() && length % 2 == 1);
+
+    fn f(x: i64) -> i64 {
+        16 * x * x + 4 * x + 4
     }
-    ans
+
+    1 + (1..=((length - 1) / 2)).map(f).sum::<i64>()
 }
 
 #[cfg(test)]

@@ -94,6 +94,8 @@ fn solve() -> String {
 }
 
 fn compute(limit: i64) -> i64 {
+    debug_assert!(limit > 1);
+
     let mut ans: (BigUint, i64) = (BigUint::from(0_u32), 0);
     let mut numerator: BigUint;
     for i in 1..=limit {
@@ -138,11 +140,14 @@ fn get_cont_fraction(n: i64) -> (u64, Vec<u64>) {
 }
 
 fn get_numerator(a0: u64, rep_lst: &[u64]) -> BigUint {
-    let (mut n1, mut n2) = (BigUint::from(a0), BigUint::from(1_u32));
+    let mut x = BigUint::from(a0);
+    let mut y = BigUint::from(1_u32);
+
     for a in rep_lst {
-        (n1, n2) = (*a * &n1 + n2, n1);
+        (x, y) = (*a * &x + y, x);
     }
-    n1
+
+    x
 }
 
 #[cfg(test)]

@@ -9,7 +9,9 @@ fn solve() -> String {
 fn compute(upper: i64) -> i64 {
     use euler::math::primes;
 
-    primes::primes(1, upper).iter().sum()
+    debug_assert!(upper > 2);
+
+    primes::primes(1, upper - 1).iter().sum()
 }
 
 #[cfg(test)]

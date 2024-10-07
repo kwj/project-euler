@@ -8,15 +8,15 @@ fn solve() -> String {
     compute(FILE_DATA).to_string()
 }
 
-fn compute(data: &str) -> i64 {
+fn compute(data: &str) -> usize {
     let mut names = parse_data(data);
 
     names.sort();
     names
-        .into_iter()
+        .iter()
         .enumerate()
-        .map(|(idx, word)| (idx + 1) * worth(&word))
-        .sum::<usize>() as i64
+        .map(|(idx, word)| (idx + 1) * worth(word))
+        .sum()
 }
 
 fn parse_data(s: &str) -> Vec<String> {

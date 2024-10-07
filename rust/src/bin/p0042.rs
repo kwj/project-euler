@@ -8,16 +8,13 @@ fn solve() -> String {
     compute(FILE_DATA).to_string()
 }
 
-fn compute(data: &str) -> i64 {
+fn compute(data: &str) -> usize {
     use euler::math;
 
-    let names = parse_data(data);
-
-    names
+    parse_data(data)
         .into_iter()
-        .map(|s| worth(&s) as i64)
-        .filter(|&x| math::is_triangular(x))
-        .count() as i64
+        .filter(|s| math::is_triangular(worth(s)))
+        .count()
 }
 
 fn parse_data(s: &str) -> Vec<String> {
@@ -29,8 +26,8 @@ fn parse_data(s: &str) -> Vec<String> {
         .collect()
 }
 
-fn worth(s: &str) -> usize {
-    s.chars().map(|c| c as usize - 'A' as usize + 1).sum()
+fn worth(s: &str) -> i64 {
+    s.chars().map(|c| c as i64 - 'A' as i64 + 1).sum()
 }
 
 #[cfg(test)]
