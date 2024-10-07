@@ -11,7 +11,9 @@ fn compute() -> i64 {
 
     let (a, b) = make_cands()
         .into_iter()
-        .fold((1, 1), |acc, x| (acc.0 * x.0, acc.1 * x.1));
+        .reduce(|x, y| (x.0 * y.0, x.1 * y.1))
+        .unwrap();
+
     b / math::gcd(a, b)
 }
 
