@@ -13,7 +13,7 @@ fn compute(exp: u32) -> i64 {
         .pow(exp)
         .to_radix_le(10)
         .into_iter()
-        .map(|x| x as i64)
+        .map(i64::from)
         .sum()
 }
 

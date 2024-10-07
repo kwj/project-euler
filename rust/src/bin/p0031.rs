@@ -15,6 +15,7 @@ fn compute(coins: Vec<usize>, target: usize) -> usize {
             tbl[i] += tbl[i - c];
         }
     }
+
     tbl[target]
 }
 

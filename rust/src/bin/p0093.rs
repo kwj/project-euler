@@ -29,7 +29,6 @@ fn get_consec_counts(lst: &[i32]) -> i32 {
         return cnt - 1;
     }
 
-    // Not reached on this problem
     unreachable!();
 }
 
@@ -60,12 +59,10 @@ fn make_numbers(lst: &[i32]) -> HashSet<i32> {
         }
     }
 
-    let rat_nums = lst
-        .iter()
-        .map(|n| Ratio::new(*n, 1))
-        .collect::<Vec<Ratio<i32>>>();
+    let rat_nums: Vec<_> = lst.iter().map(|n| Ratio::new(*n, 1)).collect();
     let mut res: HashSet<i32> = HashSet::new();
     aux(&rat_nums, &mut res);
+
     res
 }
 

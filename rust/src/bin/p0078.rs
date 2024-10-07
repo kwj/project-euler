@@ -70,6 +70,7 @@ fn compute(denom: i64) -> usize {
         p.push(rem);
         n += 1;
     }
+
     n
 }
 
@@ -97,6 +98,7 @@ impl Iterator for GPnumbers {
             self.acc += self.step;
             self.step += 1;
         }
+
         self.flag = (self.flag + 1) % 2;
         Some(self.acc)
     }

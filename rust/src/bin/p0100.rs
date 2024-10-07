@@ -39,6 +39,7 @@ fn compute(thr: i64) -> i64 {
     while x <= limit {
         (x, y) = (3 * x + 4 * y, 2 * x + 3 * y);
     }
+
     (y + 1) / 2
 }
 

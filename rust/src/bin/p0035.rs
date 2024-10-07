@@ -6,7 +6,7 @@ fn solve() -> String {
     compute(1_000_000).to_string()
 }
 
-fn compute(limit: i64) -> i64 {
+fn compute(limit: i64) -> usize {
     use euler::math::{self, primes};
 
     fn check_rot_num(n: i64) -> bool {
@@ -20,7 +20,7 @@ fn compute(limit: i64) -> i64 {
     primes::primes(1, limit)
         .into_iter()
         .filter(|&x| check_rot_num(x))
-        .count() as i64
+        .count()
 }
 
 #[cfg(test)]

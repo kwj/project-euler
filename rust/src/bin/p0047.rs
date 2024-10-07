@@ -24,7 +24,6 @@ fn compute(nfactors: i64) -> i64 {
         }
     }
 
-    // Not reached on this problem
     unreachable!();
 }
 

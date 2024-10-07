@@ -27,6 +27,7 @@ fn compute(thr: i64) -> usize {
             break;
         }
     }
+
     p_lst.len()
 }
 
@@ -35,7 +36,7 @@ mod tests {
     use super::compute;
 
     #[test]
-    fn p0076_4() {
+    fn p0077_4() {
         assert_eq!(compute(4), 10);
     }
 

@@ -12,13 +12,13 @@ fn compute(data: &str) -> i64 {
     use std::cmp;
 
     let mut matrix = parse_data(data);
-    let mut prev = matrix[0]
+    let mut prev: Vec<_> = matrix[0]
         .iter()
         .scan(0, |acc, x| {
             *acc += *x;
             Some(*acc)
         })
-        .collect::<Vec<i64>>();
+        .collect();
     prev.insert(0, i64::MAX);
 
     for work in matrix[1..].iter_mut() {
@@ -28,6 +28,7 @@ fn compute(data: &str) -> i64 {
         }
         prev.clone_from(work);
     }
+
     *prev.last().unwrap()
 }
 
@@ -37,6 +38,7 @@ fn parse_data(data: &str) -> Vec<Vec<i64>> {
     for line in data.lines() {
         ret.push(line.split(',').map(|s| s.parse::<i64>().unwrap()).collect());
     }
+
     ret
 }
 

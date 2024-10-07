@@ -13,7 +13,7 @@ fn compute() -> i64 {
 
     let polynum_tbl = make_polynum_tbl();
 
-    // The reason for using rev() is to start with a route that has fewer options.
+    // The reason for using rev() is to start with a route that has fewer choices.
     for route in (3..=7).rev().permutations(5) {
         // according to the problem statement, only one cycle exists
         if let Some(x) = find_cycle(&route, &polynum_tbl) {

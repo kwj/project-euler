@@ -15,7 +15,6 @@ fn compute() -> i64 {
         }
     }
 
-    // Not reached on this problem
     unreachable!();
 }
 
@@ -34,6 +33,7 @@ fn check_num(num: i64) -> bool {
             return false;
         }
     }
+
     true
 }
 

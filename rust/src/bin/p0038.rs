@@ -23,6 +23,7 @@
   Furthermore, multiplicand `9abc` times 2 must be `18xyz` not `19xyz`.
   It is clear that the range of candidates is only [9183, 9500).
   Finally, the last digit of numbers is 0, 1, 4, 5, 8 or 9 can be excluded from candidates.
+  ==> [9183, 9498)
 */
 
 euler::run_solver!(38);
@@ -36,7 +37,7 @@ fn compute() -> i64 {
 
     let mut ans = 918273645_i64;
 
-    for x in (9183_i64..9500).rev() {
+    for x in (9183_i64..9498).rev() {
         let rem = x % 10;
         if rem <= 1 || rem >= 8 || rem == 4 || rem == 5 {
             continue;

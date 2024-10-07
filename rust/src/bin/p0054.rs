@@ -164,7 +164,6 @@ fn make_handinfo(cards: &[(i64, char)]) -> Hand {
                 rank.category = CAT_FH;
             }
         } else {
-            // Not reached
             unreachable!();
         }
     }

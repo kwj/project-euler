@@ -36,13 +36,14 @@ fn parse_data(data: &str) -> HashMap<i64, Vec<i64>> {
     let mut ret: HashMap<i64, Vec<i64>> = HashMap::new();
 
     for line in data.lines() {
-        let v = line
+        let v: Vec<_> = line
             .chars()
             .map(|ch| ch.to_digit(10).unwrap() as i64)
-            .collect::<Vec<i64>>();
+            .collect();
         ret.entry(v[0]).or_default().extend(vec![v[1], v[2]]);
         ret.entry(v[1]).or_default().push(v[2]);
     }
+
     ret
 }
 

@@ -58,6 +58,7 @@ fn parse_data(data: &str) -> Vec<String> {
     for line in data.lines() {
         ret.push(line.to_string());
     }
+
     ret
 }
 

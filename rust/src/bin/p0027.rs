@@ -39,14 +39,17 @@ fn compute() -> i64 {
             }
         }
     }
+
     max_tpl.0 * max_tpl.1
 }
 
 fn count_consec_times(a: i64, b: i64) -> i64 {
     let mut n = 0_i64;
+
     while primes::is_prime(n * n + a * n + b) {
         n += 1;
     }
+
     n
 }
 

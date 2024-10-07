@@ -6,7 +6,7 @@ fn solve() -> String {
     compute().to_string()
 }
 
-fn compute() -> i64 {
+fn compute() -> usize {
     let common_year: Vec<i64> = vec![31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     let leap_year: Vec<i64> = vec![31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
@@ -20,12 +20,12 @@ fn compute() -> i64 {
     // the `initial_state` parameter of Iterator::scan() is the day of the week on January 1, 1900
     // (0: Sunday, 1: Monday, ..., 6: Saturday)
     days.iter()
-        .scan(1, |state, &x| {
-            *state = (*state + x) % 7;
+        .scan(1, |state, x| {
+            *state = (*state + *x) % 7;
             Some(*state)
         })
-        .filter(|&x| x == 0)
-        .count() as i64
+        .filter(|x| *x == 0)
+        .count()
 }
 
 fn repeat_vec(v: &[i64], count: usize) -> Vec<i64> {

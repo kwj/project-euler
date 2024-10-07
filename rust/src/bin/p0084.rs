@@ -146,14 +146,14 @@ fn compute(nfaces: usize, nsquares: usize) -> String {
 
     let steady_state = go_steady(&stoch_matrix);
 
-    let mut result = (0..40)
+    let mut result: Vec<_> = (0..40)
         .map(|i| {
             (
                 format!("{:02}", i),
                 steady_state[i][0] + steady_state[40 + i][0] + steady_state[80 + i][0],
             )
         })
-        .collect::<Vec<(String, f64)>>();
+        .collect();
     result.sort_by(|a, b| (b.1).partial_cmp(&a.1).unwrap());
     result
         .into_iter()
@@ -162,7 +162,7 @@ fn compute(nfaces: usize, nsquares: usize) -> String {
 }
 
 fn go_steady(matrix: &[Vec<f64>]) -> Vec<Vec<f64>> {
-    assert!(matrix.len() == matrix[0].len(), "It's not a square matrix");
+    debug_assert!(matrix.len() == matrix[0].len(), "It's not a square matrix");
 
     let size = matrix.len();
     let mut work = matrix.to_vec();
@@ -180,11 +180,13 @@ fn go_steady(matrix: &[Vec<f64>]) -> Vec<Vec<f64>> {
             break;
         }
     }
+
     work
 }
 
 fn is_steady(x: &[f64], y: &[f64]) -> bool {
-    assert!(x.len() == y.len(), "mismatch!");
+    debug_assert!(x.len() == y.len(), "mismatch!");
+
     x.iter()
         .zip(y.iter())
         .all(|(a, b)| (a - b).abs() < f64::EPSILON)

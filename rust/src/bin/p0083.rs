@@ -42,6 +42,7 @@ fn compute(data: &str) -> i64 {
             }
         }
     }
+
     dist_tbl[dist_tbl.len() - 1][dist_tbl[0].len() - 1]
 }
 
@@ -51,6 +52,7 @@ fn parse_data(data: &str) -> Vec<Vec<i64>> {
     for line in data.lines() {
         ret.push(line.split(',').map(|s| s.parse::<i64>().unwrap()).collect());
     }
+
     ret
 }
 
@@ -70,6 +72,7 @@ fn make_neighbor_tbl(n_rows: usize, n_cols: usize) -> Vec<Vec<Vec<(usize, usize)
                 .collect();
         }
     }
+
     tbl
 }
 

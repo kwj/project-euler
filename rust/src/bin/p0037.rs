@@ -42,12 +42,14 @@ fn check_left_truncatable(n: i64) -> bool {
     use euler::math::{self, primes};
 
     let mut d = math::num_of_digits(n, 10) as u32;
+
     while d > 0 {
         if !primes::is_prime(n % (10_i64.pow(d))) {
             return false;
         }
         d -= 1;
     }
+
     true
 }
 

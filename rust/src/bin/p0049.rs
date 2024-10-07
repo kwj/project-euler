@@ -28,7 +28,6 @@ fn compute(n_digits: u32) -> i64 {
         }
     }
 
-    // Not reached on this problem
     unreachable!();
 }
 
@@ -49,6 +48,7 @@ fn get_prime_tbl(n_digits: u32) -> HashMap<i64, Vec<i64>> {
         lst.push(p);
         p_tbl.insert(key, lst);
     }
+
     p_tbl
 }
 

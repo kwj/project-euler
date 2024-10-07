@@ -24,7 +24,6 @@ fn compute() -> i64 {
         }
     }
 
-    // Not reached on this problem
     unreachable!();
 }
 
