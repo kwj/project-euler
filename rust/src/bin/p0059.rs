@@ -17,17 +17,24 @@ fn compute(data: &str) -> i64 {
 
     // 'a' = 0x61, 'z' = 0x7A
     for key in (0..3).map(|_| 0x61_u8..=0x7A).multi_cartesian_product() {
-        let decrypted_text = cipher_text
+        let decrypted_text: Vec<_> = cipher_text
             .iter()
             .enumerate()
             .map(|(idx, n)| n ^ key[idx % 3])
-            .collect::<Vec<_>>();
-        let score = decrypted_text.iter().map(|ch| calc_score(*ch)).sum();
-        if score > max_score {
-            max_score = score;
-            ans = decrypted_text.into_iter().map(|x| x as i64).sum();
+            .collect();
+        if decrypted_text
+            .iter()
+            .map(|&x| char::from(x)) // without this code, it is about 10% slower on my machine
+            .all(|c| c.is_ascii_graphic() || c.is_ascii_whitespace())
+        {
+            let score = decrypted_text.iter().map(|ch| calc_score(*ch)).sum();
+            if score > max_score {
+                max_score = score;
+                ans = decrypted_text.into_iter().map(i64::from).sum();
+            }
         }
     }
+
     ans
 }
 
