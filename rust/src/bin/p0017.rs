@@ -6,8 +6,10 @@ fn solve() -> String {
     compute(1_000).to_string()
 }
 
-fn compute(limit: i64) -> i64 {
+fn compute(limit: i64) -> usize {
     use std::collections::HashMap;
+
+    debug_assert!(limit > 0 && limit <= 1_000);
 
     let kv_pairs: Vec<(i64, usize)> = vec![
         (1, "one".len()),
@@ -40,8 +42,8 @@ fn compute(limit: i64) -> i64 {
         (0, 0),
     ];
     let words: HashMap<_, _> = kv_pairs.into_iter().collect();
-
     let mut acc: usize = 0;
+
     for n in 1..=limit {
         if n == 1_000 {
             // one thousand (3 + 8)
@@ -65,7 +67,8 @@ fn compute(limit: i64) -> i64 {
                 + words.get(&(n % 10)).unwrap();
         }
     }
-    acc as i64
+
+    acc
 }
 
 #[cfg(test)]

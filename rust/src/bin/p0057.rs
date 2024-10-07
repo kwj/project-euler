@@ -28,15 +28,18 @@ fn solve() -> String {
 fn compute(limit: i64) -> i64 {
     use num_bigint::BigUint;
 
-    let mut ans: i64 = 0;
+    debug_assert!(limit > 0);
 
+    let mut ans: i64 = 0;
     let (mut b, mut c) = (BigUint::from(1_u32), BigUint::from(1_u32));
+
     for _ in 0..limit {
         (b, c) = (&c + &c + &b, &c + &b);
         if BigUint::to_str_radix(&b, 10).len() > BigUint::to_str_radix(&c, 10).len() {
             ans += 1;
         }
     }
+
     ans
 }
 

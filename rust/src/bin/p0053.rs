@@ -7,7 +7,7 @@ fn solve() -> String {
 }
 
 fn compute(max_n: i64, thr: i64) -> i64 {
-    assert!(max_n > 0);
+    debug_assert!(max_n > 0);
 
     // find the first central binomial coefficient C(2k, k) which is larger than 'thr'.
     let mut c: i64 = 2;
@@ -35,6 +35,7 @@ fn compute(max_n: i64, thr: i64) -> i64 {
         c = c * (n + 1) / x;
         x += 1;
     }
+
     ans
 }
 

@@ -7,6 +7,8 @@ fn solve() -> String {
 }
 
 fn compute(upper: i64) -> i64 {
+    debug_assert!(upper > 0);
+
     (sum_of_squares(upper) - square_of_sum(upper)).abs()
 }
 

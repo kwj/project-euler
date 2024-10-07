@@ -32,6 +32,8 @@ fn solve() -> String {
 fn compute(n_digits: usize) -> i64 {
     use regex::Regex;
 
+    debug_assert!(n_digits > 0);
+
     let re = Regex::new(r"\D").unwrap();
     let re_s = Regex::new("0").unwrap();
 

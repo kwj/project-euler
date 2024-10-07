@@ -20,7 +20,9 @@ fn solve() -> String {
 fn compute(mut perim: i64) -> i64 {
     use euler::math;
 
+    debug_assert!(perim >= 3 + 4 + 5);
     perim /= 2;
+
     for m in 2..=math::isqrt(perim) {
         if perim % m != 0 {
             continue;
@@ -37,7 +39,6 @@ fn compute(mut perim: i64) -> i64 {
         }
     }
 
-    // Not reached on this problem
     unreachable!();
 }
 

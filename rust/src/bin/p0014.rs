@@ -7,6 +7,8 @@ fn solve() -> String {
 }
 
 fn compute(thr: i64) -> i64 {
+    debug_assert!(thr > 1);
+
     ((thr / 2)..thr)
         .max_by_key(|&n| get_collatz_length(n))
         .unwrap()
@@ -14,6 +16,7 @@ fn compute(thr: i64) -> i64 {
 
 fn get_collatz_length(mut n: i64) -> i64 {
     let mut cnt: i64 = 1;
+
     while n > 1 {
         cnt += 1;
         if n & 1 == 0 {
@@ -22,6 +25,7 @@ fn get_collatz_length(mut n: i64) -> i64 {
             n = 3 * n + 1;
         }
     }
+
     cnt
 }
 

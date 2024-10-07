@@ -13,7 +13,10 @@ fn solve() -> String {
 }
 
 fn compute(limit: i64) -> i64 {
+    debug_assert!(limit > 1);
+
     let mut cache: HashMap<i64, i64> = HashMap::new();
+
     sum_phi(limit, &mut cache) - sum_phi(1, &mut cache)
 }
 
@@ -30,6 +33,7 @@ fn sum_phi(num: i64, cache: &mut HashMap<i64, i64>) -> i64 {
         for d in 1..=(num / (math::isqrt(num) + 1)) {
             v -= ((num / d) - (num / (d + 1))) * sum_phi(d, cache);
         }
+
         cache.insert(num, v);
         v
     }

@@ -9,6 +9,8 @@ fn solve() -> String {
 fn compute(upper: i64) -> String {
     use euler::math;
 
+    debug_assert!(upper > 0);
+
     let ans = (1..=upper)
         .filter(|&x| x % 10 != 0)
         .map(|x| math::powmod(x, x, 10_i64.pow(10)))

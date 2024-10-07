@@ -7,7 +7,10 @@ fn solve() -> String {
 }
 
 fn compute(limit: i64) -> i64 {
+    debug_assert!(limit > 0);
+
     let f = |x: i64| -> i64 {
+        // tmp: number of multiples of `x` less than `limit`
         let tmp = (limit - 1) / x;
         (1 + tmp) * tmp / 2 * x
     };

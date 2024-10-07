@@ -6,8 +6,10 @@ fn solve() -> String {
     compute(1_500_000).to_string()
 }
 
-fn compute(perim: usize) -> i64 {
+fn compute(perim: usize) -> usize {
     use euler::math;
+
+    debug_assert!(perim >= 12);
 
     let limit = math::isqrt(perim as i64 / 2) as usize;
     let mut counter = vec![0; perim + 1];
@@ -25,7 +27,8 @@ fn compute(perim: usize) -> i64 {
             }
         }
     }
-    counter.into_iter().filter(|&x| x == 1).count() as i64
+
+    counter.into_iter().filter(|&x| x == 1).count()
 }
 
 #[cfg(test)]

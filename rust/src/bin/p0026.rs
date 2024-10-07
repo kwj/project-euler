@@ -7,6 +7,8 @@ fn solve() -> String {
 }
 
 fn compute(upper: i64) -> i64 {
+    debug_assert!(upper > 1);
+
     let mut max_length = 0_i64;
     let mut ans = 0_i64;
 
@@ -59,7 +61,6 @@ fn find_repetend_length(mut n: i64) -> Option<(i64, i64)> {
         }
     }
 
-    // Not reached on this problem
     unreachable!();
 }
 

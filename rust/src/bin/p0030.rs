@@ -46,6 +46,8 @@ fn compute(exp: u32) -> i64 {
     use euler::math;
     use itertools::Itertools;
 
+    debug_assert!(exp > 1);
+
     let pow_tbl: Vec<i64> = (0_i64..=9).map(|x| x.pow(exp)).collect();
     let mut acc = 0_i64;
 
@@ -61,16 +63,19 @@ fn compute(exp: u32) -> i64 {
             }
         }
     }
+
     acc
 }
 
 fn get_max_ndigits(exp: u32) -> usize {
     let k = 9_usize.pow(exp);
     let mut x = 2_u32;
+
     while (x as usize) * k > 10_usize.pow(x - 1) {
         x += 1;
     }
-    (x - 1) as usize
+
+    x as usize - 1
 }
 
 #[cfg(test)]

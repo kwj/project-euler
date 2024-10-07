@@ -10,6 +10,8 @@ fn compute(n_perms: usize) -> i64 {
     use euler::math;
     use std::collections::HashMap;
 
+    debug_assert!(n_perms > 1);
+
     fn make_key(n: i64) -> i64 {
         let mut tmp = math::digits(n);
         tmp.sort();
@@ -27,7 +29,6 @@ fn compute(n_perms: usize) -> i64 {
         }
     }
 
-    // Not reached on this problem
     unreachable!();
 }
 

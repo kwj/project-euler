@@ -29,6 +29,8 @@ fn solve() -> String {
 }
 
 fn compute(n_gon: i64) -> i64 {
+    debug_assert!(n_gon >= 3);
+
     solve_by_backtraking(n_gon)
 }
 
@@ -36,8 +38,11 @@ fn solve_by_backtraking(n_gon: i64) -> i64 {
     let mut ring = vec![0_i64; (n_gon * 2 + 1) as usize];
     let mut result: Vec<String> = Vec::new();
 
-    // The minimum total of the line on '10' exists is 1 + 2 + (n_gon * 2) = n_gon * 2 + 3.
-    // The maximum total of the line on '1' exsits is 1 + (n_gon * 2 - 1) + (n_gon * 2) = n_gon * 4.
+    // minimum number: 1
+    // maximum number: n_gon * 2
+    //
+    // The minimum total of a line which contains `n_gon * 2` is 1 + 2 + (n_gon * 2) = n_gon * 2 + 3.
+    // The maximum total of a line which contains `1` is 1 + (n_gon * 2 - 1) + (n_gon * 2) = n_gon * 4.
     for total in (n_gon * 2 + 3)..=(n_gon * 4) {
         for n in 1..=(n_gon * 2) {
             ring[0] = n;

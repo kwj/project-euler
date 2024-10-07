@@ -20,6 +20,8 @@ fn solve() -> String {
 }
 
 fn compute(limit: i64) -> i64 {
+    debug_assert!(limit >= 8);
+
     2 + 3 * ((limit - 5) / 7)
 }
 

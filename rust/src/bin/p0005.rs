@@ -9,6 +9,8 @@ fn solve() -> String {
 fn compute(upper: i64) -> i64 {
     use euler::math;
 
+    debug_assert!(upper > 0);
+
     (1..=upper).reduce(math::lcm).unwrap()
 }
 

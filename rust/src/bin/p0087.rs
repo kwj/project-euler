@@ -19,6 +19,8 @@ fn compute(thr: i64) -> usize {
     use euler::math::{self, primes};
     use std::collections::HashSet;
 
+    debug_assert!(thr > 28);
+
     let mut res: HashSet<i64> = HashSet::new();
     let p_lst = primes::primes(1, math::isqrt(thr));
 
@@ -35,6 +37,7 @@ fn compute(thr: i64) -> usize {
             }
         }
     }
+
     res.len()
 }
 

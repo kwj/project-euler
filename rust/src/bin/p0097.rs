@@ -9,7 +9,10 @@ fn solve() -> String {
 fn compute(n_digits: u32) -> String {
     use euler::math;
 
+    debug_assert!(n_digits > 0);
+
     let divisor = 10_i64.pow(n_digits);
+
     format!(
         "{:0width$}",
         (28433 * math::powmod(2, 7830457, divisor) + 1) % divisor,

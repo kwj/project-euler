@@ -9,6 +9,8 @@ fn solve() -> String {
 fn compute(x: i64, y: i64) -> i64 {
     use euler::math;
 
+    debug_assert!(x > 0 && y > 0);
+
     math::binomial(x + y, y)
 }
 

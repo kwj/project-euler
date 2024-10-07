@@ -18,7 +18,7 @@ fn compute() -> usize {
 }
 
 fn check_square(dice: &[Vec<i32>]) -> bool {
-    assert!(dice.len() == 2);
+    debug_assert!(dice.len() == 2);
 
     // Squares list which is replaced 9's with 6
     const SQUARES: [[i32; 2]; 8] = [

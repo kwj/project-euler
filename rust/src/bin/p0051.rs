@@ -11,6 +11,8 @@ fn solve() -> String {
 fn compute(f_size: i64) -> i64 {
     use euler::math::primes;
 
+    debug_assert!(f_size >= 8);
+
     for exp in 3_u32.. {
         let p_lst = primes::primes(10_i64.pow(exp), 10_i64.pow(exp + 1));
         for p in p_lst {
@@ -20,7 +22,6 @@ fn compute(f_size: i64) -> i64 {
         }
     }
 
-    // Not reached on this problem
     unreachable!();
 }
 
@@ -52,6 +53,7 @@ fn is_family(p: i64, f_size: i64) -> bool {
             }
         }
     }
+
     false
 }
 

@@ -9,6 +9,8 @@ fn solve() -> String {
 }
 
 fn compute(upper: u32) -> usize {
+    debug_assert!(upper > 0);
+
     (1..=upper)
         .filter(|&n| is_rychrel(BigUint::from(n)))
         .count()
@@ -23,6 +25,7 @@ fn is_rychrel(mut n: BigUint) -> bool {
             return false;
         }
     }
+
     true
 }
 

@@ -20,11 +20,14 @@ fn solve() -> String {
 }
 
 fn compute(limit: usize) -> i64 {
+    debug_assert!(limit >= 3);
+
     g(limit)
 }
 
 fn g(limit: usize) -> i64 {
     let mu_tbl = make_mobius_tbl(limit);
+
     (1..=limit).map(|k| mu_tbl[k] * f((limit / k) as i64)).sum()
 }
 
@@ -55,6 +58,7 @@ fn make_mobius_tbl(limit: usize) -> Vec<i64> {
             mu_tbl[i] = -mu_tbl[i / p_tbl[i]];
         }
     }
+
     mu_tbl
 }
 

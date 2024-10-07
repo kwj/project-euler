@@ -10,19 +10,21 @@ fn compute(limit: i64, n_digits: u32) -> i64 {
     use euler::math;
     use num_bigint::BigUint;
 
+    debug_assert!(limit > 1);
+
     let power_10 = BigUint::from(10_u32).pow((n_digits - 1) * 2);
-    (1..=limit)
+    (2..=limit)
         .filter(|&x| !math::is_square(x))
         .map(|x| (power_10.clone() * x as u32).sqrt())
         .map(|x| {
             x.to_radix_le(10)
-                .iter()
+                .into_iter()
                 .rev()
                 .take(n_digits as usize)
-                .map(|&x| x as i64)
+                .map(i64::from)
                 .sum::<i64>()
         })
-        .sum::<i64>()
+        .sum()
 }
 
 #[cfg(test)]

@@ -9,11 +9,13 @@ fn solve() -> String {
 fn compute(n: usize) -> i64 {
     use num_bigint::BigUint;
 
+    debug_assert!(n > 0);
+
     (1..=n)
         .fold(BigUint::from(1_u32), |acc, x| acc * x)
         .to_radix_le(10)
         .into_iter()
-        .map(|x| x as i64)
+        .map(i64::from)
         .sum()
 }
 

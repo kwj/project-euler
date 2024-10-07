@@ -112,12 +112,15 @@ fn solve() -> String {
 fn compute(n_digits: usize) -> String {
     use num_bigint::BigUint;
 
+    debug_assert!(n_digits > 0);
+
     let ans: String = DATA
         .trim()
         .lines()
         .map(|s| s.trim().parse::<BigUint>().unwrap())
         .sum::<BigUint>()
         .to_string();
+
     String::from(&ans[0..n_digits])
 }
 

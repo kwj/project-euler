@@ -28,8 +28,11 @@ fn solve() -> String {
 fn compute(limit: i64) -> i64 {
     use euler::math::primes;
 
+    debug_assert!(limit >= 2);
+
     let mut acc = 1_i64;
     let mut p = 1_i64;
+
     loop {
         p = primes::next_prime(p);
         if acc * p > limit {
@@ -37,6 +40,7 @@ fn compute(limit: i64) -> i64 {
         }
         acc *= p;
     }
+
     acc
 }
 
