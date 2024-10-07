@@ -23,7 +23,11 @@ fn compute() -> i64 {
         }
         lst = tmp_lst;
     }
-    lst.into_iter().map(|s| s.parse::<i64>().unwrap()).sum()
+
+    lst.iter()
+        .map(|s| s.parse::<i64>())
+        .filter_map(Result::ok)
+        .sum()
 }
 
 #[cfg(test)]
