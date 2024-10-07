@@ -6,10 +6,15 @@ fn solve() -> String {
     compute(10_001).to_string()
 }
 
-fn compute(nth: i64) -> i64 {
+fn compute(n_th: usize) -> i64 {
     use euler::math::primes;
+    use std::iter;
 
-    (0..nth).fold(1, |x, _| primes::next_prime(x))
+    debug_assert!(n_th > 0);
+
+    iter::successors(Some(2_i64), |&p| Some(primes::next_prime(p)))
+        .nth(n_th - 1)
+        .unwrap()
 }
 
 #[cfg(test)]
