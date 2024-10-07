@@ -9,27 +9,27 @@ fn solve() -> String {
 }
 
 fn compute(data: &str) -> usize {
-    let pairs = parse_data(data);
-    let mut ans: usize = 0;
-    let mut max_value: f64 = 0.0;
-    for (idx, (base, exp)) in pairs.into_iter().enumerate() {
-        let tmp = exp * base.log10();
-        if tmp > max_value {
-            ans = idx;
-            max_value = tmp;
-        }
-    }
-    ans + 1
+    let max_line = parse_data(data)
+        .into_iter()
+        .map(|(b, e)| e * b.ln())
+        .enumerate()
+        .max_by(|(_, x1), (_, x2)| x1.total_cmp(x2))
+        .unwrap();
+
+    max_line.0 + 1
 }
 
 fn parse_data(data: &str) -> Vec<(f64, f64)> {
-    let mut ret: Vec<(f64, f64)> = Vec::new();
+    use itertools::Itertools;
 
-    for line in data.lines() {
-        let pair: Vec<_> = line.split(',').map(|s| s.parse::<f64>().unwrap()).collect();
-        ret.push((pair[0], pair[1]));
-    }
-    ret
+    data.lines()
+        .map(|line| {
+            line.split(',')
+                .map(|s| s.parse::<f64>().unwrap())
+                .collect_tuple()
+                .unwrap()
+        })
+        .collect()
 }
 
 #[cfg(test)]
