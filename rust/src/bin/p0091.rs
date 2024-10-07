@@ -23,8 +23,8 @@
        |  .       *   Q2(a2,b2)
        | .               *
        |.                       *
-      -O------------------------------------- X
-                                            *
+      -O---------------------------------------- X
+                                              *
 
       --> min((y1 / (x / gcd(x1,y1))), ((50-x1) / (y / gcd(x1,y1))))
 
@@ -42,15 +42,19 @@ fn compute(x_size: i64, y_size: i64) -> i64 {
     use euler::math;
     use std::cmp;
 
-    let case_1 = |x_size: i64, y_size: i64| x_size * y_size * 3;
+    debug_assert!(x_size > 0 && y_size > 0);
 
-    fn case_2(x_size: i64, y_size: i64) -> i64 {
+    fn case_1(x_upper: i64, y_upper: i64) -> i64 {
+        x_upper * y_upper * 3
+    }
+
+    fn case_2(x_upper: i64, y_upper: i64) -> i64 {
         let mut acc: i64 = 0;
-        for x in 1..=x_size {
-            for y in 1..=y_size {
-                acc += cmp::min(y * math::gcd(x, y) / x, (x_size - x) * math::gcd(x, y) / y);
-            }
+
+        for (x, y) in itertools::iproduct!(1..=x_upper, 1..=y_upper) {
+            acc += cmp::min(y * math::gcd(x, y) / x, (x_upper - x) * math::gcd(x, y) / y);
         }
+
         acc * 2
     }
 
