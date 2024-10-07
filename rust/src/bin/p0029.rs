@@ -9,11 +9,13 @@ fn solve() -> String {
 fn compute(upper: usize) -> i64 {
     use euler::math;
 
+    debug_assert!(upper >= 2);
+
     let dup_ctr = make_dupctr_tbl(upper);
     let base_limit = math::isqrt(upper as i64) as usize;
     let mut skip_flag = vec![false; base_limit + 1];
-
     let mut ans = (upper - 1).pow(2) as i64;
+
     for b in 2..=base_limit {
         if skip_flag[b] {
             continue;
@@ -31,6 +33,7 @@ fn compute(upper: usize) -> i64 {
             }
         }
     }
+
     ans
 }
 
@@ -51,12 +54,18 @@ fn make_dupctr_tbl(upper: usize) -> Vec<i64> {
         }
         *elm = dups.iter().sum();
     }
+
     dup_ctr
 }
 
 #[cfg(test)]
 mod tests {
     use super::compute;
+
+    #[test]
+    fn p0029_upper_5() {
+        assert_eq!(compute(5), 15);
+    }
 
     #[test]
     fn p0029_upper_100() {
