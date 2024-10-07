@@ -9,14 +9,22 @@ fn solve() -> String {
 fn compute(n_digits: u32) -> i64 {
     use num_bigint::BigUint;
 
-    let bound = BigUint::from(10_u32).pow(n_digits - 1);
+    debug_assert!(n_digits > 0);
+
+    let bound = if n_digits == 1 {
+        BigUint::from(0_u32)
+    } else {
+        BigUint::from(10_u32).pow(n_digits - 1)
+    };
     let mut f1 = BigUint::from(1_u32);
     let mut f2 = BigUint::from(1_u32);
-    let mut idx = 2_i64;
-    while f2 < bound {
+    let mut idx = 1_i64;
+
+    while f1 < bound {
         (f2, f1) = (f1 + &f2, f2);
         idx += 1;
     }
+
     idx
 }
 
