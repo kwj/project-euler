@@ -9,7 +9,9 @@ fn solve() -> String {
 fn compute(n: i64) -> i64 {
     use euler::math;
 
-    math::factorize(n).last().unwrap().0
+    debug_assert!(n > 0);
+
+    *math::prime_factors(n).last().unwrap()
 }
 
 #[cfg(test)]
