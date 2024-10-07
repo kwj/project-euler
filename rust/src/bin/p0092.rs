@@ -69,9 +69,9 @@ fn compute(limit: i64) -> usize {
     use euler::math;
     use itertools::Itertools;
 
-    assert!(
+    debug_assert!(
         math::num_of_digits(limit, 10) == math::num_of_digits(limit - 1, 10) + 1,
-        "This implementation works correctly only if the limit is a power of 10"
+        "This implementation works well only if the `limit` is a power of 10"
     );
 
     let n_digits = math::num_of_digits(limit - 1, 10) as usize;
