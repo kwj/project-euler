@@ -30,20 +30,19 @@ fn solve() -> String {
 }
 
 fn compute(n_th: usize) -> i64 {
+    use std::iter;
+
     debug_assert!(n_th > 0);
 
-    let mut x: i64 = 1;
-    let mut y: i64 = 1;
-
-    let (_, b) = std::iter::from_fn(|| {
-        (x, y) = (2 * x + 3 * y, x + 2 * y);
-        Some((x, y))
+    let y = iter::successors(Some((1_i64, 1_i64)), |&(x, y)| {
+        Some((2 * x + 3 * y, x + 2 * y))
     })
-    .filter(|(x, y)| x % 6 == 5 && y % 4 == 3)
+    .filter(|&(x, y)| x % 6 == 5 && y % 4 == 3)
     .nth(n_th - 1)
-    .unwrap();
+    .unwrap()
+    .1;
 
-    let j = (b + 1) / 4;
+    let j = (y + 1) / 4;
     j * (2 * j - 1)
 }
 
