@@ -6,17 +6,17 @@ fn solve() -> String {
     compute(28_123).to_string()
 }
 
-fn compute(limit: usize) -> i64 {
+fn compute(limit: usize) -> usize {
     use euler::math;
 
-    let mut d_tbl = math::get_sigma_tbl(1, limit);
-    for (idx, elm) in d_tbl.iter_mut().enumerate().skip(1) {
-        *elm -= idx as i64
-    }
+    debug_assert!(limit <= 28123);
+
+    let d_tbl = math::aliquot_sum_tbl(limit);
 
     let abndnt_flag: Vec<bool> = (0..=limit).map(|i| (i as i64) < d_tbl[i]).collect();
     let mut abndnt_lst: Vec<usize> = Vec::new();
     let mut acc: usize = 0;
+
     for i in 1..=limit {
         if i % 2 == 0 && abndnt_flag[i / 2] {
             abndnt_lst.push(i / 2);
@@ -26,7 +26,8 @@ fn compute(limit: usize) -> i64 {
         }
         acc += i;
     }
-    acc as i64
+
+    acc
 }
 
 #[cfg(test)]

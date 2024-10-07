@@ -3,18 +3,17 @@
 euler::run_solver!(95);
 
 fn solve() -> String {
-    compute(1_000_000).to_string()
+    compute().to_string()
 }
 
-fn compute(limit: usize) -> usize {
+fn compute() -> usize {
     use euler::math;
     use std::cmp;
 
+    let limit: usize = 1_000_000;
+
     // spd: sum of proper divisors
-    let mut spd_tbl = math::get_sigma_tbl(1, limit + 1);
-    for (idx, elm) in spd_tbl.iter_mut().enumerate().skip(1) {
-        *elm -= idx as i64
-    }
+    let spd_tbl = math::aliquot_sum_tbl(limit);
 
     let mut chain_tbl = vec![0_i64; limit + 1];
     let mut chain: Vec<usize> = Vec::new();
@@ -43,6 +42,7 @@ fn compute(limit: usize) -> usize {
             max_length = cmp::max(max_length, length);
         }
     }
+
     chain_tbl
         .into_iter()
         .position(|x| x == max_length as i64)
@@ -61,6 +61,6 @@ mod tests {
 
     #[test]
     fn p0095() {
-        assert_eq!(compute(1_000_000), 14316);
+        assert_eq!(compute(), 14316);
     }
 }

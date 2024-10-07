@@ -1,3 +1,4 @@
+pub mod prime;
 pub mod primes;
 
 pub fn gcd(mut x: i64, mut y: i64) -> i64 {
@@ -149,11 +150,9 @@ pub fn proper_divisors(num: i64) -> Vec<i64> {
 }
 
 pub fn binomial(n: i64, k: i64) -> i64 {
-    ((n - k + 1)..=n).zip(1..=k).fold(1, |mut acc, (x, y)| {
-        acc *= x;
-        acc /= y;
-        acc
-    })
+    ((n - k + 1)..=n)
+        .zip(1..=k)
+        .fold(1, |acc, (x, y)| acc * x / y)
 }
 
 pub fn is_palindrome(num: i64, base: i64) -> bool {
@@ -193,17 +192,21 @@ pub fn is_pandigital_nz(num: i64) -> bool {
     check_zero(num) && is_pandigital(num * 10)
 }
 
-pub fn powmod(mut base: i64, mut exp: i64, m: i64) -> i64 {
-    let mut ans = 1;
-    base %= m;
+pub fn powmod(base: i64, mut exp: i64, modulo: i64) -> i64 {
+    let mut ans: i128 = 1;
+    let mut b = i128::from(base);
+    let m = i128::from(modulo);
+
+    b %= m;
     while exp > 0 {
         if exp & 1 == 1 {
-            ans = ((ans as i128) * (base as i128) % m as i128) as i64;
+            ans = (ans * b) % m;
         }
-        base = ((base as i128) * (base as i128) % m as i128) as i64;
+        b = (b * b) % m;
         exp >>= 1;
     }
-    ans
+
+    i64::try_from(ans).unwrap()
 }
 
 pub fn digits(mut num: i64) -> Vec<i64> {
@@ -222,7 +225,7 @@ pub fn undigits(lst: &[i64]) -> i64 {
     lst.iter().rev().fold(0, |acc, x| acc * 10 + x)
 }
 
-pub fn get_sigma_tbl(z: u32, upper: usize) -> Vec<i64> {
+pub fn sigma_tbl(z: u32, upper: usize) -> Vec<i64> {
     use primes::primes;
 
     let p_lst = primes(1, i64::try_from(upper).unwrap())
@@ -256,6 +259,14 @@ pub fn get_sigma_tbl(z: u32, upper: usize) -> Vec<i64> {
 
     result[0] = 0;
     result
+}
+
+pub fn aliquot_sum_tbl(upper: usize) -> Vec<i64> {
+    sigma_tbl(1, upper)
+        .into_iter()
+        .enumerate()
+        .map(|(idx, x)| x - idx as i64)
+        .collect()
 }
 
 pub fn get_max_exp(mut n: i64, base: i64) -> i64 {

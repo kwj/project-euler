@@ -9,12 +9,11 @@ fn solve() -> String {
 fn compute(limit: usize) -> i64 {
     use euler::math;
 
-    let mut d_tbl = math::get_sigma_tbl(1, limit - 1);
-    for (idx, elm) in d_tbl.iter_mut().enumerate().skip(1) {
-        *elm -= idx as i64
-    }
+    debug_assert!(limit > 1);
 
-    (2..limit)
+    let d_tbl = math::aliquot_sum_tbl(limit - 1);
+
+    (1..limit)
         .filter(|&x| x as i64 > d_tbl[x] && d_tbl[d_tbl[x] as usize] == x as i64)
         .map(|x| x as i64 + d_tbl[x])
         .sum()
