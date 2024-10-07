@@ -8,15 +8,16 @@ fn solve() -> String {
 
 fn compute() -> i64 {
     use euler::math;
+    use itertools::Itertools;
 
-    let mut nums = make_cands()
+    let mut nums: Vec<_> = make_cands()
         .into_iter()
-        .filter(|&(n, _)| math::is_pandigital_nz(n))
+        .filter(|(n, _)| math::is_pandigital_nz(*n))
         .map(|(_, prod)| prod)
-        .collect::<Vec<i64>>();
+        .collect();
+
     nums.sort();
-    nums.dedup();
-    nums.iter().sum()
+    nums.iter().dedup().sum()
 }
 
 fn make_cands() -> Vec<(i64, i64)> {
@@ -36,6 +37,7 @@ fn make_cands() -> Vec<(i64, i64)> {
             }
         }
     }
+
     lst
 }
 

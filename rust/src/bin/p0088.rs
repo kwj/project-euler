@@ -25,14 +25,14 @@ fn solve() -> String {
 }
 
 fn compute(limit: usize) -> usize {
+    use itertools::Itertools;
+
+    debug_assert!(limit >= 2);
+
     let mut tbl = vec![limit * 2; limit + 1];
     aux(1, 0, 0, 2, &mut tbl, limit);
 
-    tbl.remove(0);
-    tbl.remove(0);
-    tbl.sort();
-    tbl.dedup();
-    tbl.into_iter().sum()
+    tbl.into_iter().skip(2).sorted().dedup().sum()
 }
 
 fn aux(p: usize, s: usize, length: usize, num: usize, tbl: &mut [usize], limit: usize) {
