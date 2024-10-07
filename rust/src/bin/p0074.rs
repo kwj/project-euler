@@ -3,10 +3,12 @@
 euler::run_solver!(74);
 
 fn solve() -> String {
-    compute(1_000_000, 60).to_string()
+    compute().to_string()
 }
 
-fn compute(limit: usize, thr: usize) -> i64 {
+fn compute() -> i64 {
+    let limit: usize = 1_000_000;
+    let thr: usize = 60;
     let mut chain_tbl: Vec<usize> = vec![0; limit + 1];
     let mut cnt: i64 = 0;
 
@@ -34,6 +36,7 @@ fn compute(limit: usize, thr: usize) -> i64 {
             steps -= 1;
         }
     }
+
     cnt
 }
 
@@ -48,6 +51,7 @@ fn fact_sum(mut n: usize) -> usize {
         acc += tbl[n % 10];
         n /= 10;
     }
+
     acc
 }
 
@@ -57,6 +61,6 @@ mod tests {
 
     #[test]
     fn p0074() {
-        assert_eq!(compute(1_000_000, 60), 402);
+        assert_eq!(compute(), 402);
     }
 }

@@ -23,28 +23,25 @@ use std::{cmp::Ordering, collections::BinaryHeap};
 euler::run_solver!(70);
 
 fn solve() -> String {
-    compute(10_000_000).to_string()
+    compute().to_string()
 }
 
-fn compute(mut limit: i64) -> i64 {
+fn compute() -> i64 {
     use std::cmp;
 
-    limit -= 1;
+    let limit = 10_000_000 - 1;
     let mut pq: BinaryHeap<Ratio> = BinaryHeap::new();
     pq.push(Ratio {
         priority: ratio(87109, 79180),
         num: 87109,
     });
 
-    let mut prime_lst = primes::primes(11, math::isqrt(limit));
-    prime_lst.reverse();
-    for p in prime_lst {
+    for p in primes::primes(11, math::isqrt(limit)).into_iter().rev() {
         if get_phi_ratio(&[(p, 1)]) > pq.peek().unwrap().priority {
             break;
         }
 
-        let pf_gen = PrimeFactorization::new((p, primes::prev_prime(limit / p + 1)), limit);
-        for pf_lst in pf_gen {
+        for pf_lst in PrimeFactorization::new((p, primes::prev_prime(limit / p + 1)), limit) {
             if get_phi_ratio(&pf_lst[0..cmp::min(2, pf_lst.len())]) > pq.peek().unwrap().priority {
                 break;
             }
@@ -56,6 +53,7 @@ fn compute(mut limit: i64) -> i64 {
             }
         }
     }
+
     pq.peek().unwrap().num
 }
 
@@ -164,6 +162,7 @@ impl Iterator for PrimeFactorization {
                 );
             }
         }
+
         Some(result)
     }
 }
@@ -171,6 +170,7 @@ impl Iterator for PrimeFactorization {
 fn is_perm(x: i64, y: i64) -> bool {
     let mut tmp_x = math::digits(x);
     let mut tmp_y = math::digits(y);
+
     tmp_x.sort();
     tmp_y.sort();
     tmp_x == tmp_y
@@ -182,6 +182,6 @@ mod tests {
 
     #[test]
     fn p0070() {
-        assert_eq!(compute(10_000_000), 8319823);
+        assert_eq!(compute(), 8319823);
     }
 }

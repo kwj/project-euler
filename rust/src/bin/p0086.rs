@@ -51,19 +51,17 @@ fn compute(thr: i64) -> i64 {
     while acc <= thr {
         let mut ab = c * 2;
         while ab > 1 {
-            let tmp = c * c + ab * ab;
-            let tmp_sq = math::isqrt(tmp);
-            if tmp_sq * tmp_sq == tmp {
-                if ab <= c {
-                    acc += ab / 2;
-                } else {
-                    acc += (ab / 2) - (ab - 1 - c);
+            if math::is_square(c * c + ab * ab) {
+                acc += ab / 2;
+                if ab > c {
+                    acc -= ab - 1 - c;
                 }
             }
             ab -= 1;
         }
         c += 1;
     }
+
     c - 1
 }
 

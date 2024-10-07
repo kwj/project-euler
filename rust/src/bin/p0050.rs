@@ -11,25 +11,26 @@ fn solve() -> String {
 fn compute(limit: i64) -> i64 {
     let mut cs_gen: CumSumPrime = Default::default();
     let mut cs_lst: Vec<i64> = cs_gen.initial_lst(limit);
-
     let mut ans: i64 = 0;
-    let mut i: usize = 0;
-    let mut consec_length: usize = 0;
-    while cs_lst[i + consec_length] - cs_lst[i] < limit {
-        let begin = cs_lst[i];
-        let lst: Vec<i64> = cs_lst[(i + consec_length)..]
+    let mut left: usize = 0;
+    let mut k: usize = 0;
+
+    while cs_lst[left + k] - cs_lst[left] < limit {
+        let base = cs_lst[left];
+        if let Some(tpl) = cs_lst[(left + k)..]
             .iter()
+            .enumerate()
+            .skip(1)
             .rev()
-            .skip_while(|&&p| p - begin >= limit || !primes::is_prime(p - begin))
-            .copied()
-            .collect();
-        if !lst.is_empty() {
-            consec_length += lst.len() - 1;
-            ans = lst[0] - begin;
+            .find(|(_, &p)| p - base < limit && primes::is_prime(p - base))
+        {
+            k += tpl.0;
+            ans = tpl.1 - base;
         }
         cs_lst.push(cs_gen.next().unwrap());
-        i += 1;
+        left += 1;
     }
+
     ans
 }
 
@@ -54,14 +55,14 @@ impl CumSumPrime {
     fn initial_lst(&mut self, limit: i64) -> Vec<i64> {
         use std::iter;
 
-        let mut lst = iter::from_fn(|| {
+        let mut lst: Vec<_> = iter::from_fn(|| {
             if self.cumsum < limit {
                 self.next()
             } else {
                 None
             }
         })
-        .collect::<Vec<_>>();
+        .collect();
 
         lst.insert(0, 0);
         lst

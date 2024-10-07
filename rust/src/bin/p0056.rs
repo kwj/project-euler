@@ -26,9 +26,10 @@ fn compute() -> usize {
             if BigUint::to_str_radix(&p, 10).len() * 9 < ans {
                 break;
             }
-            ans = cmp::max(ans, p.to_radix_le(10).into_iter().map(|x| x as usize).sum());
+            ans = cmp::max(ans, p.to_radix_le(10).into_iter().map(usize::from).sum());
         }
     }
+
     ans
 }
 
