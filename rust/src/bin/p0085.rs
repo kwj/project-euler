@@ -42,6 +42,7 @@ fn compute(target: i64) -> i64 {
             break;
         }
     }
+
     ans
 }
 
@@ -72,7 +73,12 @@ mod tests {
     use super::compute;
 
     #[test]
-    fn p0085() {
+    fn p0085_18() {
+        assert_eq!(compute(18), 6);
+    }
+
+    #[test]
+    fn p0085_2000000() {
         assert_eq!(compute(2_000_000), 2772);
     }
 }
