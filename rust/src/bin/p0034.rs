@@ -63,17 +63,15 @@ fn compute() -> i64 {
 
     for ndigits in 2_usize..8 {
         for v in (0_usize..10).combinations_with_replacement(ndigits) {
-            let n = v.iter().fold(0_i64, |acc, x| acc + fact_tbl[*x]);
-            let mut tmp = math::digits(n)
-                .into_iter()
-                .map(|x| x as usize)
-                .collect::<Vec<usize>>();
+            let n = v.iter().map(|x| fact_tbl[*x]).sum::<i64>();
+            let mut tmp: Vec<_> = math::digits(n).into_iter().map(|x| x as usize).collect();
             tmp.sort();
             if tmp == v {
                 acc += n;
             }
         }
     }
+
     acc
 }
 
