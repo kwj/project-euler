@@ -1,3 +1,4 @@
+<!-- deno-fmt-ignore-file -->
 # Solutions in TypeScript with the Deno runtime
 
 ## How to run
@@ -26,9 +27,9 @@ These solutions were confirmed to work in the following version.
 
 ```console
 $ deno --version
-deno 1.46.1 (stable, release, aarch64-unknown-linux-gnu)
-v8 12.9.202.2-rusty
-typescript 5.5.2
+deno 2.0.0 (stable, release, aarch64-unknown-linux-gnu)
+v8 12.9.202.13-rusty
+typescript 5.6.2
 ```
 
 I used the following libraries/packages in addition to the runtime APIs part of Deno.

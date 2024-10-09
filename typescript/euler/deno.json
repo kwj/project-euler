@@ -1,12 +1,12 @@
 {
   "imports": {
-    "@std/assert": "jsr:@std/assert@^1.0.2",
-    "@std/collections": "jsr:@std/collections@^1.0.5",
-    "@std/data-structures": "jsr:@std/data-structures@^1.0.1",
+    "@std/assert": "jsr:@std/assert@1",
+    "@std/collections": "jsr:@std/collections@1",
+    "@std/data-structures": "jsr:@std/data-structures@1",
     "combinatorics/": "https://deno.land/x/combinatorics@1.1.2/"
   },
   "tasks": {
-    "solver": "deno run --quiet --allow-hrtime --allow-read ./main.ts",
+    "solver": "deno run --quiet --allow-read ./main.ts",
     "test": "deno test --allow-read ./test/"
   }
 }
