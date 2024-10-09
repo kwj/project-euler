@@ -82,7 +82,7 @@ let compute () =
       unused_str_lst
   in
   let rec aux = function
-    | x, [] -> Int.of_string x
+    | x, [] -> if Char.compare x.[0] '0' = 0 then 0 else Int.of_string x
     | x, lst when String.length x < 3 || check_divisibility x ->
       List.map ~f:aux (make_next_str x lst) |> List.sum (module Int) ~f:Fn.id
     | _, _ -> 0 (* Divisibility check failed, so no need to look further. *)

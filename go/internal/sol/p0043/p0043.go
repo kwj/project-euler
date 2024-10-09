@@ -29,8 +29,10 @@ func compute() string {
 
 	var result int
 	for s := range slices.Values(lst) {
-		n, _ := strconv.Atoi(s)
-		result += n
+		if s[0] != '0' {
+			n, _ := strconv.Atoi(s)
+			result += n
+		}
 	}
 
 	return strconv.FormatInt(int64(result), 10)

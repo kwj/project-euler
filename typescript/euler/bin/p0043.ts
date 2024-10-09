@@ -20,7 +20,7 @@ export const compute = (): string => {
     lst = next_lst;
   }
 
-  return String(sum(lst.map((x) => Number(x))));
+  return String(sum(lst.filter((s) => s[0] != "0").map((x) => Number(x))));
 };
 
 export const solve = (): string => compute();

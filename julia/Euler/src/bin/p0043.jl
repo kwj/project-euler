@@ -8,7 +8,7 @@ function solve_0043()
     for d in [1, 1, 17, 13, 11, 7, 5, 3, 2, 1]
         lst = [x * s for x in "0123456789" for s in lst if x ∉ s && (length(x * s) < 3 || parse(Int, (x * s)[1:3]) % d == 0)]
     end
-    sum(map(x -> parse(Int, x), lst))
+    sum(map(x -> parse(Int, x), filter(s -> s[1] != "0", lst)))
 end
 
 end #module

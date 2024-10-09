@@ -24,9 +24,9 @@ fn compute() -> i64 {
         lst = tmp_lst;
     }
 
-    lst.iter()
-        .map(|s| s.parse::<i64>())
-        .filter_map(Result::ok)
+    lst.into_iter()
+        .filter(|s| s.as_bytes()[0] != 0x30) // Check if the leftmost digit isn't zero.
+        .filter_map(|s| s.parse::<i64>().ok())
         .sum()
 }
 

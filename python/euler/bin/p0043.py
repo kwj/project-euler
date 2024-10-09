@@ -11,7 +11,7 @@ def compute() -> str:
             if (x not in s) and int((x + s)[:3]) % d == 0
         ]
 
-    return str(sum(map(int, lst)))
+    return str(sum(map(int, filter(lambda s: s[0] != '0', lst))))
 
 
 def solve() -> str:

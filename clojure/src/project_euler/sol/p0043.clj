@@ -16,5 +16,6 @@
                                          (zero? (mod (parse-long (subs tmp-s 0 3)) d))))]
                       tmp-s)))
            lst))
+       (filter #(not (= "0" (subs % 0 1))))
        (map parse-long)
        (apply +)))
