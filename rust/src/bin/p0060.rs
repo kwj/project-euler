@@ -39,14 +39,12 @@ fn compute(size_of_clique: usize) -> i64 {
             continue;
         }
 
-        // convert to descending order
+        // switch the list of connectable primes to descending order and check cliques.
         nbr_lst.reverse();
-
-        let cliques = find_cliques(&nbr_lst, size_of_clique - 1, &tbl);
-        if !cliques.is_empty() {
+        if let Some(clqs) = check_cliques(&nbr_lst, size_of_clique - 1, &tbl) {
             ans = cmp::min(
                 ans,
-                cliques
+                clqs
                     .into_iter()
                     .map(|v| v.iter().sum::<i64>() + p)
                     .min()
@@ -79,11 +77,11 @@ fn find_nbrs(p: i64, asc_p_lst: &[i64], current_ans: i64) -> Vec<i64> {
         .collect()
 }
 
-fn find_cliques(
+fn check_cliques(
     desc_nbr_lst: &[i64],
     size: usize,
     tbl: &HashMap<i64, HashSet<i64>>,
-) -> Vec<Vec<i64>> {
+) -> Option<Vec<Vec<i64>>> {
     fn aux(
         group: &[i64],
         ps: &[i64],
@@ -109,7 +107,12 @@ fn find_cliques(
 
     let mut result: Vec<Vec<i64>> = Vec::new();
     aux(&Vec::new(), desc_nbr_lst, size, tbl, &mut result);
-    result
+
+    if result.is_empty() {
+        None
+    } else {
+        Some(result)
+    }
 }
 
 #[cfg(test)]
