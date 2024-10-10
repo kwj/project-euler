@@ -6,6 +6,7 @@ use std::path::Path;
 
 pub mod math;
 
+#[allow(dead_code)]
 pub fn read_line<P>(filename: P) -> io::Result<String>
 where
     P: AsRef<Path>,
@@ -17,6 +18,7 @@ where
     Ok(buf.trim_end().to_string())
 }
 
+#[allow(dead_code)]
 pub fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
 where
     P: AsRef<Path>,
