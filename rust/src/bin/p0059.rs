@@ -44,21 +44,21 @@ fn parse_data(s: &str) -> Vec<u8> {
 
 /*
   valuation rules:
-    0x20 (space): 3
-    0x41 - 0x5A (uppercase letters, 'A' - 'Z'): 5
-    0x61 - 0x7A (lowercase letters, 'a' - 'z'): 3
+    0x20 (space): 4
+    0x41 - 0x5A (uppercase letters, 'A' - 'Z'): 3
+    0x61 - 0x7A (lowercase letters, 'a' - 'z'): 5
     0x21 - 0x7E (printable characters except alphabet letters): 1
     others: 0
 */
 fn calc_score(ch: u8) -> i64 {
     if ch == 0x20 {
-        return 3;
+        return 4;
     }
     if (0x41..=0x5A).contains(&ch) {
-        return 5;
+        return 3;
     }
     if (0x61..=0x7A).contains(&ch) {
-        return 3;
+        return 5;
     }
     if (0x21..=0x7E).contains(&ch) {
         return 1;
