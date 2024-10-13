@@ -87,7 +87,7 @@ fn make_polynum_tbl() -> HashMap<usize, HashMap<i64, Vec<i64>>> {
             })
             .skip_while(|&x| x < 1_000)
             .take_while(|&x| x < 10_000)
-            .filter(|&x| x % 100 > 10)
+            .filter(|&x| x % 100 >= 10)
         {
             x.entry(n / 100).or_default().push(n % 100);
         }
