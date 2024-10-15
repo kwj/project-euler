@@ -22,7 +22,18 @@
 # Answer: 26033
 # Elapsed time: 10.614437 sec.
 #
-# It is 30~40% slower than Python 3.11 on Ubuntu 23.10.
+# [Ubuntu 24.10]
+# % python3
+# Python 3.12.7 (main, Oct  3 2024, 15:15:22) [GCC 14.2.0] on linux
+# Type "help", "copyright", "credits" or "license" for more information.
+# >>>
+# % ./solve.py 60
+# [Problem 60]
+# Answer: 26033
+# Elapsed time: 17.551342 sec.
+#
+#
+# These results are terrible. What is going on?
 
 import sys
 
