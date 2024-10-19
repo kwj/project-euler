@@ -1,6 +1,6 @@
 // Project Euler: Problem 61
 
-use std::collections::{HashMap, HashSet};
+use std::collections::{HashMap, HashSet, VecDeque};
 
 euler::run_solver!(61);
 
@@ -9,70 +9,71 @@ fn solve() -> String {
 }
 
 fn compute() -> i64 {
-    use itertools::Itertools;
+    let cycles: Vec<Vec<i64>> = find_closed_paths()
+        .into_iter()
+        .map(|path| {
+            // Change a closed path to a set of cyclic numbers
+            path.windows(2)
+                .map(|pair| pair[0] * 100 + pair[1])
+                .collect::<Vec<i64>>()
+        })
+        .filter(|lst| {
+            // All numbers in a cycle are different numbers
+            lst.len() == HashSet::<i64>::from_iter(lst.clone()).len()
+        })
+        .collect();
 
-    let polynum_tbl = make_polynum_tbl();
-
-    // The reason for using rev() is to start with a route that has fewer choices.
-    for route in (3..=7).rev().permutations(5) {
-        // according to the problem statement, only one cycle exists
-        if let Some(x) = find_cycle(&route, &polynum_tbl) {
-            // sum(100*x{1} + x{2}, 100*x{2} + x{3}, ..., 100*x{n} + x{1})
-            //   = sum(x{1}, x{2}, ..., x{n}) * 101
-            return x.iter().sum::<i64>() * 101;
-        }
+    // There exists only one cycle
+    if cycles.len() == 1 {
+        return cycles[0].iter().sum();
     }
 
     unreachable!();
 }
 
-fn find_cycle(
-    route: &[usize],
-    polynum_tbl: &HashMap<usize, HashMap<i64, Vec<i64>>>,
-) -> Option<Vec<i64>> {
-    fn is_distinct_numbers(nums: &[i64]) -> bool {
-        let mut tmp: HashSet<i64> = HashSet::new();
-        for i in 0..(nums.len() - 1) {
-            tmp.insert(nums[i] * nums[i + 1]);
-        }
-        tmp.len() == (nums.len() - 1)
-    }
+fn find_closed_paths() -> Vec<Vec<i64>> {
+    let mut paths: Vec<Vec<i64>> = Vec::new();
+    let polynum_tbl: HashMap<usize, HashMap<i64, Vec<i64>>> = make_polynum_tbl();
 
-    fn dfs(
-        route: &[usize],
-        tracks: Vec<i64>,
-        tbl: &HashMap<usize, HashMap<i64, Vec<i64>>>,
-    ) -> Option<Vec<i64>> {
-        if route.is_empty() {
-            if tracks[0] == *tracks.last().unwrap() && is_distinct_numbers(&tracks) {
-                return Some(tracks[1..].to_vec());
-            } else {
-                return None;
-            }
-        }
-        let next_map = tbl.get(&route[0]).unwrap();
-        if !next_map.contains_key(tracks.last().unwrap()) {
-            return None;
-        }
-        for next_num in next_map.get(tracks.last().unwrap()).unwrap() {
-            let mut next_tracks = tracks.clone();
-            next_tracks.push(*next_num);
-            if let Some(res) = dfs(&route[1..], next_tracks, tbl) {
-                return Some(res);
-            }
-        }
-        None
-    }
+    let mut get_next_states = |(bits, path): (u32, Vec<i64>)| -> Vec<(u32, Vec<i64>)> {
+        let mut states: Vec<(u32, Vec<i64>)> = Vec::new();
 
-    for (k, v) in polynum_tbl.get(&8).unwrap().iter() {
-        for next_num in v.iter() {
-            if let Some(res) = dfs(route, vec![*k, *next_num], polynum_tbl) {
-                return Some(res);
+        if bits == 0b111111000 && path[0] == *path.last().unwrap() {
+            paths.push(path);
+        } else {
+            for i in 3_usize..=7 {
+                let p_bit = 0b1_u32 << i;
+                if bits & p_bit != 0 {
+                    continue;
+                }
+                let next_tbl = polynum_tbl.get(&i).unwrap();
+                if let Some(vs) = next_tbl.get(path.last().unwrap()) {
+                    for &x in vs {
+                        let mut next_path = path.clone();
+                        next_path.push(x);
+                        states.push((bits | p_bit, next_path));
+                    }
+                }
             }
+        }
+
+        states
+    };
+
+    // Search by DFS (start from octagonal numbers)
+    let mut q: VecDeque<(u32, Vec<i64>)> = VecDeque::new();
+    for (&k, vs) in polynum_tbl.get(&8).unwrap() {
+        for &v in vs {
+            q.push_back((0b1 << 8, vec![k, v]));
+        }
+    }
+    while !q.is_empty() {
+        for (bits, path) in get_next_states(q.pop_front().unwrap()).into_iter() {
+            q.push_front((bits, path.clone()));
         }
     }
 
-    None
+    paths
 }
 
 fn make_polynum_tbl() -> HashMap<usize, HashMap<i64, Vec<i64>>> {
