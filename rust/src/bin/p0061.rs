@@ -38,6 +38,15 @@ fn find_closed_paths() -> Vec<Vec<i64>> {
     let mut get_next_states = |(bits, path): (u32, Vec<i64>)| -> Vec<(u32, Vec<i64>)> {
         let mut states: Vec<(u32, Vec<i64>)> = Vec::new();
 
+        // bits:
+        //   0b######000
+        //     ||||||
+        //     |||||+- triangle
+        //     ||||+-- square
+        //     |||+--- pentagonal
+        //     ||+---- hexagonal
+        //     |+----- heptagonal
+        //     +------ octagonal
         if bits == 0b111111000 && path[0] == *path.last().unwrap() {
             paths.push(path);
         } else {
