@@ -26,14 +26,14 @@ def make_polygonal_tbl() -> dict[int, defaultdict[int, list[int]]]:
     return result
 
 
-def find_cycles(p_tbl: dict[int, defaultdict[int, list[int]]]) -> list[list[int]]:
+def find_paths(p_tbl: dict[int, defaultdict[int, list[int]]]) -> list[list[int]]:
     def next_states(state: tuple[int, list[int]]) -> list[tuple[int, list[int]]]:
         states: list[tuple[int, list[int]]] = []
         bits, path = state
 
         if bits == 0b111111000 and path[0] == path[-1]:
             # a cycle is found
-            cycles.append(path)
+            paths.append(path)
         else:
             for i in [7, 6, 5, 4, 3]:
                 p_bit = 1 << i
@@ -45,7 +45,7 @@ def find_cycles(p_tbl: dict[int, defaultdict[int, list[int]]]) -> list[list[int]
 
         return states
 
-    cycles: list[list[int]] = []
+    paths: list[list[int]] = []
 
     # Search by DFS (start from octagonal numbers)
     q: deque[tuple[int, list[int]]] = deque()
@@ -55,18 +55,25 @@ def find_cycles(p_tbl: dict[int, defaultdict[int, list[int]]]) -> list[list[int]
     while len(q) > 0:
         q.extendleft(next_states(q.popleft()))
 
-    return cycles
+    return paths
 
 
 def compute() -> str:
-    cycles = find_cycles(make_polygonal_tbl())
+    cycles: list[list[int]] = list(
+        filter(
+            lambda cycle: len(cycle) == len(set(cycle)),
+            map(
+                lambda path: list(
+                    map(lambda tpl: tpl[0] * 100 + tpl[1], pairwise(path))
+                ),
+                find_paths(make_polygonal_tbl()),
+            ),
+        ),
+    )
 
-    # There is only one cycle exist
+    # There exists only one cycle
     if len(cycles) == 1:
-        numbers = list(map(lambda tpl: tpl[0] * 100 + tpl[1], pairwise(cycles[0])))
-        # Each number is different
-        if len(numbers) == len(set(numbers)):
-            return str(sum(numbers))
+        return str(sum(cycles[0]))
 
     assert False, 'unreachable!'
 
