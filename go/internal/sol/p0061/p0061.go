@@ -1,11 +1,24 @@
 package p0061
 
 import (
-	"maps"
-	"pe-solver/internal/mylib"
 	"slices"
 	"strconv"
 )
+
+// state.bits
+//
+//	0b######000
+//	  ||||||
+//	  |||||+- triangle
+//	  ||||+-- square
+//	  |||+--- pentagonal
+//	  ||+---- hexagonal
+//	  |+----- heptagonal
+//	  +------ octagonal
+type state struct {
+	bits int
+	path []int
+}
 
 // nextHop: mapping table for next hop
 //
@@ -60,11 +73,52 @@ func polygonalTbl() map[int]nextHop {
 	return tbl
 }
 
-// From the problem statement, there is the only ordered set which satisfies the conditions.
-// So, if it is found, searching can be terminated.
-//
-// If the return value is nil, the circular route specified in the guide does not exist.
-func findCircularRoute(tbl map[int]nextHop, start int, guide []int) []int {
+func findClosedPaths() [][]int {
+	var paths [][]int
+	tbl := polygonalTbl()
+
+	getNextStates := func(st state) []state {
+		var states []state
+
+		if st.bits == 0b111111000 && st.path[0] == st.path[len(st.path)-1] {
+			paths = append(paths, st.path)
+		} else {
+			for i := 3; i < 8; i++ {
+				p_bit := 0b1 << i
+				if st.bits&p_bit != 0 {
+					continue
+				}
+				next_tbl := tbl[i]
+				if vs, ok := next_tbl[st.path[len(st.path)-1]]; ok {
+					for x := range slices.Values(vs) {
+						states = append(states, state{bits: st.bits | p_bit, path: append(append([]int{}, st.path...), x)})
+					}
+				}
+			}
+		}
+
+		return states
+	}
+
+	// Search by BFS (start from octagonal numbers)
+	var q []state
+	for k, vs := range tbl[8] {
+		for v := range slices.Values(vs) {
+			q = append(q, state{bits: 0b1 << 8, path: []int{k, v}})
+		}
+	}
+	for len(q) > 0 {
+		var st state
+		st, q = q[0], q[1:]
+		for next_st := range slices.Values(getNextStates(st)) {
+			q = append(q, next_st)
+		}
+	}
+
+	return paths
+}
+
+func compute() string {
 	isDistinctNumbers := func(xs []int) bool {
 		m := map[int]struct{}{}
 		for i := 0; i < len(xs)-1; i++ {
@@ -74,41 +128,6 @@ func findCircularRoute(tbl map[int]nextHop, start int, guide []int) []int {
 		return len(m) == len(xs)-1
 	}
 
-	var dfs func([]int, []int) []int
-	dfs = func(guide, route []int) []int {
-		if len(guide) == 0 {
-			if route[0] == route[len(route)-1] && isDistinctNumbers(route) {
-				return route[1:]
-			} else {
-				return nil
-			}
-		}
-		nextMap := tbl[guide[0]]
-		if nextCands, ok := nextMap[route[0]]; !ok {
-			return nil
-		} else {
-			for nextNum := range slices.Values(nextCands) {
-				if result := dfs(guide[1:], append([]int{nextNum}, route...)); result != nil {
-					return result
-				}
-			}
-		}
-
-		return nil
-	}
-
-	for k, v := range maps.All(tbl[start]) {
-		for nextNum := range slices.Values(v) {
-			if result := dfs(guide, []int{nextNum, k}); result != nil {
-				return result
-			}
-		}
-	}
-
-	return nil
-}
-
-func compute() string {
 	sum := func(xs []int) int {
 		var result int
 		for v := range slices.Values(xs) {
@@ -118,15 +137,22 @@ func compute() string {
 		return result
 	}
 
-	tbl := polygonalTbl()
-
-	// start with octagonal numbers
-	for guide := range mylib.Permutations([]int{7, 6, 5, 4, 3}, 5) {
-		if route := findCircularRoute(tbl, 8, guide); route != nil {
-			// (100*route[0] + route[1]) + (100*route[1] + route[2]) + ... + (100*route[n] + route[0])
-			//   = sum(route) * 101
-			return strconv.FormatInt(int64(sum(route)*101), 10)
+	// All numbers in a cycle are different numbers
+	var cycles [][]int
+	for lst := range slices.Values(findClosedPaths()) {
+		if isDistinctNumbers(lst) {
+			cycles = append(cycles, lst)
 		}
+	}
+
+	// There exists only one cycle
+	if len(cycles) == 1 {
+		// cycles[0] = lst: [d1, d2, d3, d4, d5, d6, d1]
+		//
+		// (100*lst[0] + lst[1]) + (100*lst[1] + lst[2]) + ... + (100*lst[5] + lst[6])
+		//   = (100 * d1 + d2) + (100 * d2 + d1) + ... + (100 * d6 + d1)
+		//   = sum(lst[1:]) * 101
+		return strconv.FormatInt(int64(sum(cycles[0][1:])*101), 10)
 	}
 
 	panic("no circular route exists")
