@@ -26,13 +26,13 @@ def make_polygonal_tbl() -> dict[int, defaultdict[int, list[int]]]:
     return result
 
 
-def find_paths(p_tbl: dict[int, defaultdict[int, list[int]]]) -> list[list[int]]:
+def find_closed_paths(p_tbl: dict[int, defaultdict[int, list[int]]]) -> list[list[int]]:
     def next_states(state: tuple[int, list[int]]) -> list[tuple[int, list[int]]]:
         states: list[tuple[int, list[int]]] = []
         bits, path = state
 
         if bits == 0b111111000 and path[0] == path[-1]:
-            # a cycle is found
+            # Found a closed path
             paths.append(path)
         else:
             for i in [7, 6, 5, 4, 3]:
@@ -66,7 +66,7 @@ def compute() -> str:
                 lambda path: list(
                     map(lambda tpl: tpl[0] * 100 + tpl[1], pairwise(path))
                 ),
-                find_paths(make_polygonal_tbl()),
+                find_closed_paths(make_polygonal_tbl()),
             ),
         ),
     )
