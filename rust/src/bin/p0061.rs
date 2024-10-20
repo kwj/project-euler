@@ -5,11 +5,13 @@ use std::collections::{HashMap, HashSet, VecDeque};
 euler::run_solver!(61);
 
 fn solve() -> String {
-    compute().to_string()
+    compute(8).to_string()
 }
 
-fn compute() -> i64 {
-    let cycles: Vec<Vec<i64>> = find_closed_paths()
+fn compute(max_polygon: usize) -> i64 {
+    debug_assert!(max_polygon > 3);
+
+    let cycles: Vec<Vec<i64>> = find_closed_paths(max_polygon)
         .into_iter()
         .map(|path| {
             // Change a closed path to a set of cyclic numbers
@@ -31,14 +33,15 @@ fn compute() -> i64 {
     unreachable!();
 }
 
-fn find_closed_paths() -> Vec<Vec<i64>> {
+fn find_closed_paths(max_polygon: usize) -> Vec<Vec<i64>> {
     let mut paths: Vec<Vec<i64>> = Vec::new();
-    let polynum_tbl: HashMap<usize, HashMap<i64, Vec<i64>>> = make_polynum_tbl();
+    let polynum_tbl: HashMap<usize, HashMap<i64, Vec<i64>>> = make_polynum_tbl(max_polygon);
+    let stop_condition: u32 = (1 << (max_polygon + 1)) - 8;
 
     let mut get_next_states = |(bits, path): (u32, Vec<i64>)| -> Vec<(u32, Vec<i64>)> {
         let mut states: Vec<(u32, Vec<i64>)> = Vec::new();
 
-        // bits:
+        // bits: (when max_polygon = 8)
         //   0b######000
         //     ||||||
         //     |||||+- triangle
@@ -47,10 +50,10 @@ fn find_closed_paths() -> Vec<Vec<i64>> {
         //     ||+---- hexagonal
         //     |+----- heptagonal
         //     +------ octagonal
-        if bits == 0b111111000 && path[0] == *path.last().unwrap() {
+        if bits == stop_condition && path[0] == *path.last().unwrap() {
             paths.push(path);
         } else {
-            for i in 3_usize..=7 {
+            for i in 3_usize..max_polygon {
                 let p_bit = 0b1_u32 << i;
                 if bits & p_bit != 0 {
                     continue;
@@ -71,9 +74,9 @@ fn find_closed_paths() -> Vec<Vec<i64>> {
 
     // Search by DFS (start from octagonal numbers)
     let mut q: VecDeque<(u32, Vec<i64>)> = VecDeque::new();
-    for (&k, vs) in polynum_tbl.get(&8).unwrap() {
+    for (&k, vs) in polynum_tbl.get(&max_polygon).unwrap() {
         for &v in vs {
-            q.push_back((0b1 << 8, vec![k, v]));
+            q.push_back((0b1 << max_polygon, vec![k, v]));
         }
     }
     while !q.is_empty() {
@@ -85,9 +88,9 @@ fn find_closed_paths() -> Vec<Vec<i64>> {
     paths
 }
 
-fn make_polynum_tbl() -> HashMap<usize, HashMap<i64, Vec<i64>>> {
+fn make_polynum_tbl(max_polygon: usize) -> HashMap<usize, HashMap<i64, Vec<i64>>> {
     let mut tbl: HashMap<usize, HashMap<i64, Vec<i64>>> = HashMap::new();
-    for p in 3..=8 {
+    for p in 3..=max_polygon {
         let mut x: HashMap<i64, Vec<i64>> = HashMap::new();
         for n in (1_i64..)
             .step_by(p - 2)
@@ -112,7 +115,17 @@ mod tests {
     use super::compute;
 
     #[test]
-    fn p0061() {
-        assert_eq!(compute(), 28684);
+    fn p0061_4() {
+        assert_eq!(compute(4), 8181);
+    }
+
+    #[test]
+    fn p0061_5() {
+        assert_eq!(compute(5), 19291);
+    }
+
+    #[test]
+    fn p0061_8() {
+        assert_eq!(compute(8), 28684);
     }
 }

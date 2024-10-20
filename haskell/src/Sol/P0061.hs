@@ -15,18 +15,18 @@ searchRest ns pss =
     , rest <- searchRest (p : ns) (delete ps pss) -- If ok, search for next connectable polygonal number.
     ]
 
-compute :: String
-compute =
+compute :: Int -> String
+compute maxPolygon =
     -- According to the problem statement, only one cycle exists.
     if length cands /= 1
         then error "fatal error (only one answer must exist)"
         else show . sum $ headExn cands
   where
     cands =
-        filter ((== 6) . length) $ -- each number in the cycle is different
+        filter ((== maxPolygon - 2) . length) $ -- all numbers in a cycle are different from each other
             [ nub (x : rest)
-            | x <- polygonalNumbers 8 -- start searching from octagonal numbers
-            , rest <- searchRest [x] (polygonalNumbers <$> [3 .. 7])
+            | x <- polygonalNumbers maxPolygon
+            , rest <- searchRest [x] (polygonalNumbers <$> [3 .. maxPolygon - 1])
             ]
 
     polygonalNumbers :: Int -> [Int]
@@ -37,4 +37,4 @@ compute =
             $ scanl1 (+) [1, (s - 1) ..]
 
 solve :: String
-solve = compute
+solve = compute 8
