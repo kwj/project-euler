@@ -95,7 +95,7 @@ func findClosedPaths(maxPolygon int) [][]int {
 		return states
 	}
 
-	// Search by BFS (start from octagonal numbers)
+	// Search by BFS
 	var q []state
 	for k, vs := range tbl[maxPolygon] {
 		for v := range slices.Values(vs) {
