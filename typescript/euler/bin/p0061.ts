@@ -1,39 +1,28 @@
 // project euler: problem 61
 
-import { permutations } from "combinatorics/mod.ts";
 import { sum } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-const makePolygonalTbl = () => {
-  const trunc = Math.trunc;
-  const fn = new Map<number, (n: number) => number>([
-    [3, (n) => trunc(n * (n + 1) / 2)],
-    [4, (n) => n * n],
-    [5, (n) => trunc(n * (3 * n - 1) / 2)],
-    [6, (n) => n * (2 * n - 1)],
-    [7, (n) => trunc(n * (5 * n - 3) / 2)],
-    [8, (n) => n * (3 * n - 2)],
-  ]);
-
+const makePolygonalTbl = (
+  maxNumSidesPolygon: number,
+): Map<number, Map<number, number[]>> => {
   const tbl = new Map<number, Map<number, number[]>>();
-  for (const i of range(3, 8 + 1)) {
+  for (const i of range(3, maxNumSidesPolygon + 1)) {
     const mapObj = new Map<number, number[]>();
-    let j = 0;
-
+    const step = i - 2;
+    let acc = 0;
+    let j = 1;
     while (true) {
-      j += 1;
-      const num = fn.get(i)!(j);
-      if (num < 1_000) {
-        continue;
-      } else if (num >= 10_000) {
+      acc += j;
+      if (acc >= 10_000) {
         break;
-      } else if (num % 100 < 10) {
-        continue;
       }
-
-      const key = trunc(num / 100);
-      const val = num % 100;
-      mapObj.set(key, (mapObj.get(key) || []).concat([val]));
+      if (acc >= 1_000 && acc % 100 >= 10) {
+        const key = Math.trunc(acc / 100);
+        const val = acc % 100;
+        mapObj.set(key, (mapObj.get(key) || []).concat([val]));
+      }
+      j += step;
     }
     tbl.set(i, mapObj);
   }
@@ -41,57 +30,86 @@ const makePolygonalTbl = () => {
   return tbl;
 };
 
-const findCycle = (
-  polyTbl: Map<number, Map<number, number[]>>,
-  route: number[],
-): number[] | undefined => {
-  const dfs = (nextRoute: number[], path: number[]): number[] | undefined => {
-    if (nextRoute.length === 0) {
-      return (path[0] === path.at(-1)) ? path.slice(1) : undefined;
-    }
+const findClosedPaths = (maxNumSidesPolygon: number): number[][] => {
+  const paths: number[][] = [];
+  const polyTbl = makePolygonalTbl(maxNumSidesPolygon);
 
-    const nextHop = nextRoute[0];
-    const nextMap = polyTbl.get(nextHop)!;
-    if (!nextMap.has(path[0])) {
-      return undefined;
-    }
-    for (const nextNum of nextMap.get(path[0])!) {
-      const result = dfs(nextRoute.slice(1), [nextNum].concat(path));
-      if (result !== undefined) {
-        return result;
+  // example: (when maxNumSidesPolygon = 8)
+  //   0b######000
+  //     ||||||
+  //     |||||+- triangle
+  //     ||||+-- square
+  //     |||+--- pentagonal
+  //     ||+---- hexagonal
+  //     |+----- heptagonal
+  //     +------ octagonal
+  const stopCondition = (1 << (maxNumSidesPolygon + 1)) - 8;
+
+  const getNextState = (state: [number, number[]]): [number, number[]][] => {
+    const states: [number, number[]][] = [];
+    const bits = state[0];
+    const path = state[1];
+    if (bits == stopCondition && path.at(0)! == path.at(-1)!) {
+      paths.push(path);
+    } else {
+      for (const i of range(3, maxNumSidesPolygon)) {
+        const p_bit = 1 << i;
+        if ((bits & p_bit) != 0) {
+          continue;
+        }
+        const next_tbl = polyTbl.get(i)!;
+        if (next_tbl.has(path.at(-1)!)) {
+          for (const x of next_tbl.get(path.at(-1)!)!) {
+            states.push([bits | p_bit, [...path, x]]);
+          }
+        }
       }
     }
 
-    return undefined;
+    return states;
   };
 
-  // Start searching from octagonal numbers
-  for (const [k, v] of polyTbl.get(8)!.entries()) {
-    for (const nextNum of v) {
-      const result = dfs(route, [nextNum, k]);
-      if (result !== undefined) {
-        return result;
-      }
+  // search by DFS
+  const q: [number, number[]][] = [];
+  for (const [k, vs] of polyTbl.get(maxNumSidesPolygon)!.entries()) {
+    for (const v of vs) {
+      q.push([1 << maxNumSidesPolygon, [k, v]]);
+    }
+  }
+  while (q.length > 0) {
+    //console.log(q);
+    const state = q.pop()!;
+    for (const next_state of getNextState(state)) {
+      q.push(next_state);
     }
   }
 
-  return undefined;
-};
+  return paths;
+}
 
-// Assume that octagonal numbers are the start/goal positions on cycle
-export const compute = (): string => {
-  const polyTbl = makePolygonalTbl();
+export const compute = (maxNumSidesPolygon: number): string => {
+  const isDistinctNumbers = (lst: number[]): boolean => {
+    const tmp: Set<number> = new Set();
+    for (const i of range(0, lst.length - 1)) {
+      tmp.add(lst[i] * 100 + lst[i + 1]);
+    }
+    return tmp.size == lst.length - 1;
+  }
 
-  // There is only one cycle path exist, so it terminates immediately if a cycle found
-  for (const route of permutations(range(3, 7 + 1))) {
-    const result = findCycle(polyTbl, route);
-    if (result !== undefined) {
-      // sum(100*x{1} + x{2}, 100*x{2} + x{3}, ..., 100*x{n} + x{1}) = sum(x{1}, x{2}, ..., x{n}) * 101
-      return String(sum(result) * 101);
+  const cycles: number[][] = [];
+  for (const path of findClosedPaths(maxNumSidesPolygon)) {
+    // All numbers in a cycle are different from each other's
+    if (isDistinctNumbers(path)) {
+      cycles.push(path);
     }
   }
 
-  throw new Error("not found");
+  // There exists only one cycle
+  if (cycles.length == 1) {
+    return String(sum(cycles[0].slice(1)) * 101);
+  }
+
+  throw new Error("unreachable");
 };
 
-export const solve = (): string => compute();
+export const solve = (): string => compute(8);
