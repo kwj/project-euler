@@ -275,7 +275,9 @@
     end
 
     @testset "0061" begin
-        @test solve_0061() == 28684
+        @test solve_0061(4) == 8181
+        @test solve_0061(5) == 19291
+        @test solve_0061(8) == 28684
     end
 
     @testset "0062" begin

@@ -5,88 +5,106 @@ module Prob0061
 
 import Combinatorics: permutations
 
-function make_polynum_tbl()
-    fn_tbl = Dict{Int, Function}(
-        3 => (n) -> n * (n - 1) ÷ 2,
-        4 => (n) -> n ^ 2,
-        5 => (n) -> n * (3n - 1) ÷ 2,
-        6 => (n) -> n * (2n - 1),
-        7 => (n) -> n * (5n - 3) ÷ 2,
-        8 => (n) -> n * (3n - 2)
-    )
-
+function make_polynum_tbl(max_polygon)
     tbl = Dict{Int, Dict{Int, Vector{Int}}}()
-    for i = 3:8
+    for i = 3:max_polygon
         x = Dict{Int, Vector{Int}}()
-        j = 0
-        fn = fn_tbl[i]
+        acc = 0
+        step = i - 2
+        j = 1
         while true
-            j += 1
-            n = fn(j)
-            if n < 1_000 || n % 100 < 10
-                continue
-            elseif n >= 10_000
+            acc += j
+            if acc >= 10_000
                 break
             end
-            k, v = divrem(n, 100)
-            x[k] = push!(get(x, k, []), v)
+            if acc >= 1_000 && acc % 100 > 9
+                k, v = divrem(acc, 100)
+                x[k] = push!(get(x, k, []), v)
+            end
+            j += step
         end
         tbl[i] = x
     end
     tbl
 end
 
-function find_cycle(polynum_tbl, route)
-    function is_distinct_numbers(nums)
-        tmp = Set{Int}()
-        for i = 1:(length(nums) - 1)
-            push!(tmp, nums[i] * 100 + nums[i + 1])
-        end
-        length(tmp) == (length(nums) - 1)
-    end
+function find_closed_paths(max_polygon)
+    paths::Vector{Vector{Int}} = []
+    tbl = make_polynum_tbl(max_polygon)
 
-    function dfs(route, path)
-        if length(route) == 0
-            if path[1] == path[end] && is_distinct_numbers(path) == true
-                return path[2:end]
-            else
-                return nothing
+    # example: (when max_polygon = 8)
+    #   0b######000
+    #     ||||||
+    #     |||||+- triangle
+    #     ||||+-- square
+    #     |||+--- pentagonal
+    #     ||+---- hexagonal
+    #     |+----- heptagonal
+    #     +------ octagonal
+    stop_condition = (1 << (max_polygon + 1)) - 8
+
+    function get_next_states((bits, path))
+        states::Vector{Tuple{Int, Vector{Int}}} = []
+        if bits == stop_condition && path[1] == path[end]
+            push!(paths, path)
+        else
+            for i = 3:(max_polygon - 1)
+                p_bit = 1 << i
+                if bits & p_bit != 0
+                    continue
+                end
+                next_tbl = tbl[i]
+                if haskey(next_tbl, path[end])
+                    for x in next_tbl[path[end]]
+                        new_path = copy(path)
+                        push!(new_path, x)
+                        push!(states, (bits | p_bit, new_path))
+                    end
+                end
             end
         end
-
-        next_map = polynum_tbl[route[1]]
-        if haskey(next_map, path[end]) == false
-            return nothing
-        end
-        for next_num in next_map[path[end]]
-            result = dfs(route[2:end], vcat(path, [next_num]))
-            if result !== nothing
-                return result
-            end
-        end
-        return nothing
+        states
     end
 
-    for (k, v) in polynum_tbl[8]
-        for next_num in v
-            result = dfs(route, [k, next_num])
-            if result !== nothing
-                return result
-            end
+    # Search by DFS
+    q::Vector{Tuple{Int, Vector{Int}}} = []
+    for (k, vs) in tbl[max_polygon]
+        for v in vs
+            push!(q, (1 << max_polygon, [k, v]))
         end
     end
-    return nothing
+    while length(q) > 0
+        state = pop!(q)
+        for next_state in get_next_states(state)
+            push!(q, next_state)
+        end
+    end
+
+    paths
 end
 
-function solve_0061()
-    polynum_tbl = make_polynum_tbl()
-
-    for route in permutations(7:-1:3)
-        result = find_cycle(polynum_tbl, route)
-        if result !== nothing
-            # sum(100*x{1} + x{2}, 100*x{2} + x{3}, ..., 100*x{n} + x{1}) = sum(x{1}, x{2}, ..., x{n}) * 101
-            return sum(result) * 101
+function solve_0061(max_polygon::Int = 8)
+    function is_distinct_numbers(lst)
+        tmp = Set{Int}()
+        for i = 1:(length(lst) - 1)
+            push!(tmp, lst[i] * 100 + lst[i + 1])
         end
+        length(tmp) == (length(lst) - 1)
+    end
+
+    @assert (max_polygon > 3) "invalid parameter"
+
+    cycles::Vector{Vector{Int}} = []
+    for path in find_closed_paths(max_polygon)
+        # All numbers in a cycle are different from each others
+        if is_distinct_numbers(path)
+            push!(cycles, path)
+        end
+    end
+
+    # There exists only one cycle
+    if length(cycles) == 1
+        return sum(cycles[1][2:end]) * 101
     end
     @assert false "not reached"
 end
