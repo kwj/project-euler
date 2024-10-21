@@ -77,7 +77,6 @@ const findClosedPaths = (maxNumSidesPolygon: number): number[][] => {
     }
   }
   while (q.length > 0) {
-    //console.log(q);
     const state = q.pop()!;
     for (const next_state of getNextState(state)) {
       q.push(next_state);
