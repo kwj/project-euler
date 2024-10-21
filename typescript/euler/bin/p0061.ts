@@ -85,7 +85,7 @@ const findClosedPaths = (maxNumSidesPolygon: number): number[][] => {
   }
 
   return paths;
-}
+};
 
 export const compute = (maxNumSidesPolygon: number): string => {
   const isDistinctNumbers = (lst: number[]): boolean => {
@@ -94,7 +94,7 @@ export const compute = (maxNumSidesPolygon: number): string => {
       tmp.add(lst[i] * 100 + lst[i + 1]);
     }
     return tmp.size == lst.length - 1;
-  }
+  };
 
   const cycles: number[][] = [];
   for (const path of findClosedPaths(maxNumSidesPolygon)) {
