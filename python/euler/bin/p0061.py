@@ -15,9 +15,9 @@ def polygonal_numbers(n: int) -> Iterator[int]:
     )
 
 
-def make_polygonal_tbl(max_polygon: int) -> dict[int, defaultdict[int, list[int]]]:
+def make_polygonal_tbl(max_nsides: int) -> dict[int, defaultdict[int, list[int]]]:
     result: dict[int, defaultdict[int, list[int]]] = dict()
-    for i in range(3, max_polygon + 1):
+    for i in range(3, max_nsides + 1):
         tbl = defaultdict(list)
         for k, v in map(lambda n: (n // 100, n % 100), polygonal_numbers(i)):
             tbl[k].append(v)
@@ -26,7 +26,7 @@ def make_polygonal_tbl(max_polygon: int) -> dict[int, defaultdict[int, list[int]
     return result
 
 
-def find_closed_paths(max_polygon: int) -> list[list[int]]:
+def find_closed_paths(max_nsides: int) -> list[list[int]]:
     def next_states(state: tuple[int, list[int]]) -> list[tuple[int, list[int]]]:
         states: list[tuple[int, list[int]]] = []
         bits, path = state
@@ -35,7 +35,7 @@ def find_closed_paths(max_polygon: int) -> list[list[int]]:
             # Found a closed path
             paths.append(path)
         else:
-            for i in range(3, max_polygon):
+            for i in range(3, max_nsides):
                 p_bit = 1 << i
                 if p_bit & bits != 0:
                     continue
@@ -46,9 +46,9 @@ def find_closed_paths(max_polygon: int) -> list[list[int]]:
         return states
 
     paths: list[list[int]] = []
-    p_tbl: dict[int, defaultdict[int, list[int]]] = make_polygonal_tbl(max_polygon)
+    p_tbl: dict[int, defaultdict[int, list[int]]] = make_polygonal_tbl(max_nsides)
 
-    # example: (when max_polygon = 8)
+    # example: (when max_nsides = 8)
     #   0b######000
     #     ||||||
     #     |||||+- triangle
@@ -57,21 +57,21 @@ def find_closed_paths(max_polygon: int) -> list[list[int]]:
     #     ||+---- hexagonal
     #     |+----- heptagonal
     #     +------ octagonal
-    stop_condition = (1 << (max_polygon + 1)) - 8
+    stop_condition = (1 << (max_nsides + 1)) - 8
 
     # Search by DFS (start from octagonal numbers)
     q: deque[tuple[int, list[int]]] = deque()
-    for k, vs in p_tbl[max_polygon].items():
+    for k, vs in p_tbl[max_nsides].items():
         for v in vs:
-            q.append((1 << max_polygon, [k, v]))
+            q.append((1 << max_nsides, [k, v]))
     while len(q) > 0:
         q.extendleft(next_states(q.popleft()))
 
     return paths
 
 
-def compute(max_polygon: int) -> str:
-    assert max_polygon > 3, 'invalid parameter'
+def compute(max_nsides: int) -> str:
+    assert max_nsides > 3, 'invalid parameter'
 
     cycles: list[list[int]] = list(
         filter(
@@ -80,7 +80,7 @@ def compute(max_polygon: int) -> str:
                 lambda path: list(
                     map(lambda tpl: tpl[0] * 100 + tpl[1], pairwise(path))
                 ),
-                find_closed_paths(max_polygon),
+                find_closed_paths(max_nsides),
             ),
         ),
     )
@@ -89,7 +89,7 @@ def compute(max_polygon: int) -> str:
     if len(cycles) == 1:
         return str(sum(cycles[0]))
 
-    print('DEBUG: cycles (max polygon: {}) {}'.format(max_polygon, cycles))
+    print('DEBUG: cycles (max polygon: {}) {}'.format(max_nsides, cycles))
     assert False, 'unreachable!'
 
 

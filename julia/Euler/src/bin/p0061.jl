@@ -3,11 +3,9 @@
 
 module Prob0061
 
-import Combinatorics: permutations
-
-function make_polynum_tbl(max_polygon)
+function make_polynum_tbl(max_nsides_polygon)
     tbl = Dict{Int, Dict{Int, Vector{Int}}}()
-    for i = 3:max_polygon
+    for i = 3:max_nsides_polygon
         x = Dict{Int, Vector{Int}}()
         acc = 0
         step = i - 2
@@ -28,11 +26,11 @@ function make_polynum_tbl(max_polygon)
     tbl
 end
 
-function find_closed_paths(max_polygon)
+function find_closed_paths(max_nsides_polygon)
     paths::Vector{Vector{Int}} = []
-    tbl = make_polynum_tbl(max_polygon)
+    tbl = make_polynum_tbl(max_nsides_polygon)
 
-    # example: (when max_polygon = 8)
+    # example: (when max_nsides_polygon = 8)
     #   0b######000
     #     ||||||
     #     |||||+- triangle
@@ -41,14 +39,14 @@ function find_closed_paths(max_polygon)
     #     ||+---- hexagonal
     #     |+----- heptagonal
     #     +------ octagonal
-    stop_condition = (1 << (max_polygon + 1)) - 8
+    stop_condition = (1 << (max_nsides_polygon + 1)) - 8
 
     function get_next_states((bits, path))
         states::Vector{Tuple{Int, Vector{Int}}} = []
         if bits == stop_condition && path[1] == path[end]
             push!(paths, path)
         else
-            for i = 3:(max_polygon - 1)
+            for i = 3:(max_nsides_polygon - 1)
                 p_bit = 1 << i
                 if bits & p_bit != 0
                     continue
@@ -68,9 +66,9 @@ function find_closed_paths(max_polygon)
 
     # Search by DFS
     q::Vector{Tuple{Int, Vector{Int}}} = []
-    for (k, vs) in tbl[max_polygon]
+    for (k, vs) in tbl[max_nsides_polygon]
         for v in vs
-            push!(q, (1 << max_polygon, [k, v]))
+            push!(q, (1 << max_nsides_polygon, [k, v]))
         end
     end
     while length(q) > 0
@@ -83,7 +81,7 @@ function find_closed_paths(max_polygon)
     paths
 end
 
-function solve_0061(max_polygon::Int = 8)
+function solve_0061(max_nsides_polygon::Int = 8)
     function is_distinct_numbers(lst)
         tmp = Set{Int}()
         for i = 1:(length(lst) - 1)
@@ -92,10 +90,10 @@ function solve_0061(max_polygon::Int = 8)
         length(tmp) == (length(lst) - 1)
     end
 
-    @assert (max_polygon > 3) "invalid parameter"
+    @assert (max_nsides_polygon > 3) "invalid parameter"
 
     cycles::Vector{Vector{Int}} = []
-    for path in find_closed_paths(max_polygon)
+    for path in find_closed_paths(max_nsides_polygon)
         # All numbers in a cycle are different from each others
         if is_distinct_numbers(path)
             push!(cycles, path)

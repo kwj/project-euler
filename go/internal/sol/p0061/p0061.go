@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-// state.bits (when maxPolygon = 8)
+// state.bits (when maxNumSidesPolygon = 8)
 //
 //	0b######000
 //	  ||||||
@@ -36,10 +36,10 @@ type state struct {
 // Thus, this number doesn't contain as an entry in a guide map.
 type nextHop map[int][]int
 
-func polygonalTbl(maxPolygon int) map[int]nextHop {
+func polygonalTbl(maxNumSidesPolygon int) map[int]nextHop {
 	tbl := map[int]nextHop{}
 
-	for i := 3; i <= maxPolygon; i++ {
+	for i := 3; i <= maxNumSidesPolygon; i++ {
 		m := nextHop{}
 		acc := 0
 		step := i - 2
@@ -67,10 +67,10 @@ func polygonalTbl(maxPolygon int) map[int]nextHop {
 	return tbl
 }
 
-func findClosedPaths(maxPolygon int) [][]int {
+func findClosedPaths(maxNumSidesPolygon int) [][]int {
 	var paths [][]int
-	tbl := polygonalTbl(maxPolygon)
-	stopCondition := (1 << (maxPolygon + 1)) - 8
+	tbl := polygonalTbl(maxNumSidesPolygon)
+	stopCondition := (1 << (maxNumSidesPolygon + 1)) - 8
 
 	getNextStates := func(st state) []state {
 		var states []state
@@ -78,7 +78,7 @@ func findClosedPaths(maxPolygon int) [][]int {
 		if st.bits == stopCondition && st.path[0] == st.path[len(st.path)-1] {
 			paths = append(paths, st.path)
 		} else {
-			for i := 3; i < maxPolygon; i++ {
+			for i := 3; i < maxNumSidesPolygon; i++ {
 				p_bit := 0b1 << i
 				if st.bits&p_bit != 0 {
 					continue
@@ -86,7 +86,13 @@ func findClosedPaths(maxPolygon int) [][]int {
 				next_tbl := tbl[i]
 				if vs, ok := next_tbl[st.path[len(st.path)-1]]; ok {
 					for x := range slices.Values(vs) {
-						states = append(states, state{bits: st.bits | p_bit, path: append(append([]int{}, st.path...), x)})
+						states = append(
+							states,
+							state{
+								bits: st.bits | p_bit,
+								path: append(append([]int{}, st.path...), x),
+							},
+						)
 					}
 				}
 			}
@@ -97,9 +103,9 @@ func findClosedPaths(maxPolygon int) [][]int {
 
 	// Search by BFS
 	var q []state
-	for k, vs := range tbl[maxPolygon] {
+	for k, vs := range tbl[maxNumSidesPolygon] {
 		for v := range slices.Values(vs) {
-			q = append(q, state{bits: 0b1 << maxPolygon, path: []int{k, v}})
+			q = append(q, state{bits: 0b1 << maxNumSidesPolygon, path: []int{k, v}})
 		}
 	}
 	for len(q) > 0 {
@@ -113,7 +119,7 @@ func findClosedPaths(maxPolygon int) [][]int {
 	return paths
 }
 
-func compute(maxPolygon int) string {
+func compute(maxNumSidesPolygon int) string {
 	isDistinctNumbers := func(xs []int) bool {
 		m := map[int]struct{}{}
 		for i := 0; i < len(xs)-1; i++ {
@@ -134,7 +140,7 @@ func compute(maxPolygon int) string {
 
 	// All numbers in a cycle are different from each others
 	var cycles [][]int
-	for lst := range slices.Values(findClosedPaths(maxPolygon)) {
+	for lst := range slices.Values(findClosedPaths(maxNumSidesPolygon)) {
 		if isDistinctNumbers(lst) {
 			cycles = append(cycles, lst)
 		}

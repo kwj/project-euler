@@ -16,17 +16,17 @@ searchRest ns pss =
     ]
 
 compute :: Int -> String
-compute maxPolygon =
+compute maxNumSidesPolygon =
     -- According to the problem statement, only one cycle exists.
     if length cands /= 1
         then error "fatal error (only one answer must exist)"
         else show . sum $ headExn cands
   where
     cands =
-        filter ((== maxPolygon - 2) . length) $ -- all numbers in a cycle are different from each other
+        filter ((== maxNumSidesPolygon - 2) . length) $ -- all numbers in a cycle are different from each other
             [ nub (x : rest)
-            | x <- polygonalNumbers maxPolygon
-            , rest <- searchRest [x] (polygonalNumbers <$> [3 .. maxPolygon - 1])
+            | x <- polygonalNumbers maxNumSidesPolygon
+            , rest <- searchRest [x] (polygonalNumbers <$> [3 .. maxNumSidesPolygon - 1])
             ]
 
     polygonalNumbers :: Int -> [Int]
