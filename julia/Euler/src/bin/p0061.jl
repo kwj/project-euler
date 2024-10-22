@@ -27,7 +27,7 @@ function make_polynum_tbl(max_nsides_polygon)
 end
 
 function find_closed_paths(max_nsides_polygon)
-    paths::Vector{Vector{Int}} = []
+    closed_paths::Vector{Vector{Int}} = []
     tbl = make_polynum_tbl(max_nsides_polygon)
 
     # example: (when max_nsides_polygon = 8)
@@ -42,29 +42,29 @@ function find_closed_paths(max_nsides_polygon)
     stop_condition = (1 << (max_nsides_polygon + 1)) - 8
 
     function get_next_states((bits, path))
-        states::Vector{Tuple{Int, Vector{Int}}} = []
-        if bits == stop_condition && path[1] == path[end]
-            push!(paths, path)
+        next_states::Vector{Tuple{Int, Vector{Int}}} = []
+        if bits == stop_condition
+            if path[1] == path[end]
+                # Found a closed path
+                push!(closed_paths, path)
+            end
         else
-            for i = 3:(max_nsides_polygon - 1)
-                p_bit = 1 << i
+            for nsides = 3:(max_nsides_polygon - 1)
+                p_bit = 1 << nsides
                 if bits & p_bit != 0
                     continue
                 end
-                next_tbl = tbl[i]
-                if haskey(next_tbl, path[end])
-                    for x in next_tbl[path[end]]
-                        new_path = copy(path)
-                        push!(new_path, x)
-                        push!(states, (bits | p_bit, new_path))
+                if haskey(tbl[nsides], path[end])
+                    for x in tbl[nsides][path[end]]
+                        push!(next_states, (bits | p_bit, push!(copy(path), x)))
                     end
                 end
             end
         end
-        states
+        next_states
     end
 
-    # Search by DFS
+    # Search for all closed paths
     q::Vector{Tuple{Int, Vector{Int}}} = []
     for (k, vs) in tbl[max_nsides_polygon]
         for v in vs
@@ -78,7 +78,7 @@ function find_closed_paths(max_nsides_polygon)
         end
     end
 
-    paths
+    closed_paths
 end
 
 function solve_0061(max_nsides_polygon::Int = 8)
@@ -94,7 +94,7 @@ function solve_0061(max_nsides_polygon::Int = 8)
 
     cycles::Vector{Vector{Int}} = []
     for path in find_closed_paths(max_nsides_polygon)
-        # All numbers in a cycle are different from each others
+        # All numbers in a cycle are different from each other's
         if is_distinct_numbers(path)
             push!(cycles, path)
         end
