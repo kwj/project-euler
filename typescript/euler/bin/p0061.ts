@@ -31,7 +31,7 @@ const makePolygonalTbl = (
 };
 
 const findClosedPaths = (maxNumSidesPolygon: number): number[][] => {
-  const paths: number[][] = [];
+  const closed_paths: number[][] = [];
   const polyTbl = makePolygonalTbl(maxNumSidesPolygon);
 
   // example: (when maxNumSidesPolygon = 8)
@@ -49,8 +49,10 @@ const findClosedPaths = (maxNumSidesPolygon: number): number[][] => {
     const states: [number, number[]][] = [];
     const bits = state[0];
     const path = state[1];
-    if (bits == stopCondition && path.at(0)! == path.at(-1)!) {
-      paths.push(path);
+    if (bits == stopCondition) {
+      if (path.at(0)! == path.at(-1)!) {
+        closed_paths.push(path);
+      }
     } else {
       for (const i of range(3, maxNumSidesPolygon)) {
         const p_bit = 1 << i;
@@ -69,7 +71,7 @@ const findClosedPaths = (maxNumSidesPolygon: number): number[][] => {
     return states;
   };
 
-  // search by DFS
+  // search for all closed paths
   const q: [number, number[]][] = [];
   for (const [k, vs] of polyTbl.get(maxNumSidesPolygon)!.entries()) {
     for (const v of vs) {
@@ -83,7 +85,7 @@ const findClosedPaths = (maxNumSidesPolygon: number): number[][] => {
     }
   }
 
-  return paths;
+  return closed_paths;
 };
 
 export const compute = (maxNumSidesPolygon: number): string => {

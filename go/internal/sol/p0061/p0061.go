@@ -68,15 +68,17 @@ func polygonalTbl(maxNumSidesPolygon int) map[int]nextHop {
 }
 
 func findClosedPaths(maxNumSidesPolygon int) [][]int {
-	var paths [][]int
+	var closed_paths [][]int
 	tbl := polygonalTbl(maxNumSidesPolygon)
 	stopCondition := (1 << (maxNumSidesPolygon + 1)) - 8
 
 	getNextStates := func(st state) []state {
 		var states []state
 
-		if st.bits == stopCondition && st.path[0] == st.path[len(st.path)-1] {
-			paths = append(paths, st.path)
+		if st.bits == stopCondition {
+			if st.path[0] == st.path[len(st.path)-1] {
+				closed_paths = append(closed_paths, st.path)
+			}
 		} else {
 			for i := 3; i < maxNumSidesPolygon; i++ {
 				p_bit := 0b1 << i
@@ -101,7 +103,7 @@ func findClosedPaths(maxNumSidesPolygon int) [][]int {
 		return states
 	}
 
-	// Search by BFS
+	// Search for all closed paths
 	var q []state
 	for k, vs := range tbl[maxNumSidesPolygon] {
 		for v := range slices.Values(vs) {
@@ -116,7 +118,7 @@ func findClosedPaths(maxNumSidesPolygon int) [][]int {
 		}
 	}
 
-	return paths
+	return closed_paths
 }
 
 func compute(maxNumSidesPolygon int) string {

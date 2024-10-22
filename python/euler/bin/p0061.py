@@ -31,9 +31,10 @@ def find_closed_paths(max_nsides: int) -> list[list[int]]:
         states: list[tuple[int, list[int]]] = []
         bits, path = state
 
-        if bits == stop_condition and path[0] == path[-1]:
-            # Found a closed path
-            paths.append(path)
+        if bits == stop_condition:
+            if path[0] == path[-1]:
+                # Found a closed path
+                closed_paths.append(path)
         else:
             for i in range(3, max_nsides):
                 p_bit = 1 << i
@@ -45,7 +46,7 @@ def find_closed_paths(max_nsides: int) -> list[list[int]]:
 
         return states
 
-    paths: list[list[int]] = []
+    closed_paths: list[list[int]] = []
     p_tbl: dict[int, defaultdict[int, list[int]]] = make_polygonal_tbl(max_nsides)
 
     # example: (when max_nsides = 8)
@@ -59,7 +60,7 @@ def find_closed_paths(max_nsides: int) -> list[list[int]]:
     #     +------ octagonal
     stop_condition = (1 << (max_nsides + 1)) - 8
 
-    # Search by DFS (start from octagonal numbers)
+    # Search for all closed paths
     q: deque[tuple[int, list[int]]] = deque()
     for k, vs in p_tbl[max_nsides].items():
         for v in vs:
@@ -67,7 +68,7 @@ def find_closed_paths(max_nsides: int) -> list[list[int]]:
     while len(q) > 0:
         q.extendleft(next_states(q.popleft()))
 
-    return paths
+    return closed_paths
 
 
 def compute(max_nsides: int) -> str:
