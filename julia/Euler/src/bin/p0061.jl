@@ -29,20 +29,20 @@ end
 function find_closed_paths(max_nsides_polygon)
     closed_paths::Vector{Vector{Int}} = []
     tbl = make_polynum_tbl(max_nsides_polygon)
-
-    # example: (when max_nsides_polygon = 8)
-    #   0b######000
-    #     ||||||
-    #     |||||+- triangle
-    #     ||||+-- square
-    #     |||+--- pentagonal
-    #     ||+---- hexagonal
-    #     |+----- heptagonal
-    #     +------ octagonal
     stop_condition = (1 << (max_nsides_polygon + 1)) - 8
 
     function get_next_states((bits, path))
         next_states::Vector{Tuple{Int, Vector{Int}}} = []
+
+        # bits: (when max_nsides_polygon = 8)
+        #   0b######000
+        #     ||||||
+        #     |||||+- triangle
+        #     ||||+-- square
+        #     |||+--- pentagonal
+        #     ||+---- hexagonal
+        #     |+----- heptagonal
+        #     +------ octagonal
         if bits == stop_condition
             if path[1] == path[end]
                 # Found a closed path

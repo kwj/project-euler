@@ -31,6 +31,15 @@ def find_closed_paths(max_nsides: int) -> list[list[int]]:
         states: list[tuple[int, list[int]]] = []
         bits, path = state
 
+        # bits: (when max_nsides = 8)
+        #   0b######000
+        #     ||||||
+        #     |||||+- triangle
+        #     ||||+-- square
+        #     |||+--- pentagonal
+        #     ||+---- hexagonal
+        #     |+----- heptagonal
+        #     +------ octagonal
         if bits == stop_condition:
             if path[0] == path[-1]:
                 # Found a closed path
@@ -48,16 +57,6 @@ def find_closed_paths(max_nsides: int) -> list[list[int]]:
 
     closed_paths: list[list[int]] = []
     p_tbl: dict[int, defaultdict[int, list[int]]] = make_polygonal_tbl(max_nsides)
-
-    # example: (when max_nsides = 8)
-    #   0b######000
-    #     ||||||
-    #     |||||+- triangle
-    #     ||||+-- square
-    #     |||+--- pentagonal
-    #     ||+---- hexagonal
-    #     |+----- heptagonal
-    #     +------ octagonal
     stop_condition = (1 << (max_nsides + 1)) - 8
 
     # Search for all closed paths

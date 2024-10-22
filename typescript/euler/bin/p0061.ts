@@ -33,22 +33,22 @@ const makePolygonalTbl = (
 const findClosedPaths = (maxNumSidesPolygon: number): number[][] => {
   const closed_paths: number[][] = [];
   const polyTbl = makePolygonalTbl(maxNumSidesPolygon);
-
-  // example: (when maxNumSidesPolygon = 8)
-  //   0b######000
-  //     ||||||
-  //     |||||+- triangle
-  //     ||||+-- square
-  //     |||+--- pentagonal
-  //     ||+---- hexagonal
-  //     |+----- heptagonal
-  //     +------ octagonal
   const stopCondition = (1 << (maxNumSidesPolygon + 1)) - 8;
 
   const getNextState = (state: [number, number[]]): [number, number[]][] => {
     const states: [number, number[]][] = [];
     const bits = state[0];
     const path = state[1];
+
+    // bits: (when maxNumSidesPolygon = 8)
+    //   0b######000
+    //     ||||||
+    //     |||||+- triangle
+    //     ||||+-- square
+    //     |||+--- pentagonal
+    //     ||+---- hexagonal
+    //     |+----- heptagonal
+    //     +------ octagonal
     if (bits == stopCondition) {
       if (path.at(0)! == path.at(-1)!) {
         closed_paths.push(path);
