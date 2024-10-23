@@ -14,13 +14,13 @@ fn compute(max_nsides_polygon: usize) -> i64 {
     let cycles: Vec<Vec<i64>> = find_closed_paths(max_nsides_polygon)
         .into_iter()
         .map(|path| {
-            // Change a closed path to a set of cyclic numbers
+            // Change a closed path to a vector of cyclic numbers
             path.windows(2)
                 .map(|pair| pair[0] * 100 + pair[1])
                 .collect::<Vec<i64>>()
         })
         .filter(|lst| {
-            // All numbers in a cycle are different numbers
+            // All numbers in a cycle are different from each other's
             lst.len() == HashSet::<i64>::from_iter(lst.clone()).len()
         })
         .collect();
@@ -83,7 +83,7 @@ fn find_closed_paths(max_nsides_polygon: usize) -> Vec<Vec<i64>> {
     }
     while !q.is_empty() {
         for (bits, path) in get_next_states(q.pop_front().unwrap()).into_iter() {
-            q.push_front((bits, path.clone()));
+            q.push_front((bits, path));
         }
     }
 
