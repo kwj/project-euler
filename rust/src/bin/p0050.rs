@@ -55,17 +55,15 @@ impl CumSumPrime {
     fn initial_lst(&mut self, limit: i64) -> Vec<i64> {
         use std::iter;
 
-        let mut lst: Vec<_> = iter::from_fn(|| {
-            if self.cumsum < limit {
-                self.next()
-            } else {
-                None
-            }
-        })
-        .collect();
-
-        lst.insert(0, 0);
-        lst
+        [0].into_iter()
+            .chain(iter::from_fn(|| {
+                if self.cumsum < limit {
+                    self.next()
+                } else {
+                    None
+                }
+            }))
+            .collect()
     }
 }
 
