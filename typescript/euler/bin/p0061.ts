@@ -72,16 +72,16 @@ const findClosedPaths = (maxNumSidesPolygon: number): number[][] => {
   };
 
   // search for all closed paths
-  const q: [number, number[]][] = [];
+  const stack: [number, number[]][] = [];
   for (const [k, vs] of polyTbl.get(maxNumSidesPolygon)!.entries()) {
     for (const v of vs) {
-      q.push([1 << maxNumSidesPolygon, [k, v]]);
+      stack.push([1 << maxNumSidesPolygon, [k, v]]);
     }
   }
-  while (q.length > 0) {
-    const state = q.pop()!;
+  while (stack.length > 0) {
+    const state = stack.pop()!;
     for (const next_state of getNextState(state)) {
-      q.push(next_state);
+      stack.push(next_state);
     }
   }
 

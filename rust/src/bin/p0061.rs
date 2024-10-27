@@ -75,15 +75,15 @@ fn find_closed_paths(max_nsides_polygon: usize) -> Vec<Vec<i64>> {
     };
 
     // Search for all closed paths
-    let mut q: VecDeque<(u32, Vec<i64>)> = VecDeque::new();
+    let mut dq: VecDeque<(u32, Vec<i64>)> = VecDeque::new();
     for (&k, vs) in polynum_tbl.get(&max_nsides_polygon).unwrap() {
         for &v in vs {
-            q.push_back((0b1 << max_nsides_polygon, vec![k, v]));
+            dq.push_back((0b1 << max_nsides_polygon, vec![k, v]));
         }
     }
-    while !q.is_empty() {
-        for (bits, path) in get_next_states(q.pop_front().unwrap()).into_iter() {
-            q.push_front((bits, path));
+    while !dq.is_empty() {
+        for (bits, path) in get_next_states(dq.pop_front().unwrap()).into_iter() {
+            dq.push_front((bits, path));
         }
     }
 

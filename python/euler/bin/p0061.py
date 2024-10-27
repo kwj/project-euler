@@ -60,12 +60,12 @@ def find_closed_paths(max_nsides: int) -> list[list[int]]:
     stop_condition = (1 << (max_nsides + 1)) - 8
 
     # Search for all closed paths
-    q: deque[tuple[int, list[int]]] = deque()
+    dq: deque[tuple[int, list[int]]] = deque()
     for k, vs in p_tbl[max_nsides].items():
         for v in vs:
-            q.append((1 << max_nsides, [k, v]))
-    while len(q) > 0:
-        q.extendleft(next_states(q.popleft()))
+            dq.append((1 << max_nsides, [k, v]))
+    while len(dq) > 0:
+        dq.extendleft(next_states(dq.popleft()))
 
     return closed_paths
 

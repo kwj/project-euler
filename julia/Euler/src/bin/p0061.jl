@@ -65,16 +65,16 @@ function find_closed_paths(max_nsides_polygon)
     end
 
     # Search for all closed paths
-    q::Vector{Tuple{Int, Vector{Int}}} = []
+    stack::Vector{Tuple{Int, Vector{Int}}} = []
     for (k, vs) in tbl[max_nsides_polygon]
         for v in vs
-            push!(q, (1 << max_nsides_polygon, [k, v]))
+            push!(stack, (1 << max_nsides_polygon, [k, v]))
         end
     end
-    while length(q) > 0
-        state = pop!(q)
+    while length(stack) > 0
+        state = pop!(stack)
         for next_state in get_next_states(state)
-            push!(q, next_state)
+            push!(stack, next_state)
         end
     end
 
