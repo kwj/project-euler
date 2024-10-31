@@ -38,35 +38,20 @@ fn find_closed_paths(max_nsides_polygon: usize) -> Vec<Vec<i64>> {
     let polynum_tbl: HashMap<usize, HashMap<i64, Vec<i64>>> = make_polynum_tbl(max_nsides_polygon);
     let stop_condition: u32 = (1 << (max_nsides_polygon + 1)) - 8;
 
-    let mut get_next_states = |(bits, path): (u32, Vec<i64>)| -> Vec<(u32, Vec<i64>)> {
+    let get_next_states = |(bits, path): (u32, Vec<i64>)| -> Vec<(u32, Vec<i64>)> {
         let mut states: Vec<(u32, Vec<i64>)> = Vec::new();
 
-        // bits: (when max_nsides_polygon = 8)
-        //   0b######000
-        //     ||||||
-        //     |||||+- triangle
-        //     ||||+-- square
-        //     |||+--- pentagonal
-        //     ||+---- hexagonal
-        //     |+----- heptagonal
-        //     +------ octagonal
-        if bits == stop_condition {
-            if path[0] == *path.last().unwrap() {
-                closed_paths.push(path);
+        for i in 3_usize..max_nsides_polygon {
+            let p_bit = 0b1_u32 << i;
+            if bits & p_bit != 0 {
+                continue;
             }
-        } else {
-            for i in 3_usize..max_nsides_polygon {
-                let p_bit = 0b1_u32 << i;
-                if bits & p_bit != 0 {
-                    continue;
-                }
-                let next_tbl = polynum_tbl.get(&i).unwrap();
-                if let Some(vs) = next_tbl.get(path.last().unwrap()) {
-                    for &x in vs {
-                        let mut next_path = path.clone();
-                        next_path.push(x);
-                        states.push((bits | p_bit, next_path));
-                    }
+            let next_tbl = polynum_tbl.get(&i).unwrap();
+            if let Some(vs) = next_tbl.get(path.last().unwrap()) {
+                for &x in vs {
+                    let mut next_path = path.clone();
+                    next_path.push(x);
+                    states.push((bits | p_bit, next_path));
                 }
             }
         }
@@ -83,7 +68,22 @@ fn find_closed_paths(max_nsides_polygon: usize) -> Vec<Vec<i64>> {
     }
     while !dq.is_empty() {
         for (bits, path) in get_next_states(dq.pop_front().unwrap()).into_iter() {
-            dq.push_front((bits, path));
+            // bits: (when max_nsides_polygon = 8)
+            //   0b######000  --- 1: used, 0: unused
+            //     ||||||
+            //     |||||+- triangle
+            //     ||||+-- square
+            //     |||+--- pentagonal
+            //     ||+---- hexagonal
+            //     |+----- heptagonal
+            //     +------ octagonal
+            if bits == stop_condition {
+                if path[0] == *path.last().unwrap() {
+                    closed_paths.push(path);
+                }
+            } else {
+                dq.push_front((bits, path));
+            }
         }
     }
 
@@ -92,6 +92,7 @@ fn find_closed_paths(max_nsides_polygon: usize) -> Vec<Vec<i64>> {
 
 fn make_polynum_tbl(max_nsides_polygon: usize) -> HashMap<usize, HashMap<i64, Vec<i64>>> {
     let mut tbl: HashMap<usize, HashMap<i64, Vec<i64>>> = HashMap::new();
+
     for p in 3..=max_nsides_polygon {
         let mut x: HashMap<i64, Vec<i64>> = HashMap::new();
         for n in (1_i64..)
