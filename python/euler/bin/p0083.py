@@ -2,9 +2,6 @@
 
 #   I used Dijkstra's algorithm to solve.
 #     https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
-#
-#   We will need the following files to run this program.
-#     - https://projecteuler.net/project/resources/p083_matrix.txt
 
 import sys
 from typing import IO

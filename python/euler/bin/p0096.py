@@ -15,9 +15,6 @@
 #    R7|   B6   |   B7   |   B8   |
 #    R8|        |        |        |
 #      +--------+--------+--------+
-#
-#   We will need the following files to run this program.
-#     - https://projecteuler.net/project/resources/p096_sudoku.txt
 
 import re
 from functools import reduce

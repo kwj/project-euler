@@ -1,10 +1,5 @@
 # project euler: problem 79
 
-#   If you look at the log file, you can assume the answer with pen and paper :).
-#
-#   We'll need the following files to run this program.
-#     - https://projecteuler.net/project/resources/p079_keylog.txt
-#
 #   I saw the Wikipedia page about topological sorting.
 #     https://en.wikipedia.org/wiki/Topological_sorting
 #

@@ -1,8 +1,5 @@
 # project euler: problem 82
 
-#   We will need the following files to run this program.
-#     - https://projecteuler.net/project/resources/p082_matrix.txt
-
 from collections.abc import Callable
 from typing import IO
 

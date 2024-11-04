@@ -1,8 +1,5 @@
 # project euler: problem 81
 
-#   We will need the following files to run this program.
-#     - https://projecteuler.net/project/resources/p081_matrix.txt
-
 import sys
 from collections.abc import Callable
 from itertools import accumulate

@@ -19,9 +19,6 @@
 #     IIII          IV
 #     XXXX          XL
 #     CCCC          CD
-#
-#   We will need the following files to run this program.
-#     - https://projecteuler.net/project/resources/p089_roman.txt
 
 import re
 from typing import IO

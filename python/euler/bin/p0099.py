@@ -1,9 +1,6 @@
 # project euler: problem 99
 
 #   log10 base^exp = exp * (log10 base)
-#
-#   We will need the following file to run this program.
-#     - https://projecteuler.net/project/resources/p099_base_exp.txt
 
 from collections.abc import Iterator
 from math import log10
