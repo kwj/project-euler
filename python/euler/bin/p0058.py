@@ -48,7 +48,7 @@ from euler.lib.prime import is_prime
 
 def compute() -> str:
     def wrapper(n: int) -> int:
-        if is_prime(n) is True:
+        if is_prime(n):
             return 1
         else:
             return 0

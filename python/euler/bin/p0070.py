@@ -102,7 +102,7 @@ def compute() -> str:
             if get_ratio(pf_lst[:2]) > pq.peek()[0]:
                 # pruning: skip to the next prime smaller than 'p'
                 break
-            if is_perm(prod(pf_lst), phi(pf_lst)) is True:
+            if is_perm(prod(pf_lst), phi(pf_lst)):
                 pq.insert((get_ratio(pf_lst), pf_lst))
 
     return str(prod(pq.peek()[1]))

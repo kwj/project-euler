@@ -22,7 +22,7 @@ def compute(digits: int) -> str:
             for y in reversed(range(n_lower, min(blk_upper // x, x) + 1)):
                 if (tmp := x * y) < blk_lower:
                     break
-                elif is_palindrome(tmp) is True:
+                elif is_palindrome(tmp):
                     answer.append(tmp)
 
         if len(answer) != 0:

@@ -47,10 +47,7 @@ def get_pairable_primes(x: int, asc_ps: list[int], curr_minsum: int) -> list[int
         return pow(2, n - 1, n) == 1
 
     def is_probably_pair(a: int, upper_a: int, b: int, upper_b: int) -> bool:
-        return (
-            fermat_primality_test(a * upper_b + b) is True
-            and fermat_primality_test(b * upper_a + a) is True
-        )
+        return fermat_primality_test(a * upper_b + b) and fermat_primality_test(b * upper_a + a)  # fmt: skip
 
     upper_x = 10 ** num_of_digits(x)
     upper_p = 10
@@ -60,7 +57,7 @@ def get_pairable_primes(x: int, asc_ps: list[int], curr_minsum: int) -> list[int
             break
         while p > upper_p:
             upper_p *= 10
-        if is_probably_pair(x, upper_x, p, upper_p) is True:
+        if is_probably_pair(x, upper_x, p, upper_p):
             result.append(p)
 
     return result
@@ -83,7 +80,7 @@ def find_cliques(
 
     def aux(group: list[int], desc_nbrs: list[int], depth: int) -> None:
         if depth == 0:
-            if is_clique(p, group) is True:
+            if is_clique(p, group):
                 result.append([p] + group)
         else:
             for offset in range(0, len(desc_nbrs) - depth + 1):

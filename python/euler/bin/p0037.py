@@ -20,7 +20,7 @@ def pickup_primes(lst: list[int]) -> list[int]:
         if n == 0:
             return False
         while n != 0:
-            if is_prime(n) is False:
+            if not is_prime(n):
                 return False
             n //= 10
         return True

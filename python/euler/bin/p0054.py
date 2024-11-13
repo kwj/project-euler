@@ -77,7 +77,7 @@ def get_handrank(hand: list[str]) -> list[int]:
 
     if len(set(suit_lst)) == 1:
         # This hand contains five cards all of the same suit.
-        if is_straight(num_lst) is True:
+        if is_straight(num_lst):
             match num_lst[0]:
                 case 14:
                     handrank = HAND_RF  # Royal Flush
@@ -88,7 +88,7 @@ def get_handrank(hand: list[str]) -> list[int]:
     else:
         match len(hand_info):
             case 5:
-                if is_straight(num_lst) is True:
+                if is_straight(num_lst):
                     handrank = HAND_S  # Straight
                 else:
                     handrank = HAND_HC  # High Card

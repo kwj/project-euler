@@ -20,7 +20,7 @@ def compute() -> str:
         lower = 10 ** (ndigits - 1)
         upper = (10**ndigits) // 6
         for n in range(lower, upper + 1):
-            if check_num(n) is True:
+            if check_num(n):
                 return str(n)
 
     assert False, 'unreachable!'

@@ -1384,7 +1384,7 @@ def next_prime(n: int) -> int:
             if num_to_index(n) != num_to_index(n + 1)
             else num_to_index(n)
         )
-        while is_prime(p := index_to_num(idx)) is False:
+        while not is_prime(p := index_to_num(idx)):
             idx += 1
         return p
 
@@ -1401,13 +1401,13 @@ def prev_prime(n: int) -> int:
         return 7
     else:
         idx = num_to_index(n) - 1
-        while is_prime(p := index_to_num(idx)) is False:
+        while not is_prime(p := index_to_num(idx)):
             idx -= 1
         return p
 
 
 def prime_generator(prime=2) -> Iterator[int]:
-    if is_prime(prime) is False:
+    if not is_prime(prime):
         prime = next_prime(prime)
     while True:
         yield prime
@@ -1430,7 +1430,7 @@ def get_small_prime_tbl(upper: int) -> list[bool]:
 
     if upper >= 121:  # 11 * 11 = 121
         for i in range(isqrt(upper) + 1):
-            if s_sieve[i] is True:
+            if s_sieve[i]:
                 prime = index_to_num(i)
                 idx = i % 48
                 q = prime**2
@@ -1454,9 +1454,7 @@ def get_prime_tbl(low: int, high: int) -> list[bool]:
 
     if high >= 121:
         for prime in [
-            index_to_num(i)
-            for i, x in enumerate(get_small_prime_tbl(isqrt(high)))
-            if x is True
+            index_to_num(i) for i, x in enumerate(get_small_prime_tbl(isqrt(high))) if x
         ]:
             idx = num_to_index(max(((low + prime) - 1) // prime, prime))
             q = prime * index_to_num(idx)
@@ -1495,7 +1493,7 @@ def primes(*args: int) -> list[int]:
         lst += [
             index_to_num(i + w_offset)
             for i, x in enumerate(get_prime_tbl(low, high))
-            if x is True
+            if x
         ]
 
     return lst

@@ -10,12 +10,12 @@ def compute(limit: int) -> str:
         d = pow(10, k)
         for _ in range(k):
             n = (n % 10) * d + n // 10
-            if is_prime(n) is False:
+            if not is_prime(n):
                 return False
 
         return True
 
-    return str(len([n for n in primes(limit) if is_circular_prime(n) is True]))
+    return str(len([n for n in primes(limit) if is_circular_prime(n)]))
 
 
 def solve() -> str:

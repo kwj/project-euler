@@ -93,7 +93,7 @@ def compute(limit: int) -> str:
         for k_fact in (
             map(factorial, Counter(pat).values())
             for pat in patterns
-            if is_group89(sum(pat)) is True
+            if is_group89(sum(pat))
         )
     )
     numerator = factorial(ndigits)

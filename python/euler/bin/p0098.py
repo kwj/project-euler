@@ -55,7 +55,7 @@ def compute(fh: IO) -> str:
 
         for sq in tbl[ndigits]:
             pair_dict = assoc_group_dict(zip(w1, sq))
-            if all([len(v) == 1 for v in pair_dict.values()]) is True:
+            if all([len(v) == 1 for v in pair_dict.values()]):
                 if (w2_trans := w2.translate(str.maketrans(w1, sq))) in tbl[ndigits]:
                     w1_num = int(w1.translate(str.maketrans(w1, sq)))
                     w2_num = int(w2_trans)

@@ -65,7 +65,7 @@ class Grid:
     ) -> dict[str, str] | None:
         # Remove all numbers from the cell except the one we have decided on
         other_nums = grid[pos].replace(num, '')
-        if all(self._remove_num(grid, pos, n) for n in other_nums) is True:
+        if all(self._remove_num(grid, pos, n) for n in other_nums):
             return grid
         else:
             return None
@@ -115,7 +115,7 @@ class Grid:
             return None
 
         cells = [(len(grid[p]), p) for p in POS]
-        if all(c[0] == 1 for c in cells) is True:
+        if all(c[0] == 1 for c in cells):
             return grid
 
         _, pos = min((c for c in cells if c[0] > 1), key=lambda x: x[0])
@@ -160,7 +160,7 @@ def compute(fh: IO) -> str:
     acc = 0
     for idx, problem in enumerate(puzzles):
         grid = Grid(problem)
-        if grid.setup_grid() is False:
+        if not grid.setup_grid():
             assert False, 'invalid data: Grid {}'.format(idx + 1)
 
         d = grid.solve()

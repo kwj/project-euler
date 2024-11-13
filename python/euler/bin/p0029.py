@@ -27,7 +27,7 @@ def compute(upper: int) -> str:
 
     ans = (upper - 1) ** 2
     for b in range(2, base_limit + 1):
-        if skip_flag[b] is True:
+        if skip_flag[b]:
             continue
         for e in range(2, get_max_exp(upper, base=b) + 1):
             ans -= dup_ctr[e]

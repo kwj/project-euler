@@ -10,7 +10,7 @@ from euler.lib.util import is_pentagonal
 def compute() -> str:
     for n in count(144):
         hex_num = n * (2 * n - 1)
-        if is_pentagonal(hex_num) is True:
+        if is_pentagonal(hex_num):
             return str(hex_num)
 
     assert False, 'unreachable!'

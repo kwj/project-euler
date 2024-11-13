@@ -36,7 +36,7 @@ def compute(limit: int) -> str:
         begin = cs_lst[i]
         lst = list(
             dropwhile(
-                lambda p: p - begin >= limit or is_prime(p - begin) is False,
+                lambda p: p - begin >= limit or not is_prime(p - begin),
                 cs_lst[i + consec_length :][::-1],
             )
         )

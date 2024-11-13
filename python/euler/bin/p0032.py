@@ -30,9 +30,7 @@ def make_cands() -> list[tuple[int, int]]:
 
 
 def compute() -> str:
-    return str(
-        sum(set(prod for n, prod in make_cands() if is_pandigital_nz(n) is True))
-    )
+    return str(sum(set(prod for n, prod in make_cands() if is_pandigital_nz(n))))
 
 
 def solve() -> str:

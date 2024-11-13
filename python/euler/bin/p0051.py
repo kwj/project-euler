@@ -113,7 +113,7 @@ def find_prime(i: int, pat: list[int]) -> int | None:
         start = 1
     lst = []
     for r in range(start, 10):
-        if is_prime(tmp := assemble_num(i, pat, r)) is True:
+        if is_prime(tmp := assemble_num(i, pat, r)):
             lst.append(tmp)
 
     # if there are eight primes by this pattern, return the smallest one.
@@ -134,7 +134,7 @@ def compute() -> str:
             for i in range(10 ** (ndigits - n - 1) + 1, 10 ** (ndigits - n), 2):
                 _, pat_lst = zip(*filter(lambda tpl: tpl[0] == n, pat_tpls))
                 for pat in pat_lst:
-                    if is_probable(i, pat, answer) is True:
+                    if is_probable(i, pat, answer):
                         if (tmp := find_prime(i, pat)) is not None:
                             if tmp < answer:
                                 answer = tmp

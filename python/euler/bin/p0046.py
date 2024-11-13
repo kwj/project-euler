@@ -18,9 +18,9 @@ def compute() -> str:
 
     # The odd composite numbers less than 35 have been written in the problem statement.
     for x in count(35, 2):
-        if is_prime(x) is True:
+        if is_prime(x):
             odd_primes.append(x)
-        elif any(is_twice_squre(x - p) is True for p in odd_primes):
+        elif any(is_twice_squre(x - p) for p in odd_primes):
             pass
         else:
             return str(x)

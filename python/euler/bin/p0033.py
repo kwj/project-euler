@@ -46,9 +46,7 @@ def make_cands() -> Iterator[tuple[int, int]]:
     def check(a: int, b: int, c: int) -> bool:
         return 9 * a * (c - b) == c * (b - a)
 
-    return (
-        (a, b) for a, b, c in combinations(range(1, 10), 3) if check(a, b, c) is True
-    )
+    return ((a, b) for a, b, c in combinations(range(1, 10), 3) if check(a, b, c))
 
 
 def compute() -> str:

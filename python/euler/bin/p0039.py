@@ -31,7 +31,7 @@ def compute(limit: int) -> str:
     for p in range(2, limit + 1, 2):
         lst = []
         for a in range(1, (p + 2) // 3):
-            if check_pair(p, a) is True:
+            if check_pair(p, a):
                 b = (p * p - 2 * a * p) // (2 * (p - a))
                 lst.append((a, b, p - a - b))
         if len(lst) > 0:

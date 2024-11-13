@@ -41,7 +41,7 @@ def compute(fh: IO) -> str:
     pq = HeapQueue()
     pq.insert((dist_tbl[0][0], (0, 0)))
 
-    while pq.is_empty() is False:
+    while not pq.is_empty():
         d, (i, j) = pq.extract()
         for x, y in nbr_tbl[i][j]:
             if (new_d := d + matrix[x][y]) < dist_tbl[x][y]:

@@ -18,7 +18,7 @@ from euler.lib.prime import is_prime, primes
 
 def count_consecutive(a: int, b: int) -> int:
     n = 0
-    while is_prime(n * n + a * n + b) is True:
+    while is_prime(n * n + a * n + b):
         n += 1
 
     return n

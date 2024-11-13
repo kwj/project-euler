@@ -16,9 +16,9 @@ def compute() -> str:
     abndnt_lst = []
     acc = 0
     for i in range(1, len(abndnt_flag)):
-        if i % 2 == 0 and abndnt_flag[i // 2] is True:
+        if i % 2 == 0 and abndnt_flag[i // 2]:
             abndnt_lst.append(i // 2)
-        if any(abndnt_flag[i - x] is True for x in abndnt_lst):
+        if any(abndnt_flag[i - x] for x in abndnt_lst):
             continue
         acc += i
 
