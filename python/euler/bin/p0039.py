@@ -34,7 +34,7 @@ def compute(limit: int) -> str:
             if check_pair(p, a):
                 b = (p * p - 2 * a * p) // (2 * (p - a))
                 lst.append((a, b, p - a - b))
-        if len(lst) > 0:
+        if lst:
             result.append((len(lst), p))
 
     result.sort(key=lambda x: x[0], reverse=True)

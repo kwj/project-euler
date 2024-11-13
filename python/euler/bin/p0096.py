@@ -98,7 +98,7 @@ class Grid:
             # If the target number doesn't remain in a belong row/column/box,
             # it is a contradiction.
             cells = [sq for sq in group if num in grid[sq]]
-            if len(cells) == 0:
+            if not cells:
                 return False
             # If there is an only one cell which contains the removed number
             # in a belong row/column/box, the number is decided tentatively
@@ -142,7 +142,7 @@ def parse_data(fh: IO) -> list[str]:
     for line in fh.read().splitlines():
         if re.match(r'[0-9.]', line) is not None:
             acc.append(line)
-        elif re.match(r'-', line) is not None or len(acc) == 0:
+        elif re.match(r'-', line) is not None or not acc:
             continue
         else:
             result.append(trim(acc))

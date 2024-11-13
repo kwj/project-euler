@@ -117,7 +117,7 @@ def compute(limit: int) -> str:
     answer = (0, 0)
     for i in range(1, limit + 1):
         cf = get_cont_fraction(i)
-        if len(cf[1]) == 0:
+        if not cf[1]:
             continue
         if len(cf[1]) % 2 == 0:
             numerator = get_numerator(cf[0], cf[1][:-1])

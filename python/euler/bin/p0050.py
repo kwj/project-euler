@@ -40,7 +40,7 @@ def compute(limit: int) -> str:
                 cs_lst[i + consec_length :][::-1],
             )
         )
-        if len(lst) > 0:
+        if lst:
             consec_length += len(lst) - 1
             ans = lst[0] - begin
         cs_lst.append(next(cs_gen))

@@ -25,7 +25,7 @@ def compute(digits: int) -> str:
                 elif is_palindrome(tmp):
                     answer.append(tmp)
 
-        if len(answer) != 0:
+        if answer:
             return str(max(answer))
 
     assert False, 'unreachable!'

@@ -67,7 +67,7 @@ def find_cliques(
     p: int, asc_nbrs: list[int], size: int, tbl: dict[int, set[int]]
 ) -> list[list[int]]:
     def is_clique(hd: int, tl: list[int]) -> bool:
-        if len(tl) == 0:
+        if not tl:
             return True
         else:
             if all(
@@ -110,8 +110,7 @@ def compute(group_size: int) -> str:
         if len(nbrs) < size:
             continue
 
-        cliques = find_cliques(prime, nbrs, size, tbl)
-        if len(cliques) > 0:
+        if cliques := find_cliques(prime, nbrs, size, tbl):
             answer = min(answer, min(map(sum, cliques)))
 
     return str(answer)
