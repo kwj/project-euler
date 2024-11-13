@@ -15,7 +15,7 @@
 #
 #     N = p1^k1 * p2^k2 * ... * pn^kn  (N < 10^7, n > 1, 11 <= p1 < p2 < ... < pn, k1>2 when n=1)
 
-from collections.abc import Generator
+from collections.abc import Iterator
 from functools import reduce
 from math import isqrt
 from operator import mul
@@ -38,7 +38,7 @@ def get_ratio(pf_lst: list[tuple[int, int]]) -> float:
     return prod(pf_lst) / phi(pf_lst)
 
 
-def pf_generator(tpl: tuple[int, int]) -> Generator[list[tuple[int, int]], None, None]:
+def pf_generator(tpl: tuple[int, int]) -> Iterator[list[tuple[int, int]]]:
     # Note:
     #   The internal data 'pf_lst' has the following structure.
     #     [(p_n, e_n), ..., (p2, e2), (p1, e1)]

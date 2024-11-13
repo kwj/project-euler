@@ -1,4 +1,4 @@
-from collections.abc import Generator
+from collections.abc import Iterator
 from itertools import count, cycle
 from math import isqrt
 
@@ -1406,7 +1406,7 @@ def prev_prime(n: int) -> int:
         return p
 
 
-def prime_generator(prime=2) -> Generator[int, None, None]:
+def prime_generator(prime=2) -> Iterator[int]:
     if is_prime(prime) is False:
         prime = next_prime(prime)
     while True:

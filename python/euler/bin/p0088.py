@@ -72,7 +72,7 @@
 #   5,6
 #   <end of search>    // 5*7 = 35 > limit and 6*6 = 36 > limit
 
-from collections.abc import Generator
+from collections.abc import Iterator
 from math import prod
 
 
@@ -87,7 +87,7 @@ from math import prod
 #        = 18 - (8 - 3)
 #     prod([2, 3, 3, 1, ..., 1]) = sum([2, 3, 3, 1, ..., 1]) = 18
 #
-def kv_generator(upper: int) -> Generator[tuple[int, int], None, None]:
+def kv_generator(upper: int) -> Iterator[tuple[int, int]]:
     def make_next_terms(lst: list[int]) -> list[int]:
         if prod(lst + [lst[-1]]) <= upper:
             # [a, b, .., f] -> [a, b, ..., f, f]
