@@ -67,9 +67,7 @@ def find_cliques(
     p: int, asc_nbrs: list[int], size: int, tbl: dict[int, set[int]]
 ) -> list[list[int]]:
     def is_clique(hd: int, tl: list[int]) -> bool:
-        if not tl:
-            return True
-        else:
+        if tl:
             if all(
                 is_prime(int(str(hd) + str(x))) and is_prime(int(str(x) + str(hd)))
                 for x in tl
@@ -77,6 +75,8 @@ def find_cliques(
                 return is_clique(tl[0], tl[1:])
             else:
                 return False
+        else:
+            return True
 
     def aux(group: list[int], desc_nbrs: list[int], depth: int) -> None:
         if depth == 0:
