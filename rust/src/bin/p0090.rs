@@ -18,8 +18,6 @@ fn compute() -> usize {
 }
 
 fn check_square(dice: &[Vec<i32>]) -> bool {
-    debug_assert!(dice.len() == 2);
-
     // Squares list which is replaced 9's with 6
     const SQUARES: [[i32; 2]; 8] = [
         [0, 1],
@@ -32,6 +30,8 @@ fn check_square(dice: &[Vec<i32>]) -> bool {
         // [6, 4],  8^2 = 64, 7^2 = 49 -> 46.  So, this term is omitted.
         [8, 1],
     ];
+
+    debug_assert!(dice.len() == 2);
 
     SQUARES.iter().all(|die| {
         dice[0].contains(&die[0]) && dice[1].contains(&die[1])

@@ -27,11 +27,11 @@ fn solve() -> String {
 }
 
 fn compute(length: i64) -> i64 {
-    debug_assert!(length.is_positive() && length % 2 == 1);
-
     fn f(x: i64) -> i64 {
         16 * x * x + 4 * x + 4
     }
+
+    debug_assert!(length.is_positive() && length % 2 == 1);
 
     1 + (1..=((length - 1) / 2)).map(f).sum::<i64>()
 }

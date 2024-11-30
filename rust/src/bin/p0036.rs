@@ -9,11 +9,11 @@ fn solve() -> String {
 fn compute(limit: i64) -> i64 {
     use euler::math;
 
-    debug_assert!(limit > 1);
-
     fn check_palindrome(n: i64) -> bool {
         math::is_palindrome(n, 10) && math::is_palindrome(n, 2)
     }
+
+    debug_assert!(limit > 1);
 
     (1_i64..limit)
         .step_by(2)

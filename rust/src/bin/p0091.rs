@@ -42,8 +42,6 @@ fn compute(x_size: i64, y_size: i64) -> i64 {
     use euler::math;
     use std::cmp;
 
-    debug_assert!(x_size > 0 && y_size > 0);
-
     fn case_1(x_upper: i64, y_upper: i64) -> i64 {
         x_upper * y_upper * 3
     }
@@ -57,6 +55,8 @@ fn compute(x_size: i64, y_size: i64) -> i64 {
 
         acc * 2
     }
+
+    debug_assert!(x_size > 0 && y_size > 0);
 
     case_1(x_size, y_size) + case_2(x_size, y_size)
 }

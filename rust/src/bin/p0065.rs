@@ -42,8 +42,6 @@ fn solve() -> String {
 fn compute(nth: u32) -> i64 {
     use num_bigint::BigUint;
 
-    debug_assert!(nth >= 3);
-
     fn c(i: u32) -> BigUint {
         if i % 3 != 0 {
             BigUint::from(1_u32)
@@ -51,6 +49,8 @@ fn compute(nth: u32) -> i64 {
             BigUint::from(i) * 2_u32 / 3_u32
         }
     }
+
+    debug_assert!(nth >= 3);
 
     let mut x = BigUint::from(3_u32);
     let mut y = BigUint::from(2_u32);
