@@ -24,11 +24,13 @@ fn compute(data: &str) -> i64 {
         }
     }
 
-    work.sort();
+    work.sort_unstable();
     work[0]
 }
 
 fn parse_data(data: &str) -> Vec<Vec<i64>> {
+    use std::iter::IntoIterator;
+
     let mut ret: Vec<Vec<i64>> = Vec::new();
 
     for line in data.lines() {
@@ -37,7 +39,7 @@ fn parse_data(data: &str) -> Vec<Vec<i64>> {
 
     // transpose
     let n_row = ret[0].len();
-    let mut its: Vec<_> = ret.into_iter().map(|row| row.into_iter()).collect();
+    let mut its: Vec<_> = ret.into_iter().map(IntoIterator::into_iter).collect();
     (0..n_row)
         .map(|_| its.iter_mut().map(|it| it.next().unwrap()).collect())
         .collect()

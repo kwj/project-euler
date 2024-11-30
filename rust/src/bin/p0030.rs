@@ -57,7 +57,7 @@ fn compute(exp: u32) -> i64 {
         for tpl in (0_i64..=9).combinations_with_replacement(n_digits) {
             let tmp: i64 = tpl.iter().map(|x| pow_tbl[*x as usize]).sum();
             let mut key = math::digits(tmp);
-            key.sort();
+            key.sort_unstable();
             if key == tpl {
                 acc += tmp;
             }

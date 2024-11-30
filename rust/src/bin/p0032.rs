@@ -16,7 +16,7 @@ fn compute() -> i64 {
         .map(|(_, prod)| prod)
         .collect();
 
-    nums.sort();
+    nums.sort_unstable();
     nums.iter().dedup().sum()
 }
 

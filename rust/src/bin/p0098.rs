@@ -18,7 +18,7 @@ fn compute(data: &str) -> i64 {
 
     for w in parse_data(data) {
         let mut tmp: Vec<_> = w.chars().collect();
-        tmp.sort();
+        tmp.sort_unstable();
         let key: String = tmp.into_iter().collect();
         word_tbl.entry(key).or_default().push(w);
     }

@@ -171,8 +171,8 @@ fn is_perm(x: i64, y: i64) -> bool {
     let mut tmp_x = math::digits(x);
     let mut tmp_y = math::digits(y);
 
-    tmp_x.sort();
-    tmp_y.sort();
+    tmp_x.sort_unstable();
+    tmp_y.sort_unstable();
     tmp_x == tmp_y
 }
 

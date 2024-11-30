@@ -10,13 +10,13 @@ fn compute(n_perms: usize) -> i64 {
     use euler::math;
     use std::collections::HashMap;
 
-    debug_assert!(n_perms > 1);
-
     fn make_key(n: i64) -> i64 {
         let mut tmp = math::digits(n);
-        tmp.sort();
+        tmp.sort_unstable();
         math::undigits(&tmp)
     }
+
+    debug_assert!(n_perms > 1);
 
     let mut tbl: HashMap<i64, Vec<i64>> = HashMap::new();
     for n in 1_i64.. {

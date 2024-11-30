@@ -23,7 +23,7 @@ fn check_num(num: i64) -> bool {
 
     fn make_key(n: i64) -> Vec<i64> {
         let mut key = math::digits(n);
-        key.sort();
+        key.sort_unstable();
         key
     }
 

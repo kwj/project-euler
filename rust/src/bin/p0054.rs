@@ -114,7 +114,7 @@ fn make_handinfo(cards: &[(i64, char)]) -> Hand {
     let (nums, mut suits): (Vec<_>, Vec<_>) = cards.iter().cloned().unzip();
 
     // Check if a flash or not
-    suits.sort();
+    suits.sort_unstable();
     suits.dedup();
     let flash = suits.len() == 1;
 
