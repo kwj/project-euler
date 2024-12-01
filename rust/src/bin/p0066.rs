@@ -109,7 +109,7 @@ fn compute(limit: i64) -> i64 {
         let end_pos = cf_rep.len() - 1;
         numerator = get_numerator(cf_a0, &cf_rep[0..end_pos]);
         if ans.0 < numerator {
-            ans = (numerator, i)
+            ans = (numerator, i);
         }
     }
     ans.1

@@ -135,7 +135,7 @@ pub fn divisors(num: i64) -> Vec<i64> {
     for (b, e) in factorize(num) {
         let mut acc_lst: Vec<i64> = Vec::new();
         for m in (1..=e).map(|x| b.pow(x)) {
-            lst.iter().map(|x| x * m).for_each(|x| acc_lst.push(x))
+            lst.iter().map(|x| x * m).for_each(|x| acc_lst.push(x));
         }
         lst.extend(acc_lst);
     }
