@@ -49,9 +49,8 @@ fn parse_data(data: &str) -> HashMap<i64, Vec<i64>> {
 
 fn dfs(graph: &mut HashMap<i64, Vec<i64>>, perm: &mut [i64], v: i64) -> Vec<i64> {
     fn visit(temp: &[i64], visited: &[i64], node: i64, graph: &HashMap<i64, Vec<i64>>) -> Vec<i64> {
-        if temp.contains(&node) {
-            panic!("a cycle path is found");
-        }
+        assert!(!temp.contains(&node), "a cycle path is found");
+
         if visited.contains(&node) {
             return visited.to_vec();
         }
