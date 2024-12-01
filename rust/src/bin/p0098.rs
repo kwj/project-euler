@@ -31,11 +31,13 @@ fn compute(data: &str) -> i64 {
 }
 
 fn parse_data(s: &str) -> Vec<String> {
+    use std::string::ToString;
+
     s.chars()
         .filter(|&c| c != '"')
         .collect::<String>()
         .split(',')
-        .map(|s| s.to_string())
+        .map(ToString::to_string)
         .collect()
 }
 
