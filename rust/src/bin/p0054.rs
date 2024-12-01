@@ -49,20 +49,20 @@ fn solve() -> String {
 
 fn compute(data: &str) -> i64 {
     let all_games = parse_data(data);
-    let mut _p1_win: i64 = 0;
+    let mut p1_win: i64 = 0;
     let mut _p2_win: i64 = 0;
     let mut _draw: i64 = 0;
     for cards in all_games {
         let hand_p1 = make_handinfo(&cards[0..5]);
         let hand_p2 = make_handinfo(&cards[5..10]);
         match hand_p1.cmp(&hand_p2) {
-            Ordering::Greater => _p1_win += 1,
+            Ordering::Greater => p1_win += 1,
             Ordering::Less => _p2_win += 1,
             Ordering::Equal => _draw += 1,
         }
     }
 
-    _p1_win
+    p1_win
 }
 
 fn parse_data(data: &str) -> Vec<Vec<(i64, char)>> {
