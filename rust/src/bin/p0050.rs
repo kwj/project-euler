@@ -9,7 +9,7 @@ fn solve() -> String {
 }
 
 fn compute(limit: i64) -> i64 {
-    let mut cs_gen: CumSumPrime = Default::default();
+    let mut cs_gen: CumSumPrime = CumSumPrime::default();
     let mut cs_lst: Vec<i64> = cs_gen.initial_lst(limit);
     let mut ans: i64 = 0;
     let mut left: usize = 0;
