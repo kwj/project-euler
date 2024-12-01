@@ -10,7 +10,7 @@ fn compute(limit: i64) -> usize {
     use euler::math::{self, primes};
 
     fn check_rot_num(n: i64) -> bool {
-        let s = &format!("{}{}", n, n);
+        let s = &format!("{n}{n}");
         let m = math::num_of_digits(n, 10) as usize;
         (0..m)
             .map(|pos| s[pos..(pos + m)].parse::<i64>().unwrap())

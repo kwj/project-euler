@@ -149,7 +149,7 @@ fn compute(nfaces: usize, nsquares: usize) -> String {
     let mut result: Vec<_> = (0..40)
         .map(|i| {
             (
-                format!("{:02}", i),
+                format!("{i:02}"),
                 steady_state[i][0] + steady_state[40 + i][0] + steady_state[80 + i][0],
             )
         })

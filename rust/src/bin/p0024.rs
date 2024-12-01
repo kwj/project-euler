@@ -21,7 +21,7 @@ fn compute(mut idx: usize) -> String {
         lst.remove(blk);
     }
 
-    format!("{:010}", acc)
+    format!("{acc:010}")
 }
 
 fn factorial(n: usize) -> usize {

@@ -190,7 +190,7 @@ fn process_data(data: &[String]) -> Vec<usize> {
     let re_rplc2 = Regex::new(r"\.").unwrap();
     let mut tmp = data
         .iter()
-        .fold(String::new(), |acc, x| format!("{}{}", acc, x));
+        .fold(String::new(), |acc, x| format!("{acc}{x}"));
 
     tmp = re_rplc1.replace_all(&tmp, "").to_string();
     tmp = re_rplc2.replace_all(&tmp, "0").to_string();

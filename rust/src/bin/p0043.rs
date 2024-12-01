@@ -14,7 +14,7 @@ fn compute() -> i64 {
         for x in "0123456789".chars() {
             for s in &lst {
                 if !s.contains(x) {
-                    let tmp_s = format!("{}{}", x, s);
+                    let tmp_s = format!("{x}{s}");
                     if tmp_s.len() < 3 || tmp_s[0..3].parse::<i32>().unwrap() % d == 0 {
                         tmp_lst.push(tmp_s);
                     }
