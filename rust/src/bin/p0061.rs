@@ -67,7 +67,7 @@ fn find_closed_paths(max_nsides_polygon: usize) -> Vec<Vec<i64>> {
         }
     }
     while !dq.is_empty() {
-        for (bits, path) in get_next_states(dq.pop_front().unwrap()).into_iter() {
+        for (bits, path) in get_next_states(dq.pop_front().unwrap()) {
             // bits: (when max_nsides_polygon = 8)
             //   0b######000  --- 1: used, 0: unused
             //     ||||||
