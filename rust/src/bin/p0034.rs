@@ -58,7 +58,7 @@ fn compute() -> i64 {
     use euler::math;
     use itertools::Itertools;
 
-    let fact_tbl: Vec<i64> = vec![1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880];
+    let fact_tbl: Vec<i64> = vec![1, 1, 2, 6, 24, 120, 720, 5_040, 40_320, 362_880];
     let mut acc = 0_i64;
 
     for ndigits in 2_usize..8 {
@@ -81,6 +81,6 @@ mod tests {
 
     #[test]
     fn p0034() {
-        assert_eq!(compute(), 40730);
+        assert_eq!(compute(), 40_730);
     }
 }

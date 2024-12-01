@@ -15,7 +15,7 @@ fn compute(n_digits: u32) -> String {
 
     format!(
         "{:0width$}",
-        (28433 * math::powmod(2, 7830457, divisor) + 1) % divisor,
+        (28433 * math::powmod(2, 7_830_457, divisor) + 1) % divisor,
         width = n_digits as usize
     )
 }

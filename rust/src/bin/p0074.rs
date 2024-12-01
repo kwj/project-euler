@@ -41,7 +41,7 @@ fn compute() -> i64 {
 }
 
 fn fact_sum(mut n: usize) -> usize {
-    let tbl: [usize; 10] = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880];
+    let tbl: [usize; 10] = [1, 1, 2, 6, 24, 120, 720, 5_040, 40_320, 362_880];
     if n == 0 {
         return tbl[0];
     }

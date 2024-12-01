@@ -3,7 +3,7 @@
 euler::run_solver!(3);
 
 fn solve() -> String {
-    compute(600851475143).to_string()
+    compute(600_851_475_143).to_string()
 }
 
 fn compute(n: i64) -> i64 {
@@ -20,11 +20,11 @@ mod tests {
 
     #[test]
     fn p0003_13195() {
-        assert_eq!(compute(13195), 29);
+        assert_eq!(compute(13_195), 29);
     }
 
     #[test]
     fn p0003_600851475143() {
-        assert_eq!(compute(600851475143), 6857);
+        assert_eq!(compute(600_851_475_143), 6_857);
     }
 }
