@@ -232,14 +232,14 @@ fn sudoku_solover(grid: &[u128]) -> Option<Vec<u128>> {
     let mut work_grid = grid.to_vec();
 
     // Start searching from cell #0.
-    if _sudoku_solver(&mut work_grid, 0, 0b01) {
+    if find_solution(&mut work_grid, 0, 0b01) {
         Some(work_grid)
     } else {
         None
     }
 }
 
-fn _sudoku_solver(grid: &mut [u128], mut pos: usize, mut pos_bit: u128) -> bool {
+fn find_solution(grid: &mut [u128], mut pos: usize, mut pos_bit: u128) -> bool {
     // Search for undetermined cell.
     // If we don't find it, we've found a solution.
     loop {
@@ -265,7 +265,7 @@ fn _sudoku_solver(grid: &mut [u128], mut pos: usize, mut pos_bit: u128) -> bool 
 
         // Let number 'n' as temporary on the cell, and try next cell.
         grid[n] |= pos_bit;
-        if _sudoku_solver(grid, pos + 1, pos_bit << 1) {
+        if find_solution(grid, pos + 1, pos_bit << 1) {
             return true;
         }
         // If the number isn't suitable, undo the status and try next number.
