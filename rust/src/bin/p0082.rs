@@ -14,7 +14,7 @@ fn compute(data: &str) -> i64 {
     let matrix = parse_data(data);
     let mut work = matrix[0].clone();
 
-    for crnt in matrix[1..].iter() {
+    for crnt in &matrix[1..] {
         work[0] += crnt[0];
         for i in 1..(crnt.len()) {
             work[i] = crnt[i] + cmp::min(work[i], work[i - 1]);

@@ -38,7 +38,7 @@ fn is_family(p: i64, f_size: i64) -> bool {
             let mut cnt: i64 = 1;
             let mut p_digits_tmp = p_digits.clone();
             for d in (n + 1)..=9 {
-                for idx in mask.iter() {
+                for idx in &mask {
                     p_digits_tmp[*idx] = d;
                 }
                 if primes::is_prime(math::undigits(&p_digits_tmp)) {

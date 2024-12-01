@@ -21,7 +21,7 @@ fn compute(data: &str) -> i64 {
         .collect();
     prev.insert(0, i64::MAX);
 
-    for work in matrix[1..].iter_mut() {
+    for work in &mut matrix[1..] {
         (*work).insert(0, i64::MAX);
         for i in 1..((*work).len()) {
             work[i] += cmp::min(work[i - 1], prev[i]);

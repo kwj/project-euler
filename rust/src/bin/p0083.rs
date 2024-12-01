@@ -31,7 +31,7 @@ fn compute(data: &str) -> i64 {
             priority: d,
             pos: (i, j),
         } = pq.pop().unwrap();
-        for (x, y) in nbr_tbl[i][j].iter() {
+        for (x, y) in &nbr_tbl[i][j] {
             let new_d = d + matrix[*x][*y];
             if new_d < dist_tbl[*x][*y] {
                 dist_tbl[*x][*y] = new_d;
