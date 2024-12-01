@@ -58,10 +58,10 @@ fn compute(nfaces: usize, nsquares: usize) -> String {
 
     for n1 in 1..=nfaces {
         for n2 in 1..=nfaces {
-            if n1 != n2 {
-                dice_prblty_without_dbl[n1 + n2] += 1.0 / (nfaces * nfaces) as f64;
-            } else {
+            if n1 == n2 {
                 dice_prblty_dbl[n1 + n2] = 1.0 / (nfaces * nfaces) as f64;
+            } else {
+                dice_prblty_without_dbl[n1 + n2] += 1.0 / (nfaces * nfaces) as f64;
             }
         }
     }

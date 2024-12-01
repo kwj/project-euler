@@ -105,14 +105,14 @@ struct PrimeFactorization {
 
 impl PrimeFactorization {
     fn new(tpl: (i64, i64), limit: i64) -> PrimeFactorization {
-        if tpl.0 != tpl.1 {
+        if tpl.0 == tpl.1 {
             PrimeFactorization {
-                pf_lst: vec![(tpl.1, 1), (tpl.0, 1)],
+                pf_lst: vec![(tpl.0, 2)],
                 limit,
             }
         } else {
             PrimeFactorization {
-                pf_lst: vec![(tpl.0, 2)],
+                pf_lst: vec![(tpl.1, 1), (tpl.0, 1)],
                 limit,
             }
         }

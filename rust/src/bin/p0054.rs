@@ -169,18 +169,18 @@ fn make_handinfo(cards: &[(i64, char)]) -> Hand {
 }
 
 fn is_straight(lst: &[i64]) -> bool {
-    if lst.len() != 5 {
-        false
-    } else {
+    if lst.len() == 5 {
         *lst == (lst[4]..(lst[4] + 5)).rev().collect::<Vec<i64>>()
+    } else {
+        false
     }
 }
 
 fn cmp_countmap(x: &(i64, usize), y: &(i64, usize)) -> std::cmp::Ordering {
-    if x.1 != y.1 {
-        (y.1).cmp(&x.1)
-    } else {
+    if x.1 == y.1 {
         (y.0).cmp(&x.0)
+    } else {
+        (y.1).cmp(&x.1)
     }
 }
 
