@@ -7,7 +7,7 @@ fn solve() -> String {
 }
 
 fn compute() -> i64 {
-    let mut lst: Vec<String> = vec!["".to_string()];
+    let mut lst: Vec<String> = vec![String::new()];
 
     for d in [1, 1, 17, 13, 11, 7, 5, 3, 2, 1] {
         let mut tmp_lst: Vec<String> = Vec::new();

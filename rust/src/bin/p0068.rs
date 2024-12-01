@@ -80,7 +80,7 @@ fn dfs(
         let tmp = total - ring[0] - ring[idx];
         if (0 < tmp && tmp <= n_gon * 2) && tmp > ring[start_pos] && ((1 << tmp) & bit_mask == 0) {
             ring[idx + 1] = tmp;
-            let mut s = String::from("");
+            let mut s = String::new();
             loop {
                 s = format!("{}{}{}{}", ring[idx + 1], ring[idx], ring[idx + 2], s);
                 if idx == 0 {
