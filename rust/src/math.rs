@@ -81,7 +81,7 @@ pub fn prime_factors(mut n: i64) -> Vec<i64> {
     assert!(n > 1);
 
     let mut result: Vec<i64> = Vec::new();
-    for b in [2, 3, 5].into_iter() {
+    for b in [2, 3, 5] {
         while n % b == 0 {
             result.push(b);
             n /= b;
@@ -116,7 +116,7 @@ pub fn factorize(n: i64) -> Vec<(i64, u32)> {
     let mut e = 1_u32;
     let mut result: Vec<(i64, u32)> = Vec::new();
 
-    for &x in lst[1..].iter() {
+    for &x in &lst[1..] {
         if x == b {
             e += 1;
         } else {
