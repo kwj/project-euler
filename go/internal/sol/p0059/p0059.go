@@ -51,7 +51,7 @@ func compute(data string) string {
 	}
 
 	encryptedData := make([]byte, 0)
-	for s := range slices.Values(strings.Split(data, ",")) {
+	for s := range strings.SplitSeq(data, ",") {
 		if n, err := strconv.Atoi(s); err == nil {
 			encryptedData = append(encryptedData, byte(n))
 		} else {

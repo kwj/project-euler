@@ -90,7 +90,7 @@ func checkAnagram(words, squares []string) int {
 
 func compute(data string) string {
 	wordTbl := make(map[string][]string)
-	for word := range slices.Values(strings.Split(strings.Trim(data, `"`), `","`)) {
+	for word := range strings.SplitSeq(strings.Trim(data, `"`), `","`) {
 		tmp := []rune(word)
 		slices.Sort(tmp)
 		key := string(tmp)

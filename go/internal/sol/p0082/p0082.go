@@ -13,9 +13,9 @@ var fileContent string
 func parseData(data string) [][]int {
 	result := make([][]int, 0)
 
-	for line := range slices.Values(strings.Split(strings.Trim(data, "\n"), "\n")) {
+	for line := range strings.SplitSeq(strings.Trim(data, "\n"), "\n") {
 		tmp := make([]int, 0)
-		for s := range slices.Values(strings.Split(line, ",")) {
+		for s := range strings.SplitSeq(line, ",") {
 			if n, err := strconv.Atoi(s); err == nil {
 				tmp = append(tmp, n)
 			}

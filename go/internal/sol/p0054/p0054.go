@@ -137,9 +137,8 @@ func getHand(cards []string) (int, []int) {
 }
 
 func parseData(data string) [][][]string {
-	lines := strings.Split(strings.Trim(data, "\n"), "\n")
 	result := make([][][]string, 0)
-	for line := range slices.Values(lines) {
+	for line := range strings.SplitSeq(strings.Trim(data, "\n"), "\n") {
 		cards := strings.Split(line, " ")
 		if len(cards) != 10 {
 			panic("invalid data")

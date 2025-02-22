@@ -254,7 +254,7 @@ func parseData(data string) [][]int {
 
 	validChar := regexp.MustCompile(`^[0-9.]`)
 	sepChar := regexp.MustCompile(`^-`)
-	for line := range slices.Values(strings.Split(strings.Trim(data, "\n"), "\n")) {
+	for line := range strings.SplitSeq(strings.Trim(data, "\n"), "\n") {
 		if matched := validChar.MatchString(line); matched {
 			acc = append(acc, line)
 			continue

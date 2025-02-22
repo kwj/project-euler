@@ -37,7 +37,7 @@ func dfs(graph map[string][]string, perm []string, v string) []string {
 func parseData(data string) map[string][]string {
 	m := make(map[string][]string)
 
-	for line := range slices.Values(strings.Split(strings.Trim(data, "\n"), "\n")) {
+	for line := range strings.SplitSeq(strings.Trim(data, "\n"), "\n") {
 		x := strings.Split(line, "")
 		for kv := range slices.Values([][]string{{x[0], x[1]}, {x[0], x[2]}, {x[1], x[2]}}) {
 			if v, ok := m[kv[0]]; ok {
