@@ -43,11 +43,7 @@ pub fn lcm(mut x: i64, mut y: i64) -> i64 {
 
 pub fn bit_length(n: i64) -> u32 {
     fn aux(n: i64, cnt: u32) -> u32 {
-        if n == 0 {
-            cnt
-        } else {
-            aux(n / 2, cnt + 1)
-        }
+        if n == 0 { cnt } else { aux(n / 2, cnt + 1) }
     }
 
     aux(n, 0)
@@ -69,14 +65,13 @@ pub fn isqrt(n: i64) -> i64 {
         0
     } else {
         let a = aux((bit_length(n) - 1) / 2, n);
-        if n < a * a {
-            a - 1
-        } else {
-            a
-        }
+        if n < a * a { a - 1 } else { a }
     }
 }
 
+/// # Panics
+///
+/// Will panic if n is less than 2
 pub fn prime_factors(mut n: i64) -> Vec<i64> {
     assert!(n > 1);
 

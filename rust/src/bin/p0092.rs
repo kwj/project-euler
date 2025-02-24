@@ -93,11 +93,7 @@ fn compute(limit: i64) -> usize {
 }
 
 fn factorial(n: usize) -> usize {
-    if n > 1 {
-        n * factorial(n - 1)
-    } else {
-        1
-    }
+    if n > 1 { n * factorial(n - 1) } else { 1 }
 }
 
 fn is_group89(mut n: i32) -> bool {

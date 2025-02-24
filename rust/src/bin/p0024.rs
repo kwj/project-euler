@@ -25,11 +25,7 @@ fn compute(mut idx: usize) -> String {
 }
 
 fn factorial(n: usize) -> usize {
-    if n > 1 {
-        n * factorial(n - 1)
-    } else {
-        1
-    }
+    if n > 1 { n * factorial(n - 1) } else { 1 }
 }
 
 #[cfg(test)]

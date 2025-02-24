@@ -22,7 +22,7 @@ fn compute(limit: i64) -> i64 {
             .enumerate()
             .skip(1)
             .rev()
-            .find(|(_, &p)| p - base < limit && primes::is_prime(p - base))
+            .find(|&(_, &p)| p - base < limit && primes::is_prime(p - base))
         {
             k += tpl.0;
             ans = tpl.1 - base;
