@@ -16,12 +16,12 @@ If you are familiar with Cargo, you can run it directly.
 
 ## Notes
 
-It was confirmed to work with Rust 1.83.0.
+It was confirmed to work with Rust 1.85.0.
 
 I used the following crates and their dependent crates.
 
 - regex v1.11.1
-- itertools v0.13.0
+- itertools v0.14.0
 - num-bigint v0.4.6
 - num-rational v0.4.2
 
