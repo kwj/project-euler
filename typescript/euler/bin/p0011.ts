@@ -26,12 +26,14 @@ const grid = [
   [ 1, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52,  1, 89, 19, 67, 48]
 ];
 
-enum Dir {
-  Right,
-  Down,
-  UpperRight,
-  DownRight,
-}
+const DIRS = {
+  Right: 0,
+  Down: 1,
+  UpperRight: 2,
+  DownRight: 3,
+} as const;
+
+type Dir = typeof DIRS[keyof typeof DIRS];
 
 const QTY = 4;
 const ROW_SIZE = grid.length;
@@ -41,16 +43,16 @@ const product = (row: number, col: number, dir: Dir) => {
   let acc = 1;
   for (const i of range(0, QTY)) {
     switch (dir) {
-      case Dir.Right:
+      case DIRS.Right:
         acc *= grid[row][col + i];
         break;
-      case Dir.Down:
+      case DIRS.Down:
         acc *= grid[row + i][col];
         break;
-      case Dir.UpperRight:
+      case DIRS.UpperRight:
         acc *= grid[row - i][col + i];
         break;
-      case Dir.DownRight:
+      case DIRS.DownRight:
         acc *= grid[row + i][col + i];
         break;
     }
@@ -64,15 +66,15 @@ export const compute = (): string => {
   for (const row of range(0, ROW_SIZE)) {
     for (const col of range(0, COL_SIZE)) {
       if (row <= ROW_SIZE - QTY) {
-        result = Math.max(result, product(row, col, Dir.Down));
+        result = Math.max(result, product(row, col, DIRS.Down));
       }
       if (col <= COL_SIZE - QTY) {
-        result = Math.max(result, product(row, col, Dir.Right));
+        result = Math.max(result, product(row, col, DIRS.Right));
         if (row >= QTY - 1) {
-          result = Math.max(result, product(row, col, Dir.UpperRight));
+          result = Math.max(result, product(row, col, DIRS.UpperRight));
         }
         if (row <= ROW_SIZE - QTY) {
-          result = Math.max(result, product(row, col, Dir.DownRight));
+          result = Math.max(result, product(row, col, DIRS.DownRight));
         }
       }
     }

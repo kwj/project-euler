@@ -58,9 +58,9 @@ const getHandRank = (hand: string[]): number[] => {
 
   const getHand = (suitLst: string[], rankLst: number[]): number[] => {
     // deno-fmt-ignore
-    enum Hand {
-      HC = 0, OP, TP, TK, S, F, FH, FK, SF, RF
-    }
+    const HANDS = {
+      HC: 0, OP: 1, TP: 2, TK: 3, S: 4, F: 5, FH: 6, FK: 7, SF: 8, RF: 9
+    } as const;
 
     const cmpDetail = (a: [string, number], b: [string, number]): number => {
       const tmp = b[1] - a[1];
@@ -85,34 +85,34 @@ const getHandRank = (hand: string[]): number[] => {
       if (isStraight(rankLst)) {
         switch (rankLst[0]) {
           case 14:
-            return [Hand.RF, ...getDetail(handInfo)];
+            return [HANDS.RF, ...getDetail(handInfo)];
           default:
-            return [Hand.SF, ...getDetail(handInfo)];
+            return [HANDS.SF, ...getDetail(handInfo)];
         }
       } else {
-        return [Hand.F, ...getDetail(handInfo)];
+        return [HANDS.F, ...getDetail(handInfo)];
       }
     } else {
       switch (handInfo.length) {
         case 5:
           if (isStraight(rankLst)) {
-            return [Hand.S, ...getDetail(handInfo)];
+            return [HANDS.S, ...getDetail(handInfo)];
           } else {
-            return [Hand.HC, ...getDetail(handInfo)];
+            return [HANDS.HC, ...getDetail(handInfo)];
           }
         case 4:
-          return [Hand.OP, ...getDetail(handInfo)];
+          return [HANDS.OP, ...getDetail(handInfo)];
         case 3:
           if (handInfo[0][1] === 3) {
-            return [Hand.TK, ...getDetail(handInfo)];
+            return [HANDS.TK, ...getDetail(handInfo)];
           } else {
-            return [Hand.TP, ...getDetail(handInfo)];
+            return [HANDS.TP, ...getDetail(handInfo)];
           }
         case 2:
           if (handInfo[0][1] === 4) {
-            return [Hand.FK, ...getDetail(handInfo)];
+            return [HANDS.FK, ...getDetail(handInfo)];
           } else {
-            return [Hand.FH, ...getDetail(handInfo)];
+            return [HANDS.FH, ...getDetail(handInfo)];
           }
         default:
           throw new Error("not reached");

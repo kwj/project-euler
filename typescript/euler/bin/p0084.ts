@@ -7,24 +7,29 @@
 import { unzip, zip } from "@std/collections";
 import { Counter, range } from "../lib/util.ts";
 
+// Don't use `as const` this object here because I need to treat these
+// values as number. Normally, we would define a type with readonly for
+// all properties. However, there were many properties and I was lazy and
+// cut corners.
+//
 // deno-fmt-ignore
-enum Square {
-  GO = 0,    A1 = 1,   CC1 = 2,  A2 = 3,   T1 = 4,
-  R1 = 5,    B1 = 6,   CH1 = 7,  B2 = 8,   B3 = 9,
-  JAIL = 10, C1 = 11,  U1 = 12,  C2 = 13,  C3 = 14,
-  R2 = 15,   D1 = 16,  CC2 = 17, D2 = 18,  D3 = 19,
-  FP = 20,   E1 = 21,  CH2 = 22, E2 = 23,  E3 = 24,
-  R3 = 25,   F1 = 26,  F2 = 27,  U2 = 28,  F3 = 29,
-  G2J = 30,  G1 = 31,  G2 = 32,  CC3 = 33, G3 = 34,
-  R4 = 35,   CH3 = 36, H1 = 37,  T2 = 38,  H2 = 39,
-}
+const SQUARE = {
+  GO: 0,    A1: 1,   CC1: 2,  A2: 3,   T1: 4,
+  R1: 5,    B1: 6,   CH1: 7,  B2: 8,   B3: 9,
+  JAIL: 10, C1: 11,  U1: 12,  C2: 13,  C3: 14,
+  R2: 15,   D1: 16,  CC2: 17, D2: 18,  D3: 19,
+  FP: 20,   E1: 21,  CH2: 22, E2: 23,  E3: 24,
+  R3: 25,   F1: 26,  F2: 27,  U2: 28,  F3: 29,
+  G2J: 30,  G1: 31,  G2: 32,  CC3: 33, G3: 34,
+  R4: 35,   CH3: 36, H1: 37,  T2: 38,  H2: 39,
+};
 
 const communityChest = (sq: number): number => {
   switch (Math.trunc(Math.random() * 16)) {
     case 0:
-      return Square.GO;
+      return SQUARE.GO;
     case 1:
-      return Square.JAIL;
+      return SQUARE.JAIL;
     default:
       return sq;
   }
@@ -33,12 +38,12 @@ const communityChest = (sq: number): number => {
 const chanceCard = (sq: number): number => {
   const nextR = (sq: number): number => {
     switch (sq) {
-      case Square.CH1:
-        return Square.R2;
-      case Square.CH2:
-        return Square.R3;
-      case Square.CH3:
-        return Square.R1;
+      case SQUARE.CH1:
+        return SQUARE.R2;
+      case SQUARE.CH2:
+        return SQUARE.R3;
+      case SQUARE.CH3:
+        return SQUARE.R1;
       default:
         throw new RangeError(`invalid square: ${sq}`);
     }
@@ -46,12 +51,12 @@ const chanceCard = (sq: number): number => {
 
   const nextU = (sq: number): number => {
     switch (sq) {
-      case Square.CH1:
-        return Square.U1;
-      case Square.CH2:
-        return Square.U2;
-      case Square.CH3:
-        return Square.U1;
+      case SQUARE.CH1:
+        return SQUARE.U1;
+      case SQUARE.CH2:
+        return SQUARE.U2;
+      case SQUARE.CH3:
+        return SQUARE.U1;
       default:
         throw new RangeError(`invalid square: ${sq}`);
     }
@@ -59,17 +64,17 @@ const chanceCard = (sq: number): number => {
 
   switch (Math.trunc(Math.random() * 16)) {
     case 0:
-      return Square.GO;
+      return SQUARE.GO;
     case 1:
-      return Square.JAIL;
+      return SQUARE.JAIL;
     case 2:
-      return Square.C1;
+      return SQUARE.C1;
     case 3:
-      return Square.E3;
+      return SQUARE.E3;
     case 4:
-      return Square.H2;
+      return SQUARE.H2;
     case 5:
-      return Square.R1;
+      return SQUARE.R1;
     case 6:
     case 7:
       return nextR(sq);
@@ -86,7 +91,7 @@ const chanceCard = (sq: number): number => {
 
 const monteCarlo = (dice: () => number, loopCnt: number): string => {
   const counter: number[] = new Array(40).fill(0);
-  let sq = Square.GO;
+  let sq = SQUARE.GO;
   let double = 0;
 
   for (const _ of range(0, loopCnt)) {
@@ -94,22 +99,22 @@ const monteCarlo = (dice: () => number, loopCnt: number): string => {
     const d2 = dice();
     double = (d1 !== d2) ? 0 : double + 1;
     if (double >= 3) {
-      sq = Square.JAIL;
+      sq = SQUARE.JAIL;
       double = 0;
     } else {
       sq = (sq + d1 + d2) % 40;
       switch (sq) {
-        case Square.G2J:
-          sq = Square.JAIL;
+        case SQUARE.G2J:
+          sq = SQUARE.JAIL;
           break;
-        case Square.CC1:
-        case Square.CC2:
-        case Square.CC3:
+        case SQUARE.CC1:
+        case SQUARE.CC2:
+        case SQUARE.CC3:
           sq = communityChest(sq);
           break;
-        case Square.CH1:
-        case Square.CH2:
-        case Square.CH3:
+        case SQUARE.CH1:
+        case SQUARE.CH2:
+        case SQUARE.CH3:
           sq = chanceCard(sq);
           break;
       }
