@@ -8,26 +8,30 @@ build-type:         Simple
 common warnings
     ghc-options: -Wall -Wcompat
 
+common extensions
+    default-extensions:
+        NoImportQualifiedPost
+
 executable pe-solver
-    import: warnings
+    import: warnings, extensions
     main-is: Main.hs
     hs-source-dirs: app
     build-depends:
-        base ^>=4.20.0.0,
-        deepseq ^>=1.5.0.0,
+        base ^>=4.21.0.0,
+        deepseq ^>=1.5.1.0,
         solutions
     default-extensions: Strict
     default-language: GHC2024
 
 library solutions
-    import: warnings
+    import: warnings, extensions
     hs-source-dirs: src
     build-depends:
-        base ^>=4.20.0.0,
-        array ^>=0.5.7.0,
-        bytestring ^>=0.12.1.0,
+        base ^>=4.21.0.0,
+        array ^>=0.5.8.0,
+        bytestring ^>=0.12.2.0,
         containers ^>=0.7,
-        text ^>=2.1.1,
+        text ^>=2.1.2,
         primes ^>=0.2.1.0,
         file-embed ^>= 0.0.16.0
     exposed-modules:
@@ -65,14 +69,16 @@ library solutions
     default-language: GHC2024
 
 test-suite solutions-test
-    import: warnings
+    import: warnings, extensions
     type: exitcode-stdio-1.0
     main-is: Spec.hs
     hs-source-dirs: test
     build-depends:
-        base ^>=4.20.0.0,
-        hspec ^>=2.11.9,
+        base ^>=4.21.0.0,
+        hspec ^>=2.11.12,
         solutions
+    build-tool-depends:
+        hspec-discover:hspec-discover ^>=2.11.12
     other-modules:
         Paths_euler,
         Sol.P0001Spec, Sol.P0002Spec, Sol.P0003Spec, Sol.P0004Spec, Sol.P0005Spec,
