@@ -57,7 +57,7 @@ def get_handrank(hand: list[str]) -> list[int]:
         return lst == list(range(lst[0], lst[0] - 5, -1))
 
     def get_detail(h_info: list[tuple[int, int]]) -> list[int]:
-        detail, _ = zip(*h_info)
+        detail, _ = zip(*h_info, strict=True)
         return list(detail)
 
     HAND_RF = [9]
@@ -71,7 +71,7 @@ def get_handrank(hand: list[str]) -> list[int]:
     HAND_OP = [1]
     HAND_HC = [0]
 
-    rank_lst, suit_lst = zip(*hand)
+    rank_lst, suit_lst = zip(*hand, strict=True)
     num_lst = sorted(map(lambda rank: rank_to_num(rank), rank_lst), reverse=True)
     hand_info = Counter(num_lst).most_common()
 
@@ -88,7 +88,7 @@ def get_handrank(hand: list[str]) -> list[int]:
     else:
         match len(hand_info):
             case 5:
-                if is_straight(num_lst):
+                if is_straight(num_lst):  # noqa: SIM108
                     handrank = HAND_S  # Straight
                 else:
                     handrank = HAND_HC  # High Card
@@ -107,7 +107,7 @@ def get_handrank(hand: list[str]) -> list[int]:
                     case _:
                         handrank = HAND_FH  # Full House
             case _:
-                assert False, 'unreachable!'
+                raise RuntimeError('unreachable!')
 
     handrank.extend(get_detail(hand_info))
 

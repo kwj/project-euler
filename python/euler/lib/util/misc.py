@@ -13,17 +13,13 @@ def get_max_exp(num: int, /, base: int) -> int:
     return e
 
 
-def powerset(
-    iter: Iterable[Any], /, min_len: int = 0, max_len: int = 0
-) -> Iterator[Any]:
+def powerset(iter: Iterable[Any], /, min_len: int = 0, max_len: int = 0) -> Iterator[Any]:
     if hasattr(iter, '__iter__') is True:
         lst = list(iter)
     else:
-        assert False, 'type error'
+        raise AssertionError('type error')
 
     if max_len == 0 or max_len > len(lst):
         max_len = len(lst)
 
-    return chain.from_iterable(
-        combinations(lst, r) for r in range(min_len, max_len + 1)
-    )
+    return chain.from_iterable(combinations(lst, r) for r in range(min_len, max_len + 1))

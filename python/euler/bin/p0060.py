@@ -63,15 +63,10 @@ def get_pairable_primes(x: int, asc_ps: list[int], curr_minsum: int) -> list[int
     return result
 
 
-def find_cliques(
-    p: int, asc_nbrs: list[int], size: int, tbl: dict[int, set[int]]
-) -> list[list[int]]:
+def find_cliques(p: int, asc_nbrs: list[int], size: int, tbl: dict[int, set[int]]) -> list[list[int]]:
     def is_clique(hd: int, tl: list[int]) -> bool:
         if tl:
-            if all(
-                is_prime(int(str(hd) + str(x))) and is_prime(int(str(x) + str(hd)))
-                for x in tl
-            ):
+            if all(is_prime(int(str(hd) + str(x))) and is_prime(int(str(x) + str(hd))) for x in tl):
                 return is_clique(tl[0], tl[1:])
             else:
                 return False

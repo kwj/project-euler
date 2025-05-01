@@ -1,2 +1,35 @@
+[project]
+name = "ProjectEuler"
+version = "0.1.0"
+description = "Project Euler Solutions"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.ruff]
+line-length = 109
+indent-width = 4
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    "W",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"euler/bin/p0011.py" = ["E201", "E241", "E501"]
+"euler/bin/p0018.py" = ["E201", "E241", "E501"]
+"euler/lib/prime/primes.py" = ["E501"]
+
 [tool.ruff.format]
 quote-style = "single"

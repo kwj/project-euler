@@ -29,9 +29,7 @@ def compute() -> str:
     max_len = 0
     max_tpl = (0, 0)
     for b in filter(lambda x: x < 1000, p_lst[1:]):
-        for a in map(
-            lambda x: x - b - 1, filter(lambda x: abs(x - b - 1) < 1000, p_lst)
-        ):
+        for a in map(lambda x: x - b - 1, filter(lambda x: abs(x - b - 1) < 1000, p_lst)):
             if (length := count_consecutive(a, b)) > max_len:
                 max_len = length
                 max_tpl = (a, b)

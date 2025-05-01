@@ -13,7 +13,7 @@ def compute() -> str:
         if is_pentagonal(hex_num):
             return str(hex_num)
 
-    assert False, 'unreachable!'
+    raise RuntimeError('unreachable!')
 
 
 def solve() -> str:

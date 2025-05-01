@@ -28,7 +28,7 @@ def compute(ndigits: int) -> str:
                 if tmp in lst and lst[i] != 1487 and lst[j] != 4817:
                     return reduce(lambda x, y: x + y, map(str, [lst[i], lst[j], tmp]))
 
-    assert False, 'unreachable!'
+    raise RuntimeError('unreachable!')
 
 
 def solve() -> str:

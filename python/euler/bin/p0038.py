@@ -32,7 +32,7 @@ def compute() -> str:
     result = '918273645'
     for x in reversed(range(9183, 9500)):
         rem = x % 10
-        if rem <= 1 or rem >= 8 or rem == 4 or rem == 5:
+        if rem <= 1 or rem >= 8 or rem in (4, 5):
             continue
         s = str(x * 100002)
         if ''.join(sorted(s)) == '123456789':

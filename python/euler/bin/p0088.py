@@ -95,13 +95,12 @@ def kv_generator(upper: int) -> Iterator[tuple[int, int]]:
         elif prod(lst[:-1] + [lst[-1] + 1]) <= upper:
             # [a, b, ..., f] -> [a, b, ..., f+1]
             return lst[:-1] + [lst[-1] + 1]
+        elif len(lst) == 2:
+            # [a, b] -> [a+1, a+1]
+            return [lst[0] + 1, lst[0] + 1]
         else:
-            if len(lst) == 2:
-                # [a, b] -> [a+1, a+1]
-                return [lst[0] + 1, lst[0] + 1]
-            else:
-                # [a, b, ..., e, f, g] -> [a, b, ..., e, f+1]
-                return lst[:-2] + [lst[-2] + 1]
+            # [a, b, ..., e, f, g] -> [a, b, ..., e, f+1]
+            return lst[:-2] + [lst[-2] + 1]
 
     def make_kv(lst: list[int]) -> tuple[int, int]:
         return (prod(lst) - (sum(lst) - len(lst)), prod(lst))

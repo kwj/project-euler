@@ -132,17 +132,19 @@ def compute() -> str:
         for n in range(3, ndigits, 3):
             # 'i' must be odd number
             for i in range(10 ** (ndigits - n - 1) + 1, 10 ** (ndigits - n), 2):
-                _, pat_lst = zip(*filter(lambda tpl: tpl[0] == n, pat_tpls))
+                _, pat_lst = zip(*filter(lambda tpl: tpl[0] == n, pat_tpls), strict=True)
                 for pat in pat_lst:
-                    if is_probable(i, pat, answer):
-                        if (tmp := find_prime(i, pat)) is not None:
-                            if tmp < answer:
-                                answer = tmp
+                    if (
+                        is_probable(i, pat, answer)
+                        and (tmp := find_prime(i, pat)) is not None
+                        and tmp < answer
+                    ):
+                        answer = tmp
 
         if answer != 10**ndigits:
             return str(answer)
 
-    assert False, 'unreachable!'
+    raise RuntimeError('unreachable!')
 
 
 def solve() -> str:

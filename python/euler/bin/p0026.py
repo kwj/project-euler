@@ -28,7 +28,7 @@ def find_repetend_length(d: int) -> int:
         if pow(10, k, d) == 1:
             return k
 
-    assert False, 'unreachable!'
+    raise RuntimeError('unreachable!')
 
 
 def compute(limit: int) -> str:

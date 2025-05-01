@@ -71,9 +71,7 @@ def search_from_rhs() -> int:
 
     # The chain.from_iterable() method is not used for readability here.
     for ndigits in range(2, 8):
-        for tpl in combinations_with_replacement(
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], ndigits
-        ):
+        for tpl in combinations_with_replacement([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], ndigits):
             n = sum(map(lambda x: fact_tbl[x], tpl))
             if to_digit_tpl(n) == tpl:
                 acc += n

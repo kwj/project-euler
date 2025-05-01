@@ -3,7 +3,8 @@
 
 def compute() -> str:
     cnt = 0
-    for i in range(10_000):
+    for n in range(10_000):
+        i = n
         for _ in range(50):
             i += int(str(i)[::-1])
             s = str(i)

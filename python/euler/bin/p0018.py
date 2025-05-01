@@ -21,15 +21,13 @@ data = [
     [70, 11, 33, 28, 77, 73, 17, 78, 39, 68, 17, 57],
     [91, 71, 52, 38, 17, 14, 91, 43, 58, 50, 27, 29, 48],
     [63, 66,  4, 68, 89, 53, 67, 30, 73, 16, 69, 87, 40, 31],
-    [ 4, 62, 98, 27, 23,  9, 70, 98, 73, 93, 38, 53, 60,  4, 23]  # noqa
+    [ 4, 62, 98, 27, 23,  9, 70, 98, 73, 93, 38, 53, 60,  4, 23]
 ]
 # fmt: on
 
 
 def compute(fn: Callable[..., int], nums: list[list[int]]) -> str:
-    return str(
-        reduce(lambda x, y: list(map(add, map(fn, pairwise(x)), y)), reversed(nums))[0]
-    )
+    return str(reduce(lambda x, y: list(map(add, map(fn, pairwise(x)), y)), reversed(nums))[0])
 
 
 def solve() -> str:

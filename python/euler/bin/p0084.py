@@ -93,7 +93,7 @@ class ChanceCard(Pile):
         elif sq == CH3:
             return R1
         else:
-            assert False, 'unreachable'
+            raise RuntimeError('unreachable!')
 
     def _nextU(self, sq: int) -> int:
         if sq == CH1:
@@ -103,7 +103,7 @@ class ChanceCard(Pile):
         elif sq == CH3:
             return U1
         else:
-            assert False, 'unreachable'
+            raise RuntimeError('unreachable!')
 
     def get(self, sq: int) -> int:
         tmp = self.cards[self.idx]
@@ -111,9 +111,7 @@ class ChanceCard(Pile):
 
         if tmp == NOP:
             return sq
-        elif (
-            tmp == GO or tmp == JAIL or tmp == C1 or tmp == E3 or tmp == H2 or tmp == R1
-        ):
+        elif tmp in (GO, JAIL, C1, E3, H2, R1):
             return tmp
         elif tmp == RAILWAY:
             return self._nextR(sq)
@@ -122,7 +120,7 @@ class ChanceCard(Pile):
         elif tmp == BACK3:
             return (sq + 37) % NUMBER_OF_SQUARES
         else:
-            assert False, 'unreachable'
+            raise RuntimeError('unreachable!')
 
 
 class Dice:
@@ -182,9 +180,9 @@ def compute(faces: int, n_attempts: int) -> str:
         next_sq = dice.roll(current_sq)
         if next_sq == G2J:
             next_sq = JAIL
-        if next_sq == CH1 or next_sq == CH2 or next_sq == CH3:
+        if next_sq in (CH1, CH2, CH3):
             next_sq = c_card.get(next_sq)
-        if next_sq == CC1 or next_sq == CC2 or next_sq == CC3:
+        if next_sq in (CC1, CC2, CC3):
             next_sq = c_chest.get(next_sq)
 
         counter_tbl[next_sq] += 1
@@ -195,7 +193,7 @@ def compute(faces: int, n_attempts: int) -> str:
         key=lambda tpl: tpl[1],
         reverse=True,
     )
-    return '{:02}{:02}{:02}'.format(result[0][0], result[1][0], result[2][0])
+    return f'{result[0][0]:02}{result[1][0]:02}{result[2][0]:02}'
 
 
 def solve() -> str:

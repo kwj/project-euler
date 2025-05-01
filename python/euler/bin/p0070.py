@@ -48,11 +48,10 @@ def pf_generator(tpl: tuple[int, int]) -> Iterator[list[tuple[int, int]]]:
         b, e = pf_lst[0]
         if (tmp := LIMIT // prod(pf_lst)) < b:
             return pf_lst
+        elif (prev_p := prev_prime(tmp + 1)) > b:
+            return [(prev_p, 1)] + pf_lst
         else:
-            if (prev_p := prev_prime(tmp + 1)) > b:
-                return [(prev_p, 1)] + pf_lst
-            else:
-                return [(b, e + 1)] + pf_lst[1:]
+            return [(b, e + 1)] + pf_lst[1:]
 
     pf_lst = [(tpl[1], 1), (tpl[0], 1)] if tpl[0] != tpl[1] else [(tpl[0], 2)]
     while True:
@@ -69,7 +68,7 @@ def pf_generator(tpl: tuple[int, int]) -> Iterator[list[tuple[int, int]]]:
         else:
             prev_p = prev_prime(b)
             b_x, e_x = pf_lst[1]
-            if prev_p == b_x:
+            if prev_p == b_x:  # noqa: SIM108
                 # [(p_n, 1), (p_{n-1}, e_{n-1}), ...]
                 #   -> [(p_{n-1}, e_{n-1} + 1), ...]
                 pf_lst = aux([(b_x, e_x + 1)] + pf_lst[2:])

@@ -8,7 +8,7 @@ from ..prime import primes
 def factorize(n: int) -> list[tuple[int, int]]:
     # special case
     if n < 1:
-        assert False
+        raise AssertionError('argument is less than or equal to 0')
     elif n == 1:
         return [(1, 1)]
 
@@ -66,7 +66,7 @@ def divisors(num: int) -> list[int]:
 
 
 def num_of_divisors(num: int) -> int:
-    _, e_iter = zip(*factorize(num))
+    _, e_iter = zip(*factorize(num), strict=True)
 
     return reduce(lambda x, y: x * y, map(lambda x: x + 1, e_iter))
 

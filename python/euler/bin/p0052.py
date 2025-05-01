@@ -8,11 +8,8 @@ def check_num(n: int) -> bool:
         return ''.join(sorted(str(num)))
 
     key_id = get_key(n)
-    for mult in range(2, 7):
-        if key_id != get_key(n * mult):
-            return False
 
-    return True
+    return all(key_id == get_key(n * mult) for mult in range(2, 7))
 
 
 def compute() -> str:
@@ -23,7 +20,7 @@ def compute() -> str:
             if check_num(n):
                 return str(n)
 
-    assert False, 'unreachable!'
+    raise RuntimeError('unreachable!')
 
 
 def solve() -> str:

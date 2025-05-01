@@ -19,7 +19,7 @@ def find_rings(n_gon: int, total: int) -> list[str]:
     def make_str(ring: list[int]) -> str:
         result = ''
         for i in range(0, n_gon * 2, 2):
-            result = '{}{}{}{}'.format(result, ring[i + 1], ring[i], ring[i + 2])
+            result = f'{result}{ring[i + 1]}{ring[i]}{ring[i + 2]}'
 
         return result
 
@@ -51,9 +51,7 @@ def find_rings(n_gon: int, total: int) -> list[str]:
                 rings.append(make_str(ring + [outer, ring[0]]))
         else:
             for outer in rest:
-                if (len(ring) == 1 and outer > n_gon + 1) or (
-                    len(ring) > 1 and outer < ring[1]
-                ):
+                if (len(ring) == 1 and outer > n_gon + 1) or (len(ring) > 1 and outer < ring[1]):
                     continue
                 inner = total - outer - ring[-1]
                 if outer == inner:

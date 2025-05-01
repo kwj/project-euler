@@ -1201,7 +1201,7 @@ def kronecker_symbol(a: int, n: int) -> int:
         n >>= ntz_n
         if (ntz_n & 0b1) == 1:
             tmp = a & 0b111
-            if tmp == 3 or tmp == 5:
+            if tmp in (3, 5):
                 sign = -sign
 
     # From here on, 'n' is an odd number.
@@ -1218,7 +1218,7 @@ def kronecker_symbol(a: int, n: int) -> int:
             a >>= ntz_a
             if (ntz_a & 0b1) == 1:
                 tmp = n & 0b111
-                if tmp == 3 or tmp == 5:
+                if tmp in (3, 5):
                     sign = -sign
 
         # From here on, 'a' is an odd number.
@@ -1379,11 +1379,7 @@ def next_prime(n: int) -> int:
     elif n < 7:
         return 7
     else:
-        idx = (
-            num_to_index(n) + 1
-            if num_to_index(n) != num_to_index(n + 1)
-            else num_to_index(n)
-        )
+        idx = num_to_index(n) + 1 if num_to_index(n) != num_to_index(n + 1) else num_to_index(n)
         while not is_prime(p := index_to_num(idx)):
             idx += 1
         return p
@@ -1453,9 +1449,7 @@ def get_prime_tbl(low: int, high: int) -> list[bool]:
     sieve = [True] * (w_high - w_low + 1)
 
     if high >= 121:
-        for prime in [
-            index_to_num(i) for i, x in enumerate(get_small_prime_tbl(isqrt(high))) if x
-        ]:
+        for prime in [index_to_num(i) for i, x in enumerate(get_small_prime_tbl(isqrt(high))) if x]:
             idx = num_to_index(max(((low + prime) - 1) // prime, prime))
             q = prime * index_to_num(idx)
             while q <= max_prime:
@@ -1476,7 +1470,7 @@ def primes(*args: int) -> list[int]:
             low, high = args
             assert low > 0 and low <= high, 'range error'
         case _:
-            assert False, 'invalid arguments'
+            raise AssertionError('invalid arguments')
 
     lst = []
     if low <= 2:
@@ -1490,10 +1484,6 @@ def primes(*args: int) -> list[int]:
     if high >= 11:
         low = max(low, 11)
         w_offset = num_to_index(low)
-        lst += [
-            index_to_num(i + w_offset)
-            for i, x in enumerate(get_prime_tbl(low, high))
-            if x
-        ]
+        lst += [index_to_num(i + w_offset) for i, x in enumerate(get_prime_tbl(low, high)) if x]
 
     return lst

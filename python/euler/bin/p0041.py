@@ -25,7 +25,7 @@ def compute() -> str:
             if is_pandigital_nz(n) and is_prime(n):
                 return str(n)
 
-    assert False, 'unreachable!'
+    raise RuntimeError('unreachable!')
 
 
 def solve() -> str:

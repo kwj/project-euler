@@ -37,9 +37,7 @@ BOX_LST = [
 ]
 
 # dictionary of cells and their corresponding row, column and box
-groups = dict(
-    (p, [group for group in ROW_LST + COL_LST + BOX_LST if p in group]) for p in POS
-)
+groups = dict((p, [group for group in ROW_LST + COL_LST + BOX_LST if p in group]) for p in POS)
 # dictionary of cells and their corresponding cells
 links = dict((p, set(flatten(groups[p])) - set((p,))) for p in POS)
 
@@ -52,17 +50,14 @@ class Grid:
     # The result is an easy backtracked search with a shallow copy of the dictionary.
     def setup_grid(self) -> bool:
         self._grid = dict((p, '123456789') for p in POS)
-        for pos, ch in zip(POS, self._data):
-            if ch != '0':
-                if self._decide_num(self._grid, pos, ch) is None:
-                    return False
+        for pos, ch in zip(POS, self._data, strict=True):
+            if ch != '0' and self._decide_num(self._grid, pos, ch) is None:
+                return False
 
         return True
 
     # Tentatively determine a number to leave in the cell and remove the other numbers
-    def _decide_num(
-        self, grid: dict[str, str], pos: str, num: str
-    ) -> dict[str, str] | None:
+    def _decide_num(self, grid: dict[str, str], pos: str, num: str) -> dict[str, str] | None:
         # Remove all numbers from the cell except the one we have decided on
         other_nums = grid[pos].replace(num, '')
         if all(self._remove_num(grid, pos, n) for n in other_nums):
@@ -86,12 +81,8 @@ class Grid:
         grid[pos] = grid[pos].replace(num, '')
         # If the deletion results only one number is in the cell,
         # remove the number from the linked cells
-        if len(grid[pos]) == 1:
-            if (
-                all(self._remove_num(grid, p, grid[pos]) for p in links[pos])
-                is not True
-            ):
-                return False
+        if len(grid[pos]) == 1 and not all(self._remove_num(grid, p, grid[pos]) for p in links[pos]):
+            return False
 
         # check row/column/box
         for group in groups[pos]:
@@ -103,9 +94,8 @@ class Grid:
             # If there is an only one cell which contains the removed number
             # in a belong row/column/box, the number is decided tentatively
             # to remain in the cell
-            if len(cells) == 1:
-                if self._decide_num(grid, cells[0], num) is None:
-                    return False
+            if len(cells) == 1 and self._decide_num(grid, cells[0], num) is None:
+                return False
 
         # everything is OK
         return True
@@ -120,9 +110,7 @@ class Grid:
 
         _, pos = min((c for c in cells if c[0] > 1), key=lambda x: x[0])
         for num in grid[pos]:
-            if (
-                result := self._solve(self._decide_num(grid.copy(), pos, num))
-            ) is not None:
+            if (result := self._solve(self._decide_num(grid.copy(), pos, num))) is not None:
                 return result
 
         return None
@@ -147,9 +135,9 @@ def parse_data(fh: IO) -> list[str]:
         else:
             result.append(trim(acc))
             acc = []
-    else:
-        if len(acc) == 9:
-            result.append(trim(flatten(acc)))
+
+    if len(acc) == 9:
+        result.append(trim(flatten(acc)))
 
     assert all([len(s) == 81 for s in result]), 'invalid data file'
     return result
@@ -161,13 +149,13 @@ def compute(fh: IO) -> str:
     for idx, problem in enumerate(puzzles):
         grid = Grid(problem)
         if not grid.setup_grid():
-            assert False, 'invalid data: Grid {}'.format(idx + 1)
+            raise AssertionError(f'invalid data: Grid {idx + 1}')
 
         d = grid.solve()
         if d is not None:
             acc += int(d['R0C0'] + d['R0C1'] + d['R0C2'])
         else:
-            print('Warning: No answer found: Grod {}'.format(idx + 1))
+            print(f'Warning: No answer found: Grod {idx + 1}')
 
     return str(acc)
 

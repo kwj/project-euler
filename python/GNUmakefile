@@ -1,5 +1,4 @@
 
-SRCS := .gitignore solve.py README.md
 SUBDIRS = euler tests
 
 .PHONY: usage
@@ -27,14 +26,11 @@ clean-all:
 
 .PHONY: lint
 lint:
-	flake8 .
-	isort --check --diff .
-	black --check --diff .
+	ruff check
 
 .PHONY: format
 format:
-	isort .
-	black .
+	ruff format --diff
 
 .PHONY: list
 list:

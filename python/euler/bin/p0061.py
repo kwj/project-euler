@@ -77,9 +77,7 @@ def compute(max_nsides: int) -> str:
         filter(
             lambda cycle: len(cycle) == len(set(cycle)),
             map(
-                lambda path: list(
-                    map(lambda tpl: tpl[0] * 100 + tpl[1], pairwise(path))
-                ),
+                lambda path: list(map(lambda tpl: tpl[0] * 100 + tpl[1], pairwise(path))),
                 find_closed_paths(max_nsides),
             ),
         ),
@@ -89,8 +87,8 @@ def compute(max_nsides: int) -> str:
     if len(cycles) == 1:
         return str(sum(cycles[0]))
 
-    print('DEBUG: cycles (max polygon: {}) {}'.format(max_nsides, cycles))
-    assert False, 'unreachable!'
+    print(f'DEBUG: cycles (max polygon: {max_nsides}) {max_nsides}')
+    raise RuntimeError('unreachable!')
 
 
 def solve() -> str:

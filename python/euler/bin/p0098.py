@@ -41,9 +41,7 @@ def make_sq_tbl(max_digits: int) -> tuple[dict[int, list[str]], dict[int, list[s
         work.append((num_of_digits(sq), str(sq)))
 
     sq_tbl = assoc_group_dict(work)
-    sq_uniq_tbl = dict(
-        (k, list(filter(lambda x: len(x) == len(set(x)), v))) for k, v in sq_tbl.items()
-    )
+    sq_uniq_tbl = dict((k, list(filter(lambda x: len(x) == len(set(x)), v))) for k, v in sq_tbl.items())
 
     return (sq_tbl, sq_uniq_tbl)
 
@@ -54,12 +52,12 @@ def compute(fh: IO) -> str:
         tbl = sq_uniq_tbl if ndigits == len(set(w1)) else sq_tbl
 
         for sq in tbl[ndigits]:
-            pair_dict = assoc_group_dict(zip(w1, sq))
-            if all([len(v) == 1 for v in pair_dict.values()]):
-                if (w2_trans := w2.translate(str.maketrans(w1, sq))) in tbl[ndigits]:
-                    w1_num = int(w1.translate(str.maketrans(w1, sq)))
-                    w2_num = int(w2_trans)
-                    return max(w1_num, w2_num)
+            pair_dict = assoc_group_dict(zip(w1, sq, strict=True))
+            if (
+                all([len(v) == 1 for v in pair_dict.values()])
+                and (w2_trans := w2.translate(str.maketrans(w1, sq))) in tbl[ndigits]
+            ):
+                return max(int(w1.translate(str.maketrans(w1, sq))), int(w2_trans))
 
         return None
 
@@ -72,7 +70,7 @@ def compute(fh: IO) -> str:
             if (result := check_pair(w1, w2)) is not None:
                 return str(result)
 
-    assert False, 'unreachable!'
+    raise RuntimeError('unreachable!')
 
 
 def solve() -> str:

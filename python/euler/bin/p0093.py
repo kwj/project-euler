@@ -76,7 +76,7 @@ def make_numbers(tpl: tuple[Fraction, Fraction, Fraction, Fraction]) -> set[int]
         for j in range(i + 1, len(tpl)):
             rest = []
             for k in range(len(tpl)):
-                if k != i and k != j:
+                if k not in (i, j):
                     rest.append(tpl[k])
 
             lst += case_1(tpl[i], tpl[j], rest)

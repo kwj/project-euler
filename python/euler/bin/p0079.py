@@ -13,13 +13,13 @@ from typing import IO
 def dfs(graph: dict[str, list[str]], perm: list[str], v: str) -> list[str]:
     def visit(temp: list[str], visited: list[str], node: str) -> list[str]:
         if node in temp:
-            assert False
+            raise AssertionError('cycle detected')
         if node in visited:
             return visited
         if node in graph:
             acc = visited
-            for v in graph[node]:
-                acc = visit([node] + temp, acc, v)
+            for next_v in graph[node]:
+                acc = visit([node] + temp, acc, next_v)
             return [node] + acc
         else:
             return [node]
@@ -32,10 +32,7 @@ def compute(fh: IO) -> str:
         result = defaultdict(list)
         for k, v in reduce(
             lambda x, y: x + y,
-            [
-                [(x[0], x[1]), (x[1], x[2]), (x[0], x[2])]
-                for x in fh.read().splitlines()
-            ],
+            [[(x[0], x[1]), (x[1], x[2]), (x[0], x[2])] for x in fh.read().splitlines()],
         ):
             result[k].append(v)
         for k, v in result.items():
@@ -44,8 +41,8 @@ def compute(fh: IO) -> str:
 
     graph = parse_data(fh)
     acc: list[str] = []
-    for v in graph.keys():
-        acc = dfs(graph, acc, v)
+    for k in graph:
+        acc = dfs(graph, acc, k)
 
     return reduce(lambda x, y: x + y, acc)
 

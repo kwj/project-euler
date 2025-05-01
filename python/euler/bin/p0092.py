@@ -80,21 +80,15 @@ def is_group89(n: int) -> bool:
 
 
 def compute(limit: int) -> str:
-    assert (
-        limit % 10 == 0 and limit != 0
-    ), 'This implementation works correctly only if the limit is a power of 10.'
+    assert limit % 10 == 0 and limit != 0, (
+        'This implementation works correctly only if the limit is a power of 10.'
+    )
     ndigits = num_of_digits(limit) - 1
 
-    patterns = combinations_with_replacement(
-        (0, 1, 4, 9, 16, 25, 36, 49, 64, 81), r=ndigits
-    )
+    patterns = combinations_with_replacement((0, 1, 4, 9, 16, 25, 36, 49, 64, 81), r=ndigits)
     denominators = (
         reduce(mul, k_fact)
-        for k_fact in (
-            map(factorial, Counter(pat).values())
-            for pat in patterns
-            if is_group89(sum(pat))
-        )
+        for k_fact in (map(factorial, Counter(pat).values()) for pat in patterns if is_group89(sum(pat)))
     )
     numerator = factorial(ndigits)
 

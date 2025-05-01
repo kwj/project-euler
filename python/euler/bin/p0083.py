@@ -15,10 +15,7 @@ def make_neighbor_tbl(rows: int, columns: int) -> list[list[list[tuple[int, int]
         for c in range(columns):
             tbl[r][c] = list(
                 filter(
-                    lambda tpl: tpl[0] >= 0
-                    and tpl[0] < rows
-                    and tpl[1] >= 0
-                    and tpl[1] < columns,
+                    lambda tpl: tpl[0] >= 0 and tpl[0] < rows and tpl[1] >= 0 and tpl[1] < columns,
                     [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)],
                 )
             )

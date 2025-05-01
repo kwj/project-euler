@@ -64,7 +64,7 @@ def compute(limit: int) -> str:
                 if (p := 2 * next_a + 2) > limit:
                     break
             case _:
-                assert False, 'unreachable!'
+                raise RuntimeError('unreachable!')
         a = next_a
         b = next_b
         result += p

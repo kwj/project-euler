@@ -9,9 +9,7 @@ def compute(fn: Callable[..., int], fh: IO) -> str:
         # transpose matrix
         return [
             list(x)
-            for x in zip(
-                *[list(map(int, line.split(','))) for line in fh.read().splitlines()]
-            )
+            for x in zip(*[list(map(int, line.split(','))) for line in fh.read().splitlines()], strict=True)
         ]
 
     matrix = parse_data(fh)

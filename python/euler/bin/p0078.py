@@ -65,7 +65,7 @@ def compute(denom: int) -> str:
         for i, x in enumerate(gp):
             if x > n:
                 break
-            if i % 4 < 2:
+            if i % 4 < 2:  # noqa: SIM108
                 rem = rem + p[n - x]
             else:
                 rem = rem - p[n - x]

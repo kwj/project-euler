@@ -49,8 +49,8 @@ def compute(boundary: int) -> str:
                     acc += (ab // 2) - (ab - 1 - c)
             ab -= 1
         c += 1
-    else:
-        c -= 1
+
+    c -= 1
 
     return str(c)
 

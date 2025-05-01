@@ -16,12 +16,7 @@ SQUARES = [
 
 
 def is_contain(two_dice: tuple[set[int], set[int]], sq: tuple[int, int]) -> bool:
-    if sq[0] in two_dice[0] and sq[1] in two_dice[1]:
-        return True
-    if sq[0] in two_dice[1] and sq[1] in two_dice[0]:
-        return True
-
-    return False
+    return (sq[0] in two_dice[0] and sq[1] in two_dice[1]) or (sq[0] in two_dice[1] and sq[1] in two_dice[0])
 
 
 def compute() -> str:
