@@ -20,4 +20,4 @@ python3 solve.py 1 2 3 4 5
 ## Notes
 
 These solutions probably work with Python 3.11 or later.
-I confirmed to work with Python 3.12.6.
+I confirmed to work with Python 3.13.3.
