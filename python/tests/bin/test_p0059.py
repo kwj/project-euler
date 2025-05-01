@@ -6,13 +6,11 @@ from euler.lib.resource import asset_file
 
 class TestSolution(unittest.TestCase):
     def test_compute(self):
-        test_patterns = [((), '129448')]
+        test_patterns = [('p059_cipher.txt', '129448')]
 
-        fh = asset_file('p059_cipher.txt')
-        for args, expected in test_patterns:
-            with self.subTest('data file: p059_cipher.txt'):
+        for fname, expected in test_patterns:
+            with asset_file(fname) as fh, self.subTest(f'data file: {fname}'):
                 self.assertEqual(expected, compute(fh))
-        fh.close()
 
 
 if __name__ == '__main__':

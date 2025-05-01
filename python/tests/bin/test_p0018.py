@@ -26,7 +26,7 @@ class TestSolution(unittest.TestCase):
         test_patterns = [((max, test_data_1), '23'), ((max, test_data_2), '1074')]
 
         for args, expected in test_patterns:
-            with self.subTest('triangle size: {}'.format(len(args[1]))):
+            with self.subTest(f'triangle size: {len(args[1])}'):
                 self.assertEqual(expected, compute(*args))
 
 

@@ -9,7 +9,7 @@ class TestSolution(unittest.TestCase):
 
         for args, expected in test_patterns:
             with self.subTest('NONE'):
-                self.assertEqual(expected, compute())
+                self.assertEqual(expected, compute(*args))
 
 
 if __name__ == '__main__':
