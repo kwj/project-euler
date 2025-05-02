@@ -20,8 +20,10 @@ if (Deno.args.length > 0) {
 
               console.log(`Answer: ${result}`);
               console.log(`Elapsed time: ${duration_ms} msec.`);
-            } catch (err) {
-              console.error(err.message);
+            } catch (err: unknown) {
+              if (err instanceof Error) {
+                console.error(err.message);
+              }
             }
           } else {
             console.log(`Entry point solve() isn't exist in '${filename}'.`);
