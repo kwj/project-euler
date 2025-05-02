@@ -80,7 +80,7 @@ const isGroup89 = (n: number): boolean => {
 export const compute = (limit: number): string => {
   if (!Number.isInteger(Math.log10(limit)) || limit === 0) {
     throw new Error(
-      "This implementation works correctly only if the limit is a power of 10.",
+      `this implementation works correctly only if the limit is a power of 10. (limit = ${limit})`,
     );
   }
   const ndigits = numOfDigits(limit) - 1;

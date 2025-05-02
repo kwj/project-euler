@@ -234,7 +234,7 @@ const parseData = (data: string): string[] => {
   }
 
   if (result.some((x) => x.length !== 81)) {
-    throw new Error("Invalid data file");
+    throw new Error("invalid data file");
   }
 
   return result;

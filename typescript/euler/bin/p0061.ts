@@ -110,7 +110,7 @@ export const compute = (maxNumSidesPolygon: number): string => {
     return String(sum(cycles[0].slice(1)) * 101);
   }
 
-  throw new Error("unreachable");
+  throw new Error("not reached");
 };
 
 export const solve = (): string => compute(8);

@@ -29,7 +29,7 @@ export const compute = (): string => {
     }
   }
 
-  throw new Error("Not reached");
+  throw new Error("not reached");
 };
 
 export const solve = (): string => compute();

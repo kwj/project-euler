@@ -5,7 +5,7 @@ import { isPalindrome, range } from "../lib/util.ts";
 
 export const compute = (digits: number): string => {
   if (digits <= 0) {
-    throw new Error("range error");
+    throw new RangeError(`argument must be larger than 0 (digits = ${digits})`);
   }
 
   const nUpper = (10 ** digits) - 1;
