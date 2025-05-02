@@ -1,6 +1,6 @@
 # project euler: problem 18
 
-from collections.abc import Callable
+from collections.abc import Callable, Reversible, Sequence
 from functools import reduce
 from itertools import pairwise
 from operator import add
@@ -26,7 +26,7 @@ data = [
 # fmt: on
 
 
-def compute(fn: Callable[..., int], nums: list[list[int]]) -> str:
+def compute(fn: Callable[..., int], nums: Reversible[Sequence[int]]) -> str:
     return str(reduce(lambda x, y: list(map(add, map(fn, pairwise(x)), y)), reversed(nums))[0])
 
 

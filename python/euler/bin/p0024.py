@@ -1,5 +1,6 @@
 # project euler: problem 24
 
+from collections.abc import MutableSequence
 from math import factorial
 
 
@@ -14,7 +15,7 @@ def make_fact_tbl(num: int, depth: int) -> list[int]:
     return result
 
 
-def compute(nth: int, elm_lst: list[int], depth: int) -> str:
+def compute(nth: int, elm_lst: MutableSequence[int], depth: int) -> str:
     idx = nth - 1
     result = []
     for n in make_fact_tbl(len(elm_lst), depth):

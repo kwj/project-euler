@@ -1,9 +1,10 @@
 # project euler: problem 22
 
+from collections.abc import Iterable
 from typing import IO
 
 
-def total_score(words: list[str]) -> int:
+def total_score(words: Iterable[str]) -> int:
     def score(word):
         return sum(ord(c) - (ord('A') - 1) for c in word)
 

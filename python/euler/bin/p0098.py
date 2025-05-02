@@ -1,6 +1,6 @@
 # project euler: problem 98
 
-from collections.abc import Iterator
+from collections.abc import Iterable, Iterator
 from itertools import combinations, count
 from math import isqrt
 from typing import IO
@@ -8,14 +8,14 @@ from typing import IO
 from euler.lib.util import assoc_group_dict, num_of_digits
 
 
-def select_keywords(words: list[str]) -> tuple[int, list[tuple[str, list[str]]]]:
+def select_keywords(words: Iterable[str]) -> tuple[int, list[tuple[str, list[str]]]]:
     def make_key(word: str) -> str:
         return ''.join(sorted(list(word)))
 
     def make_kw_info(
-        tpl_lst: Iterator[tuple[str, str]],
+        tpl_it: Iterator[tuple[str, str]],
     ) -> tuple[int, list[tuple[str, list[str]]]]:
-        work = assoc_group_dict(tpl_lst)
+        work = assoc_group_dict(tpl_it)
         del_list = []
         for k, v in work.items():
             if len(v) == 1:

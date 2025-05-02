@@ -83,6 +83,7 @@
 #        x{n} = a{n} * x{n-1} + x{n-2}
 #        y{n} = a{n} * y{n-1} + y{n-2}
 
+from collections.abc import Iterable
 from math import isqrt
 
 
@@ -105,7 +106,7 @@ def get_cont_fraction(n: int) -> tuple[int, list[int]]:
             return (isqrt_n, rep)
 
 
-def get_numerator(a0: int, rep_lst: list[int]) -> int:
+def get_numerator(a0: int, rep_lst: Iterable[int]) -> int:
     x_n1, x_n2 = a0, 1
     for a in rep_lst:
         x_n1, x_n2 = a * x_n1 + x_n2, x_n1

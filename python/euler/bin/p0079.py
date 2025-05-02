@@ -6,11 +6,12 @@
 #   Note: This implementation finds only one topological sort not all.
 
 from collections import defaultdict
+from collections.abc import Mapping
 from functools import reduce
 from typing import IO
 
 
-def dfs(graph: dict[str, list[str]], perm: list[str], v: str) -> list[str]:
+def dfs(graph: Mapping[str, list[str]], perm: list[str], v: str) -> list[str]:
     def visit(temp: list[str], visited: list[str], node: str) -> list[str]:
         if node in temp:
             raise AssertionError('cycle detected')

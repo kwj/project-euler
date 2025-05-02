@@ -72,7 +72,7 @@
 #   5,6
 #   <end of search>    // 5*7 = 35 > limit and 6*6 = 36 > limit
 
-from collections.abc import Iterator
+from collections.abc import Collection, Generator
 from math import prod
 
 
@@ -87,14 +87,14 @@ from math import prod
 #        = 18 - (8 - 3)
 #     prod([2, 3, 3, 1, ..., 1]) = sum([2, 3, 3, 1, ..., 1]) = 18
 #
-def kv_generator(upper: int) -> Iterator[tuple[int, int]]:
+def kv_generator(upper: int) -> Generator[tuple[int, int], None, None]:
     def make_next_terms(lst: list[int]) -> list[int]:
-        if prod(lst + [lst[-1]]) <= upper:
+        if prod(tmp := lst + [lst[-1]]) <= upper:
             # [a, b, .., f] -> [a, b, ..., f, f]
-            return lst + [lst[-1]]
-        elif prod(lst[:-1] + [lst[-1] + 1]) <= upper:
+            return tmp
+        elif prod(tmp := lst[:-1] + [lst[-1] + 1]) <= upper:
             # [a, b, ..., f] -> [a, b, ..., f+1]
-            return lst[:-1] + [lst[-1] + 1]
+            return tmp
         elif len(lst) == 2:
             # [a, b] -> [a+1, a+1]
             return [lst[0] + 1, lst[0] + 1]
@@ -102,7 +102,7 @@ def kv_generator(upper: int) -> Iterator[tuple[int, int]]:
             # [a, b, ..., e, f, g] -> [a, b, ..., e, f+1]
             return lst[:-2] + [lst[-2] + 1]
 
-    def make_kv(lst: list[int]) -> tuple[int, int]:
+    def make_kv(lst: Collection[int]) -> tuple[int, int]:
         return (prod(lst) - (sum(lst) - len(lst)), prod(lst))
 
     terms = [2, 2]

@@ -36,12 +36,13 @@
 # These results are terrible. What is going on?
 
 import sys
+from collections.abc import Iterable, Mapping, Reversible, Sequence
 
 from euler.lib.prime import is_prime, prime_generator
 from euler.lib.util import num_of_digits
 
 
-def get_pairable_primes(x: int, asc_ps: list[int], curr_minsum: int) -> list[int]:
+def get_pairable_primes(x: int, asc_ps: Iterable[int], curr_minsum: int) -> list[int]:
     def fermat_primality_test(n: int) -> bool:
         # Note: 'n' must be an odd number.
         return pow(2, n - 1, n) == 1
@@ -63,8 +64,10 @@ def get_pairable_primes(x: int, asc_ps: list[int], curr_minsum: int) -> list[int
     return result
 
 
-def find_cliques(p: int, asc_nbrs: list[int], size: int, tbl: dict[int, set[int]]) -> list[list[int]]:
-    def is_clique(hd: int, tl: list[int]) -> bool:
+def find_cliques(
+    p: int, asc_nbrs: Reversible[int], size: int, tbl: Mapping[int, set[int]]
+) -> list[list[int]]:
+    def is_clique(hd: int, tl: Sequence[int]) -> bool:
         if tl:
             if all(is_prime(int(str(hd) + str(x))) and is_prime(int(str(x) + str(hd))) for x in tl):
                 return is_clique(tl[0], tl[1:])
@@ -73,7 +76,7 @@ def find_cliques(p: int, asc_nbrs: list[int], size: int, tbl: dict[int, set[int]
         else:
             return True
 
-    def aux(group: list[int], desc_nbrs: list[int], depth: int) -> None:
+    def aux(group: list[int], desc_nbrs: Sequence[int], depth: int) -> None:
         if depth == 0:
             if is_clique(p, group):
                 result.append([p] + group)

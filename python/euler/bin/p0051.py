@@ -33,6 +33,7 @@
 #
 # 4) There are at least same three numbers other than last digit.
 
+from collections.abc import Iterable, Sequence
 from functools import reduce
 from itertools import combinations, count
 
@@ -85,7 +86,7 @@ def make_patterns(ndigits: int) -> list[tuple[int, list[int]]]:
 
 # assemble_num(231, [0, 1, 1, 1, 0, 0], 7)
 #   --> 237771
-def assemble_num(i: int, pat: list[int], r: int) -> int:
+def assemble_num(i: int, pat: Iterable[int], r: int) -> int:
     lst = []
     for flag in pat:
         if flag == 0:
@@ -97,7 +98,7 @@ def assemble_num(i: int, pat: list[int], r: int) -> int:
     return reduce(lambda x, y: 10 * x + y, reversed(lst))
 
 
-def is_probable(i: int, pat: list[int], current_min: int) -> bool:
+def is_probable(i: int, pat: Sequence[int], current_min: int) -> bool:
     # Is MSB target digit to replace or not?
     if pat[-1] == 1:
         return assemble_num(i, pat, 1) < current_min
@@ -106,7 +107,7 @@ def is_probable(i: int, pat: list[int], current_min: int) -> bool:
 
 
 # Check all cases
-def find_prime(i: int, pat: list[int]) -> int | None:
+def find_prime(i: int, pat: Sequence[int]) -> int | None:
     # If MSB is target digit to replace, '0' is not applicable.
     start = 0
     if pat[-1] == 1:

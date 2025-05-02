@@ -1,12 +1,12 @@
 # project euler: problem 50
 
-from collections.abc import Iterator
+from collections.abc import Generator
 from itertools import dropwhile
 
 from euler.lib.prime import is_prime, prime_generator
 
 
-def cumsum_generator() -> Iterator[int]:
+def cumsum_generator() -> Generator[int, None, None]:
     acc = 0
     p_gen = prime_generator()
     while True:
@@ -17,7 +17,7 @@ def cumsum_generator() -> Iterator[int]:
 # Returns a cumulative sum list of prime numbers.
 #   [0, p1, p1+p2, p1+p2+p3, ..., p1+...+p{n-1}, p1+...+p{n-1}+p{n}]
 #     where sum(p1..p{n-1}) < limit and sum(p1..p{n}) >= limit
-def init_cumsum_lst(cs_gen: Iterator[int], limit: int) -> list[int]:
+def init_cumsum_lst(cs_gen: Generator[int, None, None], limit: int) -> list[int]:
     lst = [0]
     while lst[-1] < limit:
         lst.append(next(cs_gen))

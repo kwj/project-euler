@@ -3,19 +3,21 @@
 # candidate numbers: [2357][1379]*[37] (n >= 10)
 #                          ----------- lst
 
+from collections.abc import Iterable
+
 from euler.lib.prime import is_prime
 from euler.lib.util import num_of_digits
 
 
-def add_prefix_num(pre_lst: list[int], lst: list[int]) -> list[int]:
+def add_prefix_num(pre_lst: Iterable[int], lst: Iterable[int]) -> list[int]:
     return [p * (10 ** num_of_digits(n)) + n for p in pre_lst for n in lst]
 
 
-def make_next_lists(lst: list[int]) -> list[int]:
+def make_next_lists(lst: Iterable[int]) -> list[int]:
     return list(filter(is_prime, add_prefix_num([1, 3, 7, 9], lst)))
 
 
-def pickup_primes(lst: list[int]) -> list[int]:
+def pickup_primes(lst: Iterable[int]) -> list[int]:
     def is_truncable_prime(n: int) -> bool:
         if n == 0:
             return False

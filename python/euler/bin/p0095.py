@@ -1,10 +1,12 @@
 # project euler: problem 95
 
+from collections.abc import Iterable
+
 from euler.lib.util import aliquot_sum_tbl
 
 
 def compute(limit: int) -> str:
-    def update_chain_tbl(indices: list[int], v: int):
+    def update_chain_tbl(indices: Iterable[int], v: int):
         for i in indices:
             chain_tbl[i] = v
 

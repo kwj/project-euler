@@ -1,11 +1,11 @@
 # project euler: problem 77
 
-from collections.abc import Iterator
+from collections.abc import Generator
 
 from euler.lib.prime import prime_generator
 
 
-def plst_generator() -> Iterator[list[int]]:
+def plst_generator() -> Generator[list[int], None, None]:
     p_gen = prime_generator()
     plst = []
     while True:

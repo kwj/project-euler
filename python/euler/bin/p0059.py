@@ -2,11 +2,12 @@
 
 import operator
 import re
+from collections.abc import Collection, Iterable
 from itertools import product
 from typing import IO
 
 
-def decode(cipher_text: list[int], key: tuple[int, ...]) -> list[int]:
+def decode(cipher_text: Collection[int], key: tuple[int, ...]) -> list[int]:
     text_len = len(cipher_text)
     key_len = len(key)
     key_lst = (key * (text_len // key_len + 1))[:text_len]
@@ -14,7 +15,7 @@ def decode(cipher_text: list[int], key: tuple[int, ...]) -> list[int]:
     return list(map(operator.xor, cipher_text, key_lst))
 
 
-def calc_score(lst: list[int]) -> int:
+def calc_score(lst: Iterable[int]) -> int:
     word_list = [s.casefold() for s in re.split(r'[,. ]', ''.join(map(chr, lst)))]
     cnt = 0
     for word in ['and', 'of', 'a', 'to', 'in']:

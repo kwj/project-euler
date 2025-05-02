@@ -26,10 +26,10 @@
 #   I consider only value of 'mod 1_000_000' because the problem is
 #   divisible by one million or not.
 
-from collections.abc import Iterator
+from collections.abc import Generator
 
 
-def gpnum_generator() -> Iterator[int]:
+def gpnum_generator() -> Generator[int, None, None]:
     # Generalized pentagonal numbers
     #        0   1   2   5   7   12   15   22   26   35   40   51   57   70   77   92   100   117
     # diff:    1   1   3   2   5    3    7    4    9    5    11   6    13   7    15    8    17

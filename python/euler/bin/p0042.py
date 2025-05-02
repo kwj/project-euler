@@ -1,11 +1,12 @@
 # project euler: problem 42
 
+from collections.abc import Iterable
 from typing import IO
 
 from euler.lib.util import is_triangular
 
 
-def calc_scores(words: list[str]) -> list[int]:
+def calc_scores(words: Iterable[str]) -> list[int]:
     a_to_z = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     tbl = dict(zip(a_to_z, range(1, len(a_to_z) + 1), strict=True))
 

@@ -15,7 +15,7 @@
 #
 #     N = p1^k1 * p2^k2 * ... * pn^kn  (N < 10^7, n > 1, 11 <= p1 < p2 < ... < pn, k1>2 when n=1)
 
-from collections.abc import Iterator
+from collections.abc import Generator, Iterable
 from functools import reduce
 from math import isqrt
 from operator import mul
@@ -26,19 +26,19 @@ from euler.lib.util import HeapQueue
 LIMIT = 10**7 - 1
 
 
-def prod(pf_lst: list[tuple[int, int]]) -> int:
+def prod(pf_lst: Iterable[tuple[int, int]]) -> int:
     return reduce(mul, map(lambda tpl: pow(tpl[0], tpl[1]), pf_lst))
 
 
-def phi(pf_lst: list[tuple[int, int]]) -> int:
+def phi(pf_lst: Iterable[tuple[int, int]]) -> int:
     return reduce(mul, map(lambda tpl: pow(tpl[0], tpl[1] - 1) * (tpl[0] - 1), pf_lst))
 
 
-def get_ratio(pf_lst: list[tuple[int, int]]) -> float:
+def get_ratio(pf_lst: Iterable[tuple[int, int]]) -> float:
     return prod(pf_lst) / phi(pf_lst)
 
 
-def pf_generator(tpl: tuple[int, int]) -> Iterator[list[tuple[int, int]]]:
+def pf_generator(tpl: tuple[int, int]) -> Generator[list[tuple[int, int]], None, None]:
     # Note:
     #   The internal data 'pf_lst' has the following structure.
     #     [(p_n, e_n), ..., (p2, e2), (p1, e1)]

@@ -5,8 +5,10 @@
 #   coins: 1, 2, 3, ..., 99
 #   total: 100
 
+from collections.abc import Iterable
 
-def compute(coins: list[int], target: int) -> str:
+
+def compute(coins: Iterable[int], target: int) -> str:
     tbl = [0] * (target + 1)
     tbl[0] = 1
 

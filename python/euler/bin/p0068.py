@@ -1,5 +1,7 @@
 # project euler: problem 68
 
+from collections.abc import Sequence
+
 
 def all_rings(n_gon: int) -> list[str]:
     # total: sum of each node on line
@@ -16,7 +18,7 @@ def find_rings(n_gon: int, total: int) -> list[str]:
     numbers = list(range(1, n_gon * 2 + 1))
     rings: list[str] = []
 
-    def make_str(ring: list[int]) -> str:
+    def make_str(ring: Sequence[int]) -> str:
         result = ''
         for i in range(0, n_gon * 2, 2):
             result = f'{result}{ring[i + 1]}{ring[i]}{ring[i + 2]}'

@@ -30,6 +30,7 @@
 #   = 126 * 216 * 18
 #   = 489888
 
+from collections.abc import Sequence
 from fractions import Fraction
 from itertools import combinations, count, product
 
@@ -44,7 +45,7 @@ def four_ops(x1: Fraction, x2: Fraction) -> list[Fraction]:
     return result
 
 
-def case_1(a: Fraction, b: Fraction, lst: list[Fraction]) -> list[Fraction]:
+def case_1(a: Fraction, b: Fraction, lst: Sequence[Fraction]) -> list[Fraction]:
     # ((A op B) op C) op D
     result = []
     for ab in four_ops(a, b):
@@ -58,7 +59,7 @@ def case_1(a: Fraction, b: Fraction, lst: list[Fraction]) -> list[Fraction]:
     return result
 
 
-def case_2(a: Fraction, b: Fraction, lst: list[Fraction]) -> list[Fraction]:
+def case_2(a: Fraction, b: Fraction, lst: Sequence[Fraction]) -> list[Fraction]:
     # (A op B) op (C op D)
     result = []
     ab = four_ops(a, b)

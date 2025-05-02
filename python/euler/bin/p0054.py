@@ -30,11 +30,11 @@
 #         AH JH TH QH KH -> [9, 14, 13, 12, 11, 10]) - Royal Flush [9; 14; 13; 12; 11; 10]
 
 from collections import Counter
-from collections.abc import Iterator
+from collections.abc import Iterable, Iterator, Sequence
 from typing import IO
 
 
-def get_handrank(hand: list[str]) -> list[int]:
+def get_handrank(hand: Iterable[str]) -> list[int]:
     def rank_to_num(s: str) -> int:
         tbl = {
             '2': 2,
@@ -53,10 +53,10 @@ def get_handrank(hand: list[str]) -> list[int]:
         }
         return tbl[s]
 
-    def is_straight(lst: list[int]) -> bool:
+    def is_straight(lst: Sequence[int]) -> bool:
         return lst == list(range(lst[0], lst[0] - 5, -1))
 
-    def get_detail(h_info: list[tuple[int, int]]) -> list[int]:
+    def get_detail(h_info: Iterable[tuple[int, int]]) -> list[int]:
         detail, _ = zip(*h_info, strict=True)
         return list(detail)
 
@@ -121,7 +121,7 @@ def compute(fh: IO) -> str:
             [line.split(' ') for line in fh.read().splitlines()],
         )
 
-    def determine(lst: list[list[str]]) -> int:
+    def determine(lst: Sequence[Iterable[str]]) -> int:
         p1, p2 = get_handrank(lst[0]), get_handrank(lst[1])
         if p1 > p2:
             return 1
@@ -130,9 +130,9 @@ def compute(fh: IO) -> str:
         else:
             return 0
 
-    hands_lst = parse_data(fh)
+    hands_it = parse_data(fh)
     p1 = p2 = draw = 0
-    for hands in hands_lst:
+    for hands in hands_it:
         match determine(hands):
             case 1:
                 p1 += 1
