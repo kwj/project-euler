@@ -26,11 +26,11 @@ clean-all:
 
 .PHONY: lint
 lint:
-	ruff check
+	uvx ruff check .
 
 .PHONY: format
 format:
-	ruff format --diff
+	uvx ruff format --diff .
 
 .PHONY: list
 list:
