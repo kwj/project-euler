@@ -1,17 +1,17 @@
 # project euler: problem 22
 
 from collections.abc import Iterable
-from typing import IO
+from typing import TextIO
 
 
 def total_score(words: Iterable[str]) -> int:
-    def score(word):
+    def score(word: str) -> int:
         return sum(ord(c) - (ord('A') - 1) for c in word)
 
     return sum(idx * score(word) for idx, word in enumerate(words, start=1))
 
 
-def compute(fh: IO) -> str:
+def compute(fh: TextIO) -> str:
     keywords = [s.strip('"') for s in fh.read().split(',')]
 
     return str(total_score(sorted(keywords)))

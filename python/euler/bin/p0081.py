@@ -3,11 +3,11 @@
 import sys
 from collections.abc import Callable
 from itertools import accumulate
-from typing import IO
+from typing import TextIO
 
 
-def compute(fn: Callable[..., int], fh: IO) -> str:
-    def parse_data(fh: IO) -> list[list[int]]:
+def compute(fn: Callable[..., int], fh: TextIO) -> str:
+    def parse_data(fh: TextIO) -> list[list[int]]:
         return [list(map(int, line.split(','))) for line in fh.read().splitlines()]
 
     matrix = parse_data(fh)

@@ -17,8 +17,9 @@
 #      +--------+--------+--------+
 
 import re
+from collections.abc import Iterable
 from functools import reduce
-from typing import IO
+from typing import TextIO
 
 from euler.lib.util import flatten
 
@@ -119,8 +120,8 @@ class Grid:
         return self._solve(self._grid)
 
 
-def parse_data(fh: IO) -> list[str]:
-    def trim(lst):
+def parse_data(fh: TextIO) -> list[str]:
+    def trim(lst: Iterable[str]) -> str:
         s = reduce(lambda x, y: x + y, lst)
         tmp = re.sub(r'[^0-9.]', '', s)
         return re.sub(r'\.', '0', tmp)
@@ -143,7 +144,7 @@ def parse_data(fh: IO) -> list[str]:
     return result
 
 
-def compute(fh: IO) -> str:
+def compute(fh: TextIO) -> str:
     puzzles = parse_data(fh)
     acc = 0
     for idx, problem in enumerate(puzzles):

@@ -4,7 +4,7 @@
 #     https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 
 import sys
-from typing import IO
+from typing import TextIO
 
 from euler.lib.util import HeapQueue
 
@@ -27,8 +27,8 @@ def make_distance_tbl(rows: int, columns: int) -> list[list[int]]:
     return [[sys.maxsize] * columns for _ in range(rows)]
 
 
-def compute(fh: IO) -> str:
-    def parse_data(fh: IO) -> list[list[int]]:
+def compute(fh: TextIO) -> str:
+    def parse_data(fh: TextIO) -> list[list[int]]:
         return [list(map(int, line.split(','))) for line in fh.read().splitlines()]
 
     matrix = parse_data(fh)

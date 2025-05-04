@@ -1402,7 +1402,7 @@ def prev_prime(n: int) -> int:
         return p
 
 
-def prime_generator(prime=2) -> Iterator[int]:
+def prime_generator(prime: int = 2) -> Iterator[int]:
     if not is_prime(prime):
         prime = next_prime(prime)
     while True:

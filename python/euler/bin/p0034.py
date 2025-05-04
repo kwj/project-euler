@@ -58,7 +58,7 @@ from itertools import combinations_with_replacement
 # according to the order of the input *iterable*. Otherwise, we need to use other comparisons.
 def search_from_rhs() -> int:
     def to_digit_tpl(n: int) -> tuple[int, ...]:
-        def aux(n):
+        def aux(n: int) -> list[int]:
             if n >= 10:
                 return aux(n // 10) + [n % 10]
             else:

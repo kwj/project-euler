@@ -8,7 +8,7 @@
 from collections import defaultdict
 from collections.abc import Mapping
 from functools import reduce
-from typing import IO
+from typing import TextIO
 
 
 def dfs(graph: Mapping[str, list[str]], perm: list[str], v: str) -> list[str]:
@@ -28,16 +28,18 @@ def dfs(graph: Mapping[str, list[str]], perm: list[str], v: str) -> list[str]:
     return visit([], perm, v)
 
 
-def compute(fh: IO) -> str:
-    def parse_data(fh: IO) -> dict[str, list[str]]:
-        result = defaultdict(list)
+def compute(fh: TextIO) -> str:
+    def parse_data(fh: TextIO) -> dict[str, list[str]]:
+        result: dict[str, list[str]] = defaultdict(list)
         for k, v in reduce(
             lambda x, y: x + y,
             [[(x[0], x[1]), (x[1], x[2]), (x[0], x[2])] for x in fh.read().splitlines()],
         ):
             result[k].append(v)
-        for k, v in result.items():
-            result[k] = sorted(set(v))
+
+        for k, vs in result.items():
+            result[k] = sorted(set(vs))
+
         return result
 
     graph = parse_data(fh)

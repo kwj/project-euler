@@ -4,7 +4,7 @@ from euler.bin.p0061 import compute
 
 
 class TestSolution(unittest.TestCase):
-    def test_compute(self):
+    def test_compute(self) -> None:
         # maximum polygon, numbers
         #  4, [5625, 2556]
         #  5, [8128, 2882, 8281]

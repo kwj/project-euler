@@ -4,7 +4,7 @@ from euler.bin.p0018 import compute
 
 
 class TestSolution(unittest.TestCase):
-    def test_compute(self):
+    def test_compute(self) -> None:
         test_data_1 = [[3], [7, 4], [2, 4, 6], [8, 5, 9, 3]]
         test_data_2 = [
             [75],

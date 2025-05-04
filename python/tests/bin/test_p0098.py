@@ -5,7 +5,7 @@ from euler.lib.resource import asset_file
 
 
 class TestSolution(unittest.TestCase):
-    def test_compute(self):
+    def test_compute(self) -> None:
         test_patterns = [('p098_words.txt', '18769')]
 
         for fname, expected in test_patterns:

@@ -3,7 +3,7 @@
 from collections.abc import Iterable, Iterator
 from itertools import combinations, count
 from math import isqrt
-from typing import IO
+from typing import TextIO
 
 from euler.lib.util import assoc_group_dict, num_of_digits
 
@@ -46,7 +46,7 @@ def make_sq_tbl(max_digits: int) -> tuple[dict[int, list[str]], dict[int, list[s
     return (sq_tbl, sq_uniq_tbl)
 
 
-def compute(fh: IO) -> str:
+def compute(fh: TextIO) -> str:
     def check_pair(w1: str, w2: str) -> int | None:
         ndigits = len(w1)
         tbl = sq_uniq_tbl if ndigits == len(set(w1)) else sq_tbl

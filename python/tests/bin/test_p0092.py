@@ -4,14 +4,14 @@ from euler.bin.p0092 import compute
 
 
 class TestSolution(unittest.TestCase):
-    def test_compute(self):
+    def test_compute(self) -> None:
         test_patterns = [((10,), '7'), ((10_000_000,), '8581146')]
 
         for args, expected in test_patterns:
             with self.subTest(f'limit: {args}'):
                 self.assertEqual(expected, compute(*args))
 
-    def test_invalid_parameter(self):
+    def test_invalid_parameter(self) -> None:
         with self.assertRaises(AssertionError):
             compute(101)
 

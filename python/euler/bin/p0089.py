@@ -21,7 +21,7 @@
 #     CCCC          CD
 
 import re
-from typing import IO
+from typing import TextIO
 
 
 def replace_numbers(line: str) -> str:
@@ -33,7 +33,7 @@ def replace_numbers(line: str) -> str:
     return s
 
 
-def compute(fh: IO) -> str:
+def compute(fh: TextIO) -> str:
     acc = 0
     for line in fh.read().splitlines():
         acc += len(line) - len(replace_numbers(line))

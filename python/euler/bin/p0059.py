@@ -4,7 +4,7 @@ import operator
 import re
 from collections.abc import Collection, Iterable
 from itertools import product
-from typing import IO
+from typing import TextIO
 
 
 def decode(cipher_text: Collection[int], key: tuple[int, ...]) -> list[int]:
@@ -24,7 +24,7 @@ def calc_score(lst: Iterable[int]) -> int:
     return cnt
 
 
-def compute(fh: IO) -> str:
+def compute(fh: TextIO) -> str:
     cipher_text = list(map(int, fh.read().split(',')))
     key_lst = product(range(ord('a'), ord('z') + 1), repeat=3)
 

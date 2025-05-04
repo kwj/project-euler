@@ -19,6 +19,7 @@ from collections.abc import Generator, Iterable
 from functools import reduce
 from math import isqrt
 from operator import mul
+from typing import cast
 
 from euler.lib.prime import prev_prime, primes
 from euler.lib.util import HeapQueue
@@ -27,11 +28,11 @@ LIMIT = 10**7 - 1
 
 
 def prod(pf_lst: Iterable[tuple[int, int]]) -> int:
-    return reduce(mul, map(lambda tpl: pow(tpl[0], tpl[1]), pf_lst))
+    return cast(int, reduce(mul, map(lambda tpl: pow(tpl[0], tpl[1]), pf_lst)))
 
 
 def phi(pf_lst: Iterable[tuple[int, int]]) -> int:
-    return reduce(mul, map(lambda tpl: pow(tpl[0], tpl[1] - 1) * (tpl[0] - 1), pf_lst))
+    return cast(int, reduce(mul, map(lambda tpl: pow(tpl[0], tpl[1] - 1) * (tpl[0] - 1), pf_lst)))
 
 
 def get_ratio(pf_lst: Iterable[tuple[int, int]]) -> float:

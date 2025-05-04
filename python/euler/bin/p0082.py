@@ -1,11 +1,11 @@
 # project euler: problem 82
 
 from collections.abc import Callable
-from typing import IO
+from typing import TextIO
 
 
-def compute(fn: Callable[..., int], fh: IO) -> str:
-    def parse_data(fh: IO) -> list[list[int]]:
+def compute(fn: Callable[..., int], fh: TextIO) -> str:
+    def parse_data(fh: TextIO) -> list[list[int]]:
         # transpose matrix
         return [
             list(x)

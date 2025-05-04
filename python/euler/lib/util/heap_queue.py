@@ -9,7 +9,7 @@ class HeapQueue:
         self.__sign = 1 if desc is False else -1
         self.__heap: list[tuple[float, Any]] = []
 
-    def insert(self, item: tuple[float, Any]):
+    def insert(self, item: tuple[float, Any]) -> None:
         heapq.heappush(self.__heap, (item[0] * self.__sign, item))
 
     def extract(self) -> Any:

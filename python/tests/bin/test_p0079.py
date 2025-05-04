@@ -5,7 +5,7 @@ from euler.lib.resource import asset_file
 
 
 class TestSolution(unittest.TestCase):
-    def test_compute(self):
+    def test_compute(self) -> None:
         test_patterns = [('p079_keylog.txt', '73162890')]
 
         for fname, expected in test_patterns:

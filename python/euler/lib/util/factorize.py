@@ -1,6 +1,7 @@
 from functools import reduce
 from itertools import repeat, starmap
 from math import isqrt
+from typing import cast
 
 from ..prime import primes
 
@@ -68,7 +69,7 @@ def divisors(num: int) -> list[int]:
 def num_of_divisors(num: int) -> int:
     _, e_iter = zip(*factorize(num), strict=True)
 
-    return reduce(lambda x, y: x * y, map(lambda x: x + 1, e_iter))
+    return cast(int, reduce(lambda x, y: x * y, map(lambda x: x + 1, e_iter)))
 
 
 # divisor function

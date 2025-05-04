@@ -4,11 +4,11 @@
 
 from collections.abc import Iterator
 from math import log10
-from typing import IO
+from typing import TextIO
 
 
-def compute(fh: IO) -> str:
-    def parse_data(fh: IO) -> Iterator[tuple[int, int]]:
+def compute(fh: TextIO) -> str:
+    def parse_data(fh: TextIO) -> Iterator[tuple[int, int]]:
         return map(
             lambda lst: (int(lst[0]), int(lst[1])),
             [line.split(',') for line in fh.read().splitlines()],

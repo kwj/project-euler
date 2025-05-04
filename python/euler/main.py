@@ -1,9 +1,10 @@
+from collections.abc import Iterable
 from importlib import import_module
 from pathlib import Path
 from time import perf_counter
 
 
-def main(nlst):
+def main(nlst: Iterable[str]) -> None:
     for i in nlst:
         num = int(i)
         print(f'[Problem {i}]')

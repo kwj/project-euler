@@ -4,14 +4,14 @@ from collections.abc import Callable
 from functools import reduce
 from itertools import pairwise
 from operator import add
-from typing import IO
+from typing import TextIO
 
 
-def parse_data(fh: IO) -> list[list[int]]:
+def parse_data(fh: TextIO) -> list[list[int]]:
     return [list(map(int, line.split(' '))) for line in fh.read().splitlines()]
 
 
-def compute(fn: Callable[..., int], fh: IO) -> str:
+def compute(fn: Callable[..., int], fh: TextIO) -> str:
     return str(
         reduce(
             lambda x, y: list(map(add, map(fn, pairwise(x)), y)),

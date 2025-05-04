@@ -4,7 +4,7 @@ from euler.bin.p0050 import compute
 
 
 class TestSolution(unittest.TestCase):
-    def test_compute(self):
+    def test_compute(self) -> None:
         test_patterns = [
             ((100,), '41'),
             ((500,), '499'),

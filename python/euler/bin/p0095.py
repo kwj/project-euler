@@ -6,7 +6,7 @@ from euler.lib.util import aliquot_sum_tbl
 
 
 def compute(limit: int) -> str:
-    def update_chain_tbl(indices: Iterable[int], v: int):
+    def update_chain_tbl(indices: Iterable[int], v: int) -> None:
         for i in indices:
             chain_tbl[i] = v
 

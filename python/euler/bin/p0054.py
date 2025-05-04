@@ -31,7 +31,7 @@
 
 from collections import Counter
 from collections.abc import Iterable, Iterator, Sequence
-from typing import IO
+from typing import TextIO
 
 
 def get_handrank(hand: Iterable[str]) -> list[int]:
@@ -114,8 +114,8 @@ def get_handrank(hand: Iterable[str]) -> list[int]:
     return handrank
 
 
-def compute(fh: IO) -> str:
-    def parse_data(fh: IO) -> Iterator[list[list[str]]]:
+def compute(fh: TextIO) -> str:
+    def parse_data(fh: TextIO) -> Iterator[list[list[str]]]:
         return map(
             lambda lst: [lst[0:5], lst[5:]],
             [line.split(' ') for line in fh.read().splitlines()],

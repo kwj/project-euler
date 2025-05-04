@@ -32,6 +32,10 @@ lint:
 format:
 	uvx ruff format --diff .
 
+.PHONY: type-check
+type-check:
+	uvx mypy .
+
 .PHONY: list
 list:
 	@ls euler/bin/p*.py | sed -e 's/.py.*//' -e 's#.*/##' -e 's/^p0*//'

@@ -12,6 +12,8 @@
 #    ...
 #  block #n: n-digits number
 
+from typing import cast
+
 
 #  0.123456789 | 10111213...979899 | 100101102...997998999  | 100010011002  ...
 #                     ^[d15]=2
@@ -33,7 +35,7 @@ def d(pos: int) -> int:
     q, r = (pos - 1) // ndigits, (pos - 1) % ndigits
     num = 10 ** (ndigits - 1) + q
 
-    return (num // (10 ** (ndigits - r - 1))) % 10
+    return cast(int, (num // (10 ** (ndigits - r - 1))) % 10)
 
 
 def compute() -> str:

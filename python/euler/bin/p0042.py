@@ -1,7 +1,7 @@
 # project euler: problem 42
 
 from collections.abc import Iterable
-from typing import IO
+from typing import TextIO
 
 from euler.lib.util import is_triangular
 
@@ -16,7 +16,7 @@ def calc_scores(words: Iterable[str]) -> list[int]:
     return list(map(score, words))
 
 
-def compute(fh: IO) -> str:
+def compute(fh: TextIO) -> str:
     keywords = [s.strip('"') for s in fh.read().split(',')]
 
     return str(len(list(filter(is_triangular, calc_scores(keywords)))))
