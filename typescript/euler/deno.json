@@ -7,6 +7,11 @@
   },
   "tasks": {
     "solver": "deno run --quiet --allow-read ./main.ts",
-    "test": "deno test --allow-read ./test/"
+    "test": "deno test --allow-read ./test/",
+    "check": "deno check .",
+    "format": "deno fmt --check ."
+  },
+  "compilerOptions": {
+    "erasableSyntaxOnly": true
   }
 }

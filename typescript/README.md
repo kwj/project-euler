@@ -21,15 +21,15 @@ sh solve.sh 31 32 33
 
 ## Notes
 
-Caution: These solutions aren't good examples for programming because I'm a JavaScript/TypeScript newbie.
+Caution: These solutions aren't good examples for learning programming because I'm new to JavaScript/TypeScript.
 
 These solutions were confirmed to work in the following version.
 
 ```console
 $ deno --version
-deno 2.2.2 (stable, release, aarch64-unknown-linux-gnu)
-v8 13.4.114.9-rusty
-typescript 5.7.3
+deno 2.3.1 (stable, release, aarch64-unknown-linux-gnu)
+v8 13.5.212.10-rusty
+typescript 5.8.3
 ```
 
 I used the following libraries/packages in addition to the runtime APIs part of Deno.
