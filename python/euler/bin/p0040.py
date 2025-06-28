@@ -12,6 +12,8 @@
 #    ...
 #  block #n: n-digits number
 
+from functools import reduce
+from operator import mul
 from typing import cast
 
 
@@ -39,7 +41,7 @@ def d(pos: int) -> int:
 
 
 def compute() -> str:
-    return str(d(1) * d(10) * d(100) * d(1_000) * d(10_000) * d(100_000) * d(1_000_000))
+    return str(reduce(mul, map(d, [1, 10, 100, 1_000, 10_000, 100_000, 1_000_000])))
 
 
 def solve() -> str:
