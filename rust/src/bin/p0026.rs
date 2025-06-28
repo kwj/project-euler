@@ -16,10 +16,10 @@ fn compute(upper: i64) -> i64 {
         if d <= max_length {
             break;
         }
-        if let Some(tpl @ (length, _)) = find_repetend_length(d) {
-            if length > max_length {
-                (max_length, ans) = tpl;
-            }
+        if let Some(tpl @ (length, _)) = find_repetend_length(d)
+            && length > max_length
+        {
+            (max_length, ans) = tpl;
         }
     }
 

@@ -16,7 +16,7 @@ If you are familiar with Cargo, you can run it directly.
 
 ## Notes
 
-It was confirmed to work with Rust 1.85.0.
+It was confirmed to work with Rust 1.88.0.
 
 I used the following crates and their dependent crates.
 
