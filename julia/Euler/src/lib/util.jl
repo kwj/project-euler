@@ -7,6 +7,7 @@ export is_palindrome, is_pandigital, is_pandigital_nz
 export is_triangular, is_square, is_pentagonal, is_hexagonal
 export divisors, proper_divisors
 export get_σ_tbl, get_max_exp, undigits
+export with_replacement_permutations
 
 function is_palindrome(num; base=10)
     x = num
@@ -133,5 +134,50 @@ undigits(lst::Vector{T}; base::Integer = 10) where {T<:Integer} = undigits(T, ls
 function undigits(T::Type{<:Integer}, lst::Vector{U}; base::Integer = 10) where {U<:Integer}
     foldr((x, acc) -> acc * base + x, lst; init = zero(T))
 end
+
+struct WithReplacementPermutations{T}
+    a::T
+    t::Integer
+end
+
+with_replacement_permutations(a, t::Integer) = WithReplacementPermutations(a, t)
+
+function Base.iterate(p::WithReplacementPermutations, st = nothing)
+    if isnothing(st)
+        length(p.a) == 0 && p.t > 0 && return nothing
+
+        return ([p.a[1] for _ in 1:p.t], ones(Int, p.t))
+    else
+        for k = p.t:-1:1
+            st[k] == length(p.a) && continue
+
+            result = Array{eltype(p.a)}(undef, p.t)
+            for j = 1:k
+                result[j] = p.a[st[j]]
+            end
+
+            st[k] += 1
+            idx = st[k]
+            result[k] = p.a[idx]
+            for j = (k + 1):p.t
+                st[j] = 1
+                result[j] = p.a[1]
+            end
+
+            return (result, st)
+        end
+
+        return nothing
+    end
+end
+
+function Base.length(p::WithReplacementPermutations)
+    length(p.a) < p.t && return 0
+    return Int(length(p.a) ^ p.t)
+end
+
+Base.eltype(p::WithReplacementPermutations) = Vector{eltype{p.a}}
+
+Base.IteratorSize(p::WithReplacementPermutations) = Base.HasLength()
 
 end #module
