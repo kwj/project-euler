@@ -85,7 +85,7 @@ end
 
 function solve_0078(denom::Int = 1_000_000)
     # generalized pentagonal numbers: gp[1] = 1, gp[2] = 2, gp[3] = 5, gp[4] = 7, ...
-    gp_gen = Channel(gp_generator)
+    gp_gen = Channel{Int}(gp_generator, 1)
     gp = Vector{Int}(undef, 0)
     push!(gp, take!(gp_gen))
 

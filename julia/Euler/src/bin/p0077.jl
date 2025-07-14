@@ -12,7 +12,7 @@ function prime_generator(c)
 end
 
 function solve_0077(thr::Int = 5_000)
-    p_gen = Channel(prime_generator)
+    p_gen = Channel{Int}(prime_generator)
     plst = Array{Int}(undef, 0)
     while true
         push!(plst, take!(p_gen))

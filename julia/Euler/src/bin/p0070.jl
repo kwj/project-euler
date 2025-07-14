@@ -101,7 +101,7 @@ function solve_0070()
             break
         end
 
-        for pf_lst in Channel(c -> pf_generator(c, (p, prevprime(LIMIT ÷ p))))
+        for pf_lst in Channel{Vector{Tuple{Int, Int}}}(c -> pf_generator(c, (p, prevprime(LIMIT ÷ p))))
             # pruning: skip to the next prime smaller than 'p'
             if get_ratio(pf_lst[1:min(length(pf_lst), 2)]) > peek(pq)[2]
                 break
