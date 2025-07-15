@@ -129,9 +129,9 @@ function get_max_exp(num; base)
     e
 end
 
-undigits(lst::Vector{T}; base::Integer = 10) where {T<:Integer} = undigits(T, lst; base = base)
+undigits(lst::AbstractVector{T}; base::Integer = 10) where {T<:Integer} = undigits(T, lst; base = base)
 
-function undigits(T::Type{<:Integer}, lst::Vector{U}; base::Integer = 10) where {U<:Integer}
+function undigits(T::Type{<:Integer}, lst::AbstractVector{U}; base::Integer = 10) where {U<:Integer}
     foldr((x, acc) -> acc * base + x, lst; init = zero(T))
 end
 
