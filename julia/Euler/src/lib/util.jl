@@ -5,7 +5,7 @@ import Primes: factor, primes
 
 export is_palindrome, is_pandigital, is_pandigital_nz
 export is_triangular, is_square, is_pentagonal, is_hexagonal
-export divisors, proper_divisors
+export divisors, proper_divisors, phi
 export get_σ_tbl, get_max_exp, undigits
 export with_replacement_permutations
 
@@ -89,6 +89,35 @@ end
 function proper_divisors(num)
     @assert num > 1 "Range Error"
     divisors(num)[1:end-1]
+end
+
+function phi(n)
+    ret = n
+
+    if n % 2 == 0
+        ret -= div(ret, 2)
+        while n % 2 == 0
+            n = div(n, 2)
+        end
+    end
+
+    i = 3
+    while i * i <= n
+        if n % i == 0
+            ret -= div(ret, i)
+            while n % i == 0
+                n = div(n, i)
+            end
+        end
+
+        i += 2
+    end
+
+    if n > 1
+        ret -= div(ret, n)
+    end
+
+    ret
 end
 
 # https://en.wikipedia.org/wiki/Divisor_function
