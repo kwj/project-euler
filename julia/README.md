@@ -26,7 +26,7 @@ It was confirmed to work with Julia v1.11.6.
 
 I used the following packages and their dependent packages.
 
-- Combinatorics v1.0.3
+- Combinatorics v1.0.2
 - DataStructures v0.19.0
 - LinearAlgebra[^1]
 - Primes v0.5.7
