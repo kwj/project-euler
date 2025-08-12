@@ -21,7 +21,7 @@
 module Prob0070
 
 import Primes: prevprime, primes
-import DataStructures: PriorityQueue, enqueue!, peek
+import DataStructures: PriorityQueue
 
 LIMIT = 10 ^ 7 - 1
 
@@ -93,26 +93,26 @@ function solve_0070()
     # initial data for pruning:
     #   n = 87109 = 11 * 7919, phi(87109) = 79180
     pq = PriorityQueue{Vector{Tuple{Int, Int}}, Float64}()
-    enqueue!(pq, [(11, 1), (7919, 1)] => (87109 / 79180) )
+    push!(pq, [(11, 1), (7919, 1)] => (87109 / 79180) )
 
     for p in reverse(primes(11, isqrt(LIMIT)))
         # pruning: end of search
-        if get_ratio([(p, 1)]) > peek(pq)[2]
+        if get_ratio([(p, 1)]) > first(pq)[2]
             break
         end
 
         for pf_lst in Channel{Vector{Tuple{Int, Int}}}(c -> pf_generator(c, (p, prevprime(LIMIT ÷ p))))
             # pruning: skip to the next prime smaller than 'p'
-            if get_ratio(pf_lst[1:min(length(pf_lst), 2)]) > peek(pq)[2]
+            if get_ratio(pf_lst[1:min(length(pf_lst), 2)]) > first(pq)[2]
                 break
             end
 
             if is_perm(prod(pf_lst), phi(pf_lst)) == true
-                enqueue!(pq, pf_lst => get_ratio(pf_lst))
+                push!(pq, pf_lst => get_ratio(pf_lst))
             end
         end
     end
-    prod(peek(pq)[1])
+    prod(first(pq)[1])
 end
 
 end #module

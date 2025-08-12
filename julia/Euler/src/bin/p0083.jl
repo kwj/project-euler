@@ -8,7 +8,7 @@
 
 module Prob0083
 
-import DataStructures: PriorityQueue, enqueue!, dequeue_pair!, peek, isempty
+import DataStructures: PriorityQueue
 
 function make_neighbor_tbl(nrow, ncol)
     tbl = Array{Vector{Tuple{Int, Int}}}(undef, nrow, ncol)
@@ -26,14 +26,14 @@ function solve_0083(fname::String = "0083_matrix.txt")
     dist_tbl[1, 1] = data[1, 1]
 
     pq = PriorityQueue{Tuple{Int, Int}, Int}()
-    enqueue!(pq, (1, 1) => dist_tbl[1, 1])
+    push!(pq, (1, 1) => dist_tbl[1, 1])
 
     while isempty(pq) == false
-        (i, j), d = dequeue_pair!(pq)
+        (i, j), d = popfirst!(pq)
         for (x, y) in nbr_tbl[i, j]
             if (new_d = d + data[x, y]) < dist_tbl[x, y]
                 dist_tbl[x, y] = new_d
-                enqueue!(pq, (x, y) => new_d)
+                push!(pq, (x, y) => new_d)
             end
         end
     end
