@@ -175,6 +175,26 @@ function σ₁(n)
     acc
 end
 
+#=
+# [Dirichlet hyperbola method for σ₁()]
+# https://en.wikipedia.org/wiki/Dirichlet_hyperbola_method
+# https://en.wikipedia.org/wiki/Dirichlet_convolution
+#
+# if n is very large, consider using this variant.
+
+function σ₁(n)
+    sq_n = isqrt(n)
+    acc = 0
+
+    for i = 1:sq_n
+        d = div(n, i)
+        acc += i * d + div(d * (d + 1), 2)
+    end
+
+    acc - div(sq_n * (sq_n + 1), 2) * sq_n
+end
+=#
+
 function get_max_exp(num; base)
     e = 0
     while num >= base
