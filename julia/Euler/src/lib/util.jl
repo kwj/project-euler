@@ -6,7 +6,7 @@ import Primes: factor, primes
 export is_palindrome, is_pandigital, is_pandigital_nz
 export is_triangular, is_square, is_pentagonal, is_hexagonal
 export divisors, proper_divisors, phi
-export get_σ_tbl, get_max_exp, undigits
+export get_σ_tbl, σ₁, get_max_exp, undigits
 export with_replacement_permutations
 
 function is_palindrome(num; base=10)
@@ -147,6 +147,32 @@ function get_σ_tbl(z, upper)
         end
     end
     result
+end
+
+function σ₁(n)
+    acc = 0
+    k = 1
+    while k <= n
+        x = div(n, k)
+        y = div(n, x)
+
+        if k != y
+            # arithmetic series
+            # sum(k, k+1, ..., y) = div((k + y) * (y - k + 1), 2)
+            acc += x * div((k + y) * (y - k + 1), 2)
+        else
+            # Actually, it's the same even without branching.
+            #   div((k + y) * (y - k + 1), 2)
+            #     = div((y + y) * (y - y + 1), 2)
+            #     = div(2y * 1, 2)
+            #     = y
+            acc += x * y
+        end
+
+        k = y + 1
+    end
+
+    acc
 end
 
 function get_max_exp(num; base)
