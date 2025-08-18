@@ -6,7 +6,7 @@ import Primes: factor, primes
 export is_palindrome, is_pandigital, is_pandigital_nz
 export is_triangular, is_square, is_pentagonal, is_hexagonal
 export divisors, proper_divisors, phi
-export get_σ_tbl, σ₁_naive, get_max_exp, undigits
+export get_σ_tbl, σ₀, σ₁, σ₂, σ₁_naive, get_max_exp, undigits
 export with_replacement_permutations
 
 function is_palindrome(num; base=10)
@@ -149,6 +149,41 @@ function get_σ_tbl(z, upper)
     result
 end
 
+# [Dirichlet hyperbola method for σ₀()/σ₁()/σ₂()]
+# https://en.wikipedia.org/wiki/Dirichlet_hyperbola_method
+# https://en.wikipedia.org/wiki/Dirichlet_convolution
+
+function σ₀(n)
+    sq_n = isqrt(n)
+    sum(div(n, i) for i = 1:sq_n) * 2 - sq_n ^ 2
+end
+
+function σ₁(n)
+    sq_n = isqrt(n)
+    acc = 0
+
+    for i = 1:sq_n
+        d = div(n, i)
+        acc += i * d + div(d * (d + 1), 2)
+    end
+
+    acc - div(sq_n * (sq_n + 1), 2) * sq_n
+end
+
+function σ₂(n)
+    sum_sq(n) = div(n * (n + 1) * (2n + 1), 6)
+
+    sq_n = isqrt(n)
+    acc = 0
+    for i = 1:sq_n
+        d = div(n, i)
+        acc += i ^ 2 * d + sum_sq(d)
+    end
+
+    acc - sum_sq(sq_n) * sq_n
+end
+
+# another implementation of σ₁()
 function σ₁_naive(n)
     acc = 0
     k = 1
@@ -174,26 +209,6 @@ function σ₁_naive(n)
 
     acc
 end
-
-#=
-# [Dirichlet hyperbola method for σ₁()]
-# https://en.wikipedia.org/wiki/Dirichlet_hyperbola_method
-# https://en.wikipedia.org/wiki/Dirichlet_convolution
-#
-# if n is very large, consider using this variant.
-
-function σ₁(n)
-    sq_n = isqrt(n)
-    acc = 0
-
-    for i = 1:sq_n
-        d = div(n, i)
-        acc += i * d + div(d * (d + 1), 2)
-    end
-
-    acc - div(sq_n * (sq_n + 1), 2) * sq_n
-end
-=#
 
 function get_max_exp(num; base)
     e = 0
