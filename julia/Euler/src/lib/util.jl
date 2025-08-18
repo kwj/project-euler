@@ -6,7 +6,7 @@ import Primes: factor, primes
 export is_palindrome, is_pandigital, is_pandigital_nz
 export is_triangular, is_square, is_pentagonal, is_hexagonal
 export divisors, proper_divisors, phi
-export get_σ_tbl, σ₁, get_max_exp, undigits
+export get_σ_tbl, σ₁_naive, get_max_exp, undigits
 export with_replacement_permutations
 
 function is_palindrome(num; base=10)
@@ -149,7 +149,7 @@ function get_σ_tbl(z, upper)
     result
 end
 
-function σ₁(n)
+function σ₁_naive(n)
     acc = 0
     k = 1
     while k <= n
