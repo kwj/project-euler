@@ -6,7 +6,7 @@ import Primes: factor, primes
 export is_palindrome, is_pandigital, is_pandigital_nz
 export is_triangular, is_square, is_pentagonal, is_hexagonal
 export divisors, proper_divisors, phi
-export get_σ_tbl, σ₀, σ₁, aliquot_sum
+export get_σ_tbl, σ, σ₀, σ₁, aliquot_sum
 export D₀, D₁, D₂, D₁_naive
 export get_max_exp, undigits
 export with_replacement_permutations
@@ -149,6 +149,13 @@ function get_σ_tbl(z, upper)
         end
     end
     result
+end
+
+function σ(n, z)
+    iszero(z) && return σ₀(n)
+    z == 1 && return σ₁(n)
+
+    sum(x -> x ^ z, divisors(n))
 end
 
 function σ₀(n)
