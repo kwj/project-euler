@@ -6,7 +6,7 @@ import Primes: factor, primes
 export is_palindrome, is_pandigital, is_pandigital_nz
 export is_triangular, is_square, is_pentagonal, is_hexagonal
 export divisors, proper_divisors, phi
-export get_σ_tbl, σ₀, σ₁, σ₂, σ₁_naive, get_max_exp, undigits
+export get_σ_tbl, D₀, D₁, D₂, D₁_naive, get_max_exp, undigits
 export with_replacement_permutations
 
 function is_palindrome(num; base=10)
@@ -149,16 +149,16 @@ function get_σ_tbl(z, upper)
     result
 end
 
-# [Dirichlet hyperbola method for σ₀()/σ₁()/σ₂()]
+# Dirichlet hyperbola method for D₀(), D₁() and D₂() - sum of σₙ
 # https://en.wikipedia.org/wiki/Dirichlet_hyperbola_method
 # https://en.wikipedia.org/wiki/Dirichlet_convolution
 
-function σ₀(n)
+function D₀(n)
     sq_n = isqrt(n)
     sum(div(n, i) for i = 1:sq_n) * 2 - sq_n ^ 2
 end
 
-function σ₁(n)
+function D₁(n)
     sq_n = isqrt(n)
     acc = 0
 
@@ -170,7 +170,7 @@ function σ₁(n)
     acc - div(sq_n * (sq_n + 1), 2) * sq_n
 end
 
-function σ₂(n)
+function D₂(n)
     sum_sq(n) = div(n * (n + 1) * (2n + 1), 6)
 
     sq_n = isqrt(n)
@@ -183,8 +183,8 @@ function σ₂(n)
     acc - sum_sq(sq_n) * sq_n
 end
 
-# another implementation of σ₁()
-function σ₁_naive(n)
+# another implementation of D₁()
+function D₁_naive(n)
     acc = 0
     k = 1
     while k <= n
