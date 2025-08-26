@@ -6,7 +6,9 @@ import Primes: factor, primes
 export is_palindrome, is_pandigital, is_pandigital_nz
 export is_triangular, is_square, is_pentagonal, is_hexagonal
 export divisors, proper_divisors, phi
-export get_σ_tbl, D₀, D₁, D₂, D₁_naive, get_max_exp, undigits
+export get_σ_tbl, σ₀, σ₁, aliquot_sum
+export D₀, D₁, D₂, D₁_naive
+export get_max_exp, undigits
 export with_replacement_permutations
 
 function is_palindrome(num; base=10)
@@ -147,6 +149,18 @@ function get_σ_tbl(z, upper)
         end
     end
     result
+end
+
+function σ₀(n)
+    length(divisors(n))
+end
+
+function σ₁(n)
+    sum(divisors(n))
+end
+
+function aliquot_sum(n)
+    sum(proper_divisors(n))
 end
 
 # Dirichlet hyperbola method for D₀(), D₁() and D₂() - sum of σₙ
