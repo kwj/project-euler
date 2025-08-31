@@ -25,7 +25,7 @@
                 (+ (nth mults-10 q) (nth under-20 r)))
     :else (let [q (quot n 100)
                 r (mod n 100)]
-            (+ (+ (nth under-20 q) nchars-100)
+            (+ (nth under-20 q) nchars-100  ;; "### hundred"
                (if (zero? r)
                  0
                  (+ nchars-and (count-letters r)))))))

@@ -22,7 +22,7 @@
 
 (defn- lhs
   [m n]
-  (* (* m (inc m)) (* n (inc n))))
+  (* m (inc m) n (inc n)))  ;; m(m+1) * n(n+1)
 
 (defn- get-diff
   [m target]
