@@ -43,7 +43,7 @@ fn compute(nth: u32) -> i64 {
     use num_bigint::BigUint;
 
     fn c(i: u32) -> BigUint {
-        if i % 3 != 0 {
+        if !i.is_multiple_of(3) {
             BigUint::from(1_u32)
         } else {
             BigUint::from(i) * 2_u32 / 3_u32
