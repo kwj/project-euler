@@ -25,6 +25,10 @@ test:
 lint:
 	@cargo clippy
 
+.PHONY: fmt
+fmt:
+	@cargo fmt --check
+
 .PHONY: clean
 clean:
 	@find . -name '*~' -o -name '#*' | xargs -r rm
