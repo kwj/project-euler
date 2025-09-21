@@ -15,7 +15,7 @@
 
 module Prob0079
 
-import ..Util: undigits
+import ..Util: undigits_r
 
 function dfs(graph, perm, v)
     function visit(temp::Vector{Char}, visited::Vector{Char}, node::Char)
@@ -54,7 +54,7 @@ function solve_0079(fname::String = "0079_keylog.txt")
     for v in keys(graph)
         acc = dfs(graph, acc, v)
     end
-    undigits(reverse(map(x -> parse(Int, x), acc)))
+    undigits_r(map(x -> parse(Int, x), acc))
 end
 
 end #module

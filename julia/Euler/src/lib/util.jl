@@ -8,7 +8,7 @@ export is_triangular, is_square, is_pentagonal, is_hexagonal
 export divisors, proper_divisors, phi
 export get_σ_tbl, σ, σ₀, σ₁, aliquot_sum
 export D₀, D₁, D₂, D₁_naive
-export get_max_exp, undigits
+export get_max_exp, undigits, undigits_r
 export with_replacement_permutations
 
 function is_palindrome(num; base=10)
@@ -244,6 +244,12 @@ undigits(lst::AbstractVector{T}; base::Integer = 10) where {T<:Integer} = undigi
 
 function undigits(T::Type{<:Integer}, lst::AbstractVector{U}; base::Integer = 10) where {U<:Integer}
     foldr((x, acc) -> acc * base + x, lst; init = zero(T))
+end
+
+undigits_r(lst::AbstractVector{T}; base::Integer = 10) where {T<:Integer} = undigits_r(T, lst; base = base)
+
+function undigits_r(T::Type{<:Integer}, lst::AbstractVector{U}; base::Integer = 10) where {U<:Integer}
+    foldl((acc, x) -> acc * base + x, lst; init = zero(T))
 end
 
 struct WithReplacementPermutations{T}
