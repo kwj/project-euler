@@ -41,12 +41,12 @@ function make_möbius_tbl(limit)
 end
 
 function f(x)
-    sum(map(j -> ((j - 1) ÷ 2) - (j ÷ 3), collect(1:x)))
+    sum(map(j -> ((j - 1) ÷ 2) - (j ÷ 3), 1:x))
 end
 
 function g(N)
     mu_tbl = make_möbius_tbl(N)
-    sum(map(k -> mu_tbl[k] * f(N ÷ k), collect(1:N)))
+    sum(map(k -> mu_tbl[k] * f(N ÷ k), 1:N))
 end
 
 function solve_0073(limit::Int = 12_000)

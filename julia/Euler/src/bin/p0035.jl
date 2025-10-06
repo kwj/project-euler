@@ -13,7 +13,7 @@ function solve_0035(limit::Int = 1_000_000)
         all(isprime(elm) for elm in (parse(Int, s[i:i + m - 1]) for i = 1:m))
     end
 
-    length(collect(n for n in primes(limit) if check_rot_nums(n)))
+    count(check_rot_nums, primes(limit))
 end
 
 end #module
