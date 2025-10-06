@@ -31,7 +31,8 @@ function find_repetend_length(n)
             return k
         end
     end
-    @assert false "Not Reached"
+
+    error("Not Reached")
 end
 
 function solve_0026(upper::Int = 1_000)

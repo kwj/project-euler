@@ -94,7 +94,7 @@ function make_handinfo(cards::Vector{Tuple{Int, Char}})
                 return vcat(HAND_FH, hand_n)
             end
         else
-            @assert false "not reached"
+            error("Not Reached")
         end
     end
 end

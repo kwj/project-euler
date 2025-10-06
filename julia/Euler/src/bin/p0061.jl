@@ -61,6 +61,7 @@ function find_closed_paths(max_nsides_polygon)
                 end
             end
         end
+
         next_states
     end
 
@@ -104,7 +105,8 @@ function solve_0061(max_nsides_polygon::Int = 8)
     if length(cycles) == 1
         return sum(cycles[1][2:end]) * 101
     end
-    @assert false "not reached"
+
+    error("Not Reached")
 end
 
 end #module

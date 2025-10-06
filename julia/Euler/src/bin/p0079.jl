@@ -20,7 +20,7 @@ import ..Util: undigits_r
 function dfs(graph, perm, v)
     function visit(temp::Vector{Char}, visited::Vector{Char}, node::Char)
         if node in temp
-            @assert false "cycle path is found"
+            error("a cycle path is found")
         end
         if node in visited
             return visited

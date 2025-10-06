@@ -64,7 +64,7 @@ function solve_0094(limit::Int = 1_000_000_000)
         elseif rem == 1
             p = 2a + 2
         else
-            @assert false "not reached"
+            error("Not Reached")
         end
 
         if p > limit

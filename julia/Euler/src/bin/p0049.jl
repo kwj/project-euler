@@ -32,7 +32,7 @@ function solve_0049(n_digits::Int = 4)
         end
     end
 
-    @assert false "not reached"
+    error("Not Reached")
 end
 
 end #module

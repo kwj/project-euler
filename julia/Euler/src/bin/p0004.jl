@@ -35,7 +35,7 @@ function solve_0004(n_digits::Int = 3)
         end
     end
 
-    @assert false "Not found"
+    error("Not found")
 end
 
 end #module

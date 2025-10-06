@@ -30,7 +30,7 @@ function solve_0041()
         end
     end
 
-    @assert false "not reached"
+    error("Not Reached")
 end
 
 end #module
