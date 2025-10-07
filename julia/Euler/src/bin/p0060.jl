@@ -75,7 +75,7 @@ function get_pairable_primes(x, asc_prime_lst, limit)
     end
     upper_x = 10 ^ ndigits(x)
     upper_p = 10
-    result::Vector{Int} = []
+    result = Int[]
     for p in asc_prime_lst
         if x + p >= limit
             break
@@ -103,7 +103,7 @@ function find_cliques(desc_prime_lst, size, tbl)
         end
     end
 
-    result::Vector{Vector{Int}} = []
+    result = Vector{Int}[]
     aux(Array{Int,1}(undef,0), 1, size)
     result
 end

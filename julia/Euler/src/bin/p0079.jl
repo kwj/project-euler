@@ -36,7 +36,7 @@ function dfs(graph, perm, v)
         end
     end
 
-    visit(Vector{Char}(), perm, v)
+    visit(Char[], perm, v)
 end
 
 function solve_0079(fname::String = "0079_keylog.txt")
@@ -50,7 +50,7 @@ function solve_0079(fname::String = "0079_keylog.txt")
         graph[code[2]] = v2
     end
 
-    acc = Vector{Char}()
+    acc = Char[]
     for v in keys(graph)
         acc = dfs(graph, acc, v)
     end

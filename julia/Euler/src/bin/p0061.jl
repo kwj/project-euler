@@ -27,12 +27,12 @@ function make_polynum_tbl(max_nsides_polygon)
 end
 
 function find_closed_paths(max_nsides_polygon)
-    closed_paths::Vector{Vector{Int}} = []
+    closed_paths = Vector{Int}[]
     tbl = make_polynum_tbl(max_nsides_polygon)
     stop_condition = (1 << (max_nsides_polygon + 1)) - 8
 
     function get_next_states((bits, path))
-        next_states::Vector{Tuple{Int, Vector{Int}}} = []
+        next_states = Tuple{Int, Vector{Int}}[]
 
         # bits: (when max_nsides_polygon = 8)
         #   0b######000
@@ -66,7 +66,7 @@ function find_closed_paths(max_nsides_polygon)
     end
 
     # Search for all closed paths
-    stack::Vector{Tuple{Int, Vector{Int}}} = []
+    stack = Tuple{Int, Vector{Int}}[]
     for (k, vs) in tbl[max_nsides_polygon]
         for v in vs
             push!(stack, (1 << max_nsides_polygon, [k, v]))
@@ -93,7 +93,7 @@ function solve_0061(max_nsides_polygon::Int = 8)
 
     @assert (max_nsides_polygon > 3) "invalid parameter"
 
-    cycles::Vector{Vector{Int}} = []
+    cycles = Vector{Int}[]
     for path in find_closed_paths(max_nsides_polygon)
         # All numbers in a cycle are different from each other's
         if is_distinct_numbers(path)
