@@ -12,7 +12,7 @@ function solve_0023(upper::Int = 28_123)
     end
 
     abndnt_flag = [i < d_tbl[i] for i in 1:upper]
-    abndnt_lst = Vector{Int}(undef, 0)
+    abndnt_lst = Int[]
     acc = 0
     for i = 1:upper
         if i % 2 == 0 && abndnt_flag[i ÷ 2] == true

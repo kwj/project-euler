@@ -13,7 +13,7 @@ end
 
 function solve_0077(thr::Int = 5_000)
     p_gen = Channel{Int}(prime_generator)
-    plst = Array{Int}(undef, 0)
+    plst = Int[]
     while true
         push!(plst, take!(p_gen))
         tbl = zeros(Int, length(plst) + 1)

@@ -18,7 +18,7 @@ function solve_0095(limit::Int = 1_000_000)
     end
 
     chain_tbl = zeros(Int, limit)
-    chain = Array{Int}(undef, 0)
+    chain = Int[]
     max_length = 0
     for pos = 2:limit
         empty!(chain)

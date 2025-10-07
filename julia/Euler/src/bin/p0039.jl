@@ -32,9 +32,9 @@ function solve_0039(limit::Int = 1_000)
         (p * p - 2 * a * p) % (2 * (p - a)) == 0
     end
 
-    result = Array{Tuple{Int, Int}}(undef, 0)
+    result = Tuple{Int, Int}[]
     for p = 2:2:limit
-        lst = Array{Tuple{Int, Int, Int}}(undef, 0)
+        lst = Tuple{Int, Int, Int}[]
         for a = 1:((p - 1) ÷ 3)
             if check_pair(p, a) == true
                 b = (p * p - 2 * a * p) ÷ (2 * (p - a))

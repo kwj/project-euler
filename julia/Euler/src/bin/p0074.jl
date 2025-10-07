@@ -19,7 +19,7 @@ end
 
 function solve_0074(limit::Int = 1_000_000, thr::Int = 60)
     chain_tbl = zeros(Int, limit)
-    footprints = Array{Int}(undef, 0)
+    footprints = Int[]
     cnt = 0
     for n = 1:(limit - 1)
         empty!(footprints)

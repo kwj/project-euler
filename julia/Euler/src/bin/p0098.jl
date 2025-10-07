@@ -5,7 +5,7 @@ module Prob0098
 
 function get_squares(tbl, n_digits)
     get!(tbl, n_digits) do
-        lst = Array{String}(undef, 0)
+        lst = String[]
         for i = (isqrt(10 ^ (n_digits - 1) - 1) + 1):(isqrt(10 ^ n_digits - 1))
             push!(lst, string(i^2))
         end

@@ -89,7 +89,7 @@
 module Prob0066
 
 function get_cont_fraction(n)
-    rep = Vector{Int}(undef, 0)
+    rep = Int[]
     isqrt_n = isqrt(n)
     if n == isqrt_n ^ 2
         return (isqrt_n, rep)

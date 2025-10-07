@@ -27,7 +27,7 @@
 
 ----
 function solve_with_permutations()
-    result = Array{Int}(undef, 0)
+    result = Int[]
     for (a₂, a₁, a₃, a₄, a₅, a₆, a₇, a₈, a₉, a₁₀) in permutations(1:10)
         if a₂ > a₄ || a₂ > a₆ || a₂ > a₈ || a₂ > a₁₀
             continue
@@ -87,8 +87,8 @@ function dfs(n_gon, idx, num_bittbl, r, total, result)
 end
 
 function solve_by_backtracking(n_gon)
-    ring = Array{Int}(undef, n_gon * 2 + 1)
-    result = Array{String}(undef, 0)
+    ring = zeros(Int, n_gon * 2 + 1)
+    result = String[]
 
     # The minimum total of the line on '10' exists is 1 + 2 + (n_gon * 2) = n_gon * 2 + 3.
     # The maximum total of the line on '1' exsits is 1 + (n_gon * 2 - 1) + (n_gon * 2) = n_gon * 4.

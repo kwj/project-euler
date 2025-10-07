@@ -104,7 +104,7 @@ function find_cliques(desc_prime_lst, size, tbl)
     end
 
     result = Vector{Int}[]
-    aux(Array{Int,1}(undef,0), 1, size)
+    aux(Int[], 1, size)
     result
 end
 

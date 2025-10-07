@@ -78,8 +78,8 @@ end
 function parse_data(fname)
     trim(lst::Vector{String}) = replace(reduce(*, lst), r"[^0-9.]" => "", "." => "0")
 
-    result = Array{String}(undef, 0)
-    acc = Array{String}(undef, 0)
+    result = String[]
+    acc = String[]
     for line in readlines(joinpath((@__DIR__), "../../assets", fname))
         if match(r"^[0-9.]", line) !== nothing
             push!(acc, line)
