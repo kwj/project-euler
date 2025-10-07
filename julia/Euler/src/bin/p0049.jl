@@ -11,7 +11,7 @@ function get_prime_tbl(n_digits)
 
     for p in primes(10 ^ (n_digits - 1), 10 ^ n_digits)
         key = undigits(sort(digits(p)))
-        p_tbl[key] = push!(get(() -> Vector{Int}(), p_tbl, key), p)
+        push!(get!(p_tbl, key, Int[]), p)
     end
     p_tbl
 end
