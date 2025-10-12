@@ -1,39 +1,16 @@
 # project euler: problem 60
 
-# This implementation is slow. The following is a result on Raspberry Pi 4.
+# This implementation is a bit slow. The following is a result on Raspberry Pi 4.
 #
-# [Ubuntu 23.10]
+# [Ubuntu 25.04]
 # % python3
-# Python 3.11.6 (main, Oct  8 2023, 05:06:43) [GCC 13.2.0] on linux
+# Python 3.13.3 (main, Aug 14 2025, 11:53:40) [GCC 14.2.0] on linux
 # Type "help", "copyright", "credits" or "license" for more information.
 # >>>
 # % ./solve.py 60
 # [Problem 60]
 # Answer: 26033
-# Elapsed time: 7.719348 sec.
-#
-# [Ubuntu 24.04]
-# % python3
-# Python 3.12.3 (main, Apr 10 2024, 05:33:47) [GCC 13.2.0] on linux
-# Type "help", "copyright", "credits" or "license" for more information.
-# >>>
-# % ./solve.py 60
-# [Problem 60]
-# Answer: 26033
-# Elapsed time: 10.614437 sec.
-#
-# [Ubuntu 24.10]
-# % python3
-# Python 3.12.7 (main, Oct  3 2024, 15:15:22) [GCC 14.2.0] on linux
-# Type "help", "copyright", "credits" or "license" for more information.
-# >>>
-# % ./solve.py 60
-# [Problem 60]
-# Answer: 26033
-# Elapsed time: 17.551342 sec.
-#
-#
-# These results are terrible. What is going on?
+# Elapsed time: 9.330043 sec.
 
 import sys
 from collections.abc import Iterable, Mapping, Reversible, Sequence
