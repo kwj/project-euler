@@ -10,13 +10,12 @@ def compute(n_of_perms: int) -> str:
     tbl: dict[str, list[int]] = dict()
     for n in count(1):
         cube = n * n * n
-        match (key := make_key(cube)) in tbl:
-            case True:
-                tbl[key] = tbl[key] + [n]
-                if len(tbl[key]) == n_of_perms:
-                    return str(tbl[key][0] ** 3)
-            case _:
-                tbl[key] = [n]
+        if (key := make_key(cube)) in tbl:
+            tbl[key] = tbl[key] + [n]
+            if len(tbl[key]) == n_of_perms:
+                return str(tbl[key][0] ** 3)
+        else:
+            tbl[key] = [n]
 
     raise RuntimeError('unreachable!')
 

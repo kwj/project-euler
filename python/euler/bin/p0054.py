@@ -78,34 +78,28 @@ def get_handrank(hand: Iterable[str]) -> list[int]:
     if len(set(suit_lst)) == 1:
         # This hand contains five cards all of the same suit.
         if is_straight(num_lst):
-            match num_lst[0]:
-                case 14:
-                    handrank = HAND_RF  # Royal Flush
-                case _:
-                    handrank = HAND_SF  # Straight Flush
+            if num_lst[0] == 14:  # noqa: SIM108
+                handrank = HAND_RF  # Royal Flush
+            else:
+                handrank = HAND_SF  # Straight Flush
         else:
             handrank = HAND_F  # Flush
     else:
         match len(hand_info):
+            case 5 if is_straight(num_lst):
+                handrank = HAND_S  # Straight
             case 5:
-                if is_straight(num_lst):  # noqa: SIM108
-                    handrank = HAND_S  # Straight
-                else:
-                    handrank = HAND_HC  # High Card
+                handrank = HAND_HC  # High Card
             case 4:
                 handrank = HAND_OP  # One Pair
+            case 3 if hand_info[0][1] == 3:
+                handrank = HAND_TK  # Three of a Kind
             case 3:
-                match hand_info[0][1]:
-                    case 3:
-                        handrank = HAND_TK  # Three of a Kind
-                    case _:
-                        handrank = HAND_TP  # Two Pair
+                handrank = HAND_TP  # Two Pair
+            case 2 if hand_info[0][1] == 4:
+                handrank = HAND_FK  # Four of a Kind
             case 2:
-                match hand_info[0][1]:
-                    case 4:
-                        handrank = HAND_FK  # Four of a Kind
-                    case _:
-                        handrank = HAND_FH  # Full House
+                handrank = HAND_FH  # Full House
             case _:
                 raise RuntimeError('unreachable!')
 
