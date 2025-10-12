@@ -10,12 +10,10 @@ min_minor_version = 11
 
 
 def version_check() -> bool:
-    if sys.version_info.major < 3:
-        return False
-    if sys.version_info.major == min_major_version and sys.version_info.minor < min_minor_version:
-        return False
+    if sys.version_info[0] == min_major_version and sys.version_info[1] >= min_minor_version:
+        return True
 
-    return True
+    return False
 
 
 if version_check() is False:
