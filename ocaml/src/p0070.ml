@@ -81,36 +81,36 @@ let pf_generator tpl limit =
 let compute limit =
   let limit = limit - 1 in
   let module PQ =
-    Euler.PrioQueue.Make (struct
+    Pqueue.MakeMin (struct
       type t = float * (int * int) list
 
-      let compare x y = Float.compare (fst y) (fst x)
+      let compare x y = Float.compare (fst x) (fst y)
     end)
   in
-  let pq = PQ.init () in
+  let pq = PQ.create () in
 
   (* initial data for pruning: phi(87109) = 79180, 87109 = 11 * 7919 *)
-  PQ.insert pq (87109. /. 79180., [ (11, 1); (7919, 1) ]);
+  PQ.add pq (87109. /. 79180., [ (11, 1); (7919, 1) ]);
 
   let rec aux pf_gen =
     match pf_gen () with
     | None -> true (* go to next smaller prime *)
     | Some pf_lst ->
-      if Float.(fst (PQ.peek pq) < get_phi_ratio (List.take pf_lst 2))
+      if Float.(fst (PQ.get_min_elt pq) < get_phi_ratio (List.take pf_lst 2))
       then true (* pruning: skip to next smaller prime *)
       else (
         if Euler.Math.is_permutation (prod pf_lst) (phi pf_lst)
-        then PQ.insert pq (get_phi_ratio pf_lst, pf_lst);
+        then PQ.add pq (get_phi_ratio pf_lst, pf_lst);
         aux pf_gen)
   in
   ignore
     (Prime.primes 11 (Euler.Math.isqrt limit)
      |> List.rev_map ~f:(fun p -> (p, Prime.prev_prime ((limit / p) + 1)))
      |> List.for_all ~f:(fun tpl ->
-       if Float.(get_phi_ratio [ (fst tpl, 1) ] > fst (PQ.peek pq))
+       if Float.(get_phi_ratio [ (fst tpl, 1) ] > fst (PQ.get_min_elt pq))
        then false (* pruning: no further searching is needed. *)
        else aux (pf_generator tpl limit)));
-  PQ.peek pq |> snd |> prod
+  PQ.get_min_elt pq |> snd |> prod
 ;;
 
 let solve () = compute 10_000_000 |> Int.to_string

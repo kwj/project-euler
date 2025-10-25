@@ -40,34 +40,33 @@ let compute data =
   let nbr_tbl = make_neighbor_tbl x_size y_size
   and dist_tbl = make_distance_tbl x_size y_size in
   let module PQ =
-    Euler.PrioQueue.Make (struct
+    Pqueue.MakeMin (struct
       type t = int * (int * int)
 
-      let compare x y = Int.compare (fst y) (fst x)
+      let compare x y = Int.compare (fst x) (fst y)
     end)
   in
-  let pq = PQ.init () in
+  let pq = PQ.create () in
 
-  PQ.insert pq (arr_lst.(0).(0), (0, 0));
+  PQ.add pq (arr_lst.(0).(0), (0, 0));
   dist_tbl.(0).(0) <- arr_lst.(0).(0);
   let rec loop () =
-    if PQ.is_empty pq
-    then dist_tbl.(x_size - 1).(y_size - 1)
-    else (
-      let d, (i, j) = PQ.extract pq in
-      let rec aux = function
-        | [] -> ()
-        | (x, y) :: xs ->
-          let new_d = d + arr_lst.(x).(y) in
-          (match new_d < dist_tbl.(x).(y) with
-           | true ->
-             dist_tbl.(x).(y) <- new_d;
-             PQ.insert pq (new_d, (x, y));
-             aux xs
-           | false -> aux xs)
-      in
-      aux nbr_tbl.(i).(j);
-      loop ())
+    match PQ.pop_min pq with
+    | Some (d, (i, j)) ->
+       let rec aux = function
+         | [] -> ()
+         | (x, y) :: xs ->
+            let new_d = d + arr_lst.(x).(y) in
+            (match new_d < dist_tbl.(x).(y) with
+            | true ->
+               dist_tbl.(x).(y) <- new_d;
+               PQ.add pq (new_d, (x, y));
+               aux xs
+            | false -> aux xs)
+       in
+       aux nbr_tbl.(i).(j);
+       loop ()
+    | None -> dist_tbl.(x_size - 1).(y_size - 1)
   in
   loop ()
 ;;

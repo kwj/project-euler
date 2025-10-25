@@ -27,10 +27,10 @@ let compute target =
   let four_times_target = target * 4 in
   let module Math = Euler.Math in
   let module PQ =
-    Euler.PrioQueue.Make (struct
+    Pqueue.MakeMin (struct
       type t = int * (int * int)
 
-      let compare x y = Int.compare (fst y) (fst x)
+      let compare x y = Int.compare (fst x) (fst y)
     end)
   in
   let search_n m =
@@ -47,16 +47,16 @@ let compute target =
     loop (m + 1) 0 Int.max_value
   in
   let upper_m = Math.isqrt (Math.isqrt four_times_target) + 1 in
-  let pq = PQ.init () in
-  PQ.insert pq (Int.max_value, (0, 0));
+  let pq = PQ.create () in
+  PQ.add pq (Int.max_value, (0, 0));
   let rec loop m =
     let n, d = search_n m in
-    if m > upper_m && d > fst (PQ.peek pq)
+    if m > upper_m && d > fst (PQ.get_min_elt pq)
     then (
-      let _, pair = PQ.peek pq in
+      let _, pair = PQ.get_min_elt pq in
       fst pair * snd pair)
     else (
-      PQ.insert pq (d, (m, n));
+      PQ.add pq (d, (m, n));
       loop (succ m))
   in
   loop 1
