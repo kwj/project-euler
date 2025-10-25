@@ -9,7 +9,7 @@ let compute num =
   let sq_of_sum =
     List.range 1 num ~stop:`inclusive
     |> List.sum (module Int) ~f:Fn.id
-    |> Fn.flip Int.pow 2
+    |> fun x -> x * x
   in
   abs (sum_of_sq - sq_of_sum)
 ;;
