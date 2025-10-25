@@ -1,0 +1,4 @@
+profile = janestreet
+version = 0.28.1
+parens-tuple=always
+sequence-blank-line=preserve-one

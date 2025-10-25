@@ -53,19 +53,19 @@ let compute data =
   let rec loop () =
     match PQ.pop_min pq with
     | Some (d, (i, j)) ->
-       let rec aux = function
-         | [] -> ()
-         | (x, y) :: xs ->
-            let new_d = d + arr_lst.(x).(y) in
-            (match new_d < dist_tbl.(x).(y) with
-            | true ->
-               dist_tbl.(x).(y) <- new_d;
-               PQ.add pq (new_d, (x, y));
-               aux xs
-            | false -> aux xs)
-       in
-       aux nbr_tbl.(i).(j);
-       loop ()
+      let rec aux = function
+        | [] -> ()
+        | (x, y) :: xs ->
+          let new_d = d + arr_lst.(x).(y) in
+          (match new_d < dist_tbl.(x).(y) with
+           | true ->
+             dist_tbl.(x).(y) <- new_d;
+             PQ.add pq (new_d, (x, y));
+             aux xs
+           | false -> aux xs)
+      in
+      aux nbr_tbl.(i).(j);
+      loop ()
     | None -> dist_tbl.(x_size - 1).(y_size - 1)
   in
   loop ()

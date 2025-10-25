@@ -58,10 +58,11 @@ let compute exp =
         let tmp =
           List.map ~f:(fun n -> pow_tbl.(n)) xs |> List.sum (module Int) ~f:Fn.id
         in
-        if List.equal
-             Int.equal
-             (Euler.Util.digits tmp |> List.sort ~compare:Int.compare)
-             xs
+        if
+          List.equal
+            Int.equal
+            (Euler.Util.digits tmp |> List.sort ~compare:Int.compare)
+            xs
         then aux (ans + tmp) xss
         else aux ans xss
     in

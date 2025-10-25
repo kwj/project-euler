@@ -33,9 +33,10 @@ let compute limit =
       then (
         Queue.enqueue chain !pos;
         pos := spd_tbl.(!pos);
-        if !pos > 1
-           && !pos <= limit
-           && Bool.(Queue.exists chain ~f:(fun n -> Int.equal n !pos) = false)
+        if
+          !pos > 1
+          && !pos <= limit
+          && Bool.(Queue.exists chain ~f:(fun n -> Int.equal n !pos) = false)
         then loop_chain ())
     in
     loop_chain ();

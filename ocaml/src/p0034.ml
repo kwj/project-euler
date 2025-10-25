@@ -58,10 +58,11 @@ let compute () =
       | [] -> ans
       | xs :: xss ->
         let num = List.fold ~init:0 ~f:(fun acc n -> acc + fact_tbl.(n)) xs in
-        if List.equal
-             Int.equal
-             (Euler.Util.digits num |> List.sort ~compare:Int.compare)
-             xs
+        if
+          List.equal
+            Int.equal
+            (Euler.Util.digits num |> List.sort ~compare:Int.compare)
+            xs
         then aux (ans + num) xss
         else aux ans xss
     in

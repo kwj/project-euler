@@ -44,9 +44,10 @@ let rec dfs n_gon idx bit_mask ring total result =
   if idx = (n_gon * 2) - 2
   then (
     let tmp = total - ring.(0) - ring.(idx) in
-    if (0 < tmp && tmp <= n_gon * 2)
-       && tmp > ring.(start_pos)
-       && (1 lsl tmp) land bit_mask = 0
+    if
+      (0 < tmp && tmp <= n_gon * 2)
+      && tmp > ring.(start_pos)
+      && (1 lsl tmp) land bit_mask = 0
     then (
       ring.(idx + 1) <- tmp;
       let rec aux s idx =
