@@ -7,8 +7,8 @@ import Combinatorics: combinations, with_replacement_combinations
 
 function solve_0090()
     function check_dice(dice, squares)
-        all(squares) do sq_digits
-            any(sq_digits) do sq
+        all(squares) do sq_pair
+            any(sq_pair) do sq
                 sq[1] ∈ dice[1] && sq[2] ∈ dice[2]
             end
         end
