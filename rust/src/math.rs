@@ -1,4 +1,3 @@
-pub mod prime;
 pub mod primes;
 
 pub fn gcd(mut x: i64, mut y: i64) -> i64 {
