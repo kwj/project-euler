@@ -20,7 +20,7 @@ fn compute(size_of_clique: usize) -> i64 {
     // start searching from the 4th prime, 7
     let mut p: i64 = 5;
     loop {
-        // break this loop when it has verified the answer is smallest
+        // break this loop when it has verified the answer is the lowest sum
         p = primes::next_prime(p);
         if p >= ans {
             break;
@@ -34,7 +34,7 @@ fn compute(size_of_clique: usize) -> i64 {
         // update checked prime numbers
         prime_lst[idx].push(p);
 
-        // if number of connectable primes is less than 'size_of_clique - 1', check the next prime.
+        // if number of connectable primes is less than 'size_of_clique - 1', check the next larger prime.
         if nbr_lst.len() < size_of_clique - 1 {
             continue;
         }
@@ -44,8 +44,7 @@ fn compute(size_of_clique: usize) -> i64 {
         if let Some(clqs) = check_cliques(&nbr_lst, size_of_clique - 1, &tbl) {
             ans = cmp::min(
                 ans,
-                clqs
-                    .into_iter()
+                clqs.into_iter()
                     .map(|v| v.iter().sum::<i64>() + p)
                     .min()
                     .unwrap(),
@@ -71,7 +70,7 @@ fn is_pair(x: i64, y: i64) -> bool {
 fn find_nbrs(p: i64, asc_p_lst: &[i64], current_ans: i64) -> Vec<i64> {
     asc_p_lst
         .iter()
-        .take_while(|&x| *x + p < current_ans)
+        .take_while(|&x| *x < current_ans - p)
         .filter(|&x| is_pair(*x, p))
         .copied()
         .collect()
