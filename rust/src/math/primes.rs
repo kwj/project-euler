@@ -340,7 +340,7 @@ fn index_to_num(idx: usize) -> i64 {
 
     let q = idx as i64 / 48;
     let r = idx % 48;
-    (210 * q) + WHEEL_PRIME_CANDS[r as usize]
+    (210 * q) + WHEEL_PRIME_CANDS[r]
 }
 
 // Note: This implementation doesn't take overflow into account.
@@ -407,7 +407,10 @@ const MIN_WHEEL_PRIME: i64 = 11;
 fn get_small_prime_tbl(upper: i64) -> Vec<bool> {
     use crate::math;
 
-    assert!(upper >= MIN_WHEEL_PRIME, "'upper' must be larger or equal to 11");
+    assert!(
+        upper >= MIN_WHEEL_PRIME,
+        "'upper' must be larger or equal to 11"
+    );
     let max_index = num_to_index(upper + 1) - 1;
     let max_prime = index_to_num(max_index);
     let mut s_sieve = vec![true; max_index + 1];
@@ -434,7 +437,10 @@ fn get_prime_tbl(low: i64, high: i64) -> Vec<bool> {
     use std::cmp;
 
     assert!(high >= low, "'high' must be larger or equal to 'low'");
-    assert!(low >= MIN_WHEEL_PRIME, "'low' must be larger or equal to 11");
+    assert!(
+        low >= MIN_WHEEL_PRIME,
+        "'low' must be larger or equal to 11"
+    );
 
     if low == MIN_WHEEL_PRIME {
         return get_small_prime_tbl(high);
@@ -485,7 +491,7 @@ pub fn primes(mut low: i64, high: i64) -> Vec<i64> {
     if low <= 7 && 7 <= high {
         lst.push(7);
     }
-    if high <= MIN_WHEEL_PRIME - 1 {
+    if high < MIN_WHEEL_PRIME {
         return lst;
     }
 
