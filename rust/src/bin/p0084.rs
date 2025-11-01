@@ -52,6 +52,7 @@ fn solve() -> String {
     compute(4, 3)
 }
 
+#[allow(clippy::needless_range_loop)]
 fn compute(nfaces: usize, nsquares: usize) -> String {
     let mut dice_prblty_without_dbl = vec![0.0; nfaces * 2 + 1];
     let mut dice_prblty_dbl = vec![0.0; nfaces * 2 + 1];
