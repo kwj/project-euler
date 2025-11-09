@@ -24,17 +24,26 @@ fn solve() -> String {
     compute(4_000_000).to_string()
 }
 
-fn compute(limit: i64) -> i64 {
-    let mut a = 2;
-    let mut b = 8;
-    let mut acc = 0;
+struct FibSeq3 {
+    a: i64,
+    b: i64,
+}
 
-    while a <= limit {
-        acc += a;
-        (a, b) = (b, 4 * b + a);
+impl Iterator for FibSeq3 {
+    type Item = i64;
+
+    fn next(&mut self) -> Option<i64> {
+        let result = self.a;
+        (self.a, self.b) = (self.b, 4 * self.b + self.a);
+
+        Some(result)
     }
+}
 
-    acc
+fn compute(limit: i64) -> i64 {
+    let even_fibs = FibSeq3 { a: 2, b: 8 };
+
+    even_fibs.take_while(|x| *x <= limit).sum()
 }
 
 #[cfg(test)]
