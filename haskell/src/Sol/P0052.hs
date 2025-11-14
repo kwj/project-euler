@@ -1,8 +1,9 @@
 module Sol.P0052 (compute, solve) where
 
-import Data.List (sort)
+import Data.List (find, sort)
+import Data.Maybe (fromJust)
 
-import Mylib.Util (digits, headExn)
+import Mylib.Util (digits)
 
 isPermutedMultiples :: Int -> Bool
 isPermutedMultiples n =
@@ -11,8 +12,8 @@ isPermutedMultiples n =
 compute :: String
 compute =
     show
-        . headExn
-        . filter isPermutedMultiples
+        . fromJust
+        . find isPermutedMultiples
         $ (\x -> [10 ^ (x - 1) .. (10 ^ x `div` 6)]) =<< [6 :: Int ..]
 
 solve :: String

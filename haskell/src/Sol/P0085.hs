@@ -21,11 +21,10 @@ module Sol.P0085 (compute, solve) where
 -}
 
 import Data.Function (on)
-import Data.List (minimumBy)
-import Data.Maybe (catMaybes)
+import Data.List (find, minimumBy)
+import Data.Maybe (catMaybes, fromJust)
 
 import Mylib.Math (isqrt)
-import Mylib.Util (headExn)
 
 getApproximation :: Int -> Int -> Maybe (Int, Int)
 getApproximation m target
@@ -39,9 +38,9 @@ getApproximation m target
                 else Just (diff_2, m * n)
   where
     n =
-        headExn $
-            dropWhile
-                (\x -> target - lhs m x > 0)
+        fromJust $
+            find
+                (\x -> target - lhs m x <= 0)
                 [isqrt (target `div` (m * (m + 1))) - 1 ..]
 
     lhs :: Int -> Int -> Int

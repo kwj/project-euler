@@ -9,9 +9,10 @@ Therefore, ...
 assume that f(n) returns number of divisors of 'n'.
 f(a*b) = f(a) * f(b) when 'a' and 'b' are coprime.
 -}
+import Data.List (find)
+import Data.Maybe (fromJust)
 
 import Mylib.Factor (divisors)
-import Mylib.Util (headExn)
 
 numberOfDivisors :: Int -> Int
 numberOfDivisors x
@@ -24,7 +25,7 @@ compute :: Int -> String
 compute thr =
     show $ nth * (nth + 1) `div` 2
   where
-    nth = headExn $ dropWhile ((<= thr) . numberOfDivisors) [1 ..]
+    nth = fromJust $ find ((> thr) . numberOfDivisors) [1 ..]
 
 solve :: String
 solve = compute 500

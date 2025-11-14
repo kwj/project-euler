@@ -22,7 +22,8 @@ module Sol.P0100 (compute, solve) where
               if both x{1}, y{1} are odd, all x{n}, y{n} are odd too.
 -}
 
-import Mylib.Util (headExn)
+import Data.List (find)
+import Data.Maybe (fromJust)
 
 peSols :: [(Int, Int)]
 peSols = iterate (\(x, y) -> (3 * x + 4 * y, 2 * x + 3 * y)) (1, 1)
@@ -32,7 +33,7 @@ compute limit =
     show $ (y + 1) `div` 2 -- a = (y + 1) / 2
   where
     border = 2 * limit - 1 -- x = 2b - 1
-    y = snd . headExn $ dropWhile ((<= border) . fst) peSols
+    y = snd . fromJust $ find ((> border) . fst) peSols
 
 solve :: String
 solve = compute 1_000_000_000_000

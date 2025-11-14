@@ -1,8 +1,10 @@
 module Sol.P0026 (compute, solve) where
 
+import Data.List (find)
+import Data.Maybe (fromJust)
+
 import Mylib.Factor (divisors, primeFactorization)
 import Mylib.Math (powerModExn)
-import Mylib.Util (headExn)
 
 pp :: Int -> Int
 pp = iterDiv 5 . iterDiv 2
@@ -25,8 +27,8 @@ findRepetendLength n
     | d == 1 =
         0
     | otherwise =
-        headExn
-            . filter ((== 1) . (flip . powerModExn) 10 d)
+        fromJust
+            . find ((== 1) . (flip . powerModExn) 10 d)
             . divisors
             $ carmichael d
   where

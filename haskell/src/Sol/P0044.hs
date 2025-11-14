@@ -1,8 +1,10 @@
 module Sol.P0044 (compute, solve) where
 
+import Data.List (find)
+import Data.Maybe (fromJust)
+
 import Mylib.Factor (pfactorsToDivisors, primeFactors)
 import Mylib.Math (isPentagonal)
-import Mylib.Util (headExn)
 
 -- get_divisors(n) returns divisors of n(3n-1) which meet the following requirements:
 --  - They are less than 'n'.
@@ -43,7 +45,7 @@ checkConditions d =
 
 compute :: String
 compute =
-    show . pent . headExn $ filter checkConditions [4 ..]
+    show . pent . fromJust $ find checkConditions [4 ..]
 
 solve :: String
 solve = compute

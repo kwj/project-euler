@@ -1,15 +1,14 @@
 module Sol.P0025 (compute, solve) where
 
-import Data.List (unfoldr)
-
-import Mylib.Util (headExn)
+import Data.List (find, unfoldr)
+import Data.Maybe (fromJust)
 
 compute :: Int -> String
 compute ndigits =
     show
         . fst
-        . headExn
-        . dropWhile ((< 10 ^ pred ndigits) . snd)
+        . fromJust
+        . find ((>= 10 ^ pred ndigits) . snd)
         $ zip [1 :: Int ..] fibs
   where
     fibs :: [Integer]

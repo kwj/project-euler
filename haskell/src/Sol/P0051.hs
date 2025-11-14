@@ -1,6 +1,7 @@
 module Sol.P0051 (compute, solve) where
 
-import Data.List (elemIndices, sort)
+import Data.List (elemIndices, find, sort)
+import Data.Maybe (fromJust)
 
 import Mylib.Combinatorics (powerset)
 import Mylib.Prime (isPrime, primeNumbers)
@@ -44,8 +45,8 @@ isFamily familySize p =
 compute :: Int -> String
 compute familySize =
     show
-        . headExn
-        . filter (isFamily familySize)
+        . fromJust
+        . find (isFamily familySize)
         $ dropWhile (< 1000) primeNumbers
 
 solve :: String

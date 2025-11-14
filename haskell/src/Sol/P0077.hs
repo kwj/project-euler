@@ -1,9 +1,10 @@
 module Sol.P0077 (compute, solve) where
 
 import Control.Arrow ((&&&))
+import Data.List (find)
+import Data.Maybe (fromJust)
 
 import Mylib.Prime (primeNumbers)
-import Mylib.Util (headExn)
 
 partitionByCoins :: [Int] -> Int -> Int
 partitionByCoins [] _ = error "fatal error (unreached)"
@@ -19,8 +20,8 @@ compute :: Int -> String
 compute thr =
     show
         . fst
-        . headExn
-        . dropWhile ((<= thr) . snd)
+        . fromJust
+        . find ((> thr) . snd)
         $ (id &&& partitionByCoins primeNumbers) <$> [1 ..]
 
 solve :: String
