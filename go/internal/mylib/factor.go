@@ -1177,16 +1177,15 @@ func PfactorsToDivisors(lst []int) []int {
 		return []int{1}
 	}
 
-	result := []int{1}
-	for b, e := range Frequencies(lst) {
-		accLst := make([]int, 0)
-		for i := 1; i <= e; i++ {
-			m := Pow(b, i)
-			for _, x := range result {
-				accLst = append(accLst, x*m)
-			}
-			result = slices.Concat(result, accLst)
+	result := make([]int, 0, Pow(2, len(lst)))
+	result = append(result, 1)
+
+	for b := range slices.Values(lst) {
+		accLst := make([]int, 0, len(result))
+		for x := range slices.Values(result) {
+			accLst = append(accLst, b*x)
 		}
+		result = slices.Concat(result, accLst)
 	}
 	slices.Sort(result)
 

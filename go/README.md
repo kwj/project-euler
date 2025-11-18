@@ -21,4 +21,4 @@ go build .
 
 ## Notes
 
-It was confirmed to work with Go 1.24.0.
+It was confirmed to work with Go 1.25.4.
