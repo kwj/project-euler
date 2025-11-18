@@ -4,7 +4,7 @@ import (
 	"strconv"
 )
 
-var under20 = []int{
+var under20 = [...]int{
 	len(""),
 	len("one"),
 	len("two"),
@@ -27,7 +27,7 @@ var under20 = []int{
 	len("nineteen"),
 }
 
-var mults10 = []int{
+var mults10 = [...]int{
 	len(""),
 	len(""),
 	len("twenty"),

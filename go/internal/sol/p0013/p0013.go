@@ -5,7 +5,7 @@ import (
 	"slices"
 )
 
-var data = []string{
+var data = [...]string{
 	"37107287533902102798797998220837590246510135740250",
 	"46376937677490009712648124896970078050417018260538",
 	"74324986199524741059474233309513058123726617309629",
@@ -123,7 +123,7 @@ func convertToBignum(data []string) []*big.Int {
 
 func compute(length int) string {
 	result := big.NewInt(0)
-	for x := range slices.Values(convertToBignum(data)) {
+	for x := range slices.Values(convertToBignum(data[:])) {
 		result.Add(result, x)
 	}
 
