@@ -1,6 +1,7 @@
 package mylib
 
 import (
+	"maps"
 	"slices"
 )
 
@@ -1177,16 +1178,17 @@ func PfactorsToDivisors(lst []int) []int {
 		return []int{1}
 	}
 
-	result := make([]int, 0, Pow(2, len(lst)))
-	result = append(result, 1)
+	m1 := make(map[int]struct{})
+	m1[1] = struct{}{}
 
-	for b := range slices.Values(lst) {
-		accLst := make([]int, 0, len(result))
-		for x := range slices.Values(result) {
-			accLst = append(accLst, b*x)
+	for x := range slices.Values(lst) {
+		m2 := make(map[int]struct{})
+		for y := range maps.Keys(m1) {
+			m2[x*y] = struct{}{}
 		}
-		result = slices.Concat(result, accLst)
+		maps.Copy(m1, m2)
 	}
+	result := slices.Collect(maps.Keys(m1))
 	slices.Sort(result)
 
 	return result
