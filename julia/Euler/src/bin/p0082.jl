@@ -13,7 +13,7 @@ function solve_0082(fname::String = "0082_matrix.txt", fn::Function = min)
         for i = axes(data, 1)[begin + 1:end]
             work[i] = crnt[i] + fn(work[i], work[i - 1])
         end
-        for i = axes(data, 1)[end - 1:-1:begin]
+        for i = axes(data, 1)[reverse(begin:end - 1)]
             work[i] = fn(work[i], work[i + 1] + crnt[i])
         end
     end

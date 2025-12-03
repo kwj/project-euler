@@ -6,7 +6,7 @@ module Prob0024
 function solve_0024(idx::Int = 1_000_000, lst::Vector{Int} = collect(0:9))
     idx -= 1
     acc = 0
-    for i = (length(lst) - 1):-1:0
+    for i = reverse(0:length(lst) - 1)
         (blk, idx) = divrem(idx, factorial(i))
         acc = acc * 10 + lst[blk + 1]
         deleteat!(lst, blk + 1)

@@ -16,11 +16,11 @@ function solve_0004(n_digits::Int = 3)
 
     for blk_upper in blk_upper_limit:-blk_width:blk_lower_limit
             blk_lower = blk_upper - blk_width
-        for x in num_upper:-1:num_lower
+        for x = reverse(num_lower:num_upper)
             if x * x < blk_lower
                 break
             end
-            for y in min(blk_upper ÷ x, x):-1:num_lower
+            for y = reverse(num_lower:min(blk_upper ÷ x, x))
                 tmp = x * y
                 if tmp < blk_lower
                     break

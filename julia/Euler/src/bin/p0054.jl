@@ -55,7 +55,7 @@ end
 function make_handinfo(cards::Vector{Tuple{Int, Char}})
     HAND_RF, HAND_SF,HAND_FK, HAND_FH, HAND_F = [9], [8], [7], [6], [5]
     HAND_S, HAND_TK, HAND_TP, HAND_OP, HAND_HC = [4], [3], [2], [1], [0]
-    is_straight(lst) = lst == lst[1]:-1:(lst[1] - 4)
+    is_straight(lst) = lst == reverse(lst[1] - 4:lst[1])
 
     nums, suits = collect(zip(cards...))
     flash = length(unique(suits)) == 1

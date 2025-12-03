@@ -107,7 +107,7 @@ const data = [
 ]
 
 function solve_0013(len::Int = 10)
-    foldl((acc, x) -> acc * 10 + x, digits(sum(data))[end:-1:end-len+1]; init=0)
+    foldl((acc, x) -> acc * 10 + x, digits(sum(data))[reverse(end - len + 1:end)]; init=0)
 end
 
 end #module

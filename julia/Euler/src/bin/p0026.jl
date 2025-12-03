@@ -38,7 +38,7 @@ end
 function solve_0026(upper::Int = 1_000)
     (max_length, answer) = (0, 0)
 
-    for d = (upper - 1):-1:(upper ÷ 2)
+    for d = reverse(div(upper, 2):upper - 1)
         if d <= max_length
             break
         end

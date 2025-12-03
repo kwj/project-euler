@@ -21,7 +21,7 @@ import ..Util: is_pandigital_nz
 # This implementation depends on the permutation lists are emitted in lexicographic ordering
 # according to the order of the input *array*.
 function solve_0041()
-    for tpl in [7:-1:1, 4:-1:1]
+    for tpl in [reverse(1:7), reverse(1:4)]
         for n_lst in permutations(tpl)
             n = reduce((x, y) -> 10x + y, n_lst)
             if is_pandigital_nz(n) == true && isprime(n) == true
