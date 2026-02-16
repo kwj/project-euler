@@ -73,12 +73,12 @@ func compute(data string) string {
 		acc = dfs(graph, acc, vertex)
 	}
 
-	var result string
+	var result strings.Builder
 	for s := range slices.Values(acc) {
-		result += s
+		result.WriteString(s)
 	}
 
-	return result
+	return result.String()
 }
 
 func Solve() string {
