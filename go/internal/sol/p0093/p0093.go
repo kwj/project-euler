@@ -90,10 +90,10 @@ func case2(d1, d2 *big.Rat, rest []*big.Rat) []*big.Rat {
 func makeNumbers(lst []*big.Rat) map[int]struct{} {
 	nSet := map[int]struct{}{}
 
-	for i := 0; i < len(lst); i++ {
+	for i := range len(lst) {
 		for j := i + 1; j < len(lst); j++ {
 			rest := make([]*big.Rat, 0, 2)
-			for k := 0; k < len(lst); k++ {
+			for k := range len(lst) {
 				if k != i && k != j {
 					rest = append(rest, lst[k])
 				}
