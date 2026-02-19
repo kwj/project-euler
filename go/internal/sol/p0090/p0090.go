@@ -54,8 +54,7 @@ func checkSquare(twoDice []die) bool {
 
 func compute() string {
 	// use '6' instead of '9'.
-	var dice []die
-	dice = slices.Collect(mylib.Combinations([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 6}, 6))
+	var dice []die = slices.Collect(mylib.Combinations([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 6}, 6))
 
 	var result int
 	for twoDice := range mylib.CombinationsWithRepetition(dice, 2) {
