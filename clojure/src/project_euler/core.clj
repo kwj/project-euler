@@ -16,7 +16,7 @@
       (catch Exception e (println (str "Caught exception: " (.getMessage e)))))))
 
 (def ^:private repl-options
-  [:prompt #(printf "Enter a problem number: ")
+  [:prompt #(print "Enter a problem number: ")
    :read (fn [request-prompt request-exit]
            (or ({:line-start request-prompt :stream-end request-exit}
                 (main/skip-whitespace *in*))
