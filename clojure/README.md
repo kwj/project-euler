@@ -33,4 +33,4 @@ In other words, you can create an Uber-JAR file.
 
 ## Notes
 
-These solutions were confirmed to work with Clojure 1.12.0.
+These solutions were confirmed to work with Clojure 1.12.4 with OpenJDK 25.
