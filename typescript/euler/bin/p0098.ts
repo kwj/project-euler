@@ -101,7 +101,7 @@ export const compute = (data: string): string => {
   }
 };
 
-export const solve = (): string => {
-  const data = new TextDecoder().decode(assetData("p098_words.txt"));
+export const solve = async (): Promise<string> => {
+  const data = await assetData("p098_words.txt");
   return compute(data);
 };

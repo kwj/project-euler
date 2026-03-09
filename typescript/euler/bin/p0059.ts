@@ -49,7 +49,7 @@ export const compute = (data: string): string => {
   return String(sum(maxScore[2]));
 };
 
-export const solve = (): string => {
-  const data = new TextDecoder().decode(assetData("p059_cipher.txt"));
+export const solve = async (): Promise<string> => {
+  const data = await assetData("p059_cipher.txt");
   return compute(data);
 };

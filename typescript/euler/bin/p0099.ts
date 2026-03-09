@@ -32,7 +32,7 @@ export const compute = (data: string): string => {
   );
 };
 
-export const solve = (): string => {
-  const data = new TextDecoder().decode(assetData("p099_base_exp.txt"));
+export const solve = async (): Promise<string> => {
+  const data = await assetData("p099_base_exp.txt");
   return compute(data);
 };

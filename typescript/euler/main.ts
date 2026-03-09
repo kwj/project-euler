@@ -10,11 +10,11 @@ if (Deno.args.length > 0) {
 
       console.log(`[Problem ${elem}]`);
       await import(`./${solutions_dir}/${filename}`)
-        .then((module) => {
+        .then(async (module) => {
           if ("solve" in module) {
             try {
               const t0 = performance.now();
-              const result = module.solve();
+              const result = await module.solve();
               const t1 = performance.now();
               const duration_ms = (t1 - t0).toFixed(4);
 

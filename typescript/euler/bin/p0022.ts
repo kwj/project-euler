@@ -25,7 +25,7 @@ export const compute = (data: string): string => {
   return String(calcScore(keywords));
 };
 
-export const solve = (): string => {
-  const data = new TextDecoder().decode(assetData("p022_names.txt"));
+export const solve = async (): Promise<string> => {
+  const data = await assetData("p022_names.txt");
   return compute(data);
 };

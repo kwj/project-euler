@@ -260,7 +260,7 @@ export const compute = (data: string): string => {
   return String(acc);
 };
 
-export const solve = (): string => {
-  const data = new TextDecoder().decode(assetData("p096_sudoku.txt"));
+export const solve = async (): Promise<string> => {
+  const data = await assetData("p096_sudoku.txt");
   return compute(data);
 };

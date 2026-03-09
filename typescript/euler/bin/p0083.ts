@@ -71,7 +71,7 @@ export const compute = (data: string): string => {
   return String(distTbl.at(-1)!.at(-1));
 };
 
-export const solve = (): string => {
-  const data = new TextDecoder().decode(assetData("p083_matrix.txt"));
+export const solve = async (): Promise<string> => {
+  const data = await assetData("p083_matrix.txt");
   return compute(data);
 };

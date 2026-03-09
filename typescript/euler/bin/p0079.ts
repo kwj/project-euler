@@ -57,7 +57,7 @@ export const compute = (data: string): string => {
   return acc.join("");
 };
 
-export const solve = (): string => {
-  const data = new TextDecoder().decode(assetData("p079_keylog.txt"));
+export const solve = async (): Promise<string> => {
+  const data = await assetData("p079_keylog.txt");
   return compute(data);
 };

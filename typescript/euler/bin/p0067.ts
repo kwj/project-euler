@@ -44,7 +44,7 @@ export const compute = (
   return String(prev[0]);
 };
 
-export const solve = (): string => {
-  const data = new TextDecoder().decode(assetData("p067_triangle.txt"));
+export const solve = async (): Promise<string> => {
+  const data = await assetData("p067_triangle.txt");
   return compute(Math.max, data);
 };

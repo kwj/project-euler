@@ -59,7 +59,7 @@ export const compute = (data: string): string => {
   return String(acc);
 };
 
-export const solve = (): string => {
-  const data = new TextDecoder().decode(assetData("p089_roman.txt"));
+export const solve = async (): Promise<string> => {
+  const data = await assetData("p089_roman.txt");
   return compute(data);
 };

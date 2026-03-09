@@ -37,7 +37,7 @@ export const compute = (
   return String(prev.at(-1));
 };
 
-export const solve = (): string => {
-  const data = new TextDecoder().decode(assetData("p081_matrix.txt"));
+export const solve = async (): Promise<string> => {
+  const data = await assetData("p081_matrix.txt");
   return compute(Math.min, data);
 };

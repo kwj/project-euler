@@ -39,7 +39,7 @@ export const compute = (
   return String(work.sort()[0]);
 };
 
-export const solve = (): string => {
-  const data = new TextDecoder().decode(assetData("p082_matrix.txt"));
+export const solve = async (): Promise<string> => {
+  const data = await assetData("p082_matrix.txt");
   return compute(Math.min, data);
 };

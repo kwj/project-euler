@@ -162,7 +162,7 @@ export const compute = (data: string): string => {
   return String(p1);
 };
 
-export const solve = (): string => {
-  const data = new TextDecoder().decode(assetData("p054_poker.txt"));
+export const solve = async (): Promise<string> => {
+  const data = await assetData("p054_poker.txt");
   return compute(data);
 };
