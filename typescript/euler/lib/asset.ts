@@ -8,7 +8,7 @@ export const assetData = async (filename: string): Promise<string> => {
     return await response.text();
   } catch (error) {
     if (error instanceof Error) {
-      throw new Error(error.message);
+      throw new Error(`${error.message}: ${url.href}`);
     } else {
       throw new Error(String(error));
     }
