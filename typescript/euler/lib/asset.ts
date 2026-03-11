@@ -1,5 +1,5 @@
 export const assetData = async (filename: string): Promise<string> => {
-  const url = new URL('../assets/' + filename, import.meta.url);
+  const url = import.meta.resolve('../assets/' + filename);
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -8,7 +8,7 @@ export const assetData = async (filename: string): Promise<string> => {
     return await response.text();
   } catch (error) {
     if (error instanceof Error) {
-      throw new Error(`${error.message}: ${url.href}`);
+      throw new Error(`${error.message}: ${url}`);
     } else {
       throw new Error(String(error));
     }
