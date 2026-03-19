@@ -14,6 +14,8 @@ sh solve.sh 1
 
 ## Notes
 
-It was confirmed to work with GHC 9.12.2 and Cabal 3.14.1.1.
+I have confirmed that it works in the following environments.
+  - GHC 9.12.2 / 9.14.1
+  - Cabal 3.16.1.0
 
 Please see `euler.cabal` for dependent packages.

@@ -17,8 +17,8 @@ executable pe-solver
     main-is: Main.hs
     hs-source-dirs: app
     build-depends:
-        base ^>=4.21.0.0,
-        deepseq ^>=1.5.1.0,
+        base ^>= {4.21.0.0, 4.22.0.0},
+        deepseq ^>= 1.5.1.0,
         solutions
     default-extensions: Strict
     default-language: GHC2024
@@ -27,12 +27,12 @@ library solutions
     import: warnings, extensions
     hs-source-dirs: src
     build-depends:
-        base ^>=4.21.0.0,
-        array ^>=0.5.8.0,
-        bytestring ^>=0.12.2.0,
-        containers ^>=0.7,
-        text ^>=2.1.2,
-        primes ^>=0.2.1.0,
+        base ^>= {4.21.0.0, 4.22.0.0},
+        array ^>= 0.5.8.0,
+        bytestring ^>= 0.12.2.0,
+        containers ^>= {0.7, 0.8},
+        text ^>= 2.1.2,
+        primes ^>= 0.2.1.0,
         file-embed ^>= 0.0.16.0
     exposed-modules:
         Sol,
@@ -74,8 +74,8 @@ test-suite solutions-test
     main-is: Spec.hs
     hs-source-dirs: test
     build-depends:
-        base ^>=4.21.0.0,
-        hspec ^>=2.11.12,
+        base ^>= {4.21.0.0, 4.22.0.0},
+        hspec ^>= 2.11.12,
         solutions
     build-tool-depends:
         hspec-discover:hspec-discover ^>=2.11.12
