@@ -17,7 +17,7 @@ fileData :: BS.ByteString
 fileData = $(FE.makeRelativeToProject "resources/0059_cipher.txt" >>= FE.embedFile)
 
 parseData :: String -> [Int]
-parseData = map (read :: String -> Int) . wordsWhen (== ',')
+parseData = map (read @Int) . wordsWhen (== ',')
 
 score :: [Char] -> Int
 score =

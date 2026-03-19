@@ -59,7 +59,7 @@ parseData str =
   where
     matrix =
         map
-            (map (Cost . (read :: String -> Int)) . wordsWhen (== ','))
+            (map (Cost . (read @Int)) . wordsWhen (== ','))
             (lines str)
     nRow = length matrix
     nCol = length $ headExn matrix

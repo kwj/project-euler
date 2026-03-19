@@ -6,7 +6,7 @@ compute :: String
 compute =
     show
         . sum
-        . map (read :: String -> Int)
+        . map (read @Int)
         . filter ((/= '0') . headExn)
         $ aux [1, 1, 17, 13, 11, 7, 5, 3, 2, 1] [""]
   where
@@ -19,7 +19,7 @@ compute =
             | x <- "0123456789"
             , s <- lst
             , x `notElem` s
-            , mod (read (take 3 (x : s)) :: Int) d == 0
+            , mod (read @Int (take 3 (x : s))) d == 0
             ]
 
 solve :: String

@@ -22,7 +22,7 @@ triangleStr =
 
 parseData :: String -> [[Int]]
 parseData =
-    map (map (read :: String -> Int) . words) . lines
+    map (map (read @Int) . words) . lines
 
 compute :: String
 compute =

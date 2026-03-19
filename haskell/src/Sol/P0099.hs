@@ -14,7 +14,7 @@ fileData :: BS.ByteString
 fileData = $(FE.makeRelativeToProject "resources/0099_base_exp.txt" >>= FE.embedFile)
 
 parseData :: String -> [[Double]]
-parseData = map (map (read :: String -> Double) . wordsWhen (== ',')) . lines
+parseData = map (map (read @Double) . wordsWhen (== ',')) . lines
 
 {- HLINT ignore compute "Use head" -}
 compute :: String

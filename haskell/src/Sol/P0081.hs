@@ -13,7 +13,7 @@ fileData :: BS.ByteString
 fileData = $(FE.makeRelativeToProject "resources/0081_matrix.txt" >>= FE.embedFile)
 
 parseData :: String -> [[Int]]
-parseData = map (map (read :: String -> Int) . wordsWhen (== ',')) . lines
+parseData = map (map (read @Int) . wordsWhen (== ',')) . lines
 
 compute :: String
 compute =
