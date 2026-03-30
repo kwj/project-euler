@@ -15,7 +15,7 @@ function solve_0004(n_digits::Int = 3)
     answer = Int[]
 
     for blk_upper in blk_upper_limit:-blk_width:blk_lower_limit
-            blk_lower = blk_upper - blk_width
+        blk_lower = blk_upper - blk_width
         for x = reverse(num_lower:num_upper)
             if x * x < blk_lower
                 break
