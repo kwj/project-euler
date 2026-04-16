@@ -54,8 +54,8 @@ fn make_mobius_tbl(limit: usize) -> Vec<i64> {
     let mut mu_tbl = vec![0_i64; limit + 1];
     mu_tbl[1] = 1;
     for i in 2..=limit {
-        if p_tbl[i] != 0 {
-            mu_tbl[i] = -mu_tbl[i / p_tbl[i]];
+        if let Some(j) = i.checked_div(p_tbl[i]) {
+            mu_tbl[i] = -mu_tbl[j];
         }
     }
 
