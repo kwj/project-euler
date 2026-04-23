@@ -1,5 +1,5 @@
 export const assetData = async (filename: string): Promise<string> => {
-  const url = import.meta.resolve('../assets/' + filename);
+  const url = import.meta.resolve("../assets/" + filename);
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -13,4 +13,4 @@ export const assetData = async (filename: string): Promise<string> => {
       throw new Error(String(error));
     }
   }
-}
+};
