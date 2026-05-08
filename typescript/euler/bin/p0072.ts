@@ -7,12 +7,11 @@
 import { isqrt } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-const sumPhi = (n: number, memo: Map<string, number> = new Map()): number => {
+const sumPhi = (n: number, memo: Map<number, number> = new Map()): number => {
   const trunc = Math.trunc;
 
-  const key = String(n);
-  if (memo.has(key)) {
-    return memo.get(key)!;
+  if (memo.has(n)) {
+    return memo.get(n)!;
   }
 
   let v = trunc(n * (n + 1) / 2);
@@ -22,7 +21,7 @@ const sumPhi = (n: number, memo: Map<string, number> = new Map()): number => {
   for (const d of range(1, trunc(n / (isqrt(n) + 1)) + 1)) {
     v -= (trunc(n / d) - trunc(n / (d + 1))) * sumPhi(d, memo);
   }
-  memo.set(key, v);
+  memo.set(n, v);
 
   return v;
 };
