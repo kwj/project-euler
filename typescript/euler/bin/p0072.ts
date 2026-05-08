@@ -11,10 +11,7 @@ const sumPhi = (n: number, memo?: Record<string, number>): number => {
   const trunc = Math.trunc;
 
   const key = String(n);
-  let cache: Record<string, number> = {};
-  if (memo !== undefined) {
-    cache = memo;
-  }
+  let cache: Record<string, number> = memo ?? {};
   if (cache[key]) {
     return cache[key];
   }
