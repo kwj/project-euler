@@ -7,24 +7,24 @@
 import { isqrt } from "../lib/math.ts";
 import { range } from "../lib/util.ts";
 
-const sumPhi = (n: number, memo?: Record<string, number>): number => {
+const sumPhi = (n: number, memo: Map<string, number> = new Map()): number => {
   const trunc = Math.trunc;
 
   const key = String(n);
-  let cache: Record<string, number> = memo ?? {};
-  if (cache[key]) {
-    return cache[key];
+  if (memo.has(key)) {
+    return memo.get(key)!;
   }
 
   let v = trunc(n * (n + 1) / 2);
   for (const m of range(2, isqrt(n) + 1)) {
-    v -= sumPhi(trunc(n / m), cache);
+    v -= sumPhi(trunc(n / m), memo);
   }
   for (const d of range(1, trunc(n / (isqrt(n) + 1)) + 1)) {
-    v -= (trunc(n / d) - trunc(n / (d + 1))) * sumPhi(d, cache);
+    v -= (trunc(n / d) - trunc(n / (d + 1))) * sumPhi(d, memo);
   }
+  memo.set(key, v);
 
-  return cache[key] = v;
+  return v;
 };
 
 export const compute = (limit: number): string =>
