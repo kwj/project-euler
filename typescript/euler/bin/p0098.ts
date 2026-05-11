@@ -13,19 +13,14 @@ class SquareTbl {
   }
 
   get(k: number): Set<string> {
-    if (this.tbl.has(k)) {
-      return this.tbl.get(k)!;
-    } else {
-      const sqSet = new Set(
+    return this.tbl.getOrInsertComputed(k, (k) => {
+      return new Set(
         range(isqrt(10 ** (k - 1)), isqrt(10 ** k - 1) + 1)
           .map((x) => x * x)
           .filter((x) => x >= 10 ** (k - 1))
           .map((x) => String(x)),
       );
-      this.tbl.set(k, sqSet);
-
-      return sqSet;
-    }
+    });
   }
 }
 
