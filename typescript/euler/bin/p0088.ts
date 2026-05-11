@@ -120,7 +120,7 @@ export const compute = (limit: number): string => {
     }
   }
 
-  return String(sum([...(new Set<number>(tbl.values())).values()]));
+  return String(sum([...(new Set<number>(tbl.values()))]));
 };
 
 export const solve = (): string => compute(12_000);
