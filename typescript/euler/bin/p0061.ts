@@ -20,7 +20,7 @@ const makePolygonalTbl = (
       if (acc >= 1_000 && acc % 100 >= 10) {
         const key = Math.trunc(acc / 100);
         const val = acc % 100;
-        mapObj.set(key, (mapObj.get(key) || []).concat([val]));
+        mapObj.set(key, (mapObj.get(key) ?? []).concat([val]));
       }
       j += step;
     }

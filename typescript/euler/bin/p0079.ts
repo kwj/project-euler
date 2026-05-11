@@ -46,7 +46,7 @@ const parseData = (data: string): string[][] => {
 export const compute = (data: string): string => {
   const graph = new Map<string, Set<string>>();
   for (const [k, v] of parseData(data)) {
-    graph.set(k, (graph.get(k) || new Set<string>()).add(v));
+    graph.set(k, (graph.get(k) ?? new Set<string>()).add(v));
   }
 
   let acc: string[] = [];
