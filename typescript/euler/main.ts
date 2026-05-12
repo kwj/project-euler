@@ -13,10 +13,10 @@ if (Deno.args.length > 0) {
         .then(async (module) => {
           if ("solve" in module) {
             try {
-              const t0 = performance.now();
+              const t0 = Temporal.Now.instant();
               const result = await module.solve();
-              const t1 = performance.now();
-              const duration_ms = (t1 - t0).toFixed(4);
+              const t1 = Temporal.Now.instant();
+              const duration_ms = t0.until(t1).total("milliseconds");
 
               console.log(`Answer: ${result}`);
               console.log(`Elapsed time: ${duration_ms} msec.`);
