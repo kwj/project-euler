@@ -22,24 +22,31 @@ function init_cumsum_lst(cs_gen, limit)
 end
 
 function solve_0050(limit::Int = 1_000_000)
+    @assert limit >= 3
+
     # cs_lst: [0, prime(1), prime(1) + prime(2), prime(1) + prime(2) + prime(3), ...]
+    # the last element of cs_lst is equal or greater than `limit`
     cs_gen = Channel{Int}(cumsum_generator)
     cs_lst = init_cumsum_lst(cs_gen, limit)
 
-    answer = 0
-    i = 1
-    consec_length = 0
-    while cs_lst[i + consec_length] - cs_lst[i] < limit
-        start = cs_lst[i]
-        lst = collect(Iterators.dropwhile(p -> p - start >= limit || isprime(p - start) == false, @view cs_lst[reverse(i + consec_length:end)]))
-        if length(lst) > 0
-            consec_length += length(lst) - 1
-            answer = lst[1] - start
+    k = length(cs_lst) - 2
+    left = 1
+    while true
+        diff = cs_lst[left + k] - cs_lst[left]
+        if diff >= limit
+            left = 1
+            k -= 1
+        elseif isprime(diff)
+            return diff
+        else
+            left += 1
+            if left + k > length(cs_lst)
+                push!(cs_lst, take!(cs_gen))
+            end
         end
-        push!(cs_lst, take!(cs_gen))
-        i += 1
     end
-    answer
+
+    error("Not Reached")
 end
 
 end #module
