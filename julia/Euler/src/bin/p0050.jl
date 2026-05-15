@@ -38,13 +38,13 @@ function solve_0050(limit::Int = 1_000_000)
         if diff >= limit
             left = 1
             k -= 1
-        elseif isprime(diff)
-            return diff
-        else
+        elseif !isprime(diff)
             left += 1
             if left + k > length(cs_lst)
                 push!(cs_lst, take!(cs_gen))
             end
+        else
+            return diff
         end
     end
 

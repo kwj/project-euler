@@ -42,13 +42,13 @@ func compute(limit int) string {
 		if diff >= limit {
 			left = 0
 			k -= 1
-		} else if mylib.IsPrime(diff) {
-			return strconv.FormatInt(int64(diff), 10)
-		} else {
+		} else if !mylib.IsPrime(diff) {
 			left += 1
 			if left+k >= len(lst) {
 				lst = append(lst, csumGen.next())
 			}
+		} else {
+			return strconv.FormatInt(int64(diff), 10)
 		}
 	}
 

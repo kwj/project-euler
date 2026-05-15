@@ -21,13 +21,13 @@ fn compute(limit: i64) -> i64 {
         if diff >= limit {
             left = 0;
             k -= 1;
-        } else if primes::is_prime(diff) {
-            return diff;
-        } else {
+        } else if !primes::is_prime(diff) {
             left += 1;
             if left + k >= cs_lst.len() {
                 cs_lst.push(cs_gen.next().unwrap());
             }
+        } else {
+            return diff;
         }
     }
 }

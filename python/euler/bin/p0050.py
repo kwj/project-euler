@@ -37,12 +37,12 @@ def compute(limit: int) -> str:
         if diff >= limit:
             left = 0
             k -= 1
-        elif is_prime(diff):
-            return str(diff)
-        else:
+        elif not is_prime(diff):
             left += 1
             if left + k >= len(cs_lst):
                 cs_lst.append(next(cs_gen))
+        else:
+            return str(diff)
 
     raise RuntimeError('unreachable!')
 

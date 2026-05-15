@@ -25,12 +25,12 @@ let compute limit =
     let diff = List.nth_exn cs_lst (r_idx - k) - List.nth_exn cs_lst (r_idx) in
     if diff >= limit then
       aux cs_lst (List.length cs_lst - 1) (pred k)
-    else if Bool.(Euler.Math.Prime.is_prime diff = true) then
-      diff
-    else
+    else if Bool.(Euler.Math.Prime.is_prime diff = false) then
       match r_idx - k with
       | 0 -> aux (cs_gen () :: cs_lst) r_idx k
       | _ -> aux cs_lst (r_idx - 1) k
+    else
+      diff
   in
   aux cs_lst (List.length cs_lst - 1) (List.length cs_lst - 2)
 ;;

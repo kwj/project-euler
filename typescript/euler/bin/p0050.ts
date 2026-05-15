@@ -39,13 +39,13 @@ export const compute = (limit: number): string => {
     if (diff >= limit) {
       left = 0;
       k -= 1;
-    } else if (isPrime(diff)) {
-      return String(diff);
-    } else {
+    } else if (!isPrime(diff)) {
       left += 1;
       if (left + k >= cs_lst.length) {
         cs_lst.push(cs_gen.next().value!);
       }
+    } else {
+      return String(diff);
     }
   }
 };
