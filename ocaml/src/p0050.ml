@@ -21,25 +21,18 @@ let init_cumsum_lst cs_gen limit =
 let compute limit =
   let cs_gen = cumsum_generator () in
   let cs_lst = init_cumsum_lst cs_gen limit in
-  let begin_pos = List.length cs_lst - 1 in
-  let rec aux cs_lst width ans =
-    if List.nth_exn cs_lst (begin_pos - width) - List.nth_exn cs_lst begin_pos >= limit
-    then ans
-    else (
-      let lst = List.slice cs_lst 0 (begin_pos - width) in
-      match
-        List.drop_while lst ~f:(fun n ->
-          let x = n - List.nth_exn cs_lst begin_pos in
-          x >= limit || Bool.(Euler.Math.Prime.is_prime x = false))
-      with
-      | [] -> aux (cs_gen () :: cs_lst) width ans
-      | l ->
-        aux
-          (cs_gen () :: cs_lst)
-          (width + List.length l)
-          (List.nth_exn l 0 - List.nth_exn cs_lst begin_pos))
+  let rec aux cs_lst r_idx k =
+    let diff = List.nth_exn cs_lst (r_idx - k) - List.nth_exn cs_lst (r_idx) in
+    if diff >= limit then
+      aux cs_lst (List.length cs_lst - 1) (pred k)
+    else if Bool.(Euler.Math.Prime.is_prime diff = true) then
+      diff
+    else
+      match r_idx - k with
+      | 0 -> aux (cs_gen () :: cs_lst) r_idx k
+      | _ -> aux cs_lst (r_idx - 1) k
   in
-  aux cs_lst 0 0
+  aux cs_lst (List.length cs_lst - 1) (List.length cs_lst - 2)
 ;;
 
 let solve () = compute 1_000_000 |> Int.to_string

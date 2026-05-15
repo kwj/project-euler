@@ -26,27 +26,25 @@ def init_cumsum_lst(cs_gen: Generator[int, None, None], limit: int) -> list[int]
 
 
 def compute(limit: int) -> str:
+    assert limit > 2, 'upper limit must be larger than 2'
     cs_gen = cumsum_generator()
     cs_lst = init_cumsum_lst(cs_gen, limit)
 
-    ans = 0
-    i = 0
-    consec_length = 0
-    while cs_lst[i + consec_length] - cs_lst[i] < limit:
-        begin = cs_lst[i]
-        lst = list(
-            dropwhile(
-                lambda p: p - begin >= limit or not is_prime(p - begin),  # noqa: B023
-                cs_lst[i + consec_length :][::-1],
-            )
-        )
-        if lst:
-            consec_length += len(lst) - 1
-            ans = lst[0] - begin
-        cs_lst.append(next(cs_gen))
-        i += 1
+    k = len(cs_lst) - 2
+    left = 0
+    while True:
+        diff = cs_lst[left + k] - cs_lst[left]
+        if diff >= limit:
+            left = 0
+            k -= 1
+        elif is_prime(diff):
+            return str(diff)
+        else:
+            left += 1
+            if left + k >= len(cs_lst):
+                cs_lst.append(next(cs_gen))
 
-    return str(ans)
+    raise RuntimeError('unreachable!')
 
 
 def solve() -> str:

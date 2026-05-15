@@ -9,29 +9,27 @@ fn solve() -> String {
 }
 
 fn compute(limit: i64) -> i64 {
+    debug_assert!(limit > 2);
+
     let mut cs_gen: CumSumPrime = CumSumPrime::default();
     let mut cs_lst: Vec<i64> = cs_gen.initial_lst(limit);
-    let mut ans: i64 = 0;
+
+    let mut k: usize = cs_lst.len() - 2;
     let mut left: usize = 0;
-    let mut k: usize = 0;
-
-    while cs_lst[left + k] - cs_lst[left] < limit {
-        let base = cs_lst[left];
-        if let Some(tpl) = cs_lst[(left + k)..]
-            .iter()
-            .enumerate()
-            .skip(1)
-            .rev()
-            .find(|&(_, &p)| p - base < limit && primes::is_prime(p - base))
-        {
-            k += tpl.0;
-            ans = tpl.1 - base;
+    loop {
+        let diff = cs_lst[left + k] - cs_lst[left];
+        if diff >= limit {
+            left = 0;
+            k -= 1;
+        } else if primes::is_prime(diff) {
+            return diff;
+        } else {
+            left += 1;
+            if left + k >= cs_lst.len() {
+                cs_lst.push(cs_gen.next().unwrap());
+            }
         }
-        cs_lst.push(cs_gen.next().unwrap());
-        left += 1;
     }
-
-    ans
 }
 
 #[derive(Default)]

@@ -1,6 +1,5 @@
 // project euler: problem 50
 
-import { dropWhile } from "@std/collections";
 import { isPrime, primeGenerator } from "../lib/prime.ts";
 
 const cumSumGenerator = function* (): Generator<number, void, void> {
@@ -26,27 +25,29 @@ const initCumSumLst = (
 };
 
 export const compute = (limit: number): string => {
+  if (limit < 3) {
+    throw new RangeError("limit must be larger than 2");
+  }
+
   const cs_gen = cumSumGenerator();
   const cs_lst = initCumSumLst(cs_gen, limit);
 
-  let ans = 0;
-  let i = 0;
-  let consecLength = 0;
-  while (cs_lst[i + consecLength] - cs_lst[i] < limit) {
-    const begin = cs_lst[i];
-    const lst = dropWhile(
-      cs_lst.slice(i + consecLength).reverse(),
-      (p) => p - begin >= limit || !isPrime(p - begin),
-    );
-    if (lst.length > 0) {
-      consecLength += lst.length - 1;
-      ans = lst[0] - begin;
+  let k = cs_lst.length - 2;
+  let left = 0;
+  while (true) {
+    const diff = cs_lst[left + k] - cs_lst[left];
+    if (diff >= limit) {
+      left = 0;
+      k -= 1;
+    } else if (isPrime(diff)) {
+      return String(diff);
+    } else {
+      left += 1;
+      if (left + k >= cs_lst.length) {
+        cs_lst.push(cs_gen.next().value!);
+      }
     }
-    cs_lst.push(cs_gen.next().value!);
-    i += 1;
   }
-
-  return String(ans);
 };
 
 export const solve = (): string => compute(1_000_000);

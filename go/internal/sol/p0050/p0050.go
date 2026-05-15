@@ -1,7 +1,6 @@
 package p0050
 
 import (
-	"slices"
 	"strconv"
 
 	"pe-solver/internal/mylib"
@@ -29,34 +28,31 @@ func initCsumLst(csumGen *csumGenerator, limit int) []int {
 }
 
 func compute(limit int) string {
+	if limit < 3 {
+		panic("limit must be larger than 2")
+	}
+
 	csumGen := new(csumGenerator)
 	lst := initCsumLst(csumGen, limit)
 
-	result := 0
+	k := len(lst) - 2
 	left := 0
-	k := 0
-	for lst[left+k]-lst[left] < limit {
-		for idx, v := range slices.Backward(lst) {
-			if idx <= left+k {
-				break
-			}
-
-			diff := v - lst[left]
-			if diff >= limit {
-				continue
-			}
-			if mylib.IsPrime(diff) {
-				k = idx - left
-				result = diff
-				break
+	for {
+		diff := lst[left+k] - lst[left]
+		if diff >= limit {
+			left = 0
+			k -= 1
+		} else if mylib.IsPrime(diff) {
+			return strconv.FormatInt(int64(diff), 10)
+		} else {
+			left += 1
+			if left+k >= len(lst) {
+				lst = append(lst, csumGen.next())
 			}
 		}
-
-		lst = append(lst, csumGen.next())
-		left++
 	}
 
-	return strconv.FormatInt(int64(result), 10)
+	panic("unreachable")
 }
 
 func Solve() string {
