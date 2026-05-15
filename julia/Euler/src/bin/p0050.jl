@@ -3,12 +3,14 @@
 
 module Prob0050
 
-import Primes: prime, isprime
+import Primes: nextprime, isprime
 
 function cumsum_generator(c::Channel)
     acc = 0
-    for nth in Iterators.countfrom(1)
-        acc += prime(nth)
+    p = 0
+    while true
+        p = nextprime(p + 1)
+        acc += p
         put!(c, acc)
     end
 end
