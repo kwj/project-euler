@@ -3,36 +3,21 @@
 
 (def ^:private cs-primes (reductions (fn [acc n] (+ acc n)) 0 prime/prime-numbers))
 
-(defn- get-init-cs-length
+(defn- get-max-offset
   [limit]
-  (->> (map-indexed #(vector (inc %1) %2) cs-primes)
-       (drop-while #(< (second %) limit))
-       (ffirst)))
-
-(defn- find-consec-primes
-  [begin-value limit v]
-  (drop-while #(let [x (- % begin-value)]
-                 (or (>= x limit) (not (prime/prime? x))))
-              v))
+  (->> (take-while #(< % limit) cs-primes)
+       (count)
+       (dec)))
 
 (defn solve
   ([]
    (solve 1000000))
-  ([upper]
-   {:pre [(> upper 2)]}
-   (let [init-length (get-init-cs-length upper)
-         begin-pos (dec init-length)]
-     (loop [cnt init-length
-            width 0
-            ans 0]
-       (let [cs-vec (vec (reverse (take cnt cs-primes)))]
-         (if (>= (- (nth cs-vec (- begin-pos width)) (nth cs-vec begin-pos)) upper)
-           ans
-           (let [lst (find-consec-primes (nth cs-vec begin-pos)
-                                         upper
-                                         (subvec cs-vec 0 (- begin-pos width)))]
-             (if (zero? (count lst))
-               (recur (inc cnt) width ans)
-               (recur (inc cnt)
-                      (+ width (count lst))
-                      (long (- (nth lst 0) (nth cs-vec begin-pos))))))))))))
+  ([limit]
+   {:pre [(> limit 2)]}
+   (loop [left 0
+          k (get-max-offset limit)]
+     (let [diff (- (nth cs-primes (+ left k)) (nth cs-primes left))]
+       (cond
+         (>= diff limit) (recur 0 (dec k))
+         (prime/prime? diff) diff
+         :else (recur (inc left) k))))))
