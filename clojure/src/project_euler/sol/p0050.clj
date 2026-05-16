@@ -5,9 +5,7 @@
 
 (defn- get-max-offset
   [limit]
-  (->> (take-while #(< % limit) cs-primes)
-       (count)
-       (dec)))
+  ((comp dec count take-while) #(< % limit) cs-primes))
 
 (defn solve
   ([]
