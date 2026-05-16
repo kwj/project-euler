@@ -19,11 +19,9 @@
 
 (defn solve
   []
-  (let [fact-tbl (vec (map #(long (math/factorial %)) (range 10)))]
-    (->> (range 2 (inc (get-max-ndigits)))
-         (map #(util/combination-with-repetition % (range 10)))
-         (apply concat)
-         (map (fn [tpl] [tpl (apply + (map #(get fact-tbl %) tpl))]))
-         (map (fn [[tpl n]] (if (= tpl (sort (util/digits n))) n 0)))
-         (apply +))))
-
+  (let [fact-tbl (vec (map #(long (math/factorial %)) (range 10)))
+        xf (comp (map #(util/combination-with-repetition % (range 10)))
+                 (mapcat concat)
+                 (map (fn [tpl] [tpl (apply + (map #(get fact-tbl %) tpl))]))
+                 (map (fn [[tpl n]] (if (= tpl (sort (util/digits n))) n 0))))]
+    (transduce xf + (range 2 (inc (get-max-ndigits))))))

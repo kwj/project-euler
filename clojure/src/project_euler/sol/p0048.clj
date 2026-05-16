@@ -5,10 +5,8 @@
   ([]
    (solve 1000))
   ([upper]
-   (let [mask (long (math/pow 10 10))]
+   (let [mask (long (math/pow 10 10))
+         xf (comp (filter #(pos? (mod % 10)))
+                  (map #(math/powermod % % mask)))]
      (format "%010d"
-             (mod (->> (range 1 (inc upper))
-                       (filter #(pos? (mod % 10)))
-                       (map #(math/powermod % % mask))
-                       (apply +))
-                  mask)))))
+             (mod (transduce xf + (range 1 (inc upper))) mask)))))

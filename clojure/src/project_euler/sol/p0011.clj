@@ -40,10 +40,9 @@
                        [(map #(val-at r (+ c %)) (range len)) ; Rightward
                         (map #(val-at (+ r %) c) (range len)) ; Downward
                         (map #(val-at (+ r %) (+ c %)) (range len)) ; Down Rightward
-                        (map #(val-at (+ r %) (- c %)) (range len))])] ; Down Leftward
-    (->> (reduce concat vecs-of-lsts)
-         (map #(apply * %))
-         (apply max))))
+                        (map #(val-at (+ r %) (- c %)) (range len))]) ; Down Leftward
+        xf (comp (mapcat concat) (map #(apply * %)))]
+    (apply max (eduction xf vecs-of-lsts))))
 
 (defn solve
   ([]
@@ -51,4 +50,3 @@
   ([len]
    {:pre [(pos? len)]}
    (find-max-product data len)))
-

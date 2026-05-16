@@ -35,6 +35,6 @@
                   (map #(eval-score encrypted-data (vec %)))
                   (apply max-key first)
                   (second))]
-     (->> (map-indexed (fn [idx ch] (bit-xor ch (nth key (mod idx 3))))
-                       encrypted-data)
-          (apply +)))))
+     (transduce (map-indexed (fn [idx ch] (bit-xor ch (nth key (mod idx 3)))))
+                +
+                encrypted-data))))

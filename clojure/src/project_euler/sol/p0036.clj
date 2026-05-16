@@ -5,7 +5,6 @@
   ([]
    (solve 1000000))
   ([limit]
-   (->> (range 1 limit 2)
-        (filter #(and (math/palindrome? % 10) (math/palindrome? % 2)))
-        (apply +))))
-
+   (transduce (filter #(and (math/palindrome? % 10) (math/palindrome? % 2)))
+              +
+              (range 1 limit 2))))

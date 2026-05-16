@@ -54,8 +54,7 @@
   ([]
    (solve 6))
   ([n-digit]
-   (->> (map #(util/combination-with-repetition % (range 1 10)) (range 1 (inc n-digit)))
-        (apply concat)
-        (filter #(= (count (find-chain %)) 60))
-        (map num-of-valid-numbers)
-        (apply +))))
+   (let [xf (comp (mapcat #(util/combination-with-repetition % (range 1 10)))
+                  (filter #(= (count (find-chain %)) 60))
+                  (map num-of-valid-numbers))]
+     (transduce xf + (range 1 (inc n-digit))))))

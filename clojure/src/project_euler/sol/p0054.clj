@@ -68,7 +68,6 @@
   ([]
    (solve (util/read-data "0054_poker.txt")))
   ([data]
-   (->> (parse-data data)
-        (map #(compare (get-hand (:player-1 %)) (get-hand (:player-2 %))))
-        (filter pos?)
-        (count))))
+   (let [xf (comp (map #(compare (get-hand (:player-1 %)) (get-hand (:player-2 %))))
+                  (filter pos?))]
+     (count (sequence xf (parse-data data))))))

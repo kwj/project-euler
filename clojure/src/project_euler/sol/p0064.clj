@@ -40,7 +40,6 @@
   ([]
    (solve 10000))
   ([limit]
-   (->> (range 1 (inc limit))
-        (map get-cont-fraction)
-        (filter #(odd? (count (second %))))
-        (count))))
+   (let [xf (comp (map get-cont-fraction)
+                  (filter #(odd? (count (second %)))))]
+     (count (sequence xf (range 1 (inc limit)))))))

@@ -20,12 +20,9 @@
 (defn solve
   ([]
    (let [ndigits 4
+         xf (comp (filter #(>= (count (second %)) 3))
+                  (mapcat #(util/combination 3 (second %)))
+                  (filter valid-set?))
          ;; The problem statement mentions there exists exactly only one answer.
-         [x y z] (->> (seq (get-prime-tbl ndigits))
-                      (filter #(>= (count (second %)) 3))
-                      (map #(util/combination 3 (second %)))
-                      (flatten)
-                      (partition 3)
-                      (filter valid-set?)
-                      (first))]
+         [x y z] (first (eduction xf (seq (get-prime-tbl ndigits))))]
      (long (+ (* x (math/pow 10 (* ndigits 2))) (* y (math/pow 10 ndigits)) z)))))

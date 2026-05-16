@@ -24,7 +24,6 @@
    (solve 100))
   ([upper]
    {:pre [(> upper 1)]}
-   (->> (range upper 1 -1)
-        (filter #(pos? (mod % 10))) ; Skip when multiple of ten.
-        (map #(aux % upper))
-        (apply max))))
+   (let [xf (comp (filter #(pos? (mod % 10))) ; Skip when multiple of ten.
+                  (map #(aux % upper)))]
+     (apply max (eduction xf (range upper 1 -1))))))

@@ -5,9 +5,9 @@
 
 (defn- get-candidate-primes
   [p current-min-sum]
-  (cons 3 (->> (rest (rest (rest prime/prime-numbers)))
-               (take-while #(and (< % p) (< (+ p %) current-min-sum)))
-               (filter #(= (mod % 3) (mod p 3))))))
+  (let [xf (comp (take-while #(and (< % p) (< (+ p %) current-min-sum)))
+                 (filter #(= (mod % 3) (mod p 3))))]
+    (cons 3 (sequence xf (rest (rest (rest prime/prime-numbers)))))))
 
 (defn- get-pairable-primes
   "Return a prime number sequence which elements can be concatenated with `x`

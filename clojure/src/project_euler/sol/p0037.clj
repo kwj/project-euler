@@ -28,7 +28,4 @@
 
 (defn solve
   []
-  (->> (make-right-truncatable-primes)
-       (filter left-truncatable-prime?)
-       (apply +)))
-
+  (transduce (filter left-truncatable-prime?) + (make-right-truncatable-primes)))

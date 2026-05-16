@@ -17,10 +17,10 @@
 ;;; according to the order of the input collection.
 (defn solve
   []
-  (->> [7 4]
-       (map #(util/permutation (range % 0 -1)))
-       (apply concat)
-       (map #(util/undigits (reverse %)))
-       (drop-while #(or (not (math/pandigital-nz? %))
-                        (not (prime/prime? %))))
-       (first)))
+  (let [xf (comp (map #(util/permutation (range % 0 -1)))
+                 (mapcat concat)
+                 (map #(util/undigits (reverse %)))
+                 (drop-while #(or (not (math/pandigital-nz? %))
+                                  (not (prime/prime? %))))
+                 (take 1))]
+    (first (eduction xf [7 4]))))

@@ -65,7 +65,6 @@
    (solve 8))
   ([size]
    {:pre [(pos? size)]}
-   (->> prime/prime-numbers
-        (drop-while #(< % 1000))
-        (drop-while #(not (prime-family? % size)))
-        (first))))
+   (let [xf (comp (drop-while #(< % 1000))
+                  (drop-while #(not (prime-family? % size))))]
+     (first (eduction xf prime/prime-numbers)))))

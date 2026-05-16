@@ -20,6 +20,4 @@
   ([data]
    (->> (parse-data data)
         (sort)
-        (map-indexed #(* (inc %1) (worth %2)))
-        (apply +))))
-
+        (transduce (map-indexed #(* (inc %1) (worth %2))) +))))

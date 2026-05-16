@@ -28,8 +28,7 @@
       (let [k (str/join (sort w))]
         (recur (next words)
                (assoc! result k (conj (get result k '()) w))))
-      (->> (filter #(> (count (second %)) 1) (persistent! result))
-           (into {})))))
+      (into {} (filter #(> (count (second %)) 1)) (persistent! result)))))
 
 (defn- find-max-square-from-words
   [words]

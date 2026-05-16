@@ -14,7 +14,4 @@
   ([upper]
    (let [tbl (make-aliquot-sum-tbl upper)
          amicable? (fn [n] (and (> n (nth tbl n)) (= n (nth tbl (nth tbl n)))))]
-     (->> (range 2 upper)
-          (map #(if (amicable? %) (+ % (nth tbl %)) 0))
-          (apply +)))))
-
+     (transduce (map #(if (amicable? %) (+ % (nth tbl %)) 0)) + (range 2 upper)))))

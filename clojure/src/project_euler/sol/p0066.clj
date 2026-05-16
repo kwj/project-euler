@@ -102,12 +102,10 @@
   ([]
    (solve 1000))
   ([limit]
-   (->> (range 1 (inc limit))
-        (map #(vector % (get-cont-fraction %)))
-        (filter #(not (zero? (count (second (second %))))))
-        (map (fn [[i [a0 lst]]]
-               (if (even? (count lst))
-                 [i (get-numerator a0 (drop-last lst))]
-                 [i (get-numerator a0 (drop-last (concat lst lst)))])))
-        (apply max-key #(second %))
-        (first))))
+   (let [xf (comp (map #(vector % (get-cont-fraction %)))
+                  (filter #(not (zero? (count (second (second %))))))
+                  (map (fn [[i [a0 lst]]]
+                         (if (even? (count lst))
+                           [i (get-numerator a0 (drop-last lst))]
+                           [i (get-numerator a0 (drop-last (concat lst lst)))]))))]
+     (first (apply max-key second (eduction xf (range 1 (inc limit))))))))

@@ -34,6 +34,4 @@
 
 (defn solve
   []
-  (->> (range 0 7)
-       (map #(d (math/pow 10 %)))
-       (apply *)))
+  (transduce (map #(d (math/pow 10 %))) * (range 0 7)))

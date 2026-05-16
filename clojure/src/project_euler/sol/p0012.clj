@@ -6,9 +6,7 @@
   (memoize (fn [n]
              (if (= n 1)
                1
-               (->> (prime/factorize n)
-                    (map #(inc (second %)))
-                    (apply *))))))
+               (transduce (map #(inc (second %))) * (prime/factorize n))))))
 
 (defn- ndivs-of-triangle
   "Return the number of divisors of the `i`-th triangular number."
@@ -24,4 +22,3 @@
    {:pre [(pos? thr)]}
    (let [x (first (drop-while #(<= (ndivs-of-triangle %) thr) (iterate inc 1)))]
      (quot (* x (inc x)) 2)))) ; triangle number's formula
-

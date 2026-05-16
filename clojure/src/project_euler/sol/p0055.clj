@@ -21,6 +21,4 @@
    (solve 10000))
   ([upper]
    {:pre [(pos? upper)]}
-   (->> (range 1 upper)
-        (filter rychrel?)
-        (count))))
+   (count (sequence (filter rychrel?) (range 1 upper)))))

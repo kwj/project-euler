@@ -5,9 +5,10 @@
 
 (defn- get-valid-numbers
   [ns]
-  (->> (drop-while #(< % 1000) ns)
-       (take-while #(< % 10000))
-       (filter #(>= (mod % 100) 10))))
+  (let [xf (comp (drop-while #(< % 1000))
+                 (take-while #(< % 10000))
+                 (filter #(>= (mod % 100) 10)))]
+    (sequence xf ns)))
 
 (defn- make-kv-map
   [ns]

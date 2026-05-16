@@ -28,6 +28,6 @@
   ([]
    (solve 1000))
   ([cnt]
-   (->> (take cnt continued-fraction)
-        (filter (fn [[n d]] (> (count (util/digits n)) (count (util/digits d)))))
-        (count))))
+   (let [xf (comp (take cnt)
+                  (filter (fn [[n d]] (> (count (util/digits n)) (count (util/digits d))))))]
+     (count (sequence xf continued-fraction)))))

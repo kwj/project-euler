@@ -21,12 +21,12 @@
   ([limit]
    {:pre [> (math/num-of-digits limit) (math/num-of-digits (dec limit))]}
    (let [n-digits (math/num-of-digits (dec limit))
-         numerator (math/factorial n-digits)]
+         numerator (math/factorial n-digits)
+         xf (comp (filter #(group89? (apply + %)))
+                  (map #(reduce (fn [acc x] (* acc (math/factorial x))) 1 (vals (frequencies %))))
+                  (map #(quot numerator %)))]
      (->> (range 0 10)
           (map #(* % %))
           (util/combination-with-repetition n-digits)
-          (filter #(group89? (apply + %)))
-          (map #(reduce (fn [acc x] (* acc (math/factorial x))) 1 (vals (frequencies %))))
-          (map #(quot numerator %))
-          (apply +)
+          (transduce xf +)
           (long)))))

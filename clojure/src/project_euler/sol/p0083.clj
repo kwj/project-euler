@@ -5,10 +5,10 @@
 
 (defn- parse-data
   ^long/2 [data]
-  (->> (map #(str/split % #",") data)
-       (map #(map parse-long %))
-       (map #(into-array Long/TYPE %))
-       (into-array)))
+  (let [xf (comp (map #(str/split % #","))
+                 (map #(map parse-long %))
+                 (map #(into-array Long/TYPE %)))]
+    (into-array (eduction xf data))))
 
 (defn- make-neighbor-map
   [n-rows n-cols]

@@ -200,13 +200,13 @@
   (loop [is (range 3)
          acc 0]
     (if (seq is)
-      (let [i (first is)]
+      (let [i (first is)
+            xf (comp (map-indexed vector)
+                     (drop 1)
+                     (drop-while #(not (.testBit ^java.math.BigInteger (second %) i))))]
         (recur (next is)
                (long (+ (* acc 10)
-                        (->> (map-indexed vector sol)
-                             (drop 1)
-                             (drop-while #(not (.testBit ^java.math.BigInteger (second %) i)))
-                             (ffirst))))))
+                        (ffirst (sequence xf sol))))))
       acc)))
 
 (defn solve

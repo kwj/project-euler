@@ -8,5 +8,4 @@
   ([]
    (solve 4000000))
   ([upper]
-   (->> (take-while #(<= % upper) even-fibs)
-        (apply +))))
+   (transduce (take-while #(<= % upper)) + even-fibs)))
