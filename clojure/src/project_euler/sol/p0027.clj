@@ -19,4 +19,3 @@
     (->> (apply max-key second pairs-ab)
          (first)
          ((fn [[a b]] (* a b))))))
-

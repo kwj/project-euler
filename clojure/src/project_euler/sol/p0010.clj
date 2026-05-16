@@ -7,4 +7,3 @@
   ([upper]
    {:pre [(>= upper 2)]}
    (apply + (prime/primes upper))))
-

@@ -8,4 +8,3 @@
    (->> (prime/factorize n)
         (peek)
         (first))))
-

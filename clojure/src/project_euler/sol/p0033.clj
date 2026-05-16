@@ -40,4 +40,3 @@
              (filter (fn [[a b c]] (= (* 9 a (- c b)) (* c (- b a)))))
              (reduce (fn [[n0 d0] [n1 d1 _]] [(* n0 n1) (* d0 d1)]) [1 1]))]
     (quot denominator (math/gcd numerator denominator))))
-

@@ -13,4 +13,3 @@
   (->> (reductions + (+ 1 365) days)
        (filter #(zero? (mod % 7)))
        (count)))
-

@@ -16,4 +16,3 @@
                 (mod idx blk)
                 (long (+ (* acc 10) (get nodes cnt)))))
        (format "%010d" acc)))))
-

@@ -7,4 +7,3 @@
   ([upper]
    {:pre [(pos? upper)]}
    (reduce math/lcm (range 1 (inc upper)))))
-

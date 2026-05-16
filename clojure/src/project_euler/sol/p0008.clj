@@ -33,4 +33,3 @@
         (partition len 1)
         (map #(apply * %))
         (apply max))))
-

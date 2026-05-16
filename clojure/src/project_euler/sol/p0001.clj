@@ -8,4 +8,3 @@
              (let [tmp (quot (dec upper) x)]
                (quot (* (inc tmp) tmp x) 2)))]
      (- (+ (f 3) (f 5)) (f 15)))))
-

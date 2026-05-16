@@ -8,4 +8,3 @@
    (solve 1000))
   ([exp]
    (apply + (util/digits (math/pow 2 exp)))))
-

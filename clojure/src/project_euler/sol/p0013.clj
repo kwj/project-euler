@@ -107,4 +107,3 @@
    (solve 10))
   ([len]
    (parse-long (subs (str (apply + data)) 0 len))))
-

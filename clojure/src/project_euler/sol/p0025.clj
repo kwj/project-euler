@@ -14,4 +14,3 @@
                      (map-indexed (fn [idx n] [(inc idx) n]) fibonacci-numbers))
          (first)
          (get 0)))))
-

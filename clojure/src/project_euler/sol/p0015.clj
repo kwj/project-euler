@@ -6,4 +6,3 @@
    (solve 20 20))
   ([x y]
    (math/binomial (+ x y) y)))
-

@@ -8,4 +8,3 @@
    (solve 100))
   ([n]
    (apply + (util/digits (math/factorial n)))))
-

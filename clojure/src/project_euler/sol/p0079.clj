@@ -30,5 +30,3 @@
   ([data]
    (let [graph (parse-data data)]
      (str/join "" (reduce (fn [acc v] (dfs graph acc v)) [] (keys graph))))))
-
-

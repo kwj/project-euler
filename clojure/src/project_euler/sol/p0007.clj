@@ -7,4 +7,3 @@
   ([idx]
    {:pre [(pos? idx)]}
    (nth prime/prime-numbers (dec idx))))
-

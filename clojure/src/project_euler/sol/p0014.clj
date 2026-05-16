@@ -18,4 +18,3 @@
         (map #(vector % (get-collatz-length %)))
         (apply max-key second)
         (first))))
-
