@@ -11,8 +11,7 @@
 
 (defn- worth
   [word]
-  (->> (map #(- (int %) (dec (int \A))) word)
-       (apply +)))
+  (transduce (map #(- (int %) (dec (int \A)))) + word))
 
 (defn solve
   ([]

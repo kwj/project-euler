@@ -19,10 +19,10 @@
 
 (defn- eval-score
   [data key]
-  [(->> (map-indexed (fn [idx ch] (eval-char (bit-xor ch (nth key (mod idx 3)))))
+  (vector (transduce (map-indexed (fn [idx ch] (eval-char (bit-xor ch (nth key (mod idx 3))))))
+                     +
                      data)
-        (apply +))
-   key])
+          key))
 
 (defn solve
   ([]

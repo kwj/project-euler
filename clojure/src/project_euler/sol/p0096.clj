@@ -213,8 +213,7 @@
   ([]
    (solve (util/read-data "0096_sudoku.txt")))
   ([data]
-   (->> (parse-data data)
-        (map make-grid)
-        (map sudoku-solver)
-        (map get-3-digit-number)
-        (apply +))))
+   (let [xf (comp (map make-grid)
+                  (map sudoku-solver)
+                  (map get-3-digit-number))]
+     (transduce xf + (parse-data data)))))

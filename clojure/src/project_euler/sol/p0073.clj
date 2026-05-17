@@ -41,15 +41,14 @@
 (defn- f
   [x]
   (->> (range 1 (inc x))
-       (map #(- (quot (- % 1) 2) (quot % 3)))
-       (apply +)))
+       (transduce (map #(- (quot (- % 1) 2) (quot % 3))) +)))
 
 (defn- g
   [limit]
   (let [mu-tbl (make-mobius-tbl limit)]
-    (->> (range 1 (inc limit))
-         (map #(* (get mu-tbl %) (f (quot limit %))))
-         (apply +))))
+    (transduce (map #(* (get mu-tbl %) (f (quot limit %))))
+               +
+               (range 1 (inc limit)))))
 
 (defn solve
   ([]
