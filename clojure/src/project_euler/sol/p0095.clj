@@ -32,5 +32,5 @@
        (doseq [n (range 2 (inc limit))]
          (check-number n)))
      (->> (apply max-key key (persistent! chain-map))
-          (second)
+          (val)
           (apply min)))))

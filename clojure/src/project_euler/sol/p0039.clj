@@ -23,6 +23,5 @@
           (map #(* p %) (range 1 (inc (quot limit p)))))
         (flatten)
         (frequencies)
-        (seq)
-        (apply max-key second) ; Note: We assume that there is only one answer.
-        (first))))
+        (apply max-key val)
+        (key)))) ; Note: We assume that there is only one answer.
