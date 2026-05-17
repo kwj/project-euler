@@ -28,6 +28,12 @@
             ::Composite
             (recur y (dec cnt))))))))
 
+(defn fermat-prime?
+  "Fermat primality test."
+  [^long n]
+  {:pre [(int? n)]}
+  (= (math/powermod 2 (dec n) n) 1))
+
 (defn prime?
   "Miller–Rabin primality test."
   [^long n]
