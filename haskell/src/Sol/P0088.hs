@@ -24,7 +24,9 @@ import Control.Monad.ST (ST)
 import Data.Array.ST (STUArray, modifyArray, newArray, runSTUArray)
 import Data.Array.Unboxed (UArray, elems)
 import Data.Foldable (for_)
-import Data.List (nub)
+import Data.List (group, sort)
+
+import Mylib.Util (headExn)
 
 prodSumLst :: Int -> UArray Int Int
 prodSumLst limit =
@@ -49,7 +51,9 @@ compute :: Int -> String
 compute limit =
     show
         . sum
-        . nub
+        . map headExn
+        . group
+        . sort
         . drop 1
         . elems
         $ prodSumLst limit
