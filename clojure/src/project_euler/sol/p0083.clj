@@ -38,16 +38,16 @@
                                           (cond (> (get x 0) (get y 0)) 1
                                                 (< (get x 0) (get y 0)) -1
                                                 :else 0))))]
-     ;; The `aset*` and `aget` functions with multi-dimensional indexes are still very slow on Clojure 1.11.
-     ;; I therefore use a workaround.
+     ;; The `aset-*` and `aget` functions with multi-dimensional indexes are still very slow on Clojure 1.11.
+     ;; So, I use a workaround for the sections that are executed many times. [*1]
      ;; [Refer] https://clojure.atlassian.net/browse/CLJ-1289
-     (aset-long (aget dist-tbl 0) 0 (aget ^longs (aget matrix 0) 0))
-     (.add pq [(aget dist-tbl 0 0) [0 0]])
+     (aset-long (aget ^long/2 dist-tbl 0) 0 (aget ^long/2 matrix 0 0))
+     (.add pq [(aget ^long/2 dist-tbl 0 0) [0 0]])
      (while (> (.size pq) 0)
        (let [[d [i j]] (.poll pq)]
          (doseq [[x y] (get-in nbrs-map [i j])]
-           (let [new-d (+ d (aget ^longs (aget matrix x) y))]
-             (when (< new-d (aget ^longs (aget dist-tbl x) y))
-               (aset-long (aget dist-tbl x) y new-d)
+           (let [new-d (+ d (aget ^longs (aget ^long/2 matrix x) y))] ; [*1]
+             (when (< new-d (aget ^longs (aget ^long/2 dist-tbl x) y)) ; [*1]
+               (aset-long (aget ^long/2 dist-tbl x) y new-d)
                (.add pq [new-d [x y]]))))))
-     (aget ^longs (aget dist-tbl (dec rows)) (dec cols)))))
+     (aget ^long/2 dist-tbl (dec rows) (dec cols)))))
