@@ -1,20 +1,23 @@
 (ns project-euler.sol.p0087
   (:require
-   [clojure.math]
-   [project-euler.lib.math :as math]
+   [clojure.math :refer [floor pow]]
    [project-euler.lib.math.prime :as prime]))
 
 (defn solve
   ([]
    (solve 50000000))
   ([limit]
-   (let [nums (for [x (take-while #(<= % (math/isqrt-long (- limit (math/pow 2 3) (math/pow 2 4))))
-                                  prime/prime-numbers)
-                    y (take-while #(<= % (math/floor (clojure.math/pow (double limit) (/ 1.0 3.0))))
-                                  prime/prime-numbers)
-                    z (take-while #(<= % (math/floor (clojure.math/pow (double limit) (/ 1.0 4.0))))
-                                  prime/prime-numbers)
-                    :let [tmp (+ (math/pow x 2) (math/pow y 3) (math/pow z 4))]
-                    :when (< tmp limit)]
-                tmp)]
-     (count (set nums)))))
+   (let [ps (prime/primes (int (floor (pow limit (/ 1 2)))))
+         z4s (sequence (comp (map #(pow % 4)) (take-while #(< % limit))) ps)
+         y3s (sequence (comp (map #(pow % 3)) (take-while #(< % limit))) ps)
+         x2s (map #(pow % 2) ps)]
+     (->> (reduce conj
+                  #{}
+                  (for [z4 z4s
+                        y3 y3s
+                        :let [tmp (+ z4 y3)]
+                        :while (< tmp limit)
+                        x2 x2s
+                        :while (< x2 (- limit tmp))]
+                    (+ tmp x2)))
+          (count)))))
