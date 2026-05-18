@@ -24,5 +24,5 @@
                   (mapcat #(util/combination 3 (second %)))
                   (filter valid-set?))
          ;; The problem statement mentions there exists exactly only one answer.
-         [x y z] (first (eduction xf (seq (get-prime-tbl ndigits))))]
+         [x y z] (first (sequence xf (seq (get-prime-tbl ndigits))))]
      (long (+ (* x (math/pow 10 (* ndigits 2))) (* y (math/pow 10 ndigits)) z)))))

@@ -67,4 +67,4 @@
    {:pre [(pos? size)]}
    (let [xf (comp (drop-while #(< % 1000))
                   (drop-while #(not (prime-family? % size))))]
-     (first (eduction xf prime/prime-numbers)))))
+     (first (sequence xf prime/prime-numbers)))))

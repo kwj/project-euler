@@ -14,4 +14,4 @@
   (let [xf (comp (mapcat #(range (long (math/pow 10 (dec %))) (inc (quot (long (math/pow 10 %)) 6))))
                  (filter #(six-permuted-multiples? %))
                  (take 1))]
-    (first (eduction xf (iterate inc 6)))))
+    (first (sequence xf (iterate inc 6)))))

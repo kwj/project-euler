@@ -13,7 +13,7 @@
                                   l)))
                  (map #(cons Long/MAX_VALUE %))
                  (map #(into-array Long/TYPE %)))]
-    (eduction xf data)))
+    (sequence xf data)))
 
 (defn solve
   ([]

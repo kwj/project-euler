@@ -23,4 +23,4 @@
                  (drop-while #(or (not (math/pandigital-nz? %))
                                   (not (prime/prime? %))))
                  (take 1))]
-    (first (eduction xf [7 4]))))
+    (first (sequence xf [7 4]))))

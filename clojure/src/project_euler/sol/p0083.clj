@@ -8,7 +8,7 @@
   (let [xf (comp (map #(str/split % #","))
                  (map #(map parse-long %))
                  (map #(into-array Long/TYPE %)))]
-    (into-array (eduction xf data))))
+    (into-array (sequence xf data))))
 
 (defn- make-neighbor-map
   [n-rows n-cols]
