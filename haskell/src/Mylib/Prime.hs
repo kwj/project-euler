@@ -109,7 +109,7 @@ lucasSeqParameter n
     | otherwise = Just (d, 1, (1 - d) `div` 4)
   where
     isqrt_n = isqrt n
-    ~d =
+    d =
         snd
             . headExn
             . dropWhile ((/= -1) . fst)
