@@ -1,6 +1,6 @@
 (ns project-euler.sol.p0034
   (:require
-   [clojure.math]
+   [clojure.math :refer [log10]]
    [project-euler.lib.math :as math]
    [project-euler.lib.util :as util]))
 
@@ -13,7 +13,7 @@
 (defn- get-max-ndigits
   []
   (->> (iterate inc 3)
-       (drop-while #(< % (+ (clojure.math/log10 %) (clojure.math/log10 (math/factorial 9)) 1)))
+       (drop-while #(< % (+ (log10 %) (log10 (math/factorial 9)) 1)))
        (first)
        (dec)))
 
