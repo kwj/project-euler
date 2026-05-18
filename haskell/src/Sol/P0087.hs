@@ -19,7 +19,7 @@ compute limit =
     show
         . S.size
         . S.fromList
-        . filter (<= limit)
+        . filter (< limit)
         $ [ x2 + y3 + z4
           | x2 <- sqLst
           , y3 <- cbLst
@@ -29,15 +29,9 @@ compute limit =
     pow :: Int -> Int -> Int
     pow b e = b ^ e
 
-    sqLst =
-        flip pow 2
-            <$> takeWhile (<= floor (fromIntegral limit ** (1 / 2 :: Double))) primeNumbers
-    cbLst =
-        flip pow 3
-            <$> takeWhile (<= floor (fromIntegral limit ** (1 / 3 :: Double))) primeNumbers
-    quLst =
-        flip pow 4
-            <$> takeWhile (<= floor (fromIntegral limit ** (1 / 4 :: Double))) primeNumbers
+    sqLst = takeWhile (< limit) . map (`pow` 2) $ primeNumbers
+    cbLst = takeWhile (< limit) . map (`pow` 3) $ primeNumbers
+    quLst = takeWhile (< limit) . map (`pow` 4) $ primeNumbers
 
 solve :: String
 solve = compute 50_000_000
