@@ -8,7 +8,7 @@
    (solve 50000000))
   ([limit]
    ;; Use java.util.HashSet due to improving performance
-   (let [ps (prime/primes (int (floor (pow limit (/ 1 2)))))
+   (let [ps (prime/primes (long (floor (pow limit (/ 1 2)))))
          z4s (sequence (comp (map #(pow % 4)) (take-while #(< % limit))) ps)
          y3s (sequence (comp (map #(pow % 3)) (take-while #(< % limit))) ps)
          x2s (map #(pow % 2) ps)
