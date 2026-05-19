@@ -2,8 +2,7 @@
 ;;;; This implementation returns a wrong answer when using 6-sided dice.
 ;;;; The cause has not been identified.
 
-(ns project-euler.sol.p0084
-  (:require [clojure.pprint]))
+(ns project-euler.sol.p0084)
 
 ;;;;  Stochastic matrix: stoch-matrix
 ;;;;
