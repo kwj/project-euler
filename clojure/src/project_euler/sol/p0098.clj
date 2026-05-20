@@ -30,7 +30,7 @@
                (assoc! result k (conj (get result k '()) w))))
       (filter #(> (count %) 1) (vals (persistent! result))))))
 
-(defn- find-max-square-from-words
+(defn- find-squares-from-words
   [words]
   (let [squares (get-squares (count (first words)))]
     (letfn [(aux [[w1 w2]]
@@ -46,13 +46,12 @@
                           (recur (next sqs) result)))))
                   result)))]
       (->> (util/combination 2 words)
-           (map aux)
-           (apply max)))))
+           (map aux)))))
 
 (defn solve
   ([]
    (solve (util/read-data "0098_words.txt")))
   ([data]
    (->> (parse-data data)
-        (map find-max-square-from-words)
+        (mapcat find-squares-from-words)
         (apply max))))
