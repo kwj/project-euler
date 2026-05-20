@@ -4,4 +4,4 @@
 (defn solve
   []
   (let [modulo (math/pow 10 10)]
-    (format "%010d" (biginteger (mod (inc (* 28433 (math/powermod 2 7830457 modulo))) modulo)))))
+    (format "%010d" (mod (inc (* 28433 (math/powermod 2 7830457 modulo))) modulo))))
