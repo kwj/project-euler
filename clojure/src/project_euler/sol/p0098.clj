@@ -9,14 +9,14 @@
 
 (defn- get-squares
   [n-digits]
-  (if-let [squares (get @sq-tbl n-digits)]
-    squares
-    (do (swap! sq-tbl assoc n-digits (->> math/square-numbers
-                                          (drop-while #(< % (math/pow 10 (dec n-digits))))
-                                          (take-while #(< % (math/pow 10 n-digits)))
-                                          (map str)
-                                          (set)))
-        (recur n-digits))))
+  (if-let [result (get @sq-tbl n-digits)]
+    result
+    (let [xf (comp (drop-while #(< % (math/pow 10 (dec n-digits))))
+                   (take-while #(< % (math/pow 10 n-digits)))
+                   (map str))
+          squares (set (eduction xf math/square-numbers))]
+      (swap! sq-tbl assoc n-digits squares)
+      squares)))
 
 (defn- parse-data
   [data]
@@ -28,7 +28,7 @@
       (let [k (str/join (sort w))]
         (recur (next words)
                (assoc! result k (conj (get result k '()) w))))
-      (into {} (filter #(> (count (second %)) 1)) (persistent! result)))))
+      (filter #(> (count %) 1) (vals (persistent! result))))))
 
 (defn- find-max-square-from-words
   [words]
@@ -54,6 +54,5 @@
    (solve (util/read-data "0098_words.txt")))
   ([data]
    (->> (parse-data data)
-        (vals)
         (map find-max-square-from-words)
         (apply max))))
