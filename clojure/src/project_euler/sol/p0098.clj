@@ -30,22 +30,24 @@
                (assoc! result k (conj (get result k '()) w))))
       (filter #(> (count %) 1) (vals (persistent! result))))))
 
-(defn- find-squares-from-words
-  [words]
-  (let [squares (get-squares (count (first words)))]
+(defn- find-max-anagram-square
+  "Find the maximum square number from square anagram word pairs.
+   If there is no square anagram pair in anagrams, return 0."
+  [anagrams]
+  (let [string-sq-numbers (get-squares (count (first anagrams)))]
     (letfn [(aux [[w1 w2]]
-              (loop [sqs squares
+              (loop [sqs string-sq-numbers
                      result 0]
                 (if-let [sq (first sqs)]
                   (let [trans (clojure.set/map-invert (zipmap sq w1))]
                     (if (not= sq (str/join (map #(get trans %) w1)))
                       (recur (next sqs) result)
                       (let [tmp (str/join (map #(get trans %) w2))]
-                        (if (contains? squares tmp)
-                          (recur (next sqs) (long (max result (parse-long sq) (parse-long tmp))))
+                        (if (contains? string-sq-numbers tmp)
+                          (recur (next sqs) (max result (parse-long sq) (parse-long tmp)))
                           (recur (next sqs) result)))))
                   result)))]
-      (->> (util/combination 2 words)
+      (->> (util/combination 2 anagrams)
            (map aux)))))
 
 (defn solve
@@ -53,5 +55,5 @@
    (solve (util/read-data "0098_words.txt")))
   ([data]
    (->> (parse-data data)
-        (mapcat find-squares-from-words)
+        (mapcat find-max-anagram-square)
         (apply max))))
