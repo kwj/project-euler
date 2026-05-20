@@ -64,7 +64,10 @@
       (if (zero? e)
         (if inv
           (/ 1 (*' sign ret))
-          (*' sign ret))
+          (let [n (*' sign ret)]
+            (cond
+              (> n Long/MAX_VALUE) n
+              :else (long n))))
         (if (odd? e)
           (recur (*' ret b) (*' b b) (bit-shift-right e 1))
           (recur ret (*' b b) (bit-shift-right e 1)))))))

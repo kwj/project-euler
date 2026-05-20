@@ -27,7 +27,7 @@
    (let [dup-ctr (make-dupctr-tbl upper)
          base-limit (math/isqrt-long upper)
          skip-tbl (atom (vec (repeat (inc base-limit) false)))
-         ans (atom (long (math/pow (dec upper) 2)))]
+         ans (atom (math/pow (dec upper) 2))]
      (loop [bs (range 2 (inc base-limit))]
        (when-first [b bs]
          (when (not (get @skip-tbl b))

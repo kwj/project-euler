@@ -19,15 +19,15 @@
 ;;;;
 ;;;;     N = p1^k1 * p2^k2 * ... * pn^kn  (N < 10^7, n > 1, 11 <= p1 < p2 < ... < pn, k1>2 when n=1)
 
-(def ^:private limit (dec (long (math/pow 10 7))))
+(def ^:private limit (dec (math/pow 10 7)))
 
 (defn- prod
   [pf-lst]
-  (reduce (fn [acc [b e]] (* acc (long (math/pow b e)))) 1 pf-lst))
+  (reduce (fn [acc [b e]] (* acc (math/pow b e))) 1 pf-lst))
 
 (defn- phi
   [pf-lst]
-  (reduce (fn [acc [b e]] (* acc (long (math/pow b (dec e))) (dec b))) 1 pf-lst))
+  (reduce (fn [acc [b e]] (* acc (math/pow b (dec e)) (dec b))) 1 pf-lst))
 
 (defn- get-phi-ratio
   [pf-lst]

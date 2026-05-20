@@ -6,7 +6,7 @@
    (solve 100))
   ([upper]
    {:pre [(pos? upper)]}
-   (letfn [(square-of-sum [n] (long (math/pow (quot (* n (inc n)) 2) 2)))
+   (letfn [(square-of-sum [n] (math/pow (quot (* n (inc n)) 2) 2))
            (sum-of-squares [n] (quot (* n (inc n) (inc (* n 2))) 6))]
      ;; The square of sum is larger or equal to the sum of squares.
      (- (square-of-sum upper) (sum-of-squares upper)))))

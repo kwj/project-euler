@@ -13,7 +13,7 @@
   ([cnt]
    (loop [ns (iterate inc 1)
           tbl {}]
-     (let [cube (long (math/pow (first ns) 3))
+     (let [cube (math/pow (first ns) 3)
            key (make-key cube)
            data (get tbl key [])]
        (if (= (count data) (dec cnt))

@@ -16,7 +16,7 @@
    (solve 5))
   ([exp]
    {:pre [(> exp 1)]}
-   (let [pow-tbl (vec (map #(long (math/pow % exp)) (range 10)))
+   (let [pow-tbl (vec (map #(math/pow % exp) (range 10)))
          xf (comp (map #(util/combination-with-repetition % (range 10)))
                   (mapcat concat)
                   (map (fn [tpl] [tpl (apply + (map #(get pow-tbl %) tpl))]))

@@ -23,4 +23,4 @@
                                        (zero? (mod half-perim (* m (+ m n)))))]
                         [m n]))
          k (quot (quot half-perim m) (+ m n))]
-     (long (* (math/pow k 3) (- (math/pow m 4) (math/pow n 4)) 2 m n)))))
+     (* (math/pow k 3) (- (math/pow m 4) (math/pow n 4)) 2 m n))))

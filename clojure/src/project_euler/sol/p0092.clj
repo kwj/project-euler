@@ -12,7 +12,7 @@
                (if (zero? x)
                  acc
                  (recur (quot x 10)
-                        (long (+ acc (math/pow (mod x 10) 2)))))))
+                        (+ acc (math/pow (mod x 10) 2))))))
       (= n 89))))
 
 (defn solve

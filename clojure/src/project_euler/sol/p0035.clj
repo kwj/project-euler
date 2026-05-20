@@ -6,7 +6,7 @@
 (defn- circular-prime?
   [n]
   (let [k (math/num-of-digits n)
-        d (long (math/pow 10 (dec k)))]
+        d (math/pow 10 (dec k))]
     (loop [n n
            cnt (dec k)
            result true]

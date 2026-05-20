@@ -18,7 +18,7 @@
 (defn- carmichael
   [n]
   (->> (prime/factorize n)
-       (map (fn [[base exp]] (* (dec base) (long (math/pow base (dec exp))))))
+       (map (fn [[base exp]] (* (dec base) (math/pow base (dec exp)))))
        (reduce math/lcm)))
 
 (defn- find-repetend-length

@@ -9,11 +9,11 @@
    (solve 3))
   ([n-digits]
    {:pre [(pos? n-digits)]}
-   (let [n-upper (dec (long (math/pow 10 n-digits)))
-         n-lower (long (math/pow 10 (dec n-digits)))
-         blk-upper-limit (long (math/pow 10 (* n-digits 2)))
+   (let [n-upper (dec (math/pow 10 n-digits))
+         n-lower (math/pow 10 (dec n-digits))
+         blk-upper-limit (math/pow 10 (* n-digits 2))
          blk-lower-limit (if (> n-digits 1) (math/pow 10 (* (dec n-digits) 2)) 0)
-         blk-width (long (math/pow 10 (- (* n-digits 2) 2)))]
+         blk-width (math/pow 10 (- (* n-digits 2) 2))]
      (loop [upper-lst (range blk-upper-limit blk-lower-limit (- blk-width))]
        (when-first [blk-upper upper-lst]
          (let [blk-lower (- blk-upper blk-width)

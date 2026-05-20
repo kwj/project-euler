@@ -11,7 +11,7 @@
 
 (defn solve
   []
-  (let [xf (comp (mapcat #(range (long (math/pow 10 (dec %))) (inc (quot (long (math/pow 10 %)) 6))))
+  (let [xf (comp (mapcat #(range (math/pow 10 (dec %)) (inc (quot (math/pow 10 %) 6))))
                  (filter #(six-permuted-multiples? %))
                  (take 1))]
     (first (sequence xf (iterate inc 6)))))

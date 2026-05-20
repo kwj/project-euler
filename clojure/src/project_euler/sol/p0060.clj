@@ -24,7 +24,7 @@
   (letfn [(prime-pair? [a upper-a b upper-b]
             (and (prime/fermat-prime? (+ (* a upper-b) b))
                  (prime/fermat-prime? (+ (* b upper-a) a))))]
-    (let [upper-x (long (math/pow 10 (math/num-of-digits x)))]
+    (let [upper-x (math/pow 10 (math/num-of-digits x))]
       (loop [ps asc-ps
              upper-p 10
              result '()]
