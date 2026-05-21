@@ -59,6 +59,7 @@
 (defn pow
   "Compute the exponentiation which base is `b` and power is `e`."
   [^long b ^long e]
+  {:pre [(int? b) (int? e)]}
   (let [sign (if (and (neg? b) (odd? e)) -1 1) inv (neg? e)]
     (loop [ret 1N b (bigint (abs b)) e (abs e)]
       (if (zero? e)
@@ -75,7 +76,7 @@
 (defn invmod
   "Compute the modular multiplicative inverse `x` which `a` * `x` `mod` `m` = 1."
   [^long a ^long m]
-  {:pre [(> m 1)]}
+  {:pre [(int? a) (int? m) (> m 1)]}
   (let [[g x _] (gcdx a m)]
     (if (= g 1)
       (mod x m)
@@ -84,7 +85,7 @@
 (defn powermod
   "Compute the modular exponentiation which base is `b`, power is `p` and modulus is `m`."
   [^long b ^long e ^long m]
-  {:pre [(>= m 0)]}
+  {:pre [(int? b) (int? e) (int? m) (>= m 0)]}
   (cond
     (= m 1) 0
     (zero? e) 1
