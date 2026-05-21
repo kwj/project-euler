@@ -16,8 +16,8 @@
          ;; one Pythagorean triplet when the perimeter is 1000.
          [m n] (first (for [m (range 2 (inc (math/isqrt-long half-perim)))
                             n (range (inc (mod m 2)) (inc (quot (- 500 m) m)) 2)
-                            :when (and (> m n)
-                                       (= (math/gcd m n) 1)
+                            :while (> m n)
+                            :when (and (= (math/gcd m n) 1)
                                        (zero? (mod half-perim m))
                                        (zero? (mod half-perim (+ m n)))
                                        (zero? (mod half-perim (* m (+ m n)))))]

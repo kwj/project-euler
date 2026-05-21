@@ -25,9 +25,9 @@
                    (* a b))
                  (for [a (range 101 1000)
                        b (range 11 100)
+                       :while (< (* a b) 10000)
                        :when (and (not= (mod a 10) 0)
                                   (not= (mod b 10) 0)
-                                  (< (* a b) 10000)
                                   (math/pandigital-nz? (aux a b)))]
                    (* a b)))
          (sort)

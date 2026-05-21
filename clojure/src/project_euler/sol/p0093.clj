@@ -12,10 +12,10 @@
               (if (= (count lst) 1)
                 (when (integer? (first lst))
                   (conj! set-of-numbers (first lst)))
-                (doseq [[d1 d2 rest-lst] (for [[i d1] (map-indexed vector lst)
-                                               [j d2] (map-indexed vector lst)
-                                               :when (< i j)]
-                                           [d1 d2 (remove-at [i j] lst)])]
+                (doseq [[d1 d2 rest-lst] (for [j (range (count lst))
+                                               i (range (count lst))
+                                               :while (< i j)]
+                                           [(nth lst i) (nth lst j) (remove-at [i j] lst)])]
                   (aux (cons (+ d1 d2) rest-lst))
                   (aux (cons (* d1 d2) rest-lst))
                   (aux (cons (- d1 d2) rest-lst))
@@ -33,11 +33,11 @@
   "Return the number of consecutive numbers from 1.
   If there is no consecutive numbers, return 0."
   [lst]
-  (let [consec-seq (->> (make-numbers lst)
-                        (map-indexed #(vector (inc %1) %2))
-                        (take-while #(= (nth % 0) (nth % 1))))]
-    (if (seq consec-seq)
-      (first (last consec-seq))
+  (let [consec-numbers (->> (make-numbers lst)
+                            (map-indexed #(vector (inc %1) %2))
+                            (take-while #(= (nth % 0) (nth % 1))))]
+    (if (seq consec-numbers)
+      (count consec-numbers)
       0)))
 
 (defn solve

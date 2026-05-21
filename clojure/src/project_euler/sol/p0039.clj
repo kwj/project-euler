@@ -19,7 +19,8 @@
    (->> (for [m (range 3 (inc (math/isqrt-long limit)) 2)
               n (range 1 m 2)
               :let [p (* m (+ m n))]
-              :when (and (= (math/gcd m n) 1) (<= p limit))]
+              :while (<= p limit)
+              :when (= (math/gcd m n) 1)]
           (map #(* p %) (range 1 (inc (quot limit p)))))
         (flatten)
         (frequencies)

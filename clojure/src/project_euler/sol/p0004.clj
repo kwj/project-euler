@@ -18,11 +18,11 @@
        (when-first [blk-upper upper-lst]
          (let [blk-lower (- blk-upper blk-width)
                prods (for [x (range n-upper (dec n-lower) -1)
-                           :when (>= (* x x) blk-lower)
+                           :while (>= (* x x) blk-lower)
                            y (range (min (quot blk-upper x) x) (dec n-lower) -1)
                            :let [prod (* x y)]
-                           :when (and (>= prod blk-lower)
-                                      (math/palindrome? prod))]
+                           :while (>= prod blk-lower)
+                           :when (math/palindrome? prod)]
                        prod)]
            (if (seq prods)
              (apply max prods)
