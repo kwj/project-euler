@@ -3,13 +3,14 @@
 open Core
 
 let compute num =
-  let sum_of_sq =
+  let sum_of_sqs =
     List.range 1 num ~stop:`inclusive |> List.sum (module Int) ~f:(fun x -> x * x)
   in
   let sq_of_sum =
     List.range 1 num ~stop:`inclusive |> List.sum (module Int) ~f:Fn.id |> fun x -> x * x
   in
-  abs (sum_of_sq - sq_of_sum)
+  (* The square of sum is equal or larger than the sum of squares. *)
+  sq_of_sum - sum_of_sqs
 ;;
 
 let solve () = compute 100 |> Int.to_string

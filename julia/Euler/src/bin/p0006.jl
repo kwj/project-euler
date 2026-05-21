@@ -7,7 +7,8 @@ function solve_0006(start::Int = 1, stop::Int = 100)
     sum_of_squares(start, stop) = sum(map(x -> x ^ 2, start:stop))
     square_of_sum(start, stop) = sum(start:stop) ^ 2
 
-    abs(sum_of_squares(start, stop) - square_of_sum(start, stop))
+    # The square of sums is equal or larger than the sum of squares.
+    square_of_sum(start, stop) - sum_of_squares(start, stop)
 end
 
 end #module

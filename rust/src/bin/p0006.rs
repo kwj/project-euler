@@ -9,7 +9,8 @@ fn solve() -> String {
 fn compute(upper: i64) -> i64 {
     debug_assert!(upper > 0);
 
-    (sum_of_squares(upper) - square_of_sum(upper)).abs()
+    // The square of sum is equal or larger than the sum of squares.
+    square_of_sum(upper) - sum_of_squares(upper)
 }
 
 fn sum_of_squares(n: i64) -> i64 {
