@@ -43,8 +43,6 @@
 (defn solve
   []
   (->> (util/combination 4 (range 1 10))
-       (map #(vector (get-consec-length %) %))
-       (apply max-key first)
-       (second)
+       (apply max-key get-consec-length)
        (reverse)
        (util/undigits)))

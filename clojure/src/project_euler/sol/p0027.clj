@@ -3,7 +3,7 @@
    [project-euler.lib.math.prime :as prime]))
 
 (defn- count-consec-times
-  [a b]
+  [[a b]]
   (loop [cnt 1]
     (if (prime/simple-prime? (+ (* cnt (+ cnt a)) b))
       (recur (inc cnt))
@@ -15,7 +15,7 @@
         pairs-ab (for [b (filter #(< % 1000) (rest p-lst))
                        a (map #(- % b 1) p-lst)
                        :while (< a 1000)]
-                   [[a b] (count-consec-times a b)])]
-    (->> (apply max-key second pairs-ab)
-         (first)
-         ((fn [[a b]] (* a b))))))
+                   [a b])]
+    (->> pairs-ab
+         (apply max-key count-consec-times)
+         (apply *))))

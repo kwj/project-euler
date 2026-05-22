@@ -8,7 +8,7 @@
   (->> (str/split (first data) #",")
        (map parse-long)))
 
-(defn- eval-char
+(defn- score-char
   [c]
   (cond
     (<= 0x61 c 0x7A) 2 ; lowercase letters
@@ -17,24 +17,19 @@
     (= c 0x20) 3 ; space
     :else 0))
 
-(defn- eval-score
-  [data key]
-  (vector (transduce (map-indexed (fn [idx ch] (eval-char (bit-xor ch (nth key (mod idx 3))))))
-                     +
-                     data)
-          key))
+(defn- unencrypt-and-sum
+  [f data key]
+  (transduce (map-indexed (fn [idx ch] (f (bit-xor ch (nth key (mod idx 3))))))
+             +
+             data))
 
 (defn solve
   ([]
    (solve (util/read-data "0059_cipher.txt")))
   ([data]
-   (let [encrypted-data (parse-data data)
-         key (->> (util/cartesian-product (range (int \a) (inc (int \z)))
-                                          (range (int \a) (inc (int \z)))
-                                          (range (int \a) (inc (int \z))))
-                  (map #(eval-score encrypted-data (vec %)))
-                  (apply max-key first)
-                  (second))]
-     (transduce (map-indexed (fn [idx ch] (bit-xor ch (nth key (mod idx 3)))))
-                +
-                encrypted-data))))
+   (let [encrypted-data (parse-data data)]
+     (->> (util/cartesian-product (range (int \a) (inc (int \z)))
+                                  (range (int \a) (inc (int \z)))
+                                  (range (int \a) (inc (int \z))))
+          (apply max-key #(unencrypt-and-sum score-char encrypted-data %))
+          (unencrypt-and-sum identity encrypted-data)))))

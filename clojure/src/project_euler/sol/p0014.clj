@@ -15,6 +15,4 @@
    (solve 1000000))
   ([thr]
    (->> (range (quot thr 2) thr)
-        (map #(vector % (get-collatz-length %)))
-        (apply max-key second)
-        (first))))
+        (apply max-key get-collatz-length))))
