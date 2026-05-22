@@ -41,7 +41,7 @@
                         (map #(val-at (+ r %) c) (range len)) ; Downward
                         (map #(val-at (+ r %) (+ c %)) (range len)) ; Down Rightward
                         (map #(val-at (+ r %) (- c %)) (range len))]) ; Down Leftward
-        xf (comp (mapcat concat) (map #(apply * %)))]
+        xf (comp cat (map #(apply * %)))]
     (apply max (eduction xf vecs-of-lsts))))
 
 (defn solve

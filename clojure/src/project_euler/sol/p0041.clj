@@ -18,7 +18,7 @@
 (defn solve
   []
   (let [xf (comp (map #(util/permutation (range % 0 -1)))
-                 (mapcat concat)
+                 cat
                  (map #(util/undigits (reverse %)))
                  (drop-while #(or (not (math/pandigital-nz? %))
                                   (not (prime/prime? %))))
