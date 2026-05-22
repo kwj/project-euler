@@ -103,7 +103,7 @@
    (solve 1000))
   ([limit]
    (let [xf (comp (map #(vector % (get-cont-fraction %)))
-                  (filter #(not (zero? (count (second (second %))))))
+                  (remove #(zero? (count (second (second %)))))
                   (map (fn [[i [a0 lst]]]
                          (if (even? (count lst))
                            [i (get-numerator a0 (drop-last lst))]

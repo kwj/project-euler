@@ -4,7 +4,7 @@
 (defn solve
   []
   (let [divisors [1 1 17 13 11 7 5 3 2 1]
-        xf (comp (filter #(not (= "0" (subs % 0 1))))
+        xf (comp (remove #(= "0" (subs % 0 1)))
                  (map parse-long))]
     (letfn [(find-numbers [ds str-numbers]
               (if-let [d (first ds)]

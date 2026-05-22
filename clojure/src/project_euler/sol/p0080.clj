@@ -8,7 +8,7 @@
    (solve 100 100))
   ([upper n-digit]
    (let [pow10 (math/pow 10 (* (dec n-digit) 2))
-         xf (comp (filter #(not (math/square? %)))
+         xf (comp (remove #(math/square? %))
                   (map #(math/isqrt (* % pow10))) ; Use math/isqrt because bigint value.
                   (map #(util/digits %))
                   (map #(take n-digit (reverse %)))
