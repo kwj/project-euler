@@ -11,10 +11,10 @@
 
 (defn solve
   ([]
-   (solve (util/read-data "0099_base_exp.txt")))
-  ([data]
+   (solve "0099_base_exp.txt"))
+  ([fname]
    (let [xf (comp (map (fn [[b e]] (* e (log10 b))))
                   (map-indexed vector))]
-     (->> (apply max-key second (eduction xf (parse-data data)))
+     (->> (apply max-key second (eduction xf (parse-data (util/read-data fname))))
           (first)
           (inc)))))

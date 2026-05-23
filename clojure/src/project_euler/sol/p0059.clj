@@ -19,15 +19,16 @@
 
 (defn- unencrypt-and-sum
   [f data key]
-  (transduce (map-indexed (fn [idx ch] (f (bit-xor ch (nth key (mod idx 3))))))
-             +
-             data))
+  (let [key-v (vec key)]
+    (transduce (map-indexed (fn [idx ch] (f (bit-xor ch (nth key-v (mod idx 3))))))
+               +
+               data)))
 
 (defn solve
   ([]
-   (solve (util/read-data "0059_cipher.txt")))
-  ([data]
-   (let [encrypted-data (parse-data data)]
+   (solve "0059_cipher.txt"))
+  ([fname]
+   (let [encrypted-data (parse-data (util/read-data fname))]
      (->> (util/cartesian-product (range (int \a) (inc (int \z)))
                                   (range (int \a) (inc (int \z)))
                                   (range (int \a) (inc (int \z))))

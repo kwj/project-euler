@@ -52,8 +52,8 @@
 
 (defn solve
   ([]
-   (solve (util/read-data "0098_words.txt")))
-  ([data]
-   (->> (parse-data data)
+   (solve "0098_words.txt"))
+  ([fname]
+   (->> (parse-data (util/read-data fname))
         (mapcat find-max-anagram-square)
         (apply max))))

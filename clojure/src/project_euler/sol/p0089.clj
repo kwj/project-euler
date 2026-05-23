@@ -33,8 +33,8 @@
 
 (defn solve
   ([]
-   (solve (util/read-data "0089_roman.txt")))
-  ([data]
+   (solve "0089_roman.txt"))
+  ([fname]
    (transduce (map #(- (count %) (count (replace-roman-nums %))))
               +
-              data)))
+              (util/read-data fname))))

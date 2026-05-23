@@ -211,9 +211,9 @@
 
 (defn solve
   ([]
-   (solve (util/read-data "0096_sudoku.txt")))
-  ([data]
+   (solve "0096_sudoku.txt"))
+  ([fname]
    (let [xf (comp (map make-grid)
                   (map sudoku-solver)
                   (map get-3-digit-number))]
-     (transduce xf + (parse-data data)))))
+     (transduce xf + (parse-data (util/read-data fname))))))

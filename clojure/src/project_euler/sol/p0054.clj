@@ -66,8 +66,8 @@
 
 (defn solve
   ([]
-   (solve (util/read-data "0054_poker.txt")))
-  ([data]
+   (solve "0054_poker.txt"))
+  ([fname]
    (let [xf (comp (map #(compare (get-hand (:player-1 %)) (get-hand (:player-2 %))))
                   (filter pos?))]
-     (count (sequence xf (parse-data data))))))
+     (count (sequence xf (parse-data (util/read-data fname)))))))

@@ -10,9 +10,9 @@
 
 (defn solve
   ([]
-   (solve (util/read-data "0067_triangle.txt")))
-  ([data]
-   (->> (parse-data data)
+   (solve "0067_triangle.txt"))
+  ([fname]
+   (->> (parse-data (util/read-data fname))
         (reverse)
         (reduce #(map + (map max %1 (rest %1)) %2))
         (first))))

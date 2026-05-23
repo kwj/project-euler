@@ -17,9 +17,9 @@
 
 (defn solve
   ([]
-   (solve (util/read-data "0081_matrix.txt")))
-  ([data]
-   (let [matrix (parse-data data)]
+   (solve "0081_matrix.txt"))
+  ([fname]
+   (let [matrix (parse-data (util/read-data fname))]
      (loop [work (longs (first matrix))
             xs (next matrix)]
        (if-let [arr (longs (first xs))]

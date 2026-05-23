@@ -15,8 +15,8 @@
 
 (defn solve
   ([]
-   (solve (util/read-data "0022_names.txt")))
-  ([data]
-   (->> (parse-data data)
+   (solve "0022_names.txt"))
+  ([fname]
+   (->> (parse-data (util/read-data fname))
         (sort)
         (transduce (map-indexed #(* (inc %1) (worth %2))) +))))

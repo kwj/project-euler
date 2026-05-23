@@ -26,9 +26,9 @@
 
 (defn solve
   ([]
-   (solve (util/read-data "0083_matrix.txt")))
-  ([data]
-   (let [matrix (parse-data data)
+   (solve "0083_matrix.txt"))
+  ([fname]
+   (let [matrix (parse-data (util/read-data fname))
          rows (alength matrix)
          cols (alength ^longs (aget matrix 0))
          nbrs-map (make-neighbor-map rows cols)

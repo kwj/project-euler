@@ -16,8 +16,8 @@
 
 (defn solve
   ([]
-   (solve (util/read-data "0042_words.txt")))
-  ([data]
-   (->> (parse-data data)
+   (solve "0042_words.txt"))
+  ([fname]
+   (->> (parse-data (util/read-data fname))
         (filter #(math/triangular? (worth %)))
         (count))))

@@ -26,7 +26,7 @@
 
 (defn solve
   ([]
-   (solve (util/read-data "0079_keylog.txt")))
-  ([data]
-   (let [graph (parse-data data)]
+   (solve "0079_keylog.txt"))
+  ([fname]
+   (let [graph (parse-data (util/read-data fname))]
      (str/join "" (reduce (fn [acc v] (dfs graph acc v)) [] (keys graph))))))
