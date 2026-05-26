@@ -1,6 +1,6 @@
 (ns project-euler.sol.p0060
   (:require
-   [project-euler.lib.math :as math]
+   [project-euler.lib.math :as my-math]
    [project-euler.lib.math.prime :as prime]))
 
 (def ^:private primes-rem1
@@ -24,7 +24,7 @@
   (letfn [(prime-pair? [a upper-a b upper-b]
             (and (prime/fermat-prime? (+ (* a upper-b) b))
                  (prime/fermat-prime? (+ (* b upper-a) a))))]
-    (let [upper-x (math/pow 10 (math/num-of-digits x))]
+    (let [upper-x (my-math/pow 10 (my-math/num-of-digits x))]
       (loop [ps asc-ps
              upper-p 10
              result '()]
@@ -32,15 +32,15 @@
           (let [p (first ps)]
             (cond
               (> p upper-p) (recur ps (* upper-p 10) result)
-              (prime-pair? x upper-x p upper-p) (recur (rest ps) upper-p (conj result p))
-              :else (recur (rest ps) upper-p result)))
+              (prime-pair? x upper-x p upper-p) (recur (next ps) upper-p (conj result p))
+              :else (recur (next ps) upper-p result)))
           result)))))
 
 (defn- clique?
   [lst]
   (letfn [(prime-pair? [a b]
-            (let [x (+ (* b (math/pow 10 (math/num-of-digits a))) a)
-                  y (+ (* a (math/pow 10 (math/num-of-digits b))) b)]
+            (let [x (+ (* b (my-math/pow 10 (my-math/num-of-digits a))) a)
+                  y (+ (* a (my-math/pow 10 (my-math/num-of-digits b))) b)]
               (and (prime/prime? x) (prime/prime? y))))]
     (loop [lst lst]
       (if-let [[x & xs] (seq lst)]
@@ -60,8 +60,8 @@
                 (loop [ps ps]
                   (when (>= (count ps) depth)
                     (when (every? #(contains? (get tbl %) (first ps)) group)
-                      (aux (conj group (first ps)) (rest ps) (dec depth)))
-                    (recur (rest ps))))))]
+                      (aux (conj group (first ps)) (next ps) (dec depth)))
+                    (recur (next ps))))))]
       (aux '() desc-ps size))
     (filter #(clique? (conj % p)) (persistent! result))))
 

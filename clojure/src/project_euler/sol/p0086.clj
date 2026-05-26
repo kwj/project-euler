@@ -1,5 +1,5 @@
 (ns project-euler.sol.p0086
-  (:require [project-euler.lib.math :as math]))
+  (:require [project-euler.lib.math :as my-math]))
 
 ;;;;   1 <= a, b, c <= M
 ;;;;
@@ -42,7 +42,7 @@
          acc 0]
     (if (> ab 1)
       (let [tmp (+ (* c c) (* ab ab))
-            tmp-isqrt (math/isqrt-long tmp)]
+            tmp-isqrt (my-math/isqrt-long tmp)]
         (if (= (* tmp-isqrt tmp-isqrt) tmp)
           (cond
             (<= ab c) (recur (dec ab) (+ acc (quot ab 2)))

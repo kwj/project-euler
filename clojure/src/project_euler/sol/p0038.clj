@@ -1,5 +1,5 @@
 (ns project-euler.sol.p0038
-  (:require [project-euler.lib.math :as math]))
+  (:require [project-euler.lib.math :as my-math]))
 
 ;;;; It is clear that number X is within 4 digits from the problem statement.
 ;;;;
@@ -28,17 +28,9 @@
 ;;;; It is clear that the range of candidates is only [9183, 9499].
 ;;;; Finally, the last digit of numbers is 0, 1, 4, 5, 8 or 9 can be excluded from candidates.
 
-(defn- get-pandigital-numbers
-  [xs]
-  (for [x xs
-        :let [r (mod x 10)]
-        :when (or (= r 2) (= r 3) (= r 6) (= r 7))
-        :let [n (* x 100002)] ; x * 10^5 + x * 2 -> x * 100002
-        :when (math/pandigital-nz? n)]
-    n))
-
 (defn solve
   []
-  (->> (range 9183 9500)
-       (get-pandigital-numbers)
-       (apply max 918273645)))
+  (let [xf (comp (filter #(contains? #{2 3 6 7} (mod % 10)))
+                 (map #(* % 100002)) ; x * 10^5 + x * 2 -> x * 100002
+                 (filter my-math/pandigital-nz?))]
+    (transduce xf max 918273645 (range 9183 9500))))

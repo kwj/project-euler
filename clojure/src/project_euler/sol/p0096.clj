@@ -127,8 +127,7 @@
   (let [s (-> (str/join rows)
               (str/replace #"[^0-9.]" "")
               (str/replace #"\." "0"))]
-    (->> (map #(- (int %) (int \0)) s)
-         (vec))))
+    (mapv #(- (int %) (int \0)) s)))
 
 (defn- parse-data
   [data]
@@ -138,11 +137,11 @@
     (if (seq xs)
       (let [s (first xs)]
         (cond
-          (re-find #"^[0-9.]" s) (recur (rest xs) (conj acc s) result)
-          (re-find #"^-" s) (recur (rest xs) acc result)
-          (not (zero? (count acc)))  (recur (rest xs) [] (conj! result (process-data acc)))
-          :else (recur (rest xs) acc result)))
-      (do (when (not (zero? (count acc)))
+          (re-find #"^[0-9.]" s) (recur (next xs) (conj acc s) result)
+          (re-find #"^-" s) (recur (next xs) acc result)
+          (not (zero? (count acc)))  (recur (next xs) [] (conj! result (process-data acc)))
+          :else (recur (next xs) acc result)))
+      (do (when-not (zero? (count acc))
             (conj! result (process-data acc)))
           (persistent! result)))))
 

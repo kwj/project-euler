@@ -1,6 +1,6 @@
 (ns project-euler.sol.p0041
   (:require
-   [project-euler.lib.math :as math]
+   [project-euler.lib.math :as my-math]
    [project-euler.lib.math.prime :as prime]
    [project-euler.lib.util :as util]))
 
@@ -20,7 +20,9 @@
   (let [xf (comp (map #(util/permutation (range % 0 -1)))
                  cat
                  (map #(util/undigits (reverse %)))
-                 (drop-while #(or (not (math/pandigital-nz? %))
+                 (drop-while #(or (not (my-math/pandigital-nz? %))
                                   (not (prime/prime? %))))
+                 ;; The problem state says to find the largest n-digit pandigital prime,
+                 ;; so it only needs one.
                  (take 1))]
     (first (sequence xf [7 4]))))

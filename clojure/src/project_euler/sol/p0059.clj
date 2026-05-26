@@ -20,9 +20,8 @@
 (defn- unencrypt-and-sum
   [f data key]
   (let [key-v (vec key)]
-    (transduce (map-indexed (fn [idx ch] (f (bit-xor ch (nth key-v (mod idx 3))))))
-               +
-               data)))
+    (->> (map-indexed (fn [idx ch] (f (bit-xor ch (nth key-v (mod idx 3))))) data)
+         (reduce +))))
 
 (defn solve
   ([]

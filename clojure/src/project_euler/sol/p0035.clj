@@ -1,12 +1,12 @@
 (ns project-euler.sol.p0035
   (:require
-   [project-euler.lib.math :as math]
+   [project-euler.lib.math :as my-math]
    [project-euler.lib.math.prime :as prime]))
 
 (defn- circular-prime?
   [n]
-  (let [k (math/num-of-digits n)
-        d (math/pow 10 (dec k))]
+  (let [k (my-math/num-of-digits n)
+        d (my-math/pow 10 (dec k))]
     (loop [n n
            cnt (dec k)
            result true]

@@ -1,10 +1,10 @@
 (ns project-euler.sol.p0036
-  (:require [project-euler.lib.math :as math]))
+  (:require [project-euler.lib.math :as my-math]))
 
 (defn solve
   ([]
    (solve 1000000))
   ([limit]
-   (transduce (filter #(and (math/palindrome? % 10) (math/palindrome? % 2)))
-              +
-              (range 1 limit 2))))
+   (->> (range 1 limit 2)
+        (filter #(and (my-math/palindrome? % 10) (my-math/palindrome? % 2)))
+        (reduce +))))

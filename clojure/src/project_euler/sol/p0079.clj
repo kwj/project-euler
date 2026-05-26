@@ -17,7 +17,7 @@
   [m perm v]
   (letfn [(visit [temp visited node]
             (cond
-              (some #(= % node) temp) (assert false "cycle found")
+              (some #(= % node) temp) (throw (ex-info "cycle found" {:node node :route temp}))
               (some #(= % node) visited) visited
               :else (if-let [dst (m node)]
                       (into [node] (reduce (fn [perm v] (visit (into [node] temp) perm v)) visited dst))

@@ -1,5 +1,5 @@
 (ns project-euler.sol.p0044
-  (:require [project-euler.lib.math :as math]))
+  (:require [project-euler.lib.math :as my-math]))
 
 (defn pent
   "Return a `n`-th pentagonal number."
@@ -22,7 +22,7 @@
                       :when (zero? (mod (- pd px) (* 3 x)))
                       :let [j (quot (- pd px) (* 3 x))
                             k (+ x j)]
-                      :when (math/pentagonal? (+ (pent j) (pent k)))]
+                      :when (my-math/pentagonal? (+ (pent j) (pent k)))]
                   [j k])]
       (if (seq pairs)
         pd

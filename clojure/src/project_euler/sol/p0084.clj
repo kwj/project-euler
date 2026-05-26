@@ -170,8 +170,7 @@
                  (double (- (aget ^doubles (aget stoch-matrix x) (+ chest offset))
                             (/ prblty 8.0)))))))
 
-     (let [result (->> (aget ^double/2 (go-steady stoch-matrix) 0)
-                       (vec)
+     (let [result (->> (vec (aget ^double/2 (go-steady stoch-matrix) 0))
                        (partition 40)
                        (apply mapv +))]
        (reduce (fn [acc [_ sq]] (format "%s%02d" acc sq))

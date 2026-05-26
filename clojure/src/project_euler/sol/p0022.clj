@@ -11,7 +11,8 @@
 
 (defn- worth
   [word]
-  (transduce (map #(- (int %) (dec (int \A)))) + word))
+  (->> (map #(- (int %) (dec (int \A))) word)
+       (reduce +)))
 
 (defn solve
   ([]
@@ -19,4 +20,5 @@
   ([fname]
    (->> (parse-data (util/read-data fname))
         (sort)
-        (transduce (map-indexed #(* (inc %1) (worth %2))) +))))
+        (map-indexed #(* (inc %1) (worth %2)))
+        (reduce +))))

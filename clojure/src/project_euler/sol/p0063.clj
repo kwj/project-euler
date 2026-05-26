@@ -1,5 +1,5 @@
 (ns project-euler.sol.p0063
-  (:require [clojure.math :refer [floor log10]]))
+  (:require [clojure.math :as math]))
 
 ;;;; n - 1 <= log10(m^n) < n    [m>0, n>0]
 ;;;;  --> n - 1 <= n * log10(m) < n
@@ -13,6 +13,6 @@
 
 (defn solve
   []
-  (transduce (map #(int (floor (/ 1.0 (- 1.0 (log10 %))))))
-             +
-             (range 1 10)))
+  (->> (range 1 10)
+       (map #(int (math/floor (/ 1.0 (- 1.0 (math/log10 %))))))
+       (reduce +)))

@@ -11,11 +11,10 @@
 
 (defn solve
   []
-  (let [p-lst (prime/primes 2000)
-        pairs-ab (for [b (filter #(< % 1000) (rest p-lst))
-                       a (map #(- % b 1) p-lst)
-                       :while (< a 1000)]
-                   [a b])]
-    (->> pairs-ab
+  (let [p-lst (prime/primes 2000)]
+    (->> (for [b (filter #(< % 1000) (rest p-lst))
+               a (map #(- % b 1) p-lst)
+               :while (< a 1000)]
+           [a b])
          (apply max-key count-consec-times)
          (apply *))))

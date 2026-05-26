@@ -34,14 +34,14 @@
 
 (defn- get-family-primes
   [p-digits start-num mask-lst]
-  (let [p-vec (vec p-digits)
-        nums (for [d (range start-num 10)]
-               (loop [v p-vec
-                      lst mask-lst]
-                 (if (seq lst)
-                   (recur (assoc v (first lst) d) (rest lst))
-                   (util/undigits v))))]
-    (filter #(prime/prime? %) nums)))
+  (let [p-vec (vec p-digits)]
+    (->> (for [d (range start-num 10)]
+           (loop [v p-vec
+                  lst mask-lst]
+             (if (seq lst)
+               (recur (assoc v (first lst) d) (next lst))
+               (util/undigits v))))
+         (filter prime/prime?))))
 
 (defn- prime-family?
   [p size]
@@ -57,7 +57,7 @@
                        (get-family-primes p-digits n mask))]
           (if (some #(>= (count %) size) groups)
             true
-            (recur (rest ns))))
+            (recur (next ns))))
         false))))
 
 (defn solve
@@ -66,5 +66,9 @@
   ([size]
    {:pre [(pos? size)]}
    (let [xf (comp (drop-while #(< % 1000))
-                  (drop-while #(not (prime-family? % size))))]
+                  (drop-while #(not (prime-family? % size)))
+                  ;; The input source is an infinite sequence and the problem statement says
+                  ;; to find the smallest positive integer. So, the `take` function below is
+                  ;; used to terminate immediately once an answer is found.
+                  (take 1))]
      (first (sequence xf prime/prime-numbers)))))

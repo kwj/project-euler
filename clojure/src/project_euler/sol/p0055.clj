@@ -1,6 +1,6 @@
 (ns project-euler.sol.p0055
   (:require
-   [project-euler.lib.math :as math]
+   [project-euler.lib.math :as my-math]
    [project-euler.lib.util :as util]))
 
 (defn- rychrel?
@@ -12,7 +12,7 @@
       (if (zero? cnt)
         true
         (let [next-n (+' n tmp)]
-          (if (math/palindrome? next-n)
+          (if (my-math/palindrome? next-n)
             false
             (recur next-n (reverse-num next-n) (dec cnt))))))))
 

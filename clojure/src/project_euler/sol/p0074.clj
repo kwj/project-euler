@@ -4,12 +4,12 @@
 
 (ns project-euler.sol.p0074
   (:require
-   [project-euler.lib.math :as math]
+   [project-euler.lib.math :as my-math]
    [project-euler.lib.util :as util]))
 
 (defn n-perms [lst]
-  (long (reduce (fn [acc x] (quot acc (math/factorial x)))
-                (math/factorial (apply + lst))
+  (long (reduce (fn [acc x] (quot acc (my-math/factorial x)))
+                (my-math/factorial (apply + lst))
                 lst)))
 
 (defn- num-of-valid-numbers
@@ -20,7 +20,7 @@
     (letfn [(aux [n-zero n-one lst]
               (if (= n-digits n-zero)
                 0
-                (* (math/binomial (dec n-digits) n-zero)
+                (* (my-math/binomial (dec n-digits) n-zero)
                    (n-perms (conj lst n-one)))))]
       (apply + (map #(aux (- n-ones %) % (vals (dissoc digit-map 1)))
                     (range 0 (inc n-ones)))))))

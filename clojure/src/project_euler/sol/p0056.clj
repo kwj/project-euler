@@ -1,18 +1,18 @@
 (ns project-euler.sol.p0056
   (:require
-   [project-euler.lib.math :as math]
+   [project-euler.lib.math :as my-math]
    [project-euler.lib.util :as util]))
 
 (defn- aux
   [n upper]
   (loop [ans 0
-         prod (math/pow n upper)
+         prod (my-math/pow n upper)
          cnt upper]
     (let [prod-digits (util/digits prod)]
       (if (or (zero? cnt)
               (< (* 9 (count prod-digits)) ans))
         ans
-        (recur (long (max (apply + prod-digits) ans))
+        (recur (max (apply + prod-digits) ans)
                (quot prod n)
                (dec cnt))))))
 
@@ -24,6 +24,6 @@
    (solve 100))
   ([upper]
    {:pre [(> upper 1)]}
-   (let [xf (comp (filter #(pos? (mod % 10))) ; Skip when multiple of ten.
-                  (map #(aux % upper)))]
-     (apply max (eduction xf (range upper 1 -1))))))
+   (let [xf (comp (remove #(zero? (mod % 10))) ; Skip when multiple of ten.
+                  (map #(aux % (dec upper))))]
+     (apply max (into [] xf (range (dec upper) 0 -1))))))

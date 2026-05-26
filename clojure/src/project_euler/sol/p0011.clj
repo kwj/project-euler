@@ -23,7 +23,7 @@
         "20 73 35 29 78 31 90 01 74 31 49 71 48 86 81 16 23 57 05 54"
         "01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48"]
        (map #(str/split % #"\s"))
-       (mapv #(mapv (fn [s] (parse-long s)) %))))
+       (mapv #(mapv parse-long %))))
 
 (defn- find-max-product
   [matrix len]
@@ -42,7 +42,7 @@
                         (map #(val-at (+ r %) (+ c %)) (range len)) ; Down Rightward
                         (map #(val-at (+ r %) (- c %)) (range len))]) ; Down Leftward
         xf (comp cat (map #(apply * %)))]
-    (apply max (eduction xf vecs-of-lsts))))
+    (transduce xf max Long/MIN_VALUE vecs-of-lsts)))
 
 (defn solve
   ([]

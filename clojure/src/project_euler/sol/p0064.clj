@@ -1,5 +1,5 @@
 (ns project-euler.sol.p0064
-  (:require [project-euler.lib.math :as math]))
+  (:require [project-euler.lib.math :as my-math]))
 
 ;;;;             sqrt(N) + b0        1              1
 ;;;;   sqrt(N) = ------------ = a0 + --,  x1 = a1 + --, ...
@@ -23,7 +23,7 @@
 
 (defn- get-cont-fraction
   [n]
-  (let [isqrt-n (math/isqrt-long n)
+  (let [isqrt-n (my-math/isqrt-long n)
         stop-condition (* isqrt-n 2)]
     (if (= (* isqrt-n isqrt-n) n)
       [isqrt-n, []]

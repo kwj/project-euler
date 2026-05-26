@@ -1,6 +1,6 @@
 (ns project-euler.sol.p0032
   (:require
-   [project-euler.lib.math :as math]
+   [project-euler.lib.math :as my-math]
    [project-euler.lib.util :as util]))
 
 ;;;; m * n = mn (multiplicand/multiplier/product identity can be written as a 1 through 9 pandigital)
@@ -18,17 +18,17 @@
                                    (util/digits b)
                                    (util/digits a))))]
     (->> (concat (for [a (range 1001 10000)
+                       :when (not= (mod a 10) 0)
                        b (range 2 10)
-                       :when (and (not= (mod a 10) 0)
-                                  (< (* a b) 10000)
-                                  (math/pandigital-nz? (aux a b)))]
+                       :while (< (* a b) 10000)
+                       :when (my-math/pandigital-nz? (aux a b))]
                    (* a b))
                  (for [a (range 101 1000)
+                       :when (not= (mod a 10) 0)
                        b (range 11 100)
+                       :when (not= (mod b 10) 0)
                        :while (< (* a b) 10000)
-                       :when (and (not= (mod a 10) 0)
-                                  (not= (mod b 10) 0)
-                                  (math/pandigital-nz? (aux a b)))]
+                       :when (my-math/pandigital-nz? (aux a b))]
                    (* a b)))
          (sort)
          (dedupe)

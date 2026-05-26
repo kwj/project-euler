@@ -1,8 +1,8 @@
 (ns project-euler.sol.p0098
   (:require
-   [clojure.set]
+   [clojure.set :as set]
    [clojure.string :as str]
-   [project-euler.lib.math :as math]
+   [project-euler.lib.math :as my-math]
    [project-euler.lib.util :as util]))
 
 (def ^:private sq-tbl (atom {}))
@@ -11,10 +11,10 @@
   [n-digits]
   (if-let [result (get @sq-tbl n-digits)]
     result
-    (let [xf (comp (drop-while #(< % (math/pow 10 (dec n-digits))))
-                   (take-while #(< % (math/pow 10 n-digits)))
+    (let [xf (comp (drop-while #(< % (my-math/pow 10 (dec n-digits))))
+                   (take-while #(< % (my-math/pow 10 n-digits)))
                    (map str))
-          squares (set (eduction xf math/square-numbers))]
+          squares (into #{} xf my-math/square-numbers)]
       (swap! sq-tbl assoc n-digits squares)
       squares)))
 
@@ -39,7 +39,7 @@
               (loop [sqs string-sq-numbers
                      result 0]
                 (if-let [sq (first sqs)]
-                  (let [trans (clojure.set/map-invert (zipmap sq w1))]
+                  (let [trans (set/map-invert (zipmap sq w1))]
                     (if (not= sq (str/join (map #(get trans %) w1)))
                       (recur (next sqs) result)
                       (let [tmp (str/join (map #(get trans %) w2))]

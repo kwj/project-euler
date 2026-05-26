@@ -1,6 +1,6 @@
 (ns project-euler.sol.p0070
   (:require
-   [project-euler.lib.math :as math]
+   [project-euler.lib.math :as my-math]
    [project-euler.lib.math.prime :as prime]
    [project-euler.lib.util :as util]))
 
@@ -19,15 +19,15 @@
 ;;;;
 ;;;;     N = p1^k1 * p2^k2 * ... * pn^kn  (N < 10^7, n > 1, 11 <= p1 < p2 < ... < pn, k1>2 when n=1)
 
-(def ^:private limit (dec (math/pow 10 7)))
+(def ^:private limit (dec (my-math/pow 10 7)))
 
 (defn- prod
   [pf-lst]
-  (reduce (fn [acc [b e]] (* acc (math/pow b e))) 1 pf-lst))
+  (reduce (fn [acc [b e]] (* acc (my-math/pow b e))) 1 pf-lst))
 
 (defn- phi
   [pf-lst]
-  (reduce (fn [acc [b e]] (* acc (math/pow b (dec e)) (dec b))) 1 pf-lst))
+  (reduce (fn [acc [b e]] (* acc (my-math/pow b (dec e)) (dec b))) 1 pf-lst))
 
 (defn- get-phi-ratio
   [pf-lst]
@@ -54,8 +54,7 @@
              (if (> e 1)
                (make-pf-seq (cons [b (dec e)] (rest pf-lst)))
                (let [prev-p (prime/prev-prime b)
-                     b2 (first (first (rest pf-lst)))
-                     e2 (second (first (rest pf-lst)))]
+                     [b2 e2] (first (rest pf-lst))]
                  (if (= prev-p b2)
                    (make-pf-seq (make-pf-seq-aux (cons [b2 (inc e2)] (rest (rest pf-lst)))))
                    (make-pf-seq (make-pf-seq-aux (cons [prev-p 1] (rest pf-lst))))))))))))
@@ -83,7 +82,7 @@
                                                 (< (get x 0) (get y 0)) -1
                                                 :else 0))))]
      (.add pq [(/ 87109 79180) 87109])
-     (loop [tpls (->> (prime/primes 11 (math/isqrt-long limit))
+     (loop [tpls (->> (prime/primes 11 (my-math/isqrt-long limit))
                       (reverse)
                       (map #(vector % (prime/prev-prime (inc (quot limit %))))))]
        (when-first [[p1 p2] tpls]
@@ -95,6 +94,6 @@
                    (let [ratio (get-phi-ratio pf-lst)]
                      (when (< ratio (get (.peek pq) 0))
                        (.add pq [ratio (prod pf-lst)]))))
-                 (recur (rest pf-seq)))))
-           (recur (rest tpls)))))
+                 (recur (next pf-seq)))))
+           (recur (next tpls)))))
      (get (.peek pq) 1))))

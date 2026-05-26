@@ -1,5 +1,5 @@
 (ns project-euler.sol.p0066
-  (:require [project-euler.lib.math :as math]))
+  (:require [project-euler.lib.math :as my-math]))
 
 ;;;;   X^2 - N * Y^2 = 1
 ;;;;   -----------------
@@ -81,7 +81,7 @@
 ;;; From `Problem 64`
 (defn- get-cont-fraction
   [n]
-  (let [isqrt-n (math/isqrt-long n)
+  (let [isqrt-n (my-math/isqrt-long n)
         stop-condition (* isqrt-n 2)]
     (if (= (* isqrt-n isqrt-n) n)
       [isqrt-n, []]
@@ -108,4 +108,4 @@
                          (if (even? (count lst))
                            [i (get-numerator a0 (drop-last lst))]
                            [i (get-numerator a0 (drop-last (concat lst lst)))]))))]
-     (first (apply max-key second (eduction xf (range 1 (inc limit))))))))
+     (first (apply max-key second (into [] xf (range 1 (inc limit))))))))

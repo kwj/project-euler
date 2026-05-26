@@ -23,7 +23,6 @@
    (solve 1001))
   ([len]
    {:pre [(> len 1) (odd? len)]}
-   (transduce (map #(+ (* 16 % %) (* 4 %) 4))
-              +
-              1
-              (range 1 (inc (quot (dec len) 2))))))
+   (->> (range 1 (inc (quot (dec len) 2)))
+        (map #(+ (* 16 % %) (* 4 %) 4))
+        (reduce + 1))))

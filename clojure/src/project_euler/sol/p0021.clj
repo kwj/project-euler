@@ -12,6 +12,7 @@
   ([]
    (solve 10000))
   ([upper]
-   (let [tbl (make-aliquot-sum-tbl upper)
-         amicable? (fn [n] (and (> n (nth tbl n)) (= n (nth tbl (nth tbl n)))))]
-     (transduce (map #(if (amicable? %) (+ % (nth tbl %)) 0)) + (range 2 upper)))))
+   (let [tbl (make-aliquot-sum-tbl upper)]
+     (letfn [(amicable? [n]
+               (and (> n (nth tbl n)) (= n (nth tbl (nth tbl n)))))]
+       (reduce + (map #(if (amicable? %) (+ % (nth tbl %)) 0) (range 2 upper)))))))

@@ -69,13 +69,13 @@
                                    (bit-set (bit-set bit-mask outr-node) inr-node)
                                    next-ring
                                    total)))))
-                      (recur (rest nodes)))))))]
+                      (recur (next nodes)))))))]
       (loop [pairs (for [total (range (+ (* n-gon 2) 3) (inc (* n-gon 4)))
                          n (range 1 ring-work-size)]
                      [total n])]
         (when-first [[total n] pairs]
           (dfs 0 (bit-set 0 n) (assoc (assoc ring 0 n) (* n-gon 2) n) total)
-          (recur (rest pairs))))
+          (recur (next pairs))))
       (persistent! result))))
 
 (defn solve

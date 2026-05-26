@@ -1,6 +1,6 @@
 (ns project-euler.sol.p0099
   (:require
-   [clojure.math :refer [log10]]
+   [clojure.math :as math]
    [clojure.string :as str]
    [project-euler.lib.util :as util]))
 
@@ -13,8 +13,8 @@
   ([]
    (solve "0099_base_exp.txt"))
   ([fname]
-   (let [xf (comp (map (fn [[b e]] (* e (log10 b))))
+   (let [xf (comp (map (fn [[b e]] (* e (math/log10 b))))
                   (map-indexed vector))]
-     (->> (apply max-key second (eduction xf (parse-data (util/read-data fname))))
+     (->> (apply max-key second (into [] xf (parse-data (util/read-data fname))))
           (first)
           (inc)))))

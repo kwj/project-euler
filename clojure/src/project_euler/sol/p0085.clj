@@ -1,5 +1,5 @@
 (ns project-euler.sol.p0085
-  (:require [project-euler.lib.math :as math]))
+  (:require [project-euler.lib.math :as my-math]))
 
 ;;;;   nCr = n! / ((n-r)! * r!)
 ;;;;
@@ -27,7 +27,7 @@
 (defn- get-diff
   [m target]
   (let [n (first (drop-while #(< (lhs m %) target)
-                             (iterate inc (dec (math/isqrt-long (quot target (* m (inc m))))))))]
+                             (iterate inc (dec (my-math/isqrt-long (quot target (* m (inc m))))))))]
     (if (< m n)
       (let [d1 (abs (- target (lhs m (dec n))))
             d2 (abs (- target (lhs m n)))]

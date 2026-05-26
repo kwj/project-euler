@@ -1,12 +1,12 @@
 (ns project-euler.sol.p0006
-  (:require [project-euler.lib.math :as math]))
+  (:require [project-euler.lib.math :as my-math]))
 
 (defn solve
   ([]
    (solve 100))
   ([upper]
    {:pre [(pos? upper)]}
-   (letfn [(square-of-sum [n] (math/pow (quot (* n (inc n)) 2) 2))
+   (letfn [(square-of-sum [n] (my-math/pow (quot (* n (inc n)) 2) 2))
            (sum-of-squares [n] (quot (* n (inc n) (inc (* n 2))) 6))]
      ;; The square of sum is larger or equal to the sum of squares.
      (- (square-of-sum upper) (sum-of-squares upper)))))

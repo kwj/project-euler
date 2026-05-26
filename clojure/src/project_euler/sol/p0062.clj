@@ -1,6 +1,6 @@
 (ns project-euler.sol.p0062
   (:require
-   [project-euler.lib.math :as math]
+   [project-euler.lib.math :as my-math]
    [project-euler.lib.util :as util]))
 
 (defn- make-key
@@ -11,11 +11,11 @@
   ([]
    (solve 5))
   ([cnt]
-   (loop [ns (iterate inc 1)
+   (loop [base 1
           tbl {}]
-     (let [cube (math/pow (first ns) 3)
+     (let [cube (my-math/pow base 3)
            key (make-key cube)
            data (get tbl key [])]
        (if (= (count data) (dec cnt))
          (first data)
-         (recur (rest ns) (assoc tbl key (conj data cube))))))))
+         (recur (inc base) (assoc tbl key (conj data cube))))))))

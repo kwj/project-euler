@@ -1,12 +1,12 @@
 (ns project-euler.sol.p0046
   (:require
-   [project-euler.lib.math :as math]
+   [project-euler.lib.math :as my-math]
    [project-euler.lib.math.prime :as prime]))
 
 (defn- twice-square?
   [n]
   (and (even? n)
-       (= (math/pow (math/isqrt-long (quot n 2)) 2) (quot n 2))))
+       (= (my-math/pow (my-math/isqrt-long (quot n 2)) 2) (quot n 2))))
 
 (defn solve
   []

@@ -77,7 +77,7 @@
   This function is used for readability (It can be substituted with the `for` macro)."
   [& colls]
   (when (every? seqable? colls)
-    (map #(reverse %) (cartesian-product-aux (reverse colls)))))
+    (map reverse (cartesian-product-aux (reverse colls)))))
 
 ;;; Miscellaneous functions
 
@@ -114,6 +114,6 @@
       (concat lst (map #(cons (first colls) %) lst)))))
 
 (defn find-all
+  "Returns a lazy sequence of indexes that meet the condition."
   [f lst]
   (keep-indexed #(if (f %2) %1 nil) lst))
-

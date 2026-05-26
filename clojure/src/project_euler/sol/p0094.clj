@@ -58,7 +58,7 @@
      (let [p (case (long (mod a 3))
                2 (- (* 2 a) 2)
                1 (+ (* 2 a) 2)
-               (assert false "logical error"))]
+               (throw (ex-info "logical error" {:limit limit})))]
        (if (> p limit)
          acc
          (recur (+ (* 2 a) (* 3 b))

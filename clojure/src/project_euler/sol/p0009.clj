@@ -1,5 +1,5 @@
 (ns project-euler.sol.p0009
-  (:require [project-euler.lib.math :as math]))
+  (:require [project-euler.lib.math :as my-math]))
 
 ;;; a = k(m^2 - n^2), b = k * 2mn, c = k(m^2 + n^2)  [m>n>0, gcd(m,n)=1, m+n is odd]
 ;;;
@@ -14,13 +14,13 @@
    (let [half-perim (quot perim 2)
          ;; The problem statement mentions there exists exactly only
          ;; one Pythagorean triplet when the perimeter is 1000.
-         [m n] (first (for [m (range 2 (inc (math/isqrt-long half-perim)))
+         [m n] (first (for [m (range 2 (inc (my-math/isqrt-long half-perim)))
                             n (range (inc (mod m 2)) (inc (quot (- 500 m) m)) 2)
                             :while (> m n)
-                            :when (and (= (math/gcd m n) 1)
+                            :when (and (= (my-math/gcd m n) 1)
                                        (zero? (mod half-perim m))
                                        (zero? (mod half-perim (+ m n)))
                                        (zero? (mod half-perim (* m (+ m n)))))]
                         [m n]))
          k (quot (quot half-perim m) (+ m n))]
-     (* (math/pow k 3) (- (math/pow m 4) (math/pow n 4)) 2 m n))))
+     (* (my-math/pow k 3) (- (my-math/pow m 4) (my-math/pow n 4)) 2 m n))))

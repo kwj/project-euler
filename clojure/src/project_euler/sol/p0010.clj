@@ -6,4 +6,4 @@
    (solve 2000000))
   ([upper]
    {:pre [(>= upper 2)]}
-   (apply + (prime/primes upper))))
+   (reduce + (prime/primes (dec upper)))))

@@ -34,4 +34,4 @@
   ([]
    (solve 1000))
   ([upper]
-   (apply + (map count-letters (range 1 (inc upper))))))
+   (reduce + (map count-letters (range 1 (inc upper))))))

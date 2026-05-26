@@ -1,6 +1,6 @@
 (ns project-euler.sol.p0061
   (:require
-   [project-euler.lib.math :as math]
+   [project-euler.lib.math :as my-math]
    [project-euler.lib.util :as util]))
 
 (defn- get-valid-numbers
@@ -8,7 +8,7 @@
   (let [xf (comp (drop-while #(< % 1000))
                  (take-while #(< % 10000))
                  (filter #(>= (mod % 100) 10)))]
-    (sequence xf ns)))
+    (into [] xf ns)))
 
 (defn- make-kv-map
   [ns]
@@ -16,16 +16,16 @@
          kvs (map #(vector (quot % 100) (mod % 100)) ns)]
     (if (seq kvs)
       (let [[k v] (first kvs)]
-        (recur (assoc kv-map k (conj (get kv-map k '()) v)) (rest kvs)))
+        (recur (assoc kv-map k (conj (get kv-map k '()) v)) (next kvs)))
       kv-map)))
 
 (def ^:private route-tbl
-  {3 (make-kv-map (get-valid-numbers math/triangle-numbers))
-   4 (make-kv-map (get-valid-numbers math/square-numbers))
-   5 (make-kv-map (get-valid-numbers math/pentagonal-numbers))
-   6 (make-kv-map (get-valid-numbers math/hexagonal-numbers))
-   7 (make-kv-map (get-valid-numbers math/heptagonal-numbers))
-   8 (make-kv-map (get-valid-numbers math/octagonal-numbers))})
+  {3 (make-kv-map (get-valid-numbers my-math/triangle-numbers))
+   4 (make-kv-map (get-valid-numbers my-math/square-numbers))
+   5 (make-kv-map (get-valid-numbers my-math/pentagonal-numbers))
+   6 (make-kv-map (get-valid-numbers my-math/hexagonal-numbers))
+   7 (make-kv-map (get-valid-numbers my-math/heptagonal-numbers))
+   8 (make-kv-map (get-valid-numbers my-math/octagonal-numbers))})
 
 (defn- distinct-numbers?
   [path]
@@ -39,13 +39,13 @@
     (letfn [(dfs [route path]
               (if (seq route)
                 (doseq [next-num (get (get route-tbl (first route)) (last path))]
-                  (dfs (rest route) (conj path next-num)))
+                  (dfs (next route) (conj path next-num)))
                 (when (and (= (first path) (last path))
                            (distinct-numbers? path))
-                  (conj! result (rest path)))))]
+                  (conj! result (next path)))))]
       (doseq [[k vs] (get route-tbl start)
               next-num vs]
-        (dfs route (vector k next-num))))
+        (dfs route [k next-num])))
     (persistent! result)))
 
 (defn solve
@@ -58,10 +58,10 @@
      (if (seq routes)
        (let [result (find-cycles n (first routes))]
          (if (seq result)
-           (recur (rest routes) (into answer result))
-           (recur (rest routes) answer)))
+           (recur (next routes) (into answer result))
+           (recur (next routes) answer)))
        (if (= (count answer) 1)
          ;; sum(100*x{1} + x{2}, 100*x{2} + x{3}, ..., 100*x{n} + x{1})
          ;;   = sum(x{1}, x{2}, ..., x{n}) * 101
          (* (apply + (first answer)) 101)
-         (assert false (format "Many answers (3..=%d) %s" n answer)))))))
+         (throw (ex-info (format "Too many answers (3..=%d)" n) {:answer answer})))))))

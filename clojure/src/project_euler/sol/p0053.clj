@@ -14,6 +14,6 @@
           ans 0]
      (if (<= r (quot n 2))
        (if (> c thr)
-         (recur (dec n) (dec x) (quot (* c (dec x)) n) r (long (- (+ ans n 1) (* r 2))))
+         (recur (dec n) (dec x) (quot (* c (dec x)) n) r (- (+ ans n 1) (* r 2)))
          (recur n (dec x) (quot (* c (dec x)) (inc r)) (inc r) ans))
        ans))))

@@ -1,5 +1,5 @@
 (ns project-euler.sol.p0091
-  (:require [project-euler.lib.math :as math]))
+  (:require [project-euler.lib.math :as my-math]))
 
 ;;;;   0 <= x1,x2,y1,y2 <= 50
 ;;;;   P(x1,y1), Q(x2,y2)
@@ -39,8 +39,8 @@
   [x-size y-size]
   (->> (for [x (range 1 (inc x-size))
              y (range 1 (inc y-size))]
-         (min (quot (* y (math/gcd x y)) x)
-              (quot (* (- x-size x) (math/gcd x y)) y)))
+         (min (quot (* y (my-math/gcd x y)) x)
+              (quot (* (- x-size x) (my-math/gcd x y)) y)))
        (apply +)
        (* 2)))
 

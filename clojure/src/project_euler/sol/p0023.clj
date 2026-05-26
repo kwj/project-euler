@@ -16,13 +16,15 @@
      (loop [xs (range 1 (inc upper))
             ab-lst '()
             acc 0]
-       (if-let [x (first xs)]
-         (let [ab-cand (quot x 2)]
+       (if (seq xs)
+         (let [x (first xs)
+               ab-cand (quot x 2)]
            (if (and (even? x) (nth tbl ab-cand))
-             (if (some #(nth tbl (- x %)) (conj ab-lst ab-cand))
-               (recur (next xs) (conj ab-lst ab-cand) acc)
-               (recur (next xs) (conj ab-lst ab-cand) (long (+ acc x))))
+             (let [next-ab-lst (conj ab-lst ab-cand)]
+               (if (some #(nth tbl (- x %)) next-ab-lst)
+                 (recur (next xs) next-ab-lst acc)
+                 (recur (next xs) next-ab-lst (+ acc x))))
              (if (some #(nth tbl (- x %)) ab-lst)
                (recur (next xs) ab-lst acc)
-               (recur (next xs) ab-lst (long (+ acc x))))))
+               (recur (next xs) ab-lst (+ acc x)))))
          acc)))))

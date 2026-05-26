@@ -1,6 +1,6 @@
 (ns project-euler.sol.p0024
   (:require
-   [project-euler.lib.math :as math]))
+   [project-euler.lib.math :as my-math]))
 
 (defn solve
   ([]
@@ -9,10 +9,11 @@
    (loop [nodes (vec (range 10))
           idx (dec ith)
           acc 0]
-     (if (pos? (count nodes))
-       (let [blk (math/factorial (dec (count nodes)))
-             cnt (quot idx blk)]
-         (recur (vec (concat (subvec nodes 0 cnt) (subvec nodes (inc cnt))))
+     (if-not (empty? nodes)
+       (let [blk (my-math/factorial (dec (count nodes)))
+             cnt (quot idx blk)
+             n (nth nodes cnt)]
+         (recur (vec (remove #(= % n) nodes))
                 (mod idx blk)
-                (long (+ (* acc 10) (get nodes cnt)))))
+                (+ (* acc 10) n)))
        (format "%010d" acc)))))

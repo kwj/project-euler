@@ -247,7 +247,7 @@
       sieve)))
 
 (defn primes
-  "Returns a sequence of prime numbers in the specified range [`low`, `high`]."
+  "Returns a vector of prime numbers in the specified range [`low`, `high`]."
   ([^long high]
    {:pre [(int? high) (>= high 2)]}
    (primes 1 high))
@@ -268,7 +268,7 @@
          (doseq [[i val] (map-indexed vector (get-prime-tbl low high))]
            (when (true? val)
              (conj! v (index->num (+ i w-offset)))))))
-     (seq (persistent! v)))))
+     (persistent! v))))
 
 (defn- factorize-aux
   [^long n ^long b]
@@ -281,12 +281,15 @@
 
 (defn factorize
   "Return a vector of prime factorization of `n`.
-  Each element is a vector of base and exponent.
+  Each element is a vector of base and exponent,
+  and the elements are ordered in ascending order of the bases.
 
+  ```clojure
   => (factorize 168)
   [[2 3] [3 1] [7 1]]
   => (factorize 97)
-  [[97 1]]"
+  [[97 1]]
+  ```"
   [^long n]
   {:pre [(pos? n)]}
   (if (== n 1)

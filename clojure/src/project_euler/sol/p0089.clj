@@ -35,6 +35,6 @@
   ([]
    (solve "0089_roman.txt"))
   ([fname]
-   (transduce (map #(- (count %) (count (replace-roman-nums %))))
-              +
-              (util/read-data fname))))
+   (->> (util/read-data fname)
+        (map #(- (count %) (count (replace-roman-nums %))))
+        (reduce +))))

@@ -1,5 +1,5 @@
 (ns project-euler.sol.p0039
-  (:require [project-euler.lib.math :as math]))
+  (:require [project-euler.lib.math :as my-math]))
 
 ;;;; Primitive Pythagorean triples (variant type)
 ;;;;   https://en.wikipedia.org/wiki/Pythagorean_triple#A_variant
@@ -16,11 +16,11 @@
   ([limit]
    ;; the smallest right triangle with integral lengths is the 3-4-5 right triangle.
    {:pre [(>= limit 12)]}
-   (->> (for [m (range 3 (inc (math/isqrt-long limit)) 2)
+   (->> (for [m (range 3 (inc (my-math/isqrt-long limit)) 2)
               n (range 1 m 2)
               :let [p (* m (+ m n))]
               :while (<= p limit)
-              :when (= (math/gcd m n) 1)]
+              :when (= (my-math/gcd m n) 1)]
           (map #(* p %) (range 1 (inc (quot limit p)))))
         (flatten)
         (frequencies)

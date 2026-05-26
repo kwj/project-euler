@@ -246,10 +246,15 @@
     (and (check-zero n) (pandigital? (* n 10)))))
 
 (defn factorial
-  "Factorial (return value is a long)."
+  "Factorial (return value is a Long or BigInt).
+
+  Note:
+   20! = 2432902008176640000 (Long)
+   21! = 51090942171709440000N (BigInt)
+  "
   [^long n]
   {:pre [(>= n 0)]}
-  (loop [x n, result 1N]
+  (loop [x n, result 1]
     (if (zero? x)
       result
       (recur (dec x) (*' result x)))))

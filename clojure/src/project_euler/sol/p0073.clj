@@ -1,5 +1,5 @@
 (ns project-euler.sol.p0073
-  (:require [project-euler.lib.math :as math]))
+  (:require [project-euler.lib.math :as my-math]))
 
 ;;;; Möbius inversion formula
 ;;;;
@@ -18,37 +18,38 @@
   [limit]
   (let [p-tbl (long-array (range (inc limit)))
         mu-tbl (long-array (repeat (inc limit) 0))]
-    (loop [is (range 2 (inc (math/isqrt-long limit)))]
+    (loop [is (range 2 (inc (my-math/isqrt-long limit)))]
       (when-first [i is]
         (when (= (aget p-tbl i) i)
           (loop [js (range (* i i) (inc limit) i)]
             (when-first [j js]
               (aset p-tbl j (long i))
-              (recur (rest js))))
+              (recur (next js))))
           (loop [js (range (* i i) (inc limit) (* i i))]
             (when-first [j js]
               (aset p-tbl j 0)
-              (recur (rest js)))))
-        (recur (rest is))))
+              (recur (next js)))))
+        (recur (next is))))
     (aset mu-tbl 1 1)
     (loop [is (range 2 (inc limit))]
       (when-first [i is]
         (when (not= (aget p-tbl i) 0)
           (aset mu-tbl i (- (aget mu-tbl (quot i (aget p-tbl i))))))
-        (recur (rest is))))
+        (recur (next is))))
     (vec mu-tbl)))
 
 (defn- f
   [x]
   (->> (range 1 (inc x))
-       (transduce (map #(- (quot (- % 1) 2) (quot % 3))) +)))
+       (map #(- (quot (- % 1) 2) (quot % 3)))
+       (reduce +)))
 
 (defn- g
   [limit]
   (let [mu-tbl (make-mobius-tbl limit)]
-    (transduce (map #(* (get mu-tbl %) (f (quot limit %))))
-               +
-               (range 1 (inc limit)))))
+    (->> (range 1 (inc limit))
+         (map #(* (get mu-tbl %) (f (quot limit %))))
+         (reduce +))))
 
 (defn solve
   ([]
