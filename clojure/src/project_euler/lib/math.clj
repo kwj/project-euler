@@ -258,3 +258,40 @@
     (if (zero? x)
       result
       (recur (dec x) (*' result x)))))
+
+(defn jacobi-symbol
+  [a n]
+  {:pre [(pos? n) (odd? n)]}
+  (loop [sign (if (and (neg? a) (= (bit-and n 2r11) 3)) -1 1)
+         a (abs a)
+         n n]
+    (cond
+      (zero? a) (if (= n 1) sign 0)
+      (= a 1) sign
+      (even? a) (let [ntz-a (Long/numberOfTrailingZeros a)
+                      next-a (bit-shift-right a ntz-a)]
+                  (if (#{1 7} (bit-and n 2r111))
+                    (recur sign next-a n)
+                    (recur (if (odd? ntz-a) (- sign) sign) next-a n)))
+      :else (let [rem-a (mod a n)]
+              (if (even? rem-a)
+                (recur sign rem-a n)
+                (if (and (= (bit-and rem-a 2r11) 3) (= (bit-and n 2r11) 3))
+                  (recur (- sign) n rem-a)
+                  (recur sign n rem-a)))))))
+
+(defn kronecker-symbol
+  [a n]
+  (if (zero? n)
+    (if (= (abs a) 1) 1 0)
+    (let [sign (if (and (neg? n) (neg? a)) -1 1)
+          n (abs n)]
+      (if (odd? n)
+        (* sign (jacobi-symbol a n))
+        (if (even? a)
+          0
+          (let [ntz-n (Long/numberOfTrailingZeros n)
+                next-n (bit-shift-right n ntz-n)]
+            (if (#{3 5} (bit-and a 2r111))
+              (* (if (odd? ntz-n) (- sign) sign) (jacobi-symbol a next-n))
+              (* sign (jacobi-symbol a next-n)))))))))
