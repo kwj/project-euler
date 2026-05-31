@@ -258,13 +258,3 @@
     (if (zero? x)
       result
       (recur (dec x) (*' result x)))))
-
-(defn floor
-  "Floor function (return value is a long)."
-  [r]
-  (long (clojure.math/floor r)))
-
-(defn ceil
-  "Ceil function."
-  [r]
-  (long (clojure.math/ceil r)))
