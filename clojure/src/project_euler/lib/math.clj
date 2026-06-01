@@ -156,28 +156,28 @@
 
 (defn triangular?
   "Check if a number `n` is triangular number."
-  [^long n]
+  [n]
   {:pre [(pos? n)]}
   (let [tmp (inc (* 8 n)) tmp-sqrt (isqrt tmp)]
     (and (= (pow tmp-sqrt 2) tmp) (odd? tmp-sqrt))))
 
 (defn square?
   "Check if a number `n` is square number."
-  [^long n]
+  [n]
   {:pre [(pos? n)]}
   (let [tmp-sqrt (isqrt n)]
     (= (* tmp-sqrt tmp-sqrt) n)))
 
 (defn pentagonal?
   "Check if a number `n` is pentagonal number."
-  [^long n]
+  [n]
   {:pre [(pos? n)]}
   (let [tmp (inc (* 24 n)) tmp-sqrt (isqrt tmp)]
     (and (= (pow tmp-sqrt 2) tmp) (= (mod tmp-sqrt 6) 5))))
 
 (defn hexagonal?
   "Check if a number `n` is hexagonal number."
-  [^long n]
+  [n]
   {:pre [(pos? n)]}
   (let [tmp (inc (* 8 n)) tmp-sqrt (isqrt tmp)]
     (and (= (pow tmp-sqrt 2) tmp) (= (mod tmp-sqrt 4) 3))))
@@ -291,7 +291,7 @@
         (if (even? a)
           0
           (let [ntz-n (Long/numberOfTrailingZeros n)
-                next-n (bit-shift-right n ntz-n)]
+                js-result (jacobi-symbol a (bit-shift-right n ntz-n))]
             (if (#{3 5} (bit-and a 2r111))
-              (* (if (odd? ntz-n) (- sign) sign) (jacobi-symbol a next-n))
-              (* sign (jacobi-symbol a next-n)))))))))
+              (* (if (odd? ntz-n) (- sign) sign) js-result)
+              (* sign js-result))))))))
