@@ -1,37 +1,80 @@
 (ns project-euler.lib.math
   (:require
-   [clojure.math]
-   [project-euler.lib.util :as util]))
+   [clojure.math :as math]))
+
+(defn get-ntz
+  [n]
+  (if (int? n)
+    (Long/numberOfTrailingZeros n)
+    (loop [n n
+           cnt 0]
+      (if (odd? n)
+        cnt
+        (recur (quot n 2) (inc cnt))))))
+
+(defn bit-length
+  [n]
+  {:pre (>= n 0)}
+  (loop [n n
+         cnt 0]
+    (if (zero? n)
+      cnt
+      (if (int? n)
+        (recur (bit-shift-right n 1) (inc cnt))
+        (recur (quot n 2) (inc cnt))))))
+
+(defn bshift-right
+  [n k]
+  (if (int? n)
+    (bit-shift-right n k)
+    (loop [n n
+           k k]
+      (if (zero? k)
+        n
+        (recur (quot n 2) (dec k))))))
+
+(defn bshift-left
+  [n k]
+  (if (int? n)
+    (bit-shift-left n k)
+    (loop [n n
+           k k]
+      (if (zero? k)
+        n
+        (recur (* n 2) (dec k))))))
+
+(defn- possible-long
+  [n]
+  {:pre [(integer? n)]}
+  (if (<= Long/MIN_VALUE n Long/MAX_VALUE) (long n) n))
 
 ;;; Greatest Common Divisor (GCD) and Least Common Multiple (LCM)
 
 (defn gcd
   "Compute the greatest common divisor by using Binary method (based on Knuth's TAOCP)."
-  ^long [^long a ^long b]
-  {:pre [(and (int? a) (not= a Long/MIN_VALUE))
-         (and (int? b) (not= b Long/MIN_VALUE))]}
+  [a b]
+  {:pre [(integer? a) (integer? b)]}
   (let [a (abs a) b (abs b)]
     (cond
       (zero? a) b
       (zero? b) a
-      :else (let [k (min (util/get-ntz a) (util/get-ntz b))]
-              (loop [a (bit-shift-right a k)
-                     b (bit-shift-right b k)
-                     t (if (odd? a) (- b) (bit-shift-right a 1))]
-                (let [x (bit-shift-right t (util/get-ntz (abs t)))]
+      :else (let [k (min (get-ntz a) (get-ntz b))]
+              (loop [a (bshift-right a k)
+                     b (bshift-right b k)
+                     t (if (odd? a) (- b) (bshift-right a 1))]
+                (let [x (bshift-right t (get-ntz (abs t)))]
                   (if (pos? x)
                     (if (zero? (- x b))
-                      (bit-shift-left x k)
+                      (possible-long (bshift-left x k))
                       (recur x b (- x b)))
                     (if (zero? (- a x))
-                      (bit-shift-left a k)
+                      (possible-long (bshift-left a k))
                       (recur a (abs x) (- a x))))))))))
 
 (defn lcm
   "Compute the least common (positive) multiple (or zero if any argument is zero)."
-  [^long a ^long b]
-  {:pre [(and (int? a) (not= a Long/MIN_VALUE))
-         (and (int? b) (not= b Long/MIN_VALUE))]}
+  [a b]
+  {:pre [(integer? a) (integer? b)]}
   (cond
     (zero? a) 0
     (zero? b) 0
@@ -41,10 +84,9 @@
 
 (defn gcdx
   "Compute the greatest common divisr and the coefficients of Bézout's identity."
-  [^long a ^long b]
-  {:pre [(and (int? a) (not= a Long/MIN_VALUE))
-         (and (int? b) (not= b Long/MIN_VALUE))]}
-  (letfn [(aux [^long a ^long b]
+  [a b]
+  {:pre [(integer? a) (integer? b)]}
+  (letfn [(aux [a b]
             (if (= a 0)
               [b 0 1]
               (let [[g x y] (aux (mod b a) a)]
@@ -52,52 +94,54 @@
     (let [sign_a (if (neg? a) -1 1)
           sign_b (if (neg? b) -1 1)
           [g x y] (aux (abs a) (abs b))]
-      [g (* x sign_a) (* y sign_b)])))
+      [(possible-long g) (possible-long (* x sign_a)) (possible-long (* y sign_b))])))
 
 ;;; Power and Moduler exponentiation
 
 (defn pow
   "Compute the exponentiation which base is `b` and power is `e`."
-  [^long b ^long e]
-  {:pre [(int? b) (int? e)]}
-  (let [sign (if (and (neg? b) (odd? e)) -1 1) inv (neg? e)]
-    (loop [ret 1N b (bigint (abs b)) e (abs e)]
+  [b e]
+  {:pre [(integer? b) (integer? e)]}
+  (let [sign (if (and (neg? b) (odd? e)) -1 1)
+        inv (neg? e)]
+    (loop [ret 1N
+           b (bigint (abs b))
+           e (abs e)]
       (if (zero? e)
         (if inv
-          (/ 1 (*' sign ret))
-          (let [n (*' sign ret)]
-            (cond
-              (> n Long/MAX_VALUE) n
-              :else (long n))))
+          (/ 1 (* sign ret))
+          (possible-long (* sign ret)))
         (if (odd? e)
-          (recur (*' ret b) (*' b b) (bit-shift-right e 1))
-          (recur ret (*' b b) (bit-shift-right e 1)))))))
+          (recur (*' ret b) (*' b b) (bshift-right e 1))
+          (recur ret (*' b b) (bshift-right e 1)))))))
 
 (defn invmod
   "Compute the modular multiplicative inverse `x` which `a` * `x` `mod` `m` = 1."
-  [^long a ^long m]
-  {:pre [(int? a) (int? m) (> m 1)]}
+  [a m]
+  {:pre [(integer? a) (integer? m) (> m 1)]}
   (let [[g x _] (gcdx a m)]
     (if (= g 1)
-      (mod x m)
+      (possible-long (mod x m))
       (assert false (str "greatest common divisor is " g ". (it must be one)")))))
 
 (defn powermod
   "Compute the modular exponentiation which base is `b`, power is `p` and modulus is `m`."
-  [^long b ^long e ^long m]
-  {:pre [(int? b) (int? e) (int? m) (>= m 0)]}
+  [b e m]
+  {:pre [(integer? b) (integer? e) (integer? m) (>= m 0)]}
   (cond
     (= m 1) 0
     (zero? e) 1
     (neg? e) (powermod (invmod b m) (- e) m)
-    :else (loop [ret 1 base (mod (abs b) m) e e]
+    :else (loop [ret 1
+                 base (mod (abs b) m)
+                 e e]
             (if (zero? e)
               (if (neg? b)
-                (- m ret)
-                ret)
+                (possible-long (- m ret))
+                (possible-long ret))
               (if (odd? e)
-                (recur (long (mod (*' ret base) m)) (long (mod (*' base base) m)) (bit-shift-right e 1))
-                (recur ret (long (mod (*' base base) m)) (bit-shift-right e 1)))))))
+                (recur (mod (*' ret base) m) (mod (*' base base) m) (bshift-right e 1))
+                (recur ret (mod (*' base base) m) (bshift-right e 1)))))))
 
 ;;; Interger square root
 
@@ -106,7 +150,7 @@
 (defn isqrt-long
   "Integer square root for a long integer."
   ^long [^long n]
-  (long (clojure.math/floor (clojure.math/sqrt n))))
+  (long (math/floor (math/sqrt n))))
 
 ;;; Porting from the implementation of the following URL.
 ;;;   https://github.com/mdickinson/snippets/blob/master/proofs/isqrt/src/isqrt.lean
@@ -229,9 +273,9 @@
   (letfn [(mk-bits [^long n]
             (loop [n n bits 0]
               (if (pos? n)
-                (recur (quot n 10) (bit-or bits (bit-shift-left 1 (mod n 10))))
+                (recur (quot n 10) (bit-or bits (bshift-left 1 (mod n 10))))
                 bits)))]
-    (= (mk-bits n) (dec (bit-shift-left 1 (num-of-digits n))))))
+    (= (mk-bits n) (dec (bshift-left 1 (num-of-digits n))))))
 
 (defn pandigital-nz?
   "Check whether the number `n` is pandigital or not.
@@ -262,21 +306,21 @@
 (defn jacobi-symbol
   [a n]
   {:pre [(pos? n) (odd? n)]}
-  (loop [sign (if (and (neg? a) (= (bit-and n 2r11) 3)) -1 1)
+  (loop [sign (if (and (neg? a) (= (mod n 4) 3)) -1 1)
          a (abs a)
          n n]
     (cond
       (zero? a) (if (= n 1) sign 0)
       (= a 1) sign
-      (even? a) (let [ntz-a (Long/numberOfTrailingZeros a)
-                      next-a (bit-shift-right a ntz-a)]
-                  (if (#{1 7} (bit-and n 2r111))
+      (even? a) (let [ntz-a (get-ntz a)
+                      next-a (bshift-right a ntz-a)]
+                  (if (#{1 7} (mod n 8))
                     (recur sign next-a n)
                     (recur (if (odd? ntz-a) (- sign) sign) next-a n)))
       :else (let [rem-a (mod a n)]
               (if (even? rem-a)
                 (recur sign rem-a n)
-                (if (and (= (bit-and rem-a 2r11) 3) (= (bit-and n 2r11) 3))
+                (if (and (= (mod rem-a 4) 3) (= (mod n 4) 3))
                   (recur (- sign) n rem-a)
                   (recur sign n rem-a)))))))
 
@@ -290,8 +334,8 @@
         (* sign (jacobi-symbol a n))
         (if (even? a)
           0
-          (let [ntz-n (Long/numberOfTrailingZeros n)
-                js-result (jacobi-symbol a (bit-shift-right n ntz-n))]
-            (if (#{3 5} (bit-and a 2r111))
+          (let [ntz-n (get-ntz n)
+                js-result (jacobi-symbol a (bshift-right n ntz-n))]
+            (if (#{3 5} (mod a 8))
               (* (if (odd? ntz-n) (- sign) sign) js-result)
               (* sign js-result))))))))

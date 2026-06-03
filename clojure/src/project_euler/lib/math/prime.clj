@@ -1,5 +1,7 @@
 (ns project-euler.lib.math.prime
-  (:require [project-euler.lib.math :as math]))
+  (:require [project-euler.lib.math :as my-math]))
+
+(load "min_factors")
 
 ;;; Primality test
 ;;;
@@ -9,58 +11,131 @@
 ;;;
 ;;; prime? simple-prime?
 
-(defn- prime?-init
-  [^long n]
-  (loop [d (dec n) s 0]
-    (if (odd? d)
-      [d s]
-      (recur (quot d 2) (inc s)))))
+(def ^:private sprp-bases
+  [15591 2018 166 7429 8064 16045 10503 4399 1949 1295 2776 3620 560 3128 5212 2657
+   2300 2021 4652 1471 9336 4018 2398 20462 10277 8028 2213 6219 620 3763 4852 5012
+   3185 1333 6227 5298 1074 2391 5113 7061 803 1269 3875 422 751 580 4729 10239
+   746 2951 556 2206 3778 481 1522 3476 481 2487 3266 5633 488 3373 6441 3344
+   17 15105 1490 4154 2036 1882 1813 467 3307 14042 6371 658 1005 903 737 1887
+   7447 1888 2848 1784 7559 3400 951 13969 4304 177 41 19875 3110 13221 8726 571
+   7043 6943 1199 352 6435 165 1169 3315 978 233 3003 2562 2994 10587 10030 2377
+   1902 5354 4447 1555 263 27027 2283 305 669 1912 601 6186 429 1930 14873 1784
+   1661 524 3577 236 2360 6146 2850 55637 1753 4178 8466 222 2579 2743 2031 2226
+   2276 374 2132 813 23788 1610 4422 5159 1725 3597 3366 14336 579 165 1375 10018
+   12616 9816 1371 536 1867 10864 857 2206 5788 434 8085 17618 727 3639 1595 4944
+   2129 2029 8195 8344 6232 9183 8126 1870 3296 7455 8947 25017 541 19115 368 566
+   5674 411 522 1027 8215 2050 6544 10049 614 774 2333 3007 35201 4706 1152 1785
+   1028 1540 3743 493 4474 2521 26845 8354 864 18915 5465 2447 42 4511 1660 166
+   1249 6259 2553 304 272 7286 73 6554 899 2816 5197 13330 7054 2818 3199 811
+   922 350 7514 4452 3449 2663 4708 418 1621 1171 3471 88 11345 412 1559 194])
 
-(defn- prime?-distinguish
-  [^long a ^long d ^long s ^long n]
-  (if (zero? (mod a n))
-    ::Prime
-    (loop [x (math/powermod a d n) cnt s]
-      (if (zero? cnt)
-        (if (not= x 1) ::Composite ::Undeceided)
-        (let [y (math/powermod x 2 n)]
-          (if (and (= y 1) (not= x 1) (not= x (dec n)))
-            ::Composite
-            (recur y (dec cnt))))))))
+(defn- get-sprp-base
+  [n]
+  (let [h1 (biginteger n)
+        h2 (.multiply (.xor (.shiftRight h1 (int 16)) h1) (biginteger 73244475)) ; 73244475 = 0x45d9f3b
+        h3 (.multiply (.xor (.shiftRight h2 (int 16)) h2) (biginteger 73244475))
+        idx (long (.and (.xor (.shiftRight h3 (int 16)) h3) (biginteger 255)))] ; 255 = 0xff
+    (nth sprp-bases idx)))
+
+(defn- nSPRP-test
+  [n base]
+  {:pre [(integer? n)]}
+  (let [s (my-math/get-ntz (dec n))
+        d (my-math/bshift-right (dec n) s)]
+    (or (= (my-math/powermod base d n) 1)
+        (boolean (some #(= % (dec n))
+                       (map #(my-math/powermod base (* d (my-math/bshift-left 1 %)) n) (range s)))))))
+
+(defn- lucas-seq-parameter
+  "Return [D P Q] or nil by Method A*.
+
+  If nil is returned, n is a composite number."
+  [n]
+  (loop [seq-d (map * (cycle [1 -1]) (iterate #(+ % 2) 5))
+         thr 20]
+    (let [d (first seq-d)
+          k (my-math/jacobi-symbol d n)]
+      (cond
+        (= k -1) (if (= d 5)
+                   [5 5 5]
+                   [d 1 (quot (- 1 d) 4)])
+        (and (zero? thr) (my-math/square? n)) nil
+        (and (zero? k) (or (< (abs d) n) (not= (mod (abs d) n) 0))) nil
+        :else (recur (next seq-d) (dec thr))))))
+
+(defn- lucas-seq
+  "Return Ud, Vd, Q^d and s.
+
+  Note: n + 1 = d * 2^s"
+  [n D P Q]
+  (let [s (my-math/get-ntz (inc n))
+        d (my-math/bshift-right (inc n) s)]
+    (loop [Uk (biginteger 1)
+           Vk (biginteger P)
+           Qk (biginteger Q)
+           idx (- (my-math/bit-length d) 2)]
+      (if (neg? idx)
+        [Uk Vk Qk s]
+        (let [next-Uk (mod (* Uk Vk) n)
+              next-Vk (mod (- (* Vk Vk) (* 2 Qk)) n)
+              next-Qk (mod (* Qk Qk) n)]
+          (if (odd? (my-math/bshift-right d idx))
+            (let [tmp-Uk (+ (* P next-Uk) next-Vk)
+                  tmp-Vk (+ (* D next-Uk) (* P next-Vk))]
+              (recur (mod (my-math/bshift-right (if (odd? tmp-Uk) (+ tmp-Uk n) tmp-Uk) 1) n)
+                     (mod (my-math/bshift-right (if (odd? tmp-Vk) (+ tmp-Vk n) tmp-Vk) 1) n)
+                     (mod (* Q next-Qk) n)
+                     (dec idx)))
+            (recur next-Uk next-Vk next-Qk (dec idx))))))))
+
+(defn- check-slprp
+  "Check whether `n` is a strong Lucas Probable prime (slprp).
+
+  If yes, return [Vₙ₊₁ Q^((n+1)/2)]. Otherwise, `n` is composite and return `nil`."
+  [Ud Vd Qd s n]
+  (letfn [(next-v [v q] (mod (- (* v v) (* 2 q)) n))
+          (next-q [q] (mod (* q q) n))]
+    (let [VQ-pairs (take s (iterate (fn [[v q]] [(next-v v q) (next-q q)]) [Vd Qd]))]
+      (if (or (zero? Ud) (boolean (some (fn [[v _]] (zero? v)) VQ-pairs)))
+        [(apply next-v (last VQ-pairs)) (last (last VQ-pairs))]
+        nil))))
+
+(defn- test-vprp
+  "Return false if `n` is composite."
+  [Vₙ₊₁ Q n]
+  (= (mod Vₙ₊₁ n) (mod (* 2 Q) n)))
+
+(defn- test-euler-criterion
+  "Return false if `n` is composite."
+  [Q Qk n]
+  (or (= (Long/bitCount (abs Q)) 1)
+      (= (mod Qk n) (mod (* Q (my-math/jacobi-symbol Q n)) n))))
+
+(defn- strong-BPSW-test
+  [n]
+  (if-let [[D P Q] (lucas-seq-parameter n)]
+    (let [[Ud Vd Qd s] (lucas-seq n D P Q)]
+      (if-let [[Vk Qk] (check-slprp Ud Vd Qd s n)]
+        (and (test-vprp Vk Q n) (test-euler-criterion Q Qk n))
+        false))
+    false))
+
+(defn prime?
+  [n]
+  {:pre [(integer? n)]}
+  (cond
+    (boolean (some #(= % n) [2 3 5 7])) true
+    (boolean (some #(zero? (mod n %)) [2 3 5 7])) false
+    (< n 121) (> n 1)
+    (< n 65536) (= (nth min-factor-tbl (my-math/bshift-right n 1)) 1)
+    (< n Long/MAX_VALUE) (nSPRP-test n (get-sprp-base n))
+    :else (and (nSPRP-test n 2) (strong-BPSW-test n))))
 
 (defn fermat-prime?
   "Fermat primality test."
-  [^long n]
-  {:pre [(int? n)]}
-  (= (math/powermod 2 (dec n) n) 1))
-
-(defn prime?
-  "Miller–Rabin primality test."
-  [^long n]
-  {:pre [(int? n)]}
-  (if (or (< n 2) (and (not= (mod n 6) 5) (not= (mod n 6) 1)))
-    (or (= n 2) (= n 3))
-    (let [[d s] (prime?-init n)]
-      (loop [xs [2 325 9375 28178 450775 9780504 1795265022]]
-        (if-let [x (first xs)]
-          (case (prime?-distinguish x d s n)
-            ::Prime true
-            ::Composite false
-            ::Undeceided (recur (rest xs)))
-          true)))))
-
-(defn simple-prime?
-  [^long n]
-  (cond
-    (= n 2) true
-    (< n 2) false
-    (even? n) false
-    :else (loop [xs (range 3 (inc (math/isqrt n)) 2)]
-            (if-let [x (first xs)]
-              (if (zero? (mod n x))
-                false
-                (recur (next xs)))
-              true))))
+  [n]
+  {:pre [(integer? n)]}
+  (= (my-math/powermod 2 (dec n) n) 1))
 
 ;;; Lazy sequence of prime numbers
 ;;; https://en.wikipedia.org/wiki/Wheel_factorization
@@ -216,11 +291,11 @@
         max-prime (index->num max-index)
         s-sieve (boolean-array (inc max-index) true)]
     (when (>= upper (* 11 11))
-      (doseq [i (range (inc (math/isqrt upper)))]
+      (doseq [i (range (inc (my-math/isqrt upper)))]
         (when (aget s-sieve i)
           (let [prime (index->num i)]
             (loop [idx (mod i 48)
-                   q (math/pow prime 2)]
+                   q (my-math/pow prime 2)]
               (when (<= q max-prime)
                 (aset-boolean s-sieve (num->index q) false)
                 (recur (mod (inc idx) 48) (+ q (* prime (get wheel-spacing idx))))))))))
@@ -236,7 +311,7 @@
           max-prime (index->num w-high)
           sieve (boolean-array (inc (- w-high w-low)) true)]
       (when (>= high (* 11 11))
-        (doseq [[i val] (map-indexed vector (get-small-prime-tbl (math/isqrt high)))]
+        (doseq [[i val] (map-indexed vector (get-small-prime-tbl (my-math/isqrt high)))]
           (when (true? val)
             (let [prime (index->num i)]
               (loop [idx (num->index (max (quot (dec (+ low prime)) prime) prime))
@@ -294,7 +369,7 @@
   {:pre [(pos? n)]}
   (if (== n 1)
     [[1 1]]
-    (let [limit (math/isqrt n)]
+    (let [limit (my-math/isqrt n)]
       (loop [n n
              bs (take-while #(<= % limit) prime-numbers)
              v (transient [])]
@@ -316,7 +391,7 @@
   (loop [prime-factorization pf v [1]]
     (if-let [[b e] (first prime-factorization)]
       (recur (rest prime-factorization)
-             (into v (flatten (mapv #(mapv (partial * %) (mapv (partial math/pow b) (range 1 (inc e)))) v))))
+             (into v (flatten (mapv #(mapv (partial * %) (mapv (partial my-math/pow b) (range 1 (inc e)))) v))))
       (sort v))))
 
 (defn divisors
@@ -345,7 +420,7 @@
       (when-first [p prime-lst]
         (loop [q p, x 0]
           (when (<= q upper)
-            (let [next-x (long (+ x (math/pow q z)))]
+            (let [next-x (long (+ x (my-math/pow q z)))]
               (aset-long result q (+ (aget ^longs result q) next-x))
               (recur (* q p) next-x))))
         (recur (rest prime-lst))))

@@ -5,7 +5,7 @@
 (defn- count-consec-times
   [[a b]]
   (loop [cnt 1]
-    (if (prime/simple-prime? (+ (* cnt (+ cnt a)) b))
+    (if (prime/prime? (+ (* cnt (+ cnt a)) b))
       (recur (inc cnt))
       cnt)))
 

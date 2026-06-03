@@ -81,11 +81,6 @@
 
 ;;; Miscellaneous functions
 
-(defn get-ntz
-  "Return a number of trailing zero bits to the right of the lowest order set bit."
-  ^long [n]
-  (Long/numberOfTrailingZeros n))
-
 (defn digits
   "Return a lazy sequence of the digits of `n` in the given `base`."
   ([n]
