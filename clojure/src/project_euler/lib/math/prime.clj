@@ -132,8 +132,8 @@
     (boolean (some #(= % n) [2 3 5 7])) true
     (boolean (some #(zero? (mod n %)) [2 3 5 7])) false
     (< n 121) (> n 1)
-    (< n 65536) (= (nth min-factor-tbl (my-math/bshift-right n 1)) 1)
-    (< n Long/MAX_VALUE) (nSPRP-test n (get-sprp-base n))
+    (< n 65536) (= (nth min-factor-tbl (my-math/bshift-right n 1)) 1) ; 65536 = 2^16
+    (< n 4294967296) (nSPRP-test n (get-sprp-base n)) ; 4294967296 = 2^32
     :else (and (nSPRP-test n 2) (strengthened-BPSW-test n))))
 
 (defn fermat-prime?
