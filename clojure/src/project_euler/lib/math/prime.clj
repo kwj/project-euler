@@ -88,36 +88,41 @@
                      (dec idx)))
             (recur next-Uk next-Vk next-Qk (dec idx))))))))
 
-(defn- check-slprp
-  "Check whether `n` is a strong Lucas Probable prime (slprp).
+(defn- test-slprp
+  "Check whether `n` is a strong Lucas Probable prime, slprp(P, Q).
 
-  If yes, return [Vₙ₊₁ Q^((n+1)/2)]. Otherwise, `n` is composite and return `nil`."
-  [Ud Vd Qd s n]
-  (letfn [(next-v [v q] (mod (- (* v v) (* 2 q)) n))
-          (next-q [q] (mod (* q q) n))]
-    (let [VQ-pairs (take s (iterate (fn [[v q]] [(next-v v q) (next-q q)]) [Vd Qd]))]
-      (if (or (zero? Ud) (boolean (some (fn [[v _]] (zero? v)) VQ-pairs)))
-        [(apply next-v (last VQ-pairs)) (last (last VQ-pairs))]
-        nil))))
+  If yes, return [Vₙ₊₁ Q⁽ⁿ⁺¹⁾ᐟ²]. Otherwise, return `nil` because `n` is composite."
+  [n D P Q]
+  (let [[Ud Vd Qd s] (lucas-seq n D P Q)]
+    (letfn [(next-v [v q] (mod (- (* v v) (* 2 q)) n))
+            (next-q [q] (mod (* q q) n))]
+      (let [VQ-pairs (take s (iterate (fn [[v q]] [(next-v v q) (next-q q)]) [Vd Qd]))]
+        ;; VQ-pairs: [[V_d, Q^d] [V_2d, Q^2d] ... [V_(2^(s-1))*d Q^(2^(s-1))*d]]
+        (if (or (zero? Ud) (boolean (some (fn [[v _]] (zero? v)) VQ-pairs)))
+          ;; V_(2^s)*d = Vₙ₊₁  [because n + 1 = d * 2^s]
+          ;; Q^(2^(s-1))*d = Q⁽ⁿ⁺¹⁾ᐟ²  [because d * 2^(s-1) = (d * 2^s)/2 = (n+1)/2]
+          [(apply next-v (last VQ-pairs)) (last (last VQ-pairs))]
+          nil)))))
 
 (defn- test-vprp
-  "Return false if `n` is composite."
+  "Check whether `n` is a Lucas-V probable prime, vprp(Q).
+
+  If yes, return true. Otherwise, return false because `n` is composite."
   [Vₙ₊₁ Q n]
   (= (mod Vₙ₊₁ n) (mod (* 2 Q) n)))
 
 (defn- test-euler-criterion
   "Return false if `n` is composite."
-  [Q Qk n]
-  (or (= (Long/bitCount (abs Q)) 1)
-      (= (mod Qk n) (mod (* Q (my-math/jacobi-symbol Q n)) n))))
+  [Q Q⁽ⁿ⁺¹⁾ᐟ² n]
+  (or (= (Long/bitCount (abs Q)) 1) ; Skip if Q is a power of 2
+      (= (mod Q⁽ⁿ⁺¹⁾ᐟ² n) (mod (* Q (my-math/jacobi-symbol Q n)) n))))
 
-(defn- strong-BPSW-test
+(defn- strengthened-BPSW-test
   [n]
   (if-let [[D P Q] (lucas-seq-parameter n)]
-    (let [[Ud Vd Qd s] (lucas-seq n D P Q)]
-      (if-let [[Vk Qk] (check-slprp Ud Vd Qd s n)]
-        (and (test-vprp Vk Q n) (test-euler-criterion Q Qk n))
-        false))
+    (if-let [[Vₙ₊₁ Q⁽ⁿ⁺¹⁾ᐟ²] (test-slprp n D P Q)]
+      (and (test-vprp Vₙ₊₁ Q n) (test-euler-criterion Q Q⁽ⁿ⁺¹⁾ᐟ² n))
+      false)
     false))
 
 (defn prime?
@@ -129,7 +134,7 @@
     (< n 121) (> n 1)
     (< n 65536) (= (nth min-factor-tbl (my-math/bshift-right n 1)) 1)
     (< n Long/MAX_VALUE) (nSPRP-test n (get-sprp-base n))
-    :else (and (nSPRP-test n 2) (strong-BPSW-test n))))
+    :else (and (nSPRP-test n 2) (strengthened-BPSW-test n))))
 
 (defn fermat-prime?
   "Fermat primality test."
