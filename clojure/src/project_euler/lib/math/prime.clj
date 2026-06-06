@@ -5,11 +5,14 @@
 
 ;;; Primality test
 ;;;
-;;; Miller–Rabin primality test (Wikipedia based deterministic version under 2^64)
-;;;  [Miller–Rabin primality test](https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test)
-;;;  [Deterministic variants of the Miller-Rabin primality test](http://miller-rabin.appspot.com/)
+;;; First, test by trial division method, and then
 ;;;
-;;; prime? simple-prime?
+;;; in case of
+;;;   n < 2^16 - Lookup table
+;;;   n < 2^32 - One-shot deterministic Miller–Rabin primality test (FJ32_256)
+;;;              http://ceur-ws.org/Vol-1326/020-Forisek.pdf
+;;;   n > 2^32 - Strengthened Baillie-PSW test
+;;;              https://arxiv.org/abs/2006.14425v2
 
 (def ^:private sprp-bases
   [15591 2018 166 7429 8064 16045 10503 4399 1949 1295 2776 3620 560 3128 5212 2657
@@ -93,16 +96,16 @@
 
   If yes, return [Vₙ₊₁ Q⁽ⁿ⁺¹⁾ᐟ²]. Otherwise, return `nil` because `n` is composite."
   [n D P Q]
-  (let [[Ud Vd Qd s] (lucas-seq n D P Q)]
-    (letfn [(next-v [v q] (mod (- (* v v) (* 2 q)) n))
-            (next-q [q] (mod (* q q) n))]
-      (let [VQ-pairs (take s (iterate (fn [[v q]] [(next-v v q) (next-q q)]) [Vd Qd]))]
-        ;; VQ-pairs: [[V_d, Q^d] [V_2d, Q^2d] ... [V_(2^(s-1))*d Q^(2^(s-1))*d]]
-        (if (or (zero? Ud) (boolean (some (fn [[v _]] (zero? v)) VQ-pairs)))
-          ;; V_(2^s)*d = Vₙ₊₁  [because n + 1 = d * 2^s]
-          ;; Q^(2^(s-1))*d = Q⁽ⁿ⁺¹⁾ᐟ²  [because d * 2^(s-1) = (d * 2^s)/2 = (n+1)/2]
-          [(apply next-v (last VQ-pairs)) (last (last VQ-pairs))]
-          nil)))))
+  (letfn [(next-v [v q] (mod (- (* v v) (* 2 q)) n))
+          (next-q [q] (mod (* q q) n))]
+    (let [[Ud Vd Qd s] (lucas-seq n D P Q)
+          ;; VQ-pairs: [[V_d, Q^d] [V_2d, Q^2d] ... [V_(2^(s-1))*d Q^(2^(s-1))*d]]
+          VQ-pairs (take s (iterate (fn [[v q]] [(next-v v q) (next-q q)]) [Vd Qd]))]
+      (if (or (zero? Ud) (boolean (some (fn [[v _]] (zero? v)) VQ-pairs)))
+        ;; V_(2^s)*d = Vₙ₊₁  [because n + 1 = d * 2^s]
+        ;; Q^(2^(s-1))*d = Q⁽ⁿ⁺¹⁾ᐟ²  [because d * 2^(s-1) = (d * 2^s)/2 = (n+1)/2]
+        [(apply next-v (last VQ-pairs)) (last (last VQ-pairs))]
+        nil))))
 
 (defn- test-vprp
   "Check whether `n` is a Lucas-V probable prime, vprp(Q).
