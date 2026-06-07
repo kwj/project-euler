@@ -1,8 +1,6 @@
 (ns project-euler.lib.math.prime
   (:require [project-euler.lib.math :as my-math]))
 
-(load "min_factors")
-
 ;;; Primality test
 ;;;
 ;;; First, test by trial division method, and then
@@ -13,6 +11,9 @@
 ;;;              http://ceur-ws.org/Vol-1326/020-Forisek.pdf
 ;;;   n > 2^32 - Strengthened Baillie-PSW test
 ;;;              https://arxiv.org/abs/2006.14425v2
+
+;; lookup table
+(load "min_factors")
 
 (def ^:private sprp-bases
   [15591 2018 166 7429 8064 16045 10503 4399 1949 1295 2776 3620 560 3128 5212 2657
@@ -122,11 +123,13 @@
 
 (defn- strengthened-BPSW-test
   [n]
-  (if-let [[D P Q] (lucas-seq-parameter n)]
-    (if-let [[Vₙ₊₁ Q⁽ⁿ⁺¹⁾ᐟ²] (test-slprp n D P Q)]
-      (and (test-vprp Vₙ₊₁ Q n) (test-euler-criterion Q Q⁽ⁿ⁺¹⁾ᐟ² n))
-      false)
-    false))
+  (and (nSPRP-test n 2) ; step 1
+       (if-let [[D P Q] (lucas-seq-parameter n)] ; step 2
+         (if-let [[Vₙ₊₁ Q⁽ⁿ⁺¹⁾ᐟ²] (test-slprp n D P Q)] ; step 3
+           (and (test-vprp Vₙ₊₁ Q n) ; step 4
+                (test-euler-criterion Q Q⁽ⁿ⁺¹⁾ᐟ² n)) ; step 5
+           false)
+         false)))
 
 (defn prime?
   [n]
@@ -137,7 +140,7 @@
     (< n 121) (> n 1)
     (< n 65536) (= (nth min-factor-tbl (my-math/bshift-right n 1)) 1) ; 65536 = 2^16
     (< n 4294967296) (nSPRP-test n (get-sprp-base n)) ; 4294967296 = 2^32
-    :else (and (nSPRP-test n 2) (strengthened-BPSW-test n))))
+    :else (strengthened-BPSW-test n)))
 
 (defn fermat-prime?
   "Fermat primality test."
