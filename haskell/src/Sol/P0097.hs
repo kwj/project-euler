@@ -8,7 +8,7 @@ compute :: String
 compute =
     printf "%010d" $ (28433 * powerModExn 2 7830457 m + 1) `mod` m
   where
-    m = 10_000_000_000
+    m = 10_000_000_000 :: Int
 
 solve :: String
 solve = compute
