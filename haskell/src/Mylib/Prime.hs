@@ -8,16 +8,16 @@ module Mylib.Prime (
 
 import Control.Arrow ((&&&))
 import Data.Array.Unboxed (UArray, listArray, (!))
-import Data.Bits (countTrailingZeros, shiftR, testBit, xor, (.&.))
+import Data.Bits (Bits (..), FiniteBits (..))
 import Data.List (find, unfoldr)
 import Data.Maybe (fromMaybe)
 import Data.Word (Word64)
 
 import qualified Data.Numbers.Primes as P (primes)
 
-import Mylib.Factor (minFactorTbl)
-import Mylib.Math (getCTZ, isqrt, kronecker)
-import Mylib.Util (bitLength, headExn)
+import Mylib.Math (getCTZ, isqrt, kronecker, powerModExn)
+import Mylib.MinFactor (minFactorTbl)
+import Mylib.Util (bitLength, headExn, lastExn)
 
 primeNumbers :: [Int]
 primeNumbers = P.primes
@@ -71,37 +71,27 @@ sprpBase n = bases ! idx
             , 922, 350, 7514, 4452, 3449, 2663, 4708, 418, 1621, 1171, 3471, 88, 11345, 412, 1559, 194]
 {- FOURMOLU_ENABLE -}
 
-millerRabinTest :: Int -> Word64 -> Bool
-millerRabinTest n base =
+nSprpTestW64 :: Word64 -> Word64 -> Bool
+nSprpTestW64 n base =
     cond1 || cond2
   where
-    n' = fromIntegral n
-    s = countTrailingZeros (n' - 1)
-    d = fromIntegral $ shiftR (n' - 1) s
-    cond1 = powerModW64 base d n' == 1
-    cond2 = elem (n' - 1) $ map (\k -> powerModW64 base (d * 2 ^ k) n') [0 .. (s - 1)]
+    s = countTrailingZeros (n - 1)
+    d = shiftR (n - 1) s
+    cond1 = powerModW64 base (fromIntegral d) n == 1
+    cond2 =
+        elem (n - 1) $
+            map (\k -> powerModW64 base (fromIntegral d * 2 ^ k) n) [0 .. (s - 1)]
 
-lucasTest :: Int -> Bool
-lucasTest n = lucasTest' (fromIntegral n)
-
-lucasTest' :: Integer -> Bool
-lucasTest' n =
-    case lucasSeqParameter n of
-        Just (d, _, q) ->
-            let (u, v, qk) = lucasSeq n d 1 1 q q delta (bitLength delta - 2)
-             in cond1 u || cond2 v qk
-        Nothing -> False
+nSprpTestBigint :: Integer -> Integer -> Bool
+nSprpTestBigint n base =
+    cond1 || cond2
   where
-    s = getCTZ (n + 1)
-    delta = shiftR (n + 1) s
-    cond1 u = u == 0
-    cond2 v qk =
-        elem 0 . take s $
-            unfoldr
-                (\(x, y) -> Just (x, (((x * x) - 2 * y) `mod` n, (y * y) `mod` n)))
-                (v, qk)
+    s = getCTZ (n - 1)
+    d = shiftR (n - 1) s
+    cond1 = powerModExn base d n == 1
+    cond2 = elem (n - 1) $ map (\k -> powerModExn base (d * 2 ^ k) n) [0 .. (s - 1)]
 
--- return: Maybe (D, P, Q)
+-- Return Maybe (D, P, Q) or Nothing when `n` is composite.
 lucasSeqParameter :: Integer -> Maybe (Integer, Integer, Integer)
 lucasSeqParameter n
     | isqrt_n * isqrt_n == n = Nothing
@@ -116,34 +106,83 @@ lucasSeqParameter n
             . map (flip kronecker n &&& id)
             $ zipWith (*) (iterate (+ 2) 5) (cycle [1, -1])
 
+-- Return Ud, Vd, Q^d and s.
+-- Note: n + 1 = d * 2^s
 lucasSeq ::
-    Integer ->
-    Integer ->
-    Integer ->
-    Integer ->
-    Integer ->
-    Integer ->
-    Integer ->
-    Int ->
-    (Integer, Integer, Integer)
-lucasSeq n d u v q qk delta x
-    | x < 0 = (u, v, qk)
-    | shiftR delta x .&. 1 == 0 = lucasSeq n d u' v' q qk' delta (x - 1)
-    | otherwise =
-        let u'' = u' + v'
-            v'' = v' + u' * d
-            u''' = shiftR (if u'' .&. 1 /= 0 then u'' + n else u'') 1 `mod` n
-            v''' = shiftR (if v'' .&. 1 /= 0 then v'' + n else v'') 1 `mod` n
-         in lucasSeq n d u''' v''' q ((qk' * q) `mod` n) delta (x - 1)
+    Integer -> Integer -> Integer -> Integer -> (Integer, Integer, Integer, Int)
+lucasSeq n parD parP parQ =
+    go 1 parP parQ (bitLength d - 2)
   where
-    u' = (u * v) `mod` n
-    v' = (v * v - 2 * qk) `mod` n
-    qk' = (qk * qk) `mod` n
+    s = getCTZ (n + 1)
+    d = shiftR (n + 1) s
 
-isPrime :: Int -> Bool
+    go :: Integer -> Integer -> Integer -> Int -> (Integer, Integer, Integer, Int)
+    go uk vk qk idx
+        | idx < 0 = (uk, vk, qk, s)
+        | shiftR d idx .&. 1 == 0 = go nextUk nextVk nextQk (idx - 1)
+        | otherwise =
+            let tmpUk = (parP * nextUk) + nextVk
+                tmpVk = (parD * nextUk) + (parP * nextVk)
+             in go
+                    (shiftR (if odd tmpUk then tmpUk + n else tmpUk) 1 `mod` n)
+                    (shiftR (if odd tmpVk then tmpVk + n else tmpVk) 1 `mod` n)
+                    ((parQ * nextQk) `mod` n)
+                    (idx - 1)
+      where
+        nextUk = (uk * vk) `mod` n
+        nextVk = ((vk * vk) - 2 * qk) `mod` n
+        nextQk = (qk * qk) `mod` n
+
+-- Check whether `n` is a strong Lucas Probable prime, slprp(P, Q).
+-- If yes, return Just(Vₙ₊₁, Q⁽ⁿ⁺¹⁾ᐟ²). Otherwise, return Nothing because `n` is composite.
+testSlprp ::
+    Integer -> Integer -> Integer -> Integer -> Maybe (Integer, Integer)
+testSlprp n parD parP parQ =
+    let (ud, vd, qd, s) = lucasSeq n parD parP parQ
+        vqPairs = take s $ unfoldr (\(x, y) -> Just ((x, y), (nextV x y, nextQ y))) (vd, qd)
+     in if ud == 0 || (elem 0 . map fst $ vqPairs)
+            then
+                let (v, q) = lastExn vqPairs
+                 in Just (nextV v q, q)
+            else
+                Nothing
+  where
+    nextV :: Integer -> Integer -> Integer
+    nextV v q = ((v * v) - 2 * q) `mod` n
+
+    nextQ :: Integer -> Integer
+    nextQ q = (q * q) `mod` n
+
+-- Check whether `n` is a Lucas-V probable prime, vprp(Q).
+-- If yes, return true. Otherwise, return false because `n` is composite.
+-- parameter: Vₙ₊₁, parQ, n
+testVprp :: Integer -> Integer -> Integer -> Bool
+testVprp v q n = v `mod` n == (2 * q) `mod` n
+
+-- Return false if `n` is composite.
+-- Note that skip this test when (abs q) is a power of 2.
+-- parameter: parQ, Q⁽ⁿ⁺¹⁾ᐟ², n
+testEulerCriterion :: Integer -> Integer -> Integer -> Bool
+testEulerCriterion q q' n =
+    popCount (abs q) == 1 || q' `mod` n == (q * kronecker q n) `mod` n
+
+strengthenedBpswTest :: Integer -> Bool
+strengthenedBpswTest n =
+    -- step 1 and 2
+    nSprpTestBigint n 2 && case lucasSeqParameter n of
+        Just (parD, parP, parQ) ->
+            -- step 3
+            case testSlprp n parD parP parQ of
+                Just (v, q) ->
+                    -- step 4 & 5
+                    testVprp v parQ n && testEulerCriterion parQ q n
+                Nothing -> False
+        Nothing -> False
+
+isPrime :: (Integral a, Bits a) => a -> Bool
 isPrime n
     | even n = n == 2
-    | n <= 65535 = (n >= 2) && (minFactorTbl ! shiftR n 1 == 1) -- (2^16 - 1) = 65535
+    | n <= 65535 = (n > 2) && (minFactorTbl ! shiftR (fromIntegral n) 1 == 1) -- (2^16 - 1) = 65535
     | mod n 3 == 0 = False
     | mod n 5 == 0 = False
     | mod n 7 == 0 = False
@@ -154,8 +193,10 @@ isPrime n
     | mod n 23 == 0 = False
     | mod n 29 == 0 = False
     | mod n 31 == 0 = False
-    | n <= 4294967295 = millerRabinTest n (sprpBase n) -- (2^32 - 1) = 4294967295
-    | otherwise = millerRabinTest n 2 && lucasTest n
+    | n <= 4294967295 = nSprpTestW64 (fromIntegral n) (sprpBase (fromIntegral n)) -- (2^32 - 1) = 4294967295
+    | otherwise = strengthenedBpswTest (fromIntegral n)
+{-# SPECIALIZE isPrime :: Int -> Bool #-}
+{-# SPECIALIZE isPrime :: Integer -> Bool #-}
 
 {- FOURMOLU_DISABLE -}
 numberToIndex :: Int -> Int

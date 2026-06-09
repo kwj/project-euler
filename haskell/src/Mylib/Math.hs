@@ -49,28 +49,32 @@ invMod a m
 {-# SPECIALIZE invMod :: Int -> Int -> Maybe Int #-}
 {-# SPECIALIZE invMod :: Integer -> Integer -> Maybe Integer #-}
 
-powerMod :: Integral int => int -> Int -> int -> Maybe int
+powerMod :: Integral int => int -> int -> int -> Maybe int
 powerMod _ _ 0 = Nothing -- "module must not be zero"
 powerMod b e m
     | e < 0 = case invMod b m of
         Just x ->
-            Just (fromIntegral (powerMod' (fromIntegral x) (negate e) (fromIntegral m) 1))
+            Just
+                ( fromIntegral
+                    (powerMod' (fromIntegral x) (negate (fromIntegral e)) (fromIntegral m) 1)
+                )
         Nothing -> Nothing
     | otherwise =
-        Just (fromIntegral (powerMod' (fromIntegral b) e (fromIntegral m) 1))
-{-# SPECIALIZE powerMod :: Integer -> Int -> Integer -> Maybe Integer #-}
+        Just
+            (fromIntegral (powerMod' (fromIntegral b) (fromIntegral e) (fromIntegral m) 1))
+{-# SPECIALIZE powerMod :: Integer -> Integer -> Integer -> Maybe Integer #-}
 {-# SPECIALIZE powerMod :: Int -> Int -> Int -> Maybe Int #-}
 
-powerMod' :: Integer -> Int -> Integer -> Integer -> Integer
+powerMod' :: Integer -> Integer -> Integer -> Integer -> Integer
 powerMod' b e m result
     | e == 0 = result
     | testBit e 0 =
         powerMod' ((b * b) `mod` m) (shiftR e 1) m ((result * b) `mod` m)
     | otherwise = powerMod' ((b * b) `mod` m) (shiftR e 1) m result
 
-powerModExn :: Integral int => int -> Int -> int -> int
+powerModExn :: Integral int => int -> int -> int -> int
 powerModExn b e m = fromMaybe (error "") (powerMod b e m)
-{-# SPECIALIZE powerModExn :: Integer -> Int -> Integer -> Integer #-}
+{-# SPECIALIZE powerModExn :: Integer -> Integer -> Integer -> Integer #-}
 {-# SPECIALIZE powerModExn :: Int -> Int -> Int -> Int #-}
 
 isqrt :: Integral int => int -> int
