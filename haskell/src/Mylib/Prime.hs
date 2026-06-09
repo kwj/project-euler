@@ -110,8 +110,8 @@ lucasSeqParameter n
 -- Note: n + 1 = d * 2^s
 lucasSeq ::
     Integer -> Integer -> Integer -> Integer -> (Integer, Integer, Integer, Int)
-lucasSeq n parD parP parQ =
-    go 1 parP parQ (bitLength d - 2)
+lucasSeq n paramD paramP paramQ =
+    go 1 paramP paramQ (bitLength d - 2)
   where
     s = getCTZ (n + 1)
     d = shiftR (n + 1) s
@@ -121,12 +121,12 @@ lucasSeq n parD parP parQ =
         | idx < 0 = (uk, vk, qk, s)
         | shiftR d idx .&. 1 == 0 = go nextUk nextVk nextQk (idx - 1)
         | otherwise =
-            let tmpUk = (parP * nextUk) + nextVk
-                tmpVk = (parD * nextUk) + (parP * nextVk)
+            let tmpUk = (paramP * nextUk) + nextVk
+                tmpVk = (paramD * nextUk) + (paramP * nextVk)
              in go
                     (shiftR (if odd tmpUk then tmpUk + n else tmpUk) 1 `mod` n)
                     (shiftR (if odd tmpVk then tmpVk + n else tmpVk) 1 `mod` n)
-                    ((parQ * nextQk) `mod` n)
+                    ((paramQ * nextQk) `mod` n)
                     (idx - 1)
       where
         nextUk = (uk * vk) `mod` n
@@ -137,8 +137,8 @@ lucasSeq n parD parP parQ =
 -- If yes, return Just(Vₙ₊₁, Q⁽ⁿ⁺¹⁾ᐟ²). Otherwise, return Nothing because `n` is composite.
 testSlprp ::
     Integer -> Integer -> Integer -> Integer -> Maybe (Integer, Integer)
-testSlprp n parD parP parQ =
-    let (ud, vd, qd, s) = lucasSeq n parD parP parQ
+testSlprp n paramD paramP paramQ =
+    let (ud, vd, qd, s) = lucasSeq n paramD paramP paramQ
         vqPairs = take s $ unfoldr (\(x, y) -> Just ((x, y), (nextV x y, nextQ y))) (vd, qd)
      in if ud == 0 || (elem 0 . map fst $ vqPairs)
             then
@@ -155,13 +155,13 @@ testSlprp n parD parP parQ =
 
 -- Check whether `n` is a Lucas-V probable prime, vprp(Q).
 -- If yes, return true. Otherwise, return false because `n` is composite.
--- parameter: Vₙ₊₁, parQ, n
+-- parameter: Vₙ₊₁, paramQ, n
 testVprp :: Integer -> Integer -> Integer -> Bool
 testVprp v q n = v `mod` n == (2 * q) `mod` n
 
 -- Return false if `n` is composite.
 -- Note that skip this test when (abs q) is a power of 2.
--- parameter: parQ, Q⁽ⁿ⁺¹⁾ᐟ², n
+-- parameter: paramQ, Q⁽ⁿ⁺¹⁾ᐟ², n
 testEulerCriterion :: Integer -> Integer -> Integer -> Bool
 testEulerCriterion q q' n =
     popCount (abs q) == 1 || q' `mod` n == (q * kronecker q n) `mod` n
@@ -170,12 +170,12 @@ strengthenedBpswTest :: Integer -> Bool
 strengthenedBpswTest n =
     -- step 1 and 2
     nSprpTestBigint n 2 && case lucasSeqParameter n of
-        Just (parD, parP, parQ) ->
+        Just (paramD, paramP, paramQ) ->
             -- step 3
-            case testSlprp n parD parP parQ of
+            case testSlprp n paramD paramP paramQ of
                 Just (v, q) ->
                     -- step 4 & 5
-                    testVprp v parQ n && testEulerCriterion parQ q n
+                    testVprp v paramQ n && testEulerCriterion paramQ q n
                 Nothing -> False
         Nothing -> False
 
