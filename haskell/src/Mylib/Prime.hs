@@ -11,7 +11,7 @@ import Data.Array.Unboxed (UArray, listArray, (!))
 import Data.Bits (Bits (..), FiniteBits (..))
 import Data.List (find, unfoldr)
 import Data.Maybe (fromMaybe)
-import Data.Word (Word64)
+import Data.Word (Word32, Word64)
 
 import qualified Data.Numbers.Primes as P (primes)
 
@@ -30,26 +30,18 @@ primes low high =
         else
             error "range error"
 
-powerModW64 :: Word64 -> Int -> Word64 -> Word64
-powerModW64 b e m = powerModW64' b e m 1
-
-powerModW64' :: Word64 -> Int -> Word64 -> Word64 -> Word64
-powerModW64' b e m result
-    | e == 0 = result
-    | testBit e 0 =
-        powerModW64' ((b * b) `mod` m) (shiftR e 1) m ((result * b) `mod` m)
-    | otherwise = powerModW64' ((b * b) `mod` m) (shiftR e 1) m result
+-- One-shot deterministic Miller–Rabin primality test for UInt32 (FJ32_256)
+-- http://ceur-ws.org/Vol-1326/020-Forisek.pdf
 
 {- FOURMOLU_DISABLE -}
--- http://ceur-ws.org/Vol-1326/020-Forisek.pdf (FJ32_256)
-sprpBase :: Int -> Word64
+sprpBase :: Word32 -> Word32
 sprpBase n = bases ! idx
   where
-    h = fromIntegral n :: Word64
-    h1 = (shiftR h 16 `xor` h) * 0x45d9f3b
+    n' = fromIntegral n :: Word64
+    h1 = (shiftR n' 16 `xor` n') * 0x45d9f3b
     h2 = (shiftR h1 16 `xor` h1) * 0x45d9f3b
     idx = (shiftR h2 16 `xor` h2) .&. 0xff
-    bases :: UArray Word64 Word64
+    bases :: UArray Word64 Word32
     bases =
         listArray
             (0, 255)
@@ -71,19 +63,33 @@ sprpBase n = bases ! idx
             , 922, 350, 7514, 4452, 3449, 2663, 4708, 418, 1621, 1171, 3471, 88, 11345, 412, 1559, 194]
 {- FOURMOLU_ENABLE -}
 
-nSprpTestW64 :: Word64 -> Word64 -> Bool
-nSprpTestW64 n base =
+-- Check whether `n` is a strong probable prime, SPRP(base).
+sprpTestUInt32 :: Word32 -> Word32 -> Bool
+sprpTestUInt32 n base =
     cond1 || cond2
   where
-    s = countTrailingZeros (n - 1)
-    d = shiftR (n - 1) s
-    cond1 = powerModW64 base (fromIntegral d) n == 1
-    cond2 =
-        elem (n - 1) $
-            map (\k -> powerModW64 base (fromIntegral d * 2 ^ k) n) [0 .. (s - 1)]
+    powerModW64 :: Word64 -> Word64 -> Word64 -> Word64
+    powerModW64 =
+        go 1
+      where
+        go :: Word64 -> Word64 -> Word64 -> Word64 -> Word64
+        go result b e m
+            | e == 0 = result
+            | testBit e 0 =
+                go ((result * b) `mod` m) ((b * b) `mod` m) (shiftR e 1) m
+            | otherwise =
+                go result ((b * b) `mod` m) (shiftR e 1) m
 
-nSprpTestBigint :: Integer -> Integer -> Bool
-nSprpTestBigint n base =
+    n' = fromIntegral n
+    base' = fromIntegral base
+    s = countTrailingZeros (n' - 1)
+    d = shiftR (n' - 1) s
+    cond1 = powerModW64 base' d n' == 1
+    cond2 = elem (n' - 1) $ map (\k -> powerModW64 base' (d * 2 ^ k) n') [0 .. (s - 1)]
+
+-- Check whether `n` is a strong probable prime, SPRP(base).
+sprpTest :: Integer -> Integer -> Bool
+sprpTest n base =
     cond1 || cond2
   where
     s = getCTZ (n - 1)
@@ -91,7 +97,7 @@ nSprpTestBigint n base =
     cond1 = powerModExn base d n == 1
     cond2 = elem (n - 1) $ map (\k -> powerModExn base (d * 2 ^ k) n) [0 .. (s - 1)]
 
--- Return Maybe (D, P, Q) or Nothing when `n` is composite.
+-- Return Just (D, P, Q) or Nothing when `n` is composite.
 lucasSeqParameter :: Integer -> Maybe (Integer, Integer, Integer)
 lucasSeqParameter n
     | isqrt_n * isqrt_n == n = Nothing
@@ -106,7 +112,7 @@ lucasSeqParameter n
             . map (flip kronecker n &&& id)
             $ zipWith (*) (iterate (+ 2) 5) (cycle [1, -1])
 
--- Return Ud, Vd, Q^d and s.
+-- Return (Ud, Vd, Q^d, s).
 -- Note: n + 1 = d * 2^s
 lucasSeq ::
     Integer -> Integer -> Integer -> Integer -> (Integer, Integer, Integer, Int)
@@ -119,7 +125,7 @@ lucasSeq n paramD paramP paramQ =
     go :: Integer -> Integer -> Integer -> Int -> (Integer, Integer, Integer, Int)
     go uk vk qk idx
         | idx < 0 = (uk, vk, qk, s)
-        | shiftR d idx .&. 1 == 0 = go nextUk nextVk nextQk (idx - 1)
+        | even $ shiftR d idx = go nextUk nextVk nextQk (idx - 1)
         | otherwise =
             let tmpUk = (paramP * nextUk) + nextVk
                 tmpVk = (paramD * nextUk) + (paramP * nextVk)
@@ -130,28 +136,29 @@ lucasSeq n paramD paramP paramQ =
                     (idx - 1)
       where
         nextUk = (uk * vk) `mod` n
-        nextVk = ((vk * vk) - 2 * qk) `mod` n
+        nextVk = (vk * vk - 2 * qk) `mod` n
         nextQk = (qk * qk) `mod` n
 
 -- Check whether `n` is a strong Lucas Probable prime, slprp(P, Q).
--- If yes, return Just(Vₙ₊₁, Q⁽ⁿ⁺¹⁾ᐟ²). Otherwise, return Nothing because `n` is composite.
+-- If yes, return Just (Vₙ₊₁, Q⁽ⁿ⁺¹⁾ᐟ²). Otherwise, return Nothing because `n` is composite.
 testSlprp ::
     Integer -> Integer -> Integer -> Integer -> Maybe (Integer, Integer)
 testSlprp n paramD paramP paramQ =
-    let (ud, vd, qd, s) = lucasSeq n paramD paramP paramQ
-        vqPairs = take s $ unfoldr (\(x, y) -> Just ((x, y), (nextV x y, nextQ y))) (vd, qd)
-     in if ud == 0 || (elem 0 . map fst $ vqPairs)
-            then
-                let (v, q) = lastExn vqPairs
-                 in Just (nextV v q, q)
-            else
-                Nothing
+    if ud == 0 || (elem 0 . map fst $ vqPairs)
+        then
+            let (v, q) = lastExn vqPairs in Just (nextV v q, q)
+        else
+            Nothing
   where
     nextV :: Integer -> Integer -> Integer
-    nextV v q = ((v * v) - 2 * q) `mod` n
+    nextV v q = (v * v - 2 * q) `mod` n
 
     nextQ :: Integer -> Integer
     nextQ q = (q * q) `mod` n
+
+    (ud, vd, qd, s) = lucasSeq n paramD paramP paramQ
+    -- vqPairs: [(V_d, Q^d), (V_2d, Q^2d) ... (V_(2^(s-1))*d Q^(2^(s-1))*d)]
+    vqPairs = take s $ unfoldr (\(x, y) -> Just ((x, y), (nextV x y, nextQ y))) (vd, qd)
 
 -- Check whether `n` is a Lucas-V probable prime, vprp(Q).
 -- If yes, return true. Otherwise, return false because `n` is composite.
@@ -166,10 +173,12 @@ testEulerCriterion :: Integer -> Integer -> Integer -> Bool
 testEulerCriterion q q' n =
     popCount (abs q) == 1 || q' `mod` n == (q * kronecker q n) `mod` n
 
+-- Strengthened Baillie-PSW primality test
+-- https://arxiv.org/abs/2006.14425v2
 strengthenedBpswTest :: Integer -> Bool
 strengthenedBpswTest n =
     -- step 1 and 2
-    nSprpTestBigint n 2 && case lucasSeqParameter n of
+    sprpTest n 2 && case lucasSeqParameter n of
         Just (paramD, paramP, paramQ) ->
             -- step 3
             case testSlprp n paramD paramP paramQ of
@@ -181,19 +190,11 @@ strengthenedBpswTest n =
 
 isPrime :: (Integral a, Bits a) => a -> Bool
 isPrime n
-    | even n = n == 2
-    | n <= 65535 = (n > 2) && (minFactorTbl ! shiftR (fromIntegral n) 1 == 1) -- (2^16 - 1) = 65535
-    | mod n 3 == 0 = False
-    | mod n 5 == 0 = False
-    | mod n 7 == 0 = False
-    | mod n 11 == 0 = False
-    | mod n 13 == 0 = False
-    | mod n 17 == 0 = False
-    | mod n 19 == 0 = False
-    | mod n 23 == 0 = False
-    | mod n 29 == 0 = False
-    | mod n 31 == 0 = False
-    | n <= 4294967295 = nSprpTestW64 (fromIntegral n) (sprpBase (fromIntegral n)) -- (2^32 - 1) = 4294967295
+    | n `elem` [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31] = True
+    | any (\x -> n `mod` x == 0) [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31] = False
+    | n < 1369 = n > 1 -- 37^2 = 1369
+    | n <= 65535 = minFactorTbl ! shiftR (fromIntegral n) 1 == 1 -- (2^16 - 1) = 65535
+    | n <= 4294967295 = sprpTestUInt32 (fromIntegral n) (sprpBase (fromIntegral n)) -- (2^32 - 1) = 4294967295
     | otherwise = strengthenedBpswTest (fromIntegral n)
 {-# SPECIALIZE isPrime :: Int -> Bool #-}
 {-# SPECIALIZE isPrime :: Integer -> Bool #-}
