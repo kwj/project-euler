@@ -41,7 +41,7 @@
         idx (long (.and (.xor (.shiftRight h3 (int 16)) h3) (biginteger 255)))] ; 255 = 0xff
     (nth sprp-bases idx)))
 
-(defn- nSPRP-test
+(defn- test-sprp
   [n base]
   {:pre [(integer? n)]}
   (let [s (my-math/get-ntz (dec n))
@@ -123,7 +123,7 @@
 
 (defn- strengthened-BPSW-test
   [n]
-  (and (nSPRP-test n 2) ; step 1
+  (and (test-sprp n 2) ; step 1
        (if-let [[D P Q] (lucas-seq-parameter n)] ; step 2
          (if-let [[Vₙ₊₁ Q⁽ⁿ⁺¹⁾ᐟ²] (test-slprp n D P Q)] ; step 3
            (and (test-vprp Vₙ₊₁ Q n) ; step 4
@@ -135,11 +135,11 @@
   [n]
   {:pre [(integer? n)]}
   (cond
-    (boolean (some #(= % n) [2 3 5 7])) true
-    (boolean (some #(zero? (mod n %)) [2 3 5 7])) false
-    (< n 121) (> n 1)
-    (< n 65536) (= (nth min-factor-tbl (my-math/bshift-right n 1)) 1) ; 65536 = 2^16
-    (< n 4294967296) (nSPRP-test n (get-sprp-base n)) ; 4294967296 = 2^32
+    (boolean (some #(= % n) [2 3 5 7 11 13 17 19 23 29 31])) true
+    (boolean (some #(zero? (mod n %)) [2 3 5 7 11 13 17 19 23 29 31])) false
+    (< n 1369) (> n 1) ; 1369 = 37^2
+    (<= n 65535) (= (nth min-factor-tbl (my-math/bshift-right n 1)) 1) ; 65535 = 2^16 - 1
+    (<= n 4294967295) (test-sprp n (get-sprp-base n)) ; 4294967295 = 2^32 - 1
     :else (strengthened-BPSW-test n)))
 
 (defn fermat-prime?
