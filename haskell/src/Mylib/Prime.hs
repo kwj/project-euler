@@ -184,6 +184,7 @@ strengthenedBpswTest n =
             case testSlprp n paramD paramP paramQ of
                 Just (v, q) ->
                     -- step 4 & 5
+                    -- Note: v = Vₙ₊₁, q = Q⁽ⁿ⁺¹⁾ᐟ²
                     testVprp v paramQ n && testEulerCriterion paramQ q n
                 Nothing -> False
         Nothing -> False
