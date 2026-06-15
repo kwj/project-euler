@@ -34,7 +34,7 @@ import Data.List (find)
 import Mylib.Math (isPandigitalNZ)
 
 f :: Int -> Int
-f n = n * 100_002
+f = (* 100_002)
 
 isPandigitalMultiples :: Int -> Bool
 isPandigitalMultiples n =

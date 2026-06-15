@@ -13,10 +13,8 @@ compute =
     aux :: Int -> [Int] -> Int
     aux x oddPrimes
         | isPrime x = aux (x + 2) (x : oddPrimes)
-        | otherwise =
-            if any (isTwicedSquare . (x -)) oddPrimes
-                then aux (x + 2) oddPrimes
-                else x
+        | any (isTwicedSquare . (x -)) oddPrimes = aux (x + 2) oddPrimes
+        | otherwise = x
 
 solve :: String
 solve = compute

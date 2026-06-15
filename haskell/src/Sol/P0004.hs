@@ -36,11 +36,9 @@ compute n
 
         findPalindromeNumbers :: (Int, Int) -> [Int]
         findPalindromeNumbers (blkLower, blkUpper) =
-            concatMap
-                ( filter (`isPalindrome` 10)
-                    . (filter (>= blkLower) . (\x -> (x *) <$> [nLower .. (min x (blkUpper `div` x))]))
-                )
-                $ dropWhile (\x -> x * x < blkLower) [nLower .. nUpper]
+            filter (`isPalindrome` 10) . filter (>= blkLower) $
+                (\x -> (x *) <$> [nLower .. (min x (blkUpper `div` x))])
+                    =<< [x | x <- [nLower .. nUpper], x * x >= blkLower]
 
 solve :: String
 solve = compute 3

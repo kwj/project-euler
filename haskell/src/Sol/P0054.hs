@@ -65,12 +65,10 @@ allHandPatterns =
 getHand :: [String] -> [Int]
 getHand cards
     | isFlush suits =
-        let hand = checkStraight nums
-         in case hand of
-                0 -> 9 : handNums -- Royal Flush: 9
-                _
-                    | hand > 0 -> 8 : handNums -- Straight Flush: 8
-                    | otherwise -> 5 : handNums -- Flush: 5
+        case checkStraight nums `compare` 0 of
+            EQ -> 9 : handNums -- Royal Flush: 9
+            GT -> 8 : handNums -- Straight Flush: 8
+            LT -> 5 : handNums -- Flush: 5
     | checkStraight nums >= 0 =
         4 : handNums -- Straight: 4
     | otherwise =

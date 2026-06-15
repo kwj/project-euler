@@ -30,8 +30,7 @@ consecLength a b =
 
 compute :: String
 compute =
-    let (a, b) = snd $ maximumBy (compare `on` fst) lst
-     in show (a * b)
+    let (a, b) = snd $ maximumBy (compare `on` fst) lst in show (a * b)
   where
     plst = takeWhile (< 2000) primeNumbers
     lst =

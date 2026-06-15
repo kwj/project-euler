@@ -18,7 +18,7 @@ compute :: String
 compute =
     show
         . sum
-        $ (\m -> floor (1 / (1 - logBase 10 m) :: Double) :: Int) <$> [1 .. 9]
+        $ (\m -> floor (1 / (1 - logBase @Double 10 m)) :: Int) <$> [1 .. 9]
 
 solve :: String
 solve = compute

@@ -12,7 +12,7 @@ compute len =
     aux x cnt
         | (length . group $ primeFactors x) /= len = aux (succ x) 0
         | cnt == len - 1 = x - len + 1
-        | otherwise = aux (succ x) (cnt + 1)
+        | otherwise = aux (succ x) (succ cnt)
 
 solve :: String
 solve = compute 4

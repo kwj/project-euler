@@ -9,7 +9,7 @@ import Data.Function (fix)
 
 import Mylib.Math (isqrt)
 
-memoize :: (Int -> a) -> (Int -> a)
+memoize :: forall a. (Int -> a) -> (Int -> a)
 memoize f = (map f [0 ..] !!)
 
 sumPhiMemo :: Int -> Int

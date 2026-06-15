@@ -6,13 +6,13 @@ import Data.List (maximumBy)
 
 -- It is a straightforward method that doesn't use memoization.
 getCollatzLength :: Int -> Int
-getCollatzLength n = aux n 1
+getCollatzLength = aux 1
   where
     aux :: Int -> Int -> Int
-    aux 1 cnt = cnt
-    aux x cnt
-        | even x = aux (x `div` 2) (succ cnt)
-        | otherwise = aux (3 * x + 1) (succ cnt)
+    aux cnt 1 = cnt
+    aux cnt x
+        | even x = aux (succ cnt) (x `div` 2)
+        | otherwise = aux (succ cnt) (3 * x + 1)
 
 compute :: Int -> String
 compute limit =

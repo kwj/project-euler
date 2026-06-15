@@ -24,7 +24,7 @@ compute =
         $ undigits . reverse <$> digitsLst
   where
     digitsLst =
-        permutations 7 ([7, 6, 5, 4, 3, 2, 1] :: [Int]) ++ permutations 4 [4, 3, 2, 1]
+        permutations 7 [7, 6, 5, 4, 3, 2, 1 :: Int] ++ permutations 4 [4, 3, 2, 1]
 
 solve :: String
 solve = compute

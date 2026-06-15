@@ -145,10 +145,8 @@ testSlprp ::
     Integer -> Integer -> Integer -> Integer -> Maybe (Integer, Integer)
 testSlprp n paramD paramP paramQ =
     if ud == 0 || (elem 0 . map fst $ vqPairs)
-        then
-            let (v, q) = lastExn vqPairs in Just (nextV v q, q)
-        else
-            Nothing
+        then let (v, q) = lastExn vqPairs in Just (nextV v q, q)
+        else Nothing
   where
     nextV :: Integer -> Integer -> Integer
     nextV v q = (v * v - 2 * q) `mod` n

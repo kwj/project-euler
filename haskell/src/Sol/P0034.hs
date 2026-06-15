@@ -35,6 +35,8 @@ compute =
   where
     factTbl :: UArray Int Int
     factTbl = listArray (0, 9) (factorial <$> [0 .. 9])
+
+    aux :: Int -> Int
     aux k =
         sum
             . map fst

@@ -17,8 +17,8 @@ squares =
 {- HLINT ignore isContained "Use head" -}
 isContained :: [[Int]] -> (Int, Int) -> Bool
 isContained twoDice sq =
-    elem (fst sq) (twoDice !! 0) && elem (snd sq) (twoDice !! 1)
-        || elem (fst sq) (twoDice !! 1) && elem (snd sq) (twoDice !! 0)
+    fst sq `elem` twoDice !! 0 && snd sq `elem` twoDice !! 1
+        || fst sq `elem` twoDice !! 1 && snd sq `elem` twoDice !! 0
 
 compute :: String
 compute =

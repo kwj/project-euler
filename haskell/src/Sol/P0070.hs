@@ -111,10 +111,10 @@ compute =
              in if isPermutation n totient
                     then go (H.insert (Node n (fromIntegral n / fromIntegral totient)) pq) pfss
                     else go pq pfss
-
-    isPermutation :: Int -> Int -> Bool
-    isPermutation a b =
-        sort (digits a) == sort (digits b)
+      where
+        isPermutation :: Int -> Int -> Bool
+        isPermutation a b =
+            sort (digits a) == sort (digits b)
 
 solve :: String
 solve = compute

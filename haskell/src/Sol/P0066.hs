@@ -40,7 +40,7 @@ compute limit =
         . maximumBy (compare `on` fst)
         . map (first (numerator' . aux))
         . filter (not . null . snd . fst)
-        $ zip (continuedFraction <$> [1 .. limit]) [(1 :: Int) ..]
+        $ zip (continuedFraction <$> [1 .. limit]) [1 :: Int ..]
   where
     aux :: Integral int => (int, [int]) -> [int]
     aux (n, lst)

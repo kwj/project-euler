@@ -85,14 +85,12 @@ compute groupSize =
                     then
                         aux minSum new_tbl ps
                     else
-                        let cliques = findCliques (reverse nbrs) (groupSize - 1) tbl
-                         in if null cliques
-                                then aux minSum new_tbl ps
-                                else aux (updateMinSum p cliques minSum) new_tbl ps
-
-    updateMinSum :: Int -> [[Int]] -> Int -> Int
-    updateMinSum p cliques current =
-        min current (minimum $ sum . (p :) <$> cliques)
+                        case findCliques (reverse nbrs) (groupSize - 1) tbl of
+                            [] -> aux minSum new_tbl ps
+                            cliques -> aux (min minSum (getMinSumOfClqs p cliques)) new_tbl ps
+      where
+        getMinSumOfClqs :: Int -> [[Int]] -> Int
+        getMinSumOfClqs x clqs = x + (minimum $ sum <$> clqs)
 
 solve :: String
 solve = compute 5

@@ -38,9 +38,9 @@ compute =
         . foldl (\acc c -> acc + ord c) 0
         . maximumBy (compare `on` score)
         . filter (all isValidChar) -- pruning
-        $ map
-            (`decodeData` parseData (BS.unpack fileData))
-            (cartesianProduct $ replicate 3 [ord 'a' .. ord 'z'])
+        . map (`decodeData` parseData (BS.unpack fileData))
+        . cartesianProduct
+        $ replicate 3 [ord 'a' .. ord 'z']
   where
     isValidChar :: Char -> Bool
     isValidChar x = any ($ x) [isPrint, isSpace]

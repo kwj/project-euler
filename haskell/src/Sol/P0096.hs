@@ -102,8 +102,8 @@ get3digitNumber grid =
 
 compute :: String
 compute =
-    (show . sum . map get3digitNumber)
-        (mapMaybe findSolution (parseData (BS.unpack fileData)))
+    show . sum . map get3digitNumber $
+        mapMaybe findSolution (parseData (BS.unpack fileData))
 
 solve :: String
 solve = compute
