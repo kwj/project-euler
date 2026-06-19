@@ -140,7 +140,7 @@ fn compute(data: &str) -> usize {
     let mut ans: usize = 0;
 
     for grid in grids {
-        if let Some(sol) = sudoku_solover(&grid) {
+        if let Some(sol) = sudoku_solver(&grid) {
             let mut acc: usize = 0;
             for i in 0..3 {
                 let bit: u128 = 1 << i;
@@ -228,7 +228,7 @@ fn check_data(pazzles: &[Vec<usize>]) -> Vec<Vec<u128>> {
     ret
 }
 
-fn sudoku_solover(grid: &[u128]) -> Option<Vec<u128>> {
+fn sudoku_solver(grid: &[u128]) -> Option<Vec<u128>> {
     let mut work_grid = grid.to_vec();
 
     // Start searching from cell #0.
