@@ -72,7 +72,7 @@ func sprpBase(n uint32) int {
 	return bases[h]
 }
 
-func millerRabinTest(n, base int) bool {
+func sprpTest(n, base int) bool {
 	d := n - 1
 	s := big.NewInt(int64(d)).TrailingZeroBits()
 	d >>= s
@@ -126,7 +126,7 @@ func IsPrime(n int) bool {
 
 	// maxUINT32 is defined in 'factor.go'.
 	if n <= maxUINT32 {
-		return millerRabinTest(n, sprpBase(uint32(n)))
+		return sprpTest(n, sprpBase(uint32(n)))
 	}
 
 	// ProbablyPrime(0) applies only a Baillie-PSW test. (Go 1.18 or later)
