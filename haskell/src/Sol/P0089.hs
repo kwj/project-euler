@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module Sol.P0089 (compute, solve) where
@@ -15,7 +16,11 @@ parseData = map T.pack . lines
 replaceNumStr :: T.Text -> T.Text
 replaceNumStr =
     (flip . foldl)
-        (\acc (from, to) -> T.replace (T.pack from) (T.pack to) acc)
+        (\s (from, to) -> T.replace from to s)
+        subsutitutionTbl
+  where
+    subsutitutionTbl :: [(T.Text, T.Text)]
+    subsutitutionTbl =
         [ ("IIIIIIIII", "##")
         , ("XXXXXXXXX", "##")
         , ("CCCCCCCCC", "##")
@@ -32,10 +37,8 @@ replaceNumStr =
 
 compute :: String
 compute =
-    show
-        . sum
-        $ (\s -> T.length s - T.length (replaceNumStr s))
-            <$> parseData (BS.unpack fileData)
+    show . foldl (\acc s -> acc + T.length s - T.length (replaceNumStr s)) 0 $
+        parseData (BS.unpack fileData)
 
 solve :: String
 solve = compute
