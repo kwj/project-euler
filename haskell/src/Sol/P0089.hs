@@ -3,15 +3,16 @@
 
 module Sol.P0089 (compute, solve) where
 
-import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
+import qualified Data.ByteString.Char8 as BS (ByteString, lines)
 import qualified Data.FileEmbed as FE (embedFile, makeRelativeToProject)
-import qualified Data.Text as T (Text, length, pack, replace)
+import qualified Data.Text as T (Text, length, replace)
+import qualified Data.Text.Encoding as TE (decodeLatin1)
 
 fileData :: BS.ByteString
 fileData = $(FE.makeRelativeToProject "resources/0089_roman.txt" >>= FE.embedFile)
 
-parseData :: String -> [T.Text]
-parseData = map T.pack . lines
+parseData :: BS.ByteString -> [T.Text]
+parseData = map TE.decodeLatin1 . BS.lines
 
 replaceNumStr :: T.Text -> T.Text
 replaceNumStr =
@@ -38,7 +39,7 @@ replaceNumStr =
 compute :: String
 compute =
     show . foldl (\acc s -> acc + T.length s - T.length (replaceNumStr s)) 0 $
-        parseData (BS.unpack fileData)
+        parseData fileData
 
 solve :: String
 solve = compute
