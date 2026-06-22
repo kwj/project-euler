@@ -6,7 +6,7 @@ import Data.List (elemIndex, group, nub, sortBy)
 import Data.Maybe (fromJust)
 import Data.Ord (Down (..), comparing)
 
-import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
+import qualified Data.ByteString.Char8 as BS (ByteString, index, lines, words)
 import qualified Data.FileEmbed as FE (embedFile, makeRelativeToProject)
 
 import Mylib.Util (headExn, partitionByStep)
@@ -62,7 +62,7 @@ allHandPatterns =
 --       Two Pair [2, 14, 5] ++ kicker [9]
 --   ["4D", "8C", "8S", "4S", "4H"] -> [6, 4, 8]
 --       Full House [6, 4, 8]
-getHand :: [String] -> [Int]
+getHand :: [BS.ByteString] -> [Int]
 getHand cards
     | isFlush suits =
         case checkStraight nums `compare` 0 of
@@ -74,20 +74,20 @@ getHand cards
     | otherwise =
         fromJust (elemIndex handPattern allHandPatterns) : handNums
   where
-    nums = sortBy (comparing Down) $ chToNum . (!! 0) <$> cards
-    suits = nub $ (!! 1) <$> cards
+    nums = sortBy (comparing Down) $ chToNum . (`BS.index` 0) <$> cards
+    suits = nub $ (`BS.index` 1) <$> cards
     handPattern = sortBy (comparing Down) $ length <$> group nums
     handNums = headExn <$> sortBy (comparing (Down . length)) $ group nums
 
-parseData :: String -> [([String], [String])]
-parseData = map (splitAt 5 . words) . lines
+parseData :: BS.ByteString -> [([BS.ByteString], [BS.ByteString])]
+parseData = map (splitAt 5 . BS.words) . BS.lines
 
 compute :: String
 compute =
     show
         . length
         . filter (\(player1, player2) -> getHand player1 > getHand player2) -- Player 1 wins
-        $ parseData (BS.unpack fileData)
+        $ parseData fileData
 
 solve :: String
 solve = compute

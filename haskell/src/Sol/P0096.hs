@@ -19,7 +19,7 @@ import Data.Function (on)
 import Data.List (minimumBy)
 import Data.Maybe (mapMaybe)
 
-import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
+import qualified Data.ByteString.Char8 as BS (ByteString, lines, uncons)
 import qualified Data.FileEmbed as FE (embedFile, makeRelativeToProject)
 import qualified Data.IntSet as S (IntSet, fromList, size, toList, (\\))
 
@@ -31,9 +31,15 @@ type Pos = (Int, Int)
 fileData :: BS.ByteString
 fileData = $(FE.makeRelativeToProject "resources/0096_sudoku.txt" >>= FE.embedFile)
 
-parseData :: String -> [Grid]
+parseData :: BS.ByteString -> [Grid]
 parseData =
-    map (map (map digitToInt) . drop 1) . partitionByStep 10 10 . lines
+    map (map (aux []) . drop 1) . partitionByStep 10 10 . BS.lines
+  where
+    aux :: [Int] -> BS.ByteString -> [Int]
+    aux result bs =
+        case BS.uncons bs of
+            Nothing -> reverse result
+            Just (x, xs) -> aux (digitToInt x : result) xs
 
 findSolution :: Grid -> Maybe Grid
 findSolution grid =
@@ -103,7 +109,7 @@ get3digitNumber grid =
 compute :: String
 compute =
     show . sum . map get3digitNumber $
-        mapMaybe findSolution (parseData (BS.unpack fileData))
+        mapMaybe findSolution (parseData fileData)
 
 solve :: String
 solve = compute

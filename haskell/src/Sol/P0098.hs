@@ -7,16 +7,16 @@ import Data.Array.IArray (Array, listArray, (!))
 import Data.List (nub, singleton, sort)
 import Data.Maybe (mapMaybe)
 
-import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
+import qualified Data.ByteString.Char8 as BS (ByteString, filter, split, unpack)
 import qualified Data.FileEmbed as FE (embedFile, makeRelativeToProject)
 
-import Mylib.Util (digits, undigits, wordsWhen)
+import Mylib.Util (digits, undigits)
 
 fileData :: BS.ByteString
 fileData = $(FE.makeRelativeToProject "resources/0098_words.txt" >>= FE.embedFile)
 
-parseData :: String -> [String]
-parseData = wordsWhen (== ',') . filter (/= '"')
+parseData :: BS.ByteString -> [String]
+parseData = map BS.unpack . BS.split ',' . BS.filter (/= '"')
 
 squareNumbers :: [Int]
 squareNumbers = [n * n | n <- [1 ..]]
@@ -53,7 +53,7 @@ compute =
         guard $ isAnagram (word_array ! i) (word_array ! j)
         findSquare (word_array ! i) (word_array ! j)
   where
-    keywords = parseData (BS.unpack fileData)
+    keywords = parseData fileData
     len = length keywords
     word_array = listArray (1, len) keywords :: Array Int String
 

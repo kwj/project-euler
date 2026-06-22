@@ -3,12 +3,18 @@
 module Sol.P0083 (compute, solve) where
 
 import Data.Array.IArray (Array, Ix (inRange), bounds, listArray, (!))
+import Data.List (unfoldr)
 
-import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
+import qualified Data.ByteString.Char8 as BS (
+    ByteString,
+    dropWhile,
+    lines,
+    readInt,
+ )
 import qualified Data.FileEmbed as FE (embedFile, makeRelativeToProject)
 import qualified Data.Map.Strict as M (Map, fromList, insert, (!))
 
-import Mylib.Util (headExn, wordsWhen)
+import Mylib.Util (headExn)
 
 import qualified Mylib.Heap.LeftistHeap as H (
     LeftistHeap,
@@ -53,14 +59,12 @@ instance Ord Node where
 fileData :: BS.ByteString
 fileData = $(FE.makeRelativeToProject "resources/0083_matrix.txt" >>= FE.embedFile)
 
-parseData :: String -> CostMatrix
-parseData str =
-    listArray ((1, 1), (nRow, nCol)) $ concat matrix
+parseData :: BS.ByteString -> CostMatrix
+parseData bs =
+    listArray ((1, 1), (nRow, nCol)) . map Cost $ concat matrix
   where
     matrix =
-        map
-            (map (Cost . (read @Int)) . wordsWhen (== ','))
-            (lines str)
+        unfoldr (BS.readInt . BS.dropWhile (== ',')) <$> BS.lines bs
     nRow = length matrix
     nCol = length $ headExn matrix
 
@@ -130,7 +134,7 @@ compute :: String
 compute =
     show $ findMinCost matrix start goal
   where
-    matrix = parseData (BS.unpack fileData)
+    matrix = parseData fileData
     (start, goal) = bounds matrix
 
 solve :: String

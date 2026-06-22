@@ -2,18 +2,24 @@
 
 module Sol.P0081 (compute, solve) where
 
-import Data.List (mapAccumL)
+import Data.List (mapAccumL, unfoldr)
 
-import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
+import qualified Data.ByteString.Char8 as BS (
+    ByteString,
+    dropWhile,
+    lines,
+    readInt,
+ )
 import qualified Data.FileEmbed as FE (embedFile, makeRelativeToProject)
 
-import Mylib.Util (headExn, lastExn, wordsWhen)
+import Mylib.Util (headExn, lastExn)
 
 fileData :: BS.ByteString
 fileData = $(FE.makeRelativeToProject "resources/0081_matrix.txt" >>= FE.embedFile)
 
-parseData :: String -> [[Int]]
-parseData = map (map (read @Int) . wordsWhen (== ',')) . lines
+parseData :: BS.ByteString -> [[Int]]
+parseData =
+    map (unfoldr (BS.readInt . BS.dropWhile (== ','))) <$> BS.lines
 
 compute :: String
 compute =
@@ -24,7 +30,7 @@ compute =
             (scanl1 (+) (headExn matrix))
             (drop 1 matrix)
   where
-    matrix = parseData (BS.unpack fileData)
+    matrix = parseData fileData
 
     auxRightward :: [Int] -> [Int] -> [Int]
     auxRightward prev crnt =

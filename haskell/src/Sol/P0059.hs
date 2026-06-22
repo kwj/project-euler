@@ -5,19 +5,18 @@ module Sol.P0059 (compute, solve) where
 import Data.Bits (xor)
 import Data.Char (chr, isAlphaNum, isPrint, isSpace, ord)
 import Data.Function (on)
-import Data.List (maximumBy)
+import Data.List (maximumBy, unfoldr)
 
-import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
+import qualified Data.ByteString.Char8 as BS (ByteString, dropWhile, readInt)
 import qualified Data.FileEmbed as FE (embedFile, makeRelativeToProject)
 
 import Mylib.Combinatorics (cartesianProduct)
-import Mylib.Util (wordsWhen)
 
 fileData :: BS.ByteString
 fileData = $(FE.makeRelativeToProject "resources/0059_cipher.txt" >>= FE.embedFile)
 
-parseData :: String -> [Int]
-parseData = map (read @Int) . wordsWhen (== ',')
+parseData :: BS.ByteString -> [Int]
+parseData = unfoldr (BS.readInt . BS.dropWhile (== ','))
 
 score :: [Char] -> Int
 score =
@@ -38,7 +37,7 @@ compute =
         . foldl (\acc c -> acc + ord c) 0
         . maximumBy (compare `on` score)
         . filter (all isValidChar) -- pruning
-        . map (`decodeData` parseData (BS.unpack fileData))
+        . map (`decodeData` parseData fileData)
         . cartesianProduct
         $ replicate 3 [ord 'a' .. ord 'z']
   where

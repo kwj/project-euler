@@ -4,27 +4,23 @@ module Sol.P0042 (compute, solve) where
 
 import Data.Char (ord)
 
-import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
+import qualified Data.ByteString.Char8 as BS (ByteString, filter, foldl, split)
 import qualified Data.FileEmbed as FE (embedFile, makeRelativeToProject)
 
 import Mylib.Math (isTriangular)
-import Mylib.Util (wordsWhen)
 
 fileData :: BS.ByteString
 fileData = $(FE.makeRelativeToProject "resources/0042_words.txt" >>= FE.embedFile)
 
-parseData :: String -> [String]
-parseData = wordsWhen (== ',') . filter (/= '"')
+parseData :: BS.ByteString -> [BS.ByteString]
+parseData = BS.split ',' . BS.filter (/= '"')
 
 compute :: String
 compute =
-    show
-        . length
-        . filter isTriangular
-        $ score <$> parseData (BS.unpack fileData)
+    show . length . filter isTriangular . map score $ parseData fileData
   where
-    score :: [Char] -> Int
-    score = sum . map (\c -> ord c - ord 'A' + 1)
+    score :: BS.ByteString -> Int
+    score = BS.foldl (\acc c -> acc + ord c - ord 'A' + 1) 0
 
 solve :: String
 solve = compute

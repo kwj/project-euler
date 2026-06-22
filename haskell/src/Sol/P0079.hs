@@ -6,7 +6,7 @@ import Data.Map.Strict as M (Map, empty, insert, keys, lookup, member, (!))
 import Data.Maybe (fromMaybe)
 import Data.Set as S (Set, empty, insert)
 
-import qualified Data.ByteString.Char8 as BS (ByteString, unpack)
+import qualified Data.ByteString.Char8 as BS (ByteString, foldl, lines, uncons)
 import qualified Data.FileEmbed as FE (embedFile, makeRelativeToProject)
 
 fileData :: BS.ByteString
@@ -27,24 +27,23 @@ dfs depInfo =
         | otherwise =
             [node]
 
-parseData :: String -> M.Map Char (S.Set Char)
+parseData :: BS.ByteString -> M.Map Char (S.Set Char)
 parseData =
-    foldl aux M.empty . lines
+    foldl aux M.empty . BS.lines
   where
-    aux :: M.Map Char (S.Set Char) -> [Char] -> M.Map Char (S.Set Char)
-    aux depInfo [] = depInfo
-    aux depInfo (x : xs) =
-        aux
-            (M.insert x (foldl (flip S.insert) set xs) depInfo)
-            xs
-      where
-        set = fromMaybe S.empty (M.lookup x depInfo)
+    aux :: M.Map Char (S.Set Char) -> BS.ByteString -> M.Map Char (S.Set Char)
+    aux depInfo bs =
+        case BS.uncons bs of
+            Nothing -> depInfo
+            Just (x, xs) ->
+                let set = fromMaybe S.empty (M.lookup x depInfo)
+                 in aux (M.insert x (BS.foldl (flip S.insert) set xs) depInfo) xs
 
 compute :: String
 compute =
     foldl (dfs depInfo) [] (M.keys depInfo)
   where
-    depInfo = parseData (BS.unpack fileData)
+    depInfo = parseData fileData
 
 solve :: String
 solve = compute
