@@ -20,18 +20,18 @@ function solve_0087(thr::Int = 50_000_000)
     cb_plst = filter(x -> x < thr, map(x -> x^3, p_lst))
     qu_plst = filter(x -> x < thr, map(x -> x^4, p_lst))
 
-    result = Set{Int}()
+    result = falses(thr)
     for z⁴ in qu_plst
         for y³ in cb_plst
             (tmp = z⁴ + y³) >= thr && break
             for x² in sq_plst
                 tmp + x² >= thr && break
 
-                push!(result, tmp + x²)
+                result[tmp + x²] = true
             end
         end
     end
-    length(result)
+    sum(result)
 end
 
 end #module
