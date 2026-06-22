@@ -84,13 +84,12 @@ compute groupSize =
              in if length nbrs < groupSize - 1
                     then
                         aux minSum new_tbl ps
-                    else
-                        case findCliques (reverse nbrs) (groupSize - 1) tbl of
-                            [] -> aux minSum new_tbl ps
-                            cliques -> aux (min minSum (getMinSumOfClqs p cliques)) new_tbl ps
+                    else case findCliques (reverse nbrs) (groupSize - 1) tbl of
+                        [] -> aux minSum new_tbl ps
+                        cliques -> aux (min minSum (getMinSumOfClqs p cliques)) new_tbl ps
       where
         getMinSumOfClqs :: Int -> [[Int]] -> Int
-        getMinSumOfClqs x clqs = x + (minimum $ sum <$> clqs)
+        getMinSumOfClqs x clqs = x + minimum (sum <$> clqs)
 
 solve :: String
 solve = compute 5
