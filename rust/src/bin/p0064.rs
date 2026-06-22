@@ -37,9 +37,7 @@ fn compute(limit: i64) -> usize {
 }
 
 fn get_cont_fraction(n: i64) -> (i64, Vec<i64>) {
-    use euler::math;
-
-    let isqrt_n = math::isqrt(n);
+    let isqrt_n = n.isqrt();
     if n == isqrt_n * isqrt_n {
         return (isqrt_n, vec![]);
     }

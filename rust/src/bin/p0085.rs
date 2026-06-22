@@ -47,11 +47,9 @@ fn compute(target: i64) -> i64 {
 }
 
 fn get_diff(m: i64, target: i64) -> Option<(i64, i64)> {
-    use euler::math;
-
     let lhs = |m: i64, n: i64| m * (m + 1) * n * (n + 1);
 
-    let mut n = math::isqrt(target / (m * (m + 1))) - 1;
+    let mut n = (target / (m * (m + 1))).isqrt() - 1;
     while lhs(m, n) < target {
         n += 1;
     }

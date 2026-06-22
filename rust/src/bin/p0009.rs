@@ -23,7 +23,7 @@ fn compute(mut perim: i64) -> i64 {
     debug_assert!(perim >= 3 + 4 + 5);
     perim /= 2;
 
-    for m in 2..=math::isqrt(perim) {
+    for m in 2..=perim.isqrt() {
         if perim % m != 0 {
             continue;
         }

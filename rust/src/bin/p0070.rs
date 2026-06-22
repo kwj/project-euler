@@ -29,14 +29,14 @@ fn solve() -> String {
 fn compute() -> i64 {
     use std::cmp;
 
-    let limit = 10_000_000 - 1;
+    let limit = 10_000_000_i64 - 1;
     let mut pq: BinaryHeap<Ratio> = BinaryHeap::new();
     pq.push(Ratio {
         priority: ratio(87109, 79180),
         num: 87109,
     });
 
-    for p in primes::primes(11, math::isqrt(limit)).into_iter().rev() {
+    for p in primes::primes(11, limit.isqrt()).into_iter().rev() {
         if get_phi_ratio(&[(p, 1)]) > pq.peek().unwrap().priority {
             break;
         }

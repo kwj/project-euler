@@ -21,16 +21,14 @@ fn compute(limit: i64) -> i64 {
 }
 
 fn sum_phi(num: i64, cache: &mut HashMap<i64, i64>) -> i64 {
-    use euler::math;
-
     if let Some(val) = cache.get(&num) {
         *val
     } else {
         let mut v = num * (num + 1) / 2;
-        for m in 2..=math::isqrt(num) {
+        for m in 2..=num.isqrt() {
             v -= sum_phi(num / m, cache);
         }
-        for d in 1..=(num / (math::isqrt(num) + 1)) {
+        for d in 1..=(num / (num.isqrt() + 1)) {
             v -= ((num / d) - (num / (d + 1))) * sum_phi(d, cache);
         }
 

@@ -92,14 +92,12 @@ fn get_max_anagram(words: &[String], tbl: &mut HashMap<usize, Vec<String>>) -> i
 }
 
 fn get_squares(tbl: &mut HashMap<usize, Vec<String>>, n_digits: usize) -> Vec<String> {
-    use euler::math;
-
     if let Some(lst) = tbl.get(&n_digits) {
         lst.clone()
     } else {
         let mut lst: Vec<String> = Vec::new();
-        for i in (math::isqrt(10_i64.pow(n_digits as u32 - 1) - 1) + 1)
-            ..=math::isqrt(10_i64.pow(n_digits as u32) - 1)
+        for i in (10_i64.pow(n_digits as u32 - 1) - 1).isqrt() + 1
+            ..=(10_i64.pow(n_digits as u32) - 1).isqrt()
         {
             lst.push(format!("{}", i * i));
         }

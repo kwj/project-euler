@@ -405,8 +405,6 @@ static WHEEL_GAPS: [i64; 48] = [
 const MIN_WHEEL_PRIME: i64 = 11;
 
 fn get_small_prime_tbl(upper: i64) -> Vec<bool> {
-    use crate::math;
-
     assert!(
         upper >= MIN_WHEEL_PRIME,
         "'upper' must be larger or equal to 11"
@@ -416,7 +414,7 @@ fn get_small_prime_tbl(upper: i64) -> Vec<bool> {
     let mut s_sieve = vec![true; max_index + 1];
 
     if upper >= MIN_WHEEL_PRIME * MIN_WHEEL_PRIME {
-        for i in 0..=(num_to_index(math::isqrt(upper))) {
+        for i in 0..=(num_to_index(upper.isqrt())) {
             if s_sieve[i] {
                 let prime = index_to_num(i);
                 let mut q = prime.pow(2);
@@ -433,7 +431,6 @@ fn get_small_prime_tbl(upper: i64) -> Vec<bool> {
 }
 
 fn get_prime_tbl(low: i64, high: i64) -> Vec<bool> {
-    use crate::math;
     use std::cmp;
 
     assert!(high >= low, "'high' must be larger or equal to 'low'");
@@ -452,7 +449,7 @@ fn get_prime_tbl(low: i64, high: i64) -> Vec<bool> {
     let mut sieve = vec![true; w_high - w_low + 1];
 
     if high >= MIN_WHEEL_PRIME * MIN_WHEEL_PRIME {
-        let small_sieve = get_small_prime_tbl(math::isqrt(high));
+        let small_sieve = get_small_prime_tbl(high.isqrt());
         for (i, val) in small_sieve.iter().enumerate() {
             if *val {
                 let prime = index_to_num(i);

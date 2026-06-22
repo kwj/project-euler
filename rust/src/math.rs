@@ -48,26 +48,6 @@ pub fn bit_length(n: i64) -> u32 {
     aux(n, 0)
 }
 
-pub fn isqrt(n: i64) -> i64 {
-    fn aux(c: u32, n: i64) -> i64 {
-        if c == 0 {
-            1
-        } else {
-            let k = (c - 1) / 2;
-            let a = aux(c / 2, n / 2_i64.pow(2 * k + 2));
-
-            a * 2_i64.pow(k) + n / 2_i64.pow(k + 2) / a
-        }
-    }
-
-    if n == 0 {
-        0
-    } else {
-        let a = aux((bit_length(n) - 1) / 2, n);
-        if n < a * a { a - 1 } else { a }
-    }
-}
-
 /// # Panics
 ///
 /// Will panic if n is less than 2
@@ -278,27 +258,27 @@ pub fn num_of_digits(num: i64, base: i64) -> i64 {
 
 pub fn is_triangular(num: i64) -> bool {
     let tmp = 8 * num + 1;
-    let tmp_sqrt = isqrt(tmp);
+    let tmp_sqrt = tmp.isqrt();
 
     tmp_sqrt * tmp_sqrt == tmp && tmp_sqrt % 2 == 1
 }
 
 pub fn is_square(num: i64) -> bool {
-    let num_sqrt = isqrt(num);
+    let num_sqrt = num.isqrt();
 
     num_sqrt * num_sqrt == num
 }
 
 pub fn is_pentagonal(num: i64) -> bool {
     let tmp = 24 * num + 1;
-    let tmp_sqrt = isqrt(tmp);
+    let tmp_sqrt = tmp.isqrt();
 
     tmp_sqrt * tmp_sqrt == tmp && tmp_sqrt % 6 == 5
 }
 
 pub fn is_hexagonal(num: i64) -> bool {
     let tmp = 8 * num + 1;
-    let tmp_sqrt = isqrt(tmp);
+    let tmp_sqrt = tmp.isqrt();
 
     tmp_sqrt * tmp_sqrt == tmp && tmp_sqrt % 4 == 3
 }

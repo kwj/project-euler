@@ -12,7 +12,7 @@ fn compute(upper: usize) -> i64 {
     debug_assert!(upper >= 2);
 
     let dup_ctr = make_dupctr_tbl(upper);
-    let base_limit = math::isqrt(upper as i64) as usize;
+    let base_limit = upper.isqrt() as usize;
     let mut skip_flag = vec![false; base_limit + 1];
     let mut ans = (upper - 1).pow(2) as i64;
 

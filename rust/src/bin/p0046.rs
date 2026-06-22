@@ -7,10 +7,10 @@ fn solve() -> String {
 }
 
 fn compute() -> i64 {
-    use euler::math::{self, primes};
+    use euler::math::primes;
 
     fn is_twice_square(n: i64) -> bool {
-        n % 2 == 0 && math::isqrt(n / 2).pow(2) == n / 2
+        n % 2 == 0 && (n / 2).isqrt().pow(2) == n / 2
     }
 
     // Two is not odd

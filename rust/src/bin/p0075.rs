@@ -11,7 +11,7 @@ fn compute(perim: usize) -> usize {
 
     debug_assert!(perim >= 12);
 
-    let limit = math::isqrt(perim as i64 / 2) as usize;
+    let limit = (perim / 2).isqrt() as usize;
     let mut counter = vec![0; perim + 1];
 
     for m in 2..=limit {
