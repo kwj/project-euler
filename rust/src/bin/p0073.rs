@@ -37,7 +37,7 @@ fn f(x: i64) -> i64 {
 
 fn make_mobius_tbl(limit: usize) -> Vec<i64> {
     let mut p_tbl: Vec<usize> = (0..=limit).collect();
-    for i in 2..=(limit.isqrt() as usize) {
+    for i in 2..=limit.isqrt() {
         if p_tbl[i] == i {
             let k = i * i;
             for j in (k..=limit).step_by(i) {
