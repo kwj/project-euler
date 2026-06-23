@@ -12,13 +12,13 @@
          z4s (sequence (comp (map #(math/pow % 4)) (take-while #(< % limit))) ps)
          y3s (sequence (comp (map #(math/pow % 3)) (take-while #(< % limit))) ps)
          x2s (map #(math/pow % 2) ps)
-         hash-set (java.util.HashSet.)]
-     (doseq [sum (for [z4 z4s
+         bit-set (java.util.BitSet. limit)]
+     (doseq [idx (for [z4 z4s
                        y3 y3s
                        :let [tmp (+ z4 y3)]
                        :while (< tmp limit)
                        x2 x2s
                        :while (< x2 (- limit tmp))]
                    (+ tmp x2))]
-       (.add hash-set sum))
-     (.size hash-set))))
+       (.set bit-set idx))
+     (reduce + (map #(Long/bitCount %) (.toLongArray bit-set))))))
