@@ -1,7 +1,6 @@
 # project euler: problem 50
 
 from collections.abc import Generator
-from itertools import dropwhile
 
 from euler.lib.prime import is_prime, prime_generator
 
