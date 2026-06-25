@@ -35,6 +35,8 @@
 #                 ^^^^^^^^^^^ = (a+b-1) - c
 #                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ = floor((a+b)/2)
 
+from math import isqrt
+
 
 def compute(boundary: int) -> str:
     acc = 0
@@ -42,7 +44,9 @@ def compute(boundary: int) -> str:
     while acc <= boundary:
         ab = c * 2
         while ab > 1:
-            if (((c * c) + (ab * ab)) ** 0.5).is_integer():
+            tmp = (c * c) + (ab * ab)
+            tmp_sqrt = isqrt(tmp)
+            if tmp_sqrt * tmp_sqrt == tmp:
                 if ab <= c:
                     acc += ab // 2
                 else:
