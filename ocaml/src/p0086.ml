@@ -49,7 +49,8 @@ let compute thr =
         then acc
         else (
           let tmp = (c * c) + (ab * ab) in
-          if Int.pow (Euler.Math.isqrt tmp) 2 <> tmp
+          let tmp_isqrt = Euler.Math.isqrt tmp in
+          if tmp_isqrt * tmp_isqrt <> tmp
           then aux (pred ab) acc
           else if ab <= c
           then aux (pred ab) (acc + (ab / 2))
