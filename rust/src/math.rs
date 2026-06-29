@@ -66,17 +66,15 @@ pub fn prime_factors(mut n: i64) -> Vec<i64> {
         let diff = [4, 2, 4, 2, 4, 6, 2, 6];
         let mut b = 7;
         let mut idx = 0;
-        let mut q = n / b;
 
-        while q >= b {
-            if (n % b) == 0 {
+        while n / b >= b {
+            if n % b == 0 {
                 result.push(b);
-                n = q;
+                n /= b;
             } else {
                 b += diff[idx];
                 idx = (idx + 1) % diff.len();
             }
-            q = n / b;
         }
         result.push(n);
     }

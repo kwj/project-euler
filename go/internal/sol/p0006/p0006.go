@@ -21,7 +21,7 @@ func compute(limit int) string {
 
 	// The square of sum is equal or larger than the sum of squares.
 	return strconv.FormatUint(
-		uint64(squareOfSum(limit) - sumOfSquares(limit)),
+		uint64(squareOfSum(limit)-sumOfSquares(limit)),
 		10,
 	)
 }
