@@ -1,6 +1,5 @@
 from functools import reduce
 from itertools import repeat, starmap
-from math import isqrt
 from typing import cast
 
 from ..prime import primes
@@ -26,9 +25,8 @@ def factorize(n: int) -> list[tuple[int, int]]:
     diff = [4, 2, 4, 2, 4, 6, 2, 6]
     b = 7
     idx = 0
-    limit = isqrt(n)
 
-    while b <= limit:
+    while n // b >= b:
         e = 0
         while n % b == 0:
             e += 1

@@ -3,7 +3,7 @@
  */
 
 import { cartesianProduct } from "combinatorics/mod.ts";
-import { isqrt, prod } from "./math.ts";
+import { prod } from "./math.ts";
 import { minFactorTbl, primeGenerator, primes } from "./prime.ts";
 import { range } from "./util.ts";
 import { unzip } from "@std/collections";
@@ -27,9 +27,8 @@ export const primeFactors = (n: number): number[] => {
   const diff = [4, 2, 4, 2, 4, 6, 2, 6];
   let b = 7;
   let idx = 0;
-  const limit = isqrt(n);
 
-  while (b <= limit) {
+  while (Math.trunc(n / b) >= b) {
     while (n % b === 0) {
       result.push(b);
       n = Math.trunc(n / b);

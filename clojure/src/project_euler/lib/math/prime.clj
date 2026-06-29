@@ -380,18 +380,18 @@
   {:pre [(pos? n)]}
   (if (== n 1)
     [[1 1]]
-    (let [limit (my-math/isqrt n)]
-      (loop [n n
-             bs (take-while #(<= % limit) prime-numbers)
-             v (transient [])]
-        (if (== n 1)
-          (persistent! v)
-          (if-let [b (first bs)]
-            (if (zero? (mod n b))
-              (let [[next-n pair] (factorize-aux n b)]
-                (recur (long next-n) (rest bs) (conj! v pair)))
-              (recur n (rest bs) v))
-            (persistent! (conj! v [n 1]))))))))
+    (loop [n n
+           bs prime-numbers
+           v []]
+      (let [b (first bs)]
+        (if (>= (quot n b) b)
+          (if (zero? (mod n b))
+            (let [[next-n pair] (factorize-aux n b)]
+              (recur next-n (rest bs) (conj v pair)))
+            (recur n (rest bs) v))
+          (if (== n 1)
+            v
+            (conj v [n 1])))))))
 
 (defn divisors-from-pf
   "Make a sequence of divisors in ascending order from prime factorization.
