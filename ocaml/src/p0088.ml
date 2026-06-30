@@ -37,9 +37,9 @@ let compute limit =
   in
   aux 1 0 0 2;
   Array.to_list tbl
-  |> Fn.flip List.drop 2
+  |> Fun.flip List.drop 2
   |> List.dedup_and_sort ~compare
-  |> List.sum (module Int) ~f:Fn.id
+  |> List.sum (module Int) ~f:Fun.id
 ;;
 
 let solve () = compute 12_000 |> Int.to_string

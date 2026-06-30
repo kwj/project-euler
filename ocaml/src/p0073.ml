@@ -3,7 +3,7 @@
 open Core
 
 let make_mobius_tbl limit =
-  let p_tbl = Array.init (limit + 1) ~f:Fn.id in
+  let p_tbl = Array.init (limit + 1) ~f:Fun.id in
   let mu_tbl = Array.create ~len:(limit + 1) 0 in
 
   for i = 2 to Euler.Math.isqrt limit do
@@ -27,14 +27,14 @@ let make_mobius_tbl limit =
 let f x =
   List.range 1 x ~stop:`inclusive
   |> List.map ~f:(fun j -> ((j - 1) / 2) - (j / 3))
-  |> List.sum (module Int) ~f:Fn.id
+  |> List.sum (module Int) ~f:Fun.id
 ;;
 
 let g limit =
   let mu_tbl = make_mobius_tbl limit in
   List.range 1 limit ~stop:`inclusive
   |> List.map ~f:(fun k -> mu_tbl.(k) * f (limit / k))
-  |> List.sum (module Int) ~f:Fn.id
+  |> List.sum (module Int) ~f:Fun.id
 ;;
 
 let compute limit = g limit

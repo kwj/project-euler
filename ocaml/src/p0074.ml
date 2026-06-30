@@ -48,7 +48,7 @@ let compute limit =
 
   Sequence.range limit 1 ~stop:`inclusive ~stride:(-1)
   |> Sequence.map ~f:(fun n -> aux n [ n ])
-  |> Sequence.sum (module Int) ~f:Fn.id
+  |> Sequence.sum (module Int) ~f:Fun.id
 ;;
 
 let solve () = compute 1_000_000 |> Int.to_string

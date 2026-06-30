@@ -2,7 +2,10 @@
 
 open Core
 
-let compute exp = Z.(pow ~$2 exp) |> Euler.Util.z_digits |> List.sum (module Int) ~f:Fn.id
+let compute exp =
+  Z.(pow ~$2 exp) |> Euler.Util.z_digits |> List.sum (module Int) ~f:Fun.id
+;;
+
 let solve () = compute 1_000 |> Int.to_string
 
 (* Test *)

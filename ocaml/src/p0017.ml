@@ -62,7 +62,7 @@ let rec count_letters = function
 let compute limit =
   List.range 1 limit ~stop:`inclusive
   |> List.map ~f:(fun n -> count_letters n)
-  |> List.sum (module Int) ~f:Fn.id
+  |> List.sum (module Int) ~f:Fun.id
 ;;
 
 let solve () = compute 1_000 |> Int.to_string

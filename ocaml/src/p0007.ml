@@ -6,7 +6,7 @@ let compute nth =
   assert (nth > 0);
 
   Sequence.unfold ~init:2 ~f:(fun n -> Some (n, Euler.Math.Prime.next_prime n))
-  |> Fn.flip Sequence.nth_exn (nth - 1)
+  |> Fun.flip Sequence.nth_exn (nth - 1)
 ;;
 
 let solve () = compute 10_001 |> Int.to_string

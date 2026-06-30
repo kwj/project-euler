@@ -7,7 +7,7 @@ let compute num =
     List.range 1 num ~stop:`inclusive |> List.sum (module Int) ~f:(fun x -> x * x)
   in
   let sq_of_sum =
-    List.range 1 num ~stop:`inclusive |> List.sum (module Int) ~f:Fn.id |> fun x -> x * x
+    List.range 1 num ~stop:`inclusive |> List.sum (module Int) ~f:Fun.id |> fun x -> x * x
   in
   (* The square of sum is equal or larger than the sum of squares. *)
   sq_of_sum - sum_of_sqs

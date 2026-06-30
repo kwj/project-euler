@@ -14,7 +14,7 @@ let make_dupctr_tbl upper =
       let k = Euler.Math.lcm x y / x in
       S.range (max k 2) (upper * y / x) ~stop:`inclusive ~stride:k
       |> S.iter ~f:(fun idx -> dups.(idx) <- 1));
-    dup_ctr.(x) <- Array.to_list dups |> List.sum (module Int) ~f:Fn.id);
+    dup_ctr.(x) <- Array.to_list dups |> List.sum (module Int) ~f:Fun.id);
   dup_ctr
 ;;
 

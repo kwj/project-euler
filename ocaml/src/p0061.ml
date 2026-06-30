@@ -76,7 +76,7 @@ let compute () =
   in
   if List.length cycles <> 1
   then failwith "abort"
-  else List.sum (module Int) ~f:Fn.id (List.hd_exn cycles)
+  else List.sum (module Int) ~f:Fun.id (List.hd_exn cycles)
 ;;
 
 let solve () = compute () |> Int.to_string

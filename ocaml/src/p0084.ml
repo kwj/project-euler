@@ -77,7 +77,7 @@ let go_steady matrix =
         work.(x).(y)
         <- List.range 0 (size - 1) ~stop:`inclusive
            |> List.map ~f:(fun i -> prev.(x).(i) *. prev.(i).(y))
-           |> List.sum (module Float) ~f:Fn.id
+           |> List.sum (module Float) ~f:Fun.id
       done
     done;
     if is_steady work.(0) prev.(0) then work else loop ()
@@ -124,7 +124,7 @@ let compute nfaces nsquares =
   done;
   (* modify 's20' *)
   for x = 80 to 119 do
-    stoch_matrix.(sq_JAIL).(x) <- Array.sum (module Float) dice_prblty_dbl ~f:Fn.id
+    stoch_matrix.(sq_JAIL).(x) <- Array.sum (module Float) dice_prblty_dbl ~f:Fun.id
   done;
 
   (* Goto Jail *)
@@ -182,7 +182,7 @@ let compute nfaces nsquares =
     ( Printf.sprintf "%02d" i
     , steady_state.(i).(0) +. steady_state.(i + 40).(0) +. steady_state.(i + 80).(0) ))
   |> List.sort ~compare:(fun (_, f1) (_, f2) -> Float.compare f2 f1)
-  |> Fn.flip List.take nsquares
+  |> Fun.flip List.take nsquares
   |> Euler.Util.list_to_str (fun (sq, _) -> sq) ""
 ;;
 

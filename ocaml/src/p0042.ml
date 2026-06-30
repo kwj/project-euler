@@ -9,7 +9,7 @@ let parse_data data =
   |> List.map ~f:(fun s ->
     List.init (String.length s) ~f:(String.get s)
     |> List.map ~f:(fun ch -> Char.to_int ch - 0x40) (* 0x41 = 'A', 0x42 = 'B', ... *)
-    |> List.sum (module Int) ~f:Fn.id)
+    |> List.sum (module Int) ~f:Fun.id)
 ;;
 
 let compute str_lst =

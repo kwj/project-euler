@@ -13,7 +13,7 @@ let calc_from_bottom l_lst =
 ;;
 
 let parse_data data =
-  List.map ~f:(Fn.compose (List.map ~f:Int.of_string) (Str.split (Str.regexp " "))) data
+  List.map ~f:(Fun.compose (List.map ~f:Int.of_string) Str.(split (regexp " "))) data
 ;;
 
 let compute str_lst = parse_data str_lst |> calc_from_bottom

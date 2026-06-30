@@ -24,9 +24,9 @@ let compute upper n_digit =
       Z.(sqrt (const_pow_of_10 * ~$n))
       |> Euler.Util.z_digits
       |> List.rev
-      |> Fn.flip List.take n_digit
-      |> List.sum (module Int) ~f:Fn.id)
-  |> List.sum (module Int) ~f:Fn.id
+      |> Fun.flip List.take n_digit
+      |> List.sum (module Int) ~f:Fun.id)
+  |> List.sum (module Int) ~f:Fun.id
 ;;
 
 let solve () = compute 100 100 |> Int.to_string

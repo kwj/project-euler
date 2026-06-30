@@ -84,7 +84,7 @@ let compute () =
   let rec aux = function
     | x, [] -> if Char.compare x.[0] '0' = 0 then 0 else Int.of_string x
     | x, lst when String.length x < 3 || check_divisibility x ->
-      List.map ~f:aux (make_next_str x lst) |> List.sum (module Int) ~f:Fn.id
+      List.map ~f:aux (make_next_str x lst) |> List.sum (module Int) ~f:Fun.id
     | _, _ -> 0 (* Divisibility check failed, so no need to look further. *)
   in
   aux ("", [ "0"; "1"; "2"; "3"; "4"; "5"; "6"; "7"; "8"; "9" ])

@@ -2,7 +2,7 @@
 
 open Core
 
-let compute upper = Euler.Math.Prime.primes 1 upper |> List.sum (module Int) ~f:Fn.id
+let compute upper = Euler.Math.Prime.primes 1 upper |> List.sum (module Int) ~f:Fun.id
 let solve () = compute 2_000_000 |> Int.to_string
 
 (* Test *)

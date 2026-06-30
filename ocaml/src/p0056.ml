@@ -14,7 +14,7 @@ let compute () =
       then ans
       else
         loop
-          (Int.max (List.sum (module Int) ~f:Fn.id (Euler.Util.z_digits prod)) ans)
+          (Int.max (List.sum (module Int) ~f:Fun.id (Euler.Util.z_digits prod)) ans)
           Z.(prod / a)
           (pred cnt)
     in

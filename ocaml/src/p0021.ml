@@ -14,7 +14,7 @@ let compute limit =
   List.range 2 limit ~stop:`exclusive
   |> List.filter_map ~f:(fun x ->
     if x > spd_tbl.(x) && spd_tbl.(spd_tbl.(x)) = x then Some (x + spd_tbl.(x)) else None)
-  |> List.sum (module Int) ~f:Fn.id
+  |> List.sum (module Int) ~f:Fun.id
 ;;
 
 let solve () = compute 10_000 |> Int.to_string

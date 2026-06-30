@@ -29,7 +29,7 @@ let compute () =
     if Euler.Math.is_pandigital_nz n then Some prod else None)
   |> Sequence.to_list
   |> List.dedup_and_sort ~compare:Int.compare
-  |> List.sum (module Int) ~f:Fn.id
+  |> List.sum (module Int) ~f:Fun.id
 ;;
 
 let solve () = compute () |> Int.to_string

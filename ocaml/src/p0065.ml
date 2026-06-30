@@ -41,9 +41,9 @@ let compute stop =
   Sequence.unfold
     ~init:(Z.(~$3), Z.(~$2), start)
     ~f:(fun (a, b, idx) -> Some (Z.((a * c idx) + b), (Z.((a * c idx) + b), a, succ idx)))
-  |> Fn.flip Sequence.nth_exn (stop - start)
+  |> Fun.flip Sequence.nth_exn (stop - start)
   |> Euler.Util.z_digits
-  |> List.sum (module Int) ~f:Fn.id
+  |> List.sum (module Int) ~f:Fun.id
 ;;
 
 let solve () = compute 100 |> Int.to_string

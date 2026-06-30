@@ -56,7 +56,7 @@ let compute exp =
       | [] -> ans
       | xs :: xss ->
         let tmp =
-          List.map ~f:(fun n -> pow_tbl.(n)) xs |> List.sum (module Int) ~f:Fn.id
+          List.map ~f:(fun n -> pow_tbl.(n)) xs |> List.sum (module Int) ~f:Fun.id
         in
         if
           List.equal
@@ -67,7 +67,7 @@ let compute exp =
         else aux ans xss
     in
     aux 0 (Euler.Util.combination_with_repetition n [ 0; 1; 2; 3; 4; 5; 6; 7; 8; 9 ]))
-  |> List.sum (module Int) ~f:Fn.id
+  |> List.sum (module Int) ~f:Fun.id
 ;;
 
 let solve () = compute 5 |> Int.to_string
