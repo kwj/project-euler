@@ -14,26 +14,24 @@
 open Core
 
 let compute perim =
-  let rec loop m =
-    if m < 2
-    then failwith "no answer"
-    else if perim / 2 mod m <> 0
-    then loop (pred m)
-    else (
-      let rec aux x =
-        if x >= 2 * m || x > perim / 2 / m
-        then loop (pred m)
-        else if Euler.Math.gcd m x = 1 && perim / 2 / m mod x = 0
-        then (
-          let k = perim / 2 / m / x
-          and n = x - m in
-          Int.pow k 3 * (Int.pow m 4 - Int.pow n 4) * 2 * m * n)
-        else aux (x + 2)
-      in
-      (* assume that x = m + n where x is odd number *)
-      aux (if m mod 2 = 1 then m + 2 else m + 1))
+  let half_perim = perim / 2 in
+  let m, n =
+    Sequence.(
+      range 2 (Euler.Math.isqrt half_perim) ~stop:`inclusive
+      |> filter ~f:(fun m -> half_perim mod m = 0)
+      |> concat_map ~f:(fun m ->
+        range
+          ((m mod 2) + 1)
+          (min (m - 1) ((half_perim / m) - m))
+          ~stride:2
+          ~stop:`inclusive
+        |> map ~f:(fun n -> (m, n)))
+      |> filter ~f:(fun (m, n) -> Euler.Math.gcd m n = 1 && half_perim mod (m + n) = 0)
+      (* The problem statement assumes that there is exactly only one Pythagorean triplet *)
+      |> hd_exn)
   in
-  loop (Euler.Math.isqrt (perim / 2))
+  let k = half_perim / m / (m + n) in
+  Int.(pow k 3 * (pow m 4 - pow n 4) * 2 * m * n)
 ;;
 
 let solve () = compute 1000 |> Int.to_string
