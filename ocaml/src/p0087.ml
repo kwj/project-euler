@@ -8,7 +8,7 @@ module BitArray : sig
   val init : int -> t
   val set : t -> int -> unit
   val [@warning "-unused-value-declaration"] clear : t -> int -> unit
-  val count_up : t -> int
+  val popcount : t -> int
 end = struct
   type t =
     { word_size : int
@@ -36,7 +36,7 @@ end = struct
     ba.arr.(word_idx) <- (ba.arr.(word_idx) land Int.(bit_not (shift_left 1 bit_idx)))
   ;;
 
-  let count_up ba = Array.fold ba.arr ~init:0 ~f:(fun acc x -> acc + Int.popcount x)
+  let popcount ba = Array.fold ba.arr ~init:0 ~f:(fun acc x -> acc + Int.popcount x)
 end
 
 let compute thr =
@@ -53,7 +53,7 @@ let compute thr =
     List.iter y3_lst ~f:(fun y3 ->
       List.iter x2_lst ~f:(fun x2 ->
         if z4 + y3 + x2 < thr then BitArray.set ba (z4 + y3 + x2))));
-  BitArray.count_up ba
+  BitArray.popcount ba
 ;;
 
 let solve () = compute 50_000_000 |> Int.to_string
