@@ -107,7 +107,7 @@ let numbers =
 ;;
 
 let add_bignum nums =
-  List.fold nums ~init:Z.zero ~f:(fun acc s -> Z.of_string s |> Z.add acc) |> Z.to_string
+  List.(nums |> map ~f:Z.of_string |> reduce_exn ~f:Z.add |> Z.to_string)
 ;;
 
 let compute n_digits = String.sub (add_bignum numbers) ~pos:0 ~len:n_digits

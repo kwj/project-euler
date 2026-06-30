@@ -21,14 +21,15 @@ let triangle =
   ]
 ;;
 
-let select_leaf lst = List.map2_exn (List.tl_exn lst) (List.drop_last_exn lst) ~f:Int.max
+let select_leaf lst = List.(map2_exn (tl_exn lst) (drop_last_exn lst) ~f:Int.max)
 
 let calc_from_bottom l_lst =
-  List.fold_right
-    (List.drop_last_exn l_lst)
-    ~f:(fun a b -> List.map2_exn a (select_leaf b) ~f:( + ))
-    ~init:(List.last_exn l_lst)
-  |> List.hd_exn
+  List.(
+    fold_right
+      (drop_last_exn l_lst)
+      ~f:(fun a b -> map2_exn a (select_leaf b) ~f:( + ))
+      ~init:(last_exn l_lst)
+    |> hd_exn)
 ;;
 
 let compute () = calc_from_bottom triangle

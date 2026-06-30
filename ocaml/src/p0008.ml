@@ -26,11 +26,12 @@ let source_data =
 ;;
 
 let find_max_product lst n_digits =
-  List.range 0 (List.length lst - n_digits) ~stop:`inclusive
-  |> List.map ~f:(fun idx -> List.sub lst ~pos:idx ~len:n_digits)
-  |> List.map ~f:(List.reduce_exn ~f:( * ))
-  |> List.max_elt ~compare:Int.compare
-  |> Option.value_exn
+  List.(
+    range 0 (length lst - n_digits) ~stop:`inclusive
+    |> map ~f:(fun idx -> sub lst ~pos:idx ~len:n_digits)
+    |> map ~f:(reduce_exn ~f:( * ))
+    |> max_elt ~compare:Int.compare
+    |> Option.value_exn)
 ;;
 
 let compute n_digits =

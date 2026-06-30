@@ -15,10 +15,10 @@ let get_collatz_length n =
 
 let compute thr =
   let max_collatz_number =
-    (* Using the List module is slow in this problem. *)
-    Sequence.range (thr / 2) thr ~stop:`exclusive
-    |> Sequence.map ~f:(fun n -> (n, get_collatz_length n))
-    |> Sequence.max_elt ~compare:(fun (_, x) (_, y) -> Int.compare x y)
+    Sequence.(
+      range (thr / 2) thr ~stop:`exclusive
+      |> map ~f:(fun n -> (n, get_collatz_length n))
+      |> max_elt ~compare:(fun (_, x) (_, y) -> Int.compare x y))
   in
   match max_collatz_number with
   | Some (n, _) -> n

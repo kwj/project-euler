@@ -2,7 +2,7 @@
 
 open Core
 
-let select_leaf lst = List.map2_exn (List.tl_exn lst) (List.drop_last_exn lst) ~f:Int.max
+let select_leaf lst = List.(map2_exn (tl_exn lst) (drop_last_exn lst) ~f:Int.max)
 
 let calc_from_bottom l_lst =
   List.fold_right
@@ -13,9 +13,7 @@ let calc_from_bottom l_lst =
 ;;
 
 let parse_data data =
-  List.map
-    ~f:(fun s -> Str.split (Str.regexp " ") s |> List.map ~f:(fun s -> Int.of_string s))
-    data
+  List.map ~f:(Fn.compose (List.map ~f:Int.of_string) (Str.split (Str.regexp " "))) data
 ;;
 
 let compute str_lst = parse_data str_lst |> calc_from_bottom
