@@ -23,12 +23,28 @@ let rec int_pow b e =
   | 1 -> b
   | n ->
     let x = int_pow b (e / 2) in
-    x * x * if n mod 2 = 0 then 1 else b
+    if n land 1 = 0 then x * x else x * x * b
 ;;
 
-let powmod base exp modulus =
-  let m = Z.(powm (of_int base) (of_int exp) (of_int modulus)) in
-  Z.to_int m
+(* This function assumes that it runs on 64-bit platforms *)
+let _int_powmod b e m =
+  let rec aux b e ans =
+    if e > 0
+    then
+      if e land 1 = 1
+      then aux (b * b mod m) (e lsr 1) (ans * b mod m)
+      else aux (b * b mod m) (e lsr 1) ans
+    else ans
+  in
+  aux (b mod m) e 1
+;;
+
+let _z_powmod b e m = Z.(powm (of_int b) (of_int e) (of_int m) |> to_int)
+
+let powmod b e m =
+  assert (b >= 0 && m > 0);
+  (* 2147483648 = 2^31*)
+  if b < 2147483648 && m < 2147483648 then _int_powmod b e m else _z_powmod b e m
 ;;
 
 let get_max_exp ?(base = 10) num =
@@ -57,15 +73,8 @@ let num_of_digits ?(base = 10) num = get_max_exp num ~base + 1
  *         a = isqrt_aux((n.bit_length() - 1) // 2, n)
  *         return a - 1 if n < a * a else a
  *)
-let _bit_length num =
-  if num = 0
-  then 0
-  else (
-    let rec aux n cnt = if n = 0 then cnt else aux (n lsr 1) (succ cnt) in
-    aux num 0)
-;;
-
 let isqrt num =
+  assert (num >= 0);
   let rec aux c n =
     if c = 0
     then 1
@@ -77,39 +86,41 @@ let isqrt num =
   if num = 0
   then 0
   else (
-    let a = aux ((_bit_length num - 1) / 2) num in
+    let a = aux ((Int.unsigned_bitsize num - 1) / 2) num in
     if num < a * a then a - 1 else a)
 ;;
 
-(* ---- From here on, the following functions can be used within this module ---- *)
-(*  gcd, lcm, binomial, int_pow, powmod *)
-(*  get_max_exp, num_of_digits, isqrt *)
-
-(* Divisor and Prime factorization *)
-let divisors n =
-  let u_limit = isqrt n in
-  let rec aux lst i =
-    if i > u_limit
-    then lst
-    else if n mod i <> 0
-    then aux lst (succ i)
-    else if i * i = n
-    then aux (i :: lst) (succ i)
-    else aux ((n / i) :: i :: lst) (succ i)
+let jacobi_symbol a n =
+  assert (n > 0 && n land 1 = 1);
+  let rec aux sign a n =
+    if a = 0
+    then if n = 1 then sign else 0
+    else if a = 1
+    then sign
+    else if a land 1 = 0
+    then (
+      let ntz_a = Int.trailing_zeros a in
+      let next_a = a lsr ntz_a in
+      let rem = n mod 8 in
+      if rem = 1 || rem = 7
+      then aux sign next_a n
+      else aux (if ntz_a land 1 = 1 then -sign else sign) next_a n)
+    else (
+      let rem_a = a mod n in
+      if rem_a land 1 = 0
+      then aux sign rem_a n
+      else aux (if rem_a mod 4 = 3 && n mod 4 = 3 then -sign else sign) n rem_a)
   in
-  List.sort compare (aux [] 1)
+  if a < 0 && n mod 4 = 3 then aux (-1) (abs a) n else aux 1 (abs a) n
 ;;
 
-(* prime factorization *)
-(*   example: 126 -> [(2, 1); (3, 2); (7, 1)] *)
 let _div_loop num b =
-  let n = ref num in
-  let e = ref 0 in
-  while !n mod b = 0 do
-    e := !e + 1;
-    n := !n / b
-  done;
-  if !e <> 0 then Some (!n, (b, !e)) else None
+  let rec aux n e =
+    if n mod b <> 0
+    then if e > 0 then Some (n, (b, e)) else None
+    else aux (n / b) (succ e)
+  in
+  aux num 0
 ;;
 
 let _div_235 num =
@@ -129,19 +140,17 @@ let factorize num =
   then [ (1, 1) ]
   else (
     let n, res = _div_235 num in
-    let limit = isqrt n in
     let diff = [| 4; 2; 4; 2; 4; 6; 2; 6 |] in
-    let rec aux n b idx res =
-      if b > limit
-      then (n, res)
+    let rec aux n b idx lst =
+      if n / b < b
+      then if n <> 1 then (n, 1) :: lst else lst
       else (
         match _div_loop n b with
         | Some (next_n, tpl) ->
-          aux next_n (b + diff.(idx)) ((idx + 1) mod Array.length diff) (tpl :: res)
-        | None -> aux n (b + diff.(idx)) ((idx + 1) mod Array.length diff) res)
+          aux next_n (b + diff.(idx)) ((idx + 1) mod Array.length diff) (tpl :: lst)
+        | None -> aux n (b + diff.(idx)) ((idx + 1) mod Array.length diff) lst)
     in
-    let rest_n, lst = aux n 7 0 res in
-    if rest_n <> 1 then List.rev ((rest_n, 1) :: lst) else List.rev lst)
+    aux n 7 0 res |> List.rev)
 ;;
 
 let pfactors_to_divisors pf_lst =
@@ -150,13 +159,14 @@ let pfactors_to_divisors pf_lst =
     then acc
     else aux divs (base, pred exp) (List.map (fun n -> n * int_pow base exp) divs @ acc)
   in
-  let rec loop_factor lst result =
-    match lst with
-    | (b, e) :: xs -> loop_factor xs (aux result (b, e) result)
+  let rec loop_factor result = function
+    | (b, e) :: xs -> loop_factor (aux result (b, e) result) xs
     | [] -> result
   in
-  loop_factor pf_lst [ 1 ] |> List.sort compare
+  loop_factor [ 1 ] pf_lst |> List.sort compare
 ;;
+
+let divisors num = factorize num |> pfactors_to_divisors
 
 (* Polygonal number test *)
 let is_triangular num =
@@ -226,62 +236,156 @@ let is_permutation x y =
   Array.for_all (fun i -> i = 0) tbl
 ;;
 
-(*
- * Functions related to prime numbers
- *)
-
 module Prime = struct
-  (* Primality test by naive method *)
-  let is_prime num =
-    let upper = isqrt num in
-    let rec aux n k = if k < 2 then true else n mod k <> 0 && aux n (k - 1) in
-    if num <= 1 then false else aux num upper
+  let sprp_bases =
+    [| 15591; 2018; 166; 7429; 8064; 16045; 10503; 4399; 1949; 1295; 2776; 3620; 560; 3128; 5212; 2657
+     ; 2300; 2021; 4652; 1471; 9336; 4018; 2398; 20462; 10277; 8028; 2213; 6219; 620; 3763; 4852; 5012
+     ; 3185; 1333; 6227; 5298; 1074; 2391; 5113; 7061; 803; 1269; 3875; 422; 751; 580; 4729; 10239
+     ; 746; 2951; 556; 2206; 3778; 481; 1522; 3476; 481; 2487; 3266; 5633; 488; 3373; 6441; 3344
+     ; 17; 15105; 1490; 4154; 2036; 1882; 1813; 467; 3307; 14042; 6371; 658; 1005; 903; 737; 1887
+     ; 7447; 1888; 2848; 1784; 7559; 3400; 951; 13969; 4304; 177; 41; 19875; 3110; 13221; 8726; 571
+     ; 7043; 6943; 1199; 352; 6435; 165; 1169; 3315; 978; 233; 3003; 2562; 2994; 10587; 10030; 2377
+     ; 1902; 5354; 4447; 1555; 263; 27027; 2283; 305; 669; 1912; 601; 6186; 429; 1930; 14873; 1784
+     ; 1661; 524; 3577; 236; 2360; 6146; 2850; 55637; 1753; 4178; 8466; 222; 2579; 2743; 2031; 2226
+     ; 2276; 374; 2132; 813; 23788; 1610; 4422; 5159; 1725; 3597; 3366; 14336; 579; 165; 1375; 10018
+     ; 12616; 9816; 1371; 536; 1867; 10864; 857; 2206; 5788; 434; 8085; 17618; 727; 3639; 1595; 4944
+     ; 2129; 2029; 8195; 8344; 6232; 9183; 8126; 1870; 3296; 7455; 8947; 25017; 541; 19115; 368; 566
+     ; 5674; 411; 522; 1027; 8215; 2050; 6544; 10049; 614; 774; 2333; 3007; 35201; 4706; 1152; 1785
+     ; 1028; 1540; 3743; 493; 4474; 2521; 26845; 8354; 864; 18915; 5465; 2447; 42; 4511; 1660; 166
+     ; 1249; 6259; 2553; 304; 272; 7286; 73; 6554; 899; 2816; 5197; 13330; 7054; 2818; 3199; 811
+     ; 922; 350; 7514; 4452; 3449; 2663; 4708; 418; 1621; 1171; 3471; 88; 11345; 412; 1559; 194
+    |] [@ocamlformat "disable"]
   ;;
 
-  (* Miller–Rabin primality test (Wikipedia based deterministic version under 2^64) *)
-  (*   [Miller–Rabin primality test](https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test) *)
-  (*   [Deterministic variants of the Miller-Rabin primality test](http://miller-rabin.appspot.com/) *)
-  type typenum =
-    | Composite
-    | Prime
-    | Undecided
-
-  let mr_isprime num =
-    if num < 2 || (num mod 6 <> 1 && num mod 6 <> 5)
-    then num = 2 || num = 3
-    else (
-      let init_value n =
-        let rec aux s d = if d mod 2 <> 0 then (s, d) else aux (succ s) (d / 2) in
-        aux 0 (pred n)
-      in
-      let distinguish a d s n =
-        if a mod n = 0
-        then Prime
-        else (
-          let rec loop x cnt =
-            if cnt = 0
-            then if x <> 1 then Composite else Undecided
-            else (
-              let y = powmod x 2 n in
-              if y = 1 && x <> 1 && x <> n - 1 then Composite else loop y (pred cnt))
-          in
-          loop (powmod a d n) s)
-      in
-      (* 'num' is not a multiple of 2 or 3 from here *)
-      let s, d = init_value num in
-      let rec sprp_loop = function
-        | [] -> true
-        | x :: xs ->
-          (match distinguish x d s num with
-           | Prime -> true
-           | Composite -> false
-           | Undecided -> sprp_loop xs)
-      in
-
-      (* Jim Sinclair's bases *)
-      sprp_loop [ 2; 325; 9375; 28178; 450775; 9780504; 1795265022 ])
+  let get_sprp_base n =
+    let open Int64 in
+    let h1 = of_int n in
+    let h2 = mul (logxor (shift_right_logical h1 16) h1) 73244475L in
+    let h3 = mul (logxor (shift_right_logical h2 16) h2) 73244475L in
+    let idx = to_int (logand (logxor (shift_right_logical h3 16) h3) 255L) in
+    sprp_bases.(idx)
   ;;
 
+  let test_sprp n base =
+    let s = Int.trailing_zeros (pred n) in
+    let d = Int.shift_right_logical (pred n) s in
+    let rec aux x =
+      if x < 0
+      then false
+      else if powmod base (d * Int.shift_left 1 x) n = pred n
+      then true
+      else aux (pred x)
+    in
+    powmod base d n = 1 || aux (pred s)
+  ;;
+
+  let lucas_seq_parameter n =
+    if is_square n
+    then None
+    else
+      let open Seq in
+      let rec aux seq_d =
+        match uncons seq_d with
+        | None -> None
+        | Some (d, ds) ->
+          let k = jacobi_symbol d n in
+          if k = -1
+          then if d = 5 then Some (5, 5, 5) else Some (d, 1, (1 - d) / 4)
+          else if k = 0 && (abs d < n || abs d mod n <> 0)
+          then None
+          else aux ds
+      in
+      map2
+        (fun a b -> a * b)
+        (List.to_seq [ 1; -1 ] |> cycle)
+        (unfold (fun x -> Some (x, x + 2)) 5)
+      |> aux
+  ;;
+
+  let lucas_seq n param_D param_P param_Q =
+    let s = Int.trailing_zeros (succ n) in
+    let d = Int.shift_right_logical (succ n) s in
+    let start_bit = Int.unsigned_bitsize d - 2 in
+    let open Z in
+    let n_z = of_int n
+    and d_z = of_int param_D
+    and p_z = of_int param_P
+    and q_z = of_int param_Q in
+    let rec aux uk vk qk idx =
+      if idx < 0
+      then (uk, vk, qk, s)
+      else (
+        let next_uk = uk * uk mod n_z
+        and next_vk = ((vk * vk) - (~$2 * qk)) mod n_z
+        and next_qk = qk * qk mod n_z in
+        if Int.logand (Int.shift_right_logical d idx) 1 = 1
+        then (
+          let tmp_uk = (p_z * next_uk) + next_vk
+          and tmp_vk = (d_z * next_uk) + (p_z * next_vk) in
+          aux
+            (shift_right (if logand tmp_uk ~$1 = ~$1 then tmp_uk + n_z else tmp_uk) 1
+             mod n_z)
+            (shift_right (if logand tmp_vk ~$1 = ~$1 then tmp_vk + n_z else tmp_vk) 1
+             mod n_z)
+            (q_z * next_qk mod n_z)
+            (Int.pred idx))
+        else aux next_uk next_vk next_qk (Int.pred idx))
+    in
+    aux ~$1 p_z q_z start_bit
+  ;;
+
+  let test_slprp n param_D param_P param_Q =
+    let next_v (v : Z.t) (q : Z.t) = Z.(((v * v) - (~$2 * q)) mod of_int n)
+    and next_q (q : Z.t) = Z.(q * q mod of_int n)
+    and ud, vd, qd, s = lucas_seq n param_D param_P param_Q in
+    let vq_pairs =
+      Seq.unfold (fun (v, q) -> Some ((v, q), (next_v v q, next_q q))) (vd, qd)
+      |> Seq.take s
+      |> List.of_seq
+    in
+    if ud = Z.zero || List.exists (fun (v, _) -> v = Z.zero) vq_pairs
+    then (
+      let v, q = List.nth vq_pairs (List.length vq_pairs - 1) in
+      Some (next_v v q, q))
+    else None
+  ;;
+
+  let test_vprp v_n1 q n = Z.(v_n1 mod of_int n = of_int q * ~$2 mod of_int n)
+
+  let test_euler_criterion q q_n1_half n =
+    Int.popcount (abs q) = 1
+    || Z.(q_n1_half mod of_int n |> to_int) = q * jacobi_symbol q n mod n
+  ;;
+
+  let strengthened_BPSW_test n =
+    test_sprp n 2
+    &&
+    match lucas_seq_parameter n with
+    | None -> false
+    | Some (d, p, q) ->
+      (match test_slprp n d p q with
+       | None -> false
+       | Some (v_n1, q_n1_half) ->
+         test_vprp v_n1 q n && test_euler_criterion q q_n1_half n)
+  ;;
+
+  let is_prime n =
+    let small_primes = [ 2; 3; 5; 7; 11; 13; 17; 19; 23; 29; 31 ] in
+    if List.mem n small_primes
+    then true
+    else if List.exists (fun x -> n mod x = 0) small_primes
+    then false
+    else if n < 1369
+    then n > 1
+    else if n <= 65535
+    then MinFactors.get_minfactor n = 1
+    else if n <= 2147483647
+    then test_sprp n (get_sprp_base n)
+    else strengthened_BPSW_test n
+  ;;
+
+  let mr_isprime n = is_prime n
+  let fermat_prime n = powmod 2 (pred n) n = 1
   (*
    * Wheel index
    *     ..=7:  0

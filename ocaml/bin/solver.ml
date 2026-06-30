@@ -15,6 +15,10 @@ let print_result num result elapsed_time =
 ;;
 
 let () =
+  if Int.num_bits <> 63
+  then (
+    printf "This solver can be used on 64 bit platforms.";
+    exit 1);
   Arg.parse specs anon_fn usage_msg;
   if List.length !problem_number <> 1
   then exit 1

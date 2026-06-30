@@ -7,11 +7,12 @@ val powmod : int -> int -> int -> int
 val get_max_exp : ?base:int -> int -> int
 val num_of_digits : ?base:int -> int -> int
 val isqrt : int -> int
+val jacobi_symbol : int -> int -> int
 
 (* Divisor and Prime factorization *)
-val divisors : int -> int list
 val factorize : int -> (int * int) list
 val pfactors_to_divisors : (int * int) list -> int list
+val divisors : int -> int list
 
 (* Polygonal number test *)
 val is_triangular : int -> bool
@@ -29,6 +30,7 @@ val is_permutation : int -> int -> bool
 module Prime : sig
   val is_prime : int -> bool
   val mr_isprime : int -> bool
+  val fermat_prime : int -> bool
   val next_prime : int -> int
   val prev_prime : int -> int
   val primes : int -> int -> int list
