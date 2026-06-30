@@ -16,15 +16,15 @@ sh solve.sh 1
 
 The quality of these programs is poor since I'm a newbie of OCaml.
 
-It was confirmed to work with OCaml 5.4.0.
-I used the following libraries/packages in addition to the standard libraries part of OCaml.
+Ocaml 5.5.0 or later is required to run these solutions.
+Futhtermore, the following libraries/packages are also required.
 
-- Str [^1]
-- [Zarith](https://opam.ocaml.org/packages/zarith/) 1.14
-- [Core](https://opam.ocaml.org/packages/core/) v0.17.1
+  - Str [^1]
+  - [Zarith](https://opam.ocaml.org/packages/zarith/) 1.14
+  - [Core](https://opam.ocaml.org/packages/core/) v0.17.2
 
 I also used the following package for compilation.
 
-- [Dune](https://opam.ocaml.org/packages/dune/) 3.20.2
+- [Dune](https://opam.ocaml.org/packages/dune/) 3.23.1
 
 [^1]: It's distributd with OCaml itself.
