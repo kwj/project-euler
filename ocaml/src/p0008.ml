@@ -25,24 +25,18 @@ let source_data =
    71636269561882670428252483600823257530420752963450" [@ocamlformat "disable"]
 ;;
 
-let culc s =
-  Str.split (Str.regexp "") s |> List.map ~f:int_of_string |> List.fold ~f:( * ) ~init:1
+let find_max_product lst n_digits =
+  List.range 0 (List.length lst - n_digits) ~stop:`inclusive
+  |> List.map ~f:(fun idx -> List.sub lst ~pos:idx ~len:n_digits)
+  |> List.map ~f:(List.reduce_exn ~f:( * ))
+  |> List.max_elt ~compare:Int.compare
+  |> Option.value_exn
 ;;
 
-let find_max_product data n_digits =
-  let len = String.length data in
-  let rec aux idx max_value =
-    if idx >= len - n_digits
-    then max_value
-    else (
-      let s = String.sub data ~pos:idx ~len:n_digits in
-      let product = culc s in
-      aux (succ idx) (Int.max product max_value))
-  in
-  aux 0 0
+let compute n_digits =
+  find_max_product (String.to_list source_data |> List.map ~f:Char.get_digit_exn) n_digits
 ;;
 
-let compute n_digits = find_max_product source_data n_digits
 let solve () = compute 13 |> Int.to_string
 
 (* Test *)
