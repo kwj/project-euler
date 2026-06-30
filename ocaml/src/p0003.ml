@@ -2,11 +2,7 @@
 
 open Core
 
-let compute num =
-  let base, _ = Euler.Math.factorize num |> List.last_exn in
-  base
-;;
-
+let compute num = Euler.Math.factorize num |> List.last_exn |> fst
 let solve () = compute 600851475143 |> Int.to_string
 
 (* Test *)
