@@ -39,8 +39,7 @@ let compute data =
   and y_size = Array.length arr_lst.(0) in
   let nbr_tbl = make_neighbor_tbl x_size y_size
   and dist_tbl = make_distance_tbl x_size y_size in
-  let module PQ =
-    Pqueue.MakeMin (struct
+  let module PQ = Pqueue.MakeMin (struct
       type t = int * (int * int)
 
       let compare x y = Int.compare (fst x) (fst y)

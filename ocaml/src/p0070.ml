@@ -80,8 +80,7 @@ let pf_generator tpl limit =
 
 let compute limit =
   let limit = limit - 1 in
-  let module PQ =
-    Pqueue.MakeMin (struct
+  let module PQ = Pqueue.MakeMin (struct
       type t = float * (int * int) list
 
       let compare x y = Float.compare (fst x) (fst y)

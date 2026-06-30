@@ -26,8 +26,7 @@ open Core
 let compute target =
   let four_times_target = target * 4 in
   let module Math = Euler.Math in
-  let module PQ =
-    Pqueue.MakeMin (struct
+  let module PQ = Pqueue.MakeMin (struct
       type t = int * (int * int)
 
       let compare x y = Int.compare (fst x) (fst y)
