@@ -1,44 +1,59 @@
 (* Project Euler: Problem 87 *)
 
-(*
- * >>> 50000000 ** (1/2)
- * 7071.067811865475
- * >>> 50000000 ** (1/3)
- * 368.40314986403854
- * >>> 50000000 ** (1/4)
- * 84.08964152537145
- *
- * This program is a bit slow. Here is a result on Raspberry Pi 4 Model B.
- *
- *   % ./_build/default/bin/p0087.exe
- *   [Problem 87]
- *   Answer: 1097343
- *   Elapsed time: 2.94s
- *)
-
 open Core
 
+module BitArray : sig
+  type t
+
+  val init : int -> t
+  val set : t -> int -> unit
+  val [@warning "-unused-value-declaration"] clear : t -> int -> unit
+  val count_up : t -> int
+end = struct
+  type t =
+    { word_size : int
+    ; n_elems : int
+    ; arr : int array
+    }
+
+  let init n =
+    let word_size = Sys.int_size_in_bits in
+    let arr_size = (n + word_size) / word_size in
+    { word_size; n_elems = n; arr = Array.create ~len:arr_size 0 }
+  ;;
+
+  let set ba n =
+    assert (n >= 0 && n <= ba.n_elems);
+    let word_idx = n / ba.word_size
+    and bit_idx = n mod ba.word_size in
+    ba.arr.(word_idx) <- ba.arr.(word_idx) lor Int.shift_left 1 bit_idx
+  ;;
+
+  let clear ba n =
+    assert (n >= 0 && n <= ba.n_elems);
+    let word_idx = n / ba.word_size
+    and bit_idx = n mod ba.word_size in
+    ba.arr.(word_idx) <- (ba.arr.(word_idx) land Int.(bit_not (shift_left 1 bit_idx)))
+  ;;
+
+  let count_up ba = Array.fold ba.arr ~init:0 ~f:(fun acc x -> acc + Int.popcount x)
+end
+
 let compute thr =
+  let ba = BitArray.init thr in
   let p_lst = Euler.Math.Prime.primes 1 (Euler.Math.isqrt thr) in
-  let res = Hash_set.create (module Int) in
-
-  let x2_lst = List.map p_lst ~f:(fun n -> Int.pow n 2) in
-
-  let y3_limit = Float.(iround_exn ~dir:`Down (of_int thr ** (1. /. 3.))) in
+  let x2_lst = List.map p_lst ~f:(fun n -> n * n) in
   let y3_lst =
-    List.take_while p_lst ~f:(fun n -> n <= y3_limit)
-    |> List.map ~f:(fun n -> Int.pow n 3)
+    List.map p_lst ~f:(fun n -> n * n * n) |> List.take_while ~f:(fun x -> x < thr)
   in
-  let z4_limit = Float.(iround_exn ~dir:`Down (of_int thr ** (1. /. 4.))) in
   let z4_lst =
-    List.take_while p_lst ~f:(fun n -> n <= z4_limit)
-    |> List.map ~f:(fun n -> Int.pow n 4)
+    List.map x2_lst ~f:(fun n -> n * n) |> List.take_while ~f:(fun x -> x < thr)
   in
   List.iter z4_lst ~f:(fun z4 ->
     List.iter y3_lst ~f:(fun y3 ->
       List.iter x2_lst ~f:(fun x2 ->
-        if z4 + y3 + x2 < thr then Hash_set.add res (z4 + y3 + x2))));
-  Hash_set.length res
+        if z4 + y3 + x2 < thr then BitArray.set ba (z4 + y3 + x2))));
+  BitArray.count_up ba
 ;;
 
 let solve () = compute 50_000_000 |> Int.to_string
