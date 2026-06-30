@@ -29,7 +29,6 @@ val is_permutation : int -> int -> bool
 (* Functions related to prime numbers *)
 module Prime : sig
   val is_prime : int -> bool
-  val mr_isprime : int -> bool
   val fermat_prime : int -> bool
   val next_prime : int -> int
   val prev_prime : int -> int

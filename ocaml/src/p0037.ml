@@ -6,13 +6,11 @@
 
 open Core
 
-let is_prime = Euler.Math.Prime.mr_isprime
-
 let check_left_truncatable n =
   let rec aux n d =
     if d = 0
     then true
-    else if is_prime (n mod Int.pow 10 d)
+    else if Euler.Math.Prime.is_prime (n mod Int.pow 10 d)
     then aux n (pred d)
     else false
   in
@@ -27,14 +25,14 @@ let make_right_truncatable_primes () =
       let cands =
         S.cartesian_product (S.of_list lst) (S.of_list [ 1; 3; 7; 9 ])
         |> S.map ~f:(fun (x, y) -> (10 * x) + y)
-        |> S.filter ~f:(fun n -> is_prime n)
+        |> S.filter ~f:(fun n -> Euler.Math.Prime.is_prime n)
         |> S.to_list
       in
       aux (res @ cands) cands
   in
   S.cartesian_product (S.of_list (aux [ 2; 3; 5; 7 ] [ 2; 3; 5; 7 ])) (S.of_list [ 3; 7 ])
   |> S.map ~f:(fun (x, y) -> (10 * x) + y)
-  |> S.filter ~f:(fun n -> is_prime n)
+  |> S.filter ~f:(fun n -> Euler.Math.Prime.is_prime n)
   |> S.to_list
 ;;
 

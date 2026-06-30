@@ -31,7 +31,7 @@
 open Core
 
 let compute () =
-  let is_prime_wrapper num = if Euler.Math.Prime.mr_isprime num then 1 else 0 in
+  let is_prime_wrapper num = if Euler.Math.Prime.is_prime num then 1 else 0 in
   let rec aux n nprimes acc =
     let nprimes =
       nprimes

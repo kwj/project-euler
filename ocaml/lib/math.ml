@@ -384,8 +384,8 @@ module Prime = struct
     else strengthened_BPSW_test n
   ;;
 
-  let mr_isprime n = is_prime n
   let fermat_prime n = powmod 2 (pred n) n = 1
+
   (*
    * Wheel index
    *     ..=7:  0
