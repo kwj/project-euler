@@ -5,14 +5,6 @@ val combination_with_repetition : int -> 'a list -> 'a list list
 val powerset : 'a list -> 'a list list
 val findall : ('a -> bool) -> 'a list -> int list
 
-(* popcount *)
-val popcount_64 : int64 -> int
-val popcount_32 : int32 -> int
-val popcount_int : int -> int
-val popcount : int -> int
-val popcount_char : char -> int
-val popcount_nativeint : nativeint -> int
-
 (* Number of Trailing Zero (NTZ) *)
 val get_NTZ_64 : int64 -> int
 val get_NTZ_32 : int32 -> int

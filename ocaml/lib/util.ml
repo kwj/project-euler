@@ -57,42 +57,11 @@ let findall f lst =
   |> List.map (fun (idx, _) -> idx)
 ;;
 
-(* https://en.wikipedia.org/wiki/Hamming_weight *)
-let popcount_64 n =
-  let open Int64 in
-  let ( land ) = logand
-  and ( lsr ) = shift_right_logical
-  and ( + ) = add
-  and ( - ) = sub
-  and ( * ) = mul
-  and m1 = 0x5555555555555555L
-  and m2 = 0x3333333333333333L
-  and m4 = 0x0f0f0f0f0f0f0f0fL
-  and h01 = 0x0101010101010101L in
-  let x = n - ((n lsr 1) land m1) in
-  let x = (x land m2) + ((x lsr 2) land m2) in
-  let x = (x + (x lsr 4)) land m4 in
-  to_int ((x * h01) lsr 56)
-;;
-
-let popcount_32 n = popcount_64 Int64.(logand (of_int32 n) 0xffffffffL)
-
 let mask_int =
   let rec aux cnt result =
     if cnt = 0 then result else aux (pred cnt) Int64.(logor (shift_left result 1) one)
   in
   aux (Sys.int_size - 2) Int64.one
-;;
-
-let popcount_int n = popcount_64 Int64.(logand (of_int n) mask_int)
-let popcount = popcount_int
-let popcount_char c = popcount_int (Char.code c)
-
-let popcount_nativeint n =
-  match Nativeint.size with
-  | 32 -> popcount_32 (Nativeint.to_int32 n)
-  | 64 -> popcount_64 (Int64.of_nativeint n)
-  | _ -> assert false
 ;;
 
 (*
