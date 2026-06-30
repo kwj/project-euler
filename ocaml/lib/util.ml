@@ -57,60 +57,6 @@ let findall f lst =
   |> List.map (fun (idx, _) -> idx)
 ;;
 
-let mask_int =
-  let rec aux cnt result =
-    if cnt = 0 then result else aux (pred cnt) Int64.(logor (shift_left result 1) one)
-  in
-  aux (Sys.int_size - 2) Int64.one
-;;
-
-(*
- * Number of Trailing Zero (NTZ), aka Count Trailing Zero (CTZ)
- *
- * let m_seq64 = 0x03F566ED27179461L
- * let arr = Array.make 64 0 in
- * let rec loop m i =
- *   if i = 64 then
- *     arr
- *   else (
- *     arr.(Int64.(to_int (shift_right_logical m 58))) <- i;
- *     loop (Int64.shift_left m 1) (succ i)
- *   )
- * let tbl = loop m_seq64 0
- *)
-let get_NTZ_64 n =
-  let open Int64 in
-  let ( land ) = logand
-  and ( lsr ) = shift_right_logical
-  and ( = ) = equal
-  and ( * ) = mul in
-  let m_seq64 = 0x03F566ED27179461L
-  and tbl =
-    [| 0; 1; 59; 2; 60; 40; 54; 3; 61; 32; 49; 41; 55; 19; 35; 4; 62; 52; 30; 33;
-       50; 12; 14; 42; 56; 16; 27; 20; 36; 23; 44; 5; 63; 58; 39; 53; 31; 48; 18;
-       34; 51; 29; 11; 13; 15; 26; 22; 43; 57; 38; 47; 17; 28; 10; 25; 21; 37; 46;
-       9; 24; 45; 8; 7; 6
-    |] [@ocamlformat "disable"]
-  in
-  if n = 0L
-  then 64
-  else (
-    let x = n land neg n in
-    tbl.(to_int ((x * m_seq64) lsr 58)))
-;;
-
-let get_NTZ_32 n = get_NTZ_64 Int64.(logand (of_int32 n) 0xffffffffL)
-let get_NTZ_int n = get_NTZ_64 Int64.(logand (of_int n) mask_int)
-let get_NTZ = get_NTZ_int
-let get_NTZ_char c = get_NTZ_int (Char.code c)
-
-let get_NTZ_nativeint n =
-  match Nativeint.size with
-  | 32 -> get_NTZ_32 (Nativeint.to_int32 n)
-  | 64 -> get_NTZ_64 (Int64.of_nativeint n)
-  | _ -> assert false
-;;
-
 let list_to_str fn gap lst =
   match List.length lst with
   | 0 -> ""

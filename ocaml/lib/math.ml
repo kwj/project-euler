@@ -637,7 +637,7 @@ module Prime = struct
       let rec flag_loop flag =
         if flag <> 0
         then (
-          let r_bit = Util.get_NTZ (flag land -flag) in
+          let r_bit = Int.trailing_zeros (flag land -flag) in
           let rec mask_loop idx b_bit =
             if idx < tbl_size
             then (
@@ -672,7 +672,7 @@ module Prime = struct
           let rec flag_loop flag =
             if flag <> 0
             then (
-              let r_bit = Util.get_NTZ (flag land -flag) in
+              let r_bit = Int.trailing_zeros (flag land -flag) in
               let prime = (30 * i) + mod30.(r_bit) in
               let tmp =
                 idx_to_num (num_to_idx (max ((low + prime - 1) / prime) prime)) * prime
@@ -719,7 +719,7 @@ module Prime = struct
           else
             flag_loop
               (flag land (flag - 1))
-              (((30 * q) + mod30.(Util.get_NTZ (flag land -flag))) :: res)
+              (((30 * q) + mod30.(Int.trailing_zeros (flag land -flag))) :: res)
         in
         flag_loop (Char.code bits) lst
       in
