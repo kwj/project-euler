@@ -9,8 +9,8 @@ usage:
 	@echo '  make clean-all'
 	@echo '    remove build files and backup files'
 
-.PHONY: all
-all:
+.PHONY: build
+build:
 	@dune build
 
 .PHONY: test
