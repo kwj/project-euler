@@ -23,9 +23,7 @@ let even_fibs a b =
 ;;
 
 let compute limit =
-  even_fibs 2 8
-  |> Sequence.take_while ~f:(fun x -> x <= limit)
-  |> Sequence.sum (module Int) ~f:Fun.id
+  Sequence.(even_fibs 2 8 |> take_while ~f:(fun x -> x <= limit) |> reduce_exn ~f:( + ))
 ;;
 
 let solve () = compute 4_000_000 |> Int.to_string
