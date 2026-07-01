@@ -2,7 +2,7 @@
 
 open Core
 
-let compute num = Z.fac num |> Euler.Util.z_digits |> List.sum (module Int) ~f:Fun.id
+let compute num = Z.fac num |> Euler.Util.z_digits |> List.reduce_exn ~f:( + )
 let solve () = compute 100 |> Int.to_string
 
 (* Test *)

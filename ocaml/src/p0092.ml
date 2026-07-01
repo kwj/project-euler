@@ -32,14 +32,14 @@ let compute limit =
   List.range 0 9 ~stop:`inclusive
   |> List.map ~f:(fun n -> n * n)
   |> Euler.Util.combination_with_repetition n_digits
-  |> List.filter ~f:(fun lst -> is_group89 (List.sum (module Int) ~f:Fun.id lst))
+  |> List.filter ~f:(fun lst -> is_group89 (List.reduce_exn lst ~f:( + )))
   |> List.map ~f:(fun lst ->
     Hashtbl.fold
       (countmap (module Int) lst)
       ~init:1
       ~f:(fun ~key:_ ~data:v acc -> acc * factorial v))
   |> List.map ~f:(fun denom -> numer / denom)
-  |> List.sum (module Int) ~f:Fun.id
+  |> List.reduce_exn ~f:( + )
 ;;
 
 let solve () = compute 10_000_000 |> Int.to_string

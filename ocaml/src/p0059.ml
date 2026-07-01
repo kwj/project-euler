@@ -37,7 +37,7 @@ let compute str_lst =
       in
       let score = List.fold plain_text ~init:0 ~f:(fun acc ch -> acc + calc_score ch) in
       if score > max_score
-      then loop score (List.sum (module Int) ~f:Fun.id plain_text) xs
+      then loop score (List.reduce_exn plain_text ~f:( + )) xs
       else loop max_score ans xs
   in
   loop

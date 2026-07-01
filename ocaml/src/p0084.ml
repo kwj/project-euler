@@ -77,7 +77,7 @@ let go_steady matrix =
         work.(x).(y)
         <- List.range 0 (size - 1) ~stop:`inclusive
            |> List.map ~f:(fun i -> prev.(x).(i) *. prev.(i).(y))
-           |> List.sum (module Float) ~f:Fun.id
+           |> List.reduce_exn ~f:( +. )
       done
     done;
     if is_steady work.(0) prev.(0) then work else loop ()

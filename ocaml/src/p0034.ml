@@ -67,7 +67,7 @@ let compute () =
         else aux ans xss
     in
     aux 0 (Euler.Util.combination_with_repetition n [ 0; 1; 2; 3; 4; 5; 6; 7; 8; 9 ]))
-  |> List.sum (module Int) ~f:Fun.id
+  |> List.reduce_exn ~f:( + )
 ;;
 
 let solve () = compute () |> Int.to_string

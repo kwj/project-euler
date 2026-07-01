@@ -58,7 +58,7 @@ let compute size_of_clique =
         let rec aux ans = function
           | [] -> ans
           | p_grp :: xs ->
-            let tmp = p + List.sum (module Int) ~f:Fun.id p_grp in
+            let tmp = p + List.reduce_exn p_grp ~f:( + ) in
             if tmp < ans && is_clique p_grp tbl
             then aux (Int.min tmp ans) xs
             else aux ans xs

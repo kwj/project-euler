@@ -3,12 +3,9 @@
 open Core
 
 let compute num =
-  let sum_of_sqs =
-    List.range 1 num ~stop:`inclusive |> List.sum (module Int) ~f:(fun x -> x * x)
-  in
-  let sq_of_sum =
-    List.range 1 num ~stop:`inclusive |> List.sum (module Int) ~f:Fun.id |> fun x -> x * x
-  in
+  let pow2 = fun x -> x * x in
+  let sq_of_sum = List.(range 1 num ~stop:`inclusive |> reduce_exn ~f:( + ) |> pow2)
+  and sum_of_sqs = List.(range 1 num ~stop:`inclusive |> sum (module Int) ~f:pow2) in
   (* The square of sum is equal or larger than the sum of squares. *)
   sq_of_sum - sum_of_sqs
 ;;

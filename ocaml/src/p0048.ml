@@ -12,7 +12,7 @@ let compute upper =
   List.range 1 upper ~stop:`inclusive
   |> List.filter ~f:(fun n -> n mod 10 <> 0)
   |> List.map ~f:(fun n -> Euler.Math.powmod n n modulus)
-  |> List.sum (module Int) ~f:Fun.id
+  |> List.reduce_exn ~f:( + )
   |> Fun.flip ( % ) modulus
   |> Printf.sprintf "%010d"
 ;;

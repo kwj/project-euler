@@ -38,7 +38,7 @@ let make_right_truncatable_primes () =
 
 let compute () =
   List.filter ~f:(fun n -> check_left_truncatable n) (make_right_truncatable_primes ())
-  |> List.sum (module Int) ~f:Fun.id
+  |> List.reduce_exn ~f:( + )
 ;;
 
 let solve () = compute () |> Int.to_string

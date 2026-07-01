@@ -25,8 +25,8 @@ let compute upper n_digit =
       |> Euler.Util.z_digits
       |> List.rev
       |> Fun.flip List.take n_digit
-      |> List.sum (module Int) ~f:Fun.id)
-  |> List.sum (module Int) ~f:Fun.id
+      |> List.reduce_exn ~f:( + ))
+  |> List.reduce_exn ~f:( + )
 ;;
 
 let solve () = compute 100 100 |> Int.to_string

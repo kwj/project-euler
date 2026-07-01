@@ -27,14 +27,14 @@ let make_mobius_tbl limit =
 let f x =
   List.range 1 x ~stop:`inclusive
   |> List.map ~f:(fun j -> ((j - 1) / 2) - (j / 3))
-  |> List.sum (module Int) ~f:Fun.id
+  |> List.reduce_exn ~f:( + )
 ;;
 
 let g limit =
   let mu_tbl = make_mobius_tbl limit in
   List.range 1 limit ~stop:`inclusive
   |> List.map ~f:(fun k -> mu_tbl.(k) * f (limit / k))
-  |> List.sum (module Int) ~f:Fun.id
+  |> List.reduce_exn ~f:( + )
 ;;
 
 let compute limit = g limit
