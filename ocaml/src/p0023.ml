@@ -2,15 +2,8 @@
 
 open Core
 
-(* make sum of proper divisors table *)
-let make_spd_tbl limit =
-  let d_tbl = Euler.Math.get_sigma_tbl 1 (limit - 1) in
-  Array.iteri ~f:(fun idx _ -> d_tbl.(idx) <- d_tbl.(idx) - idx) d_tbl;
-  d_tbl
-;;
-
 let compute limit =
-  let spd_tbl = make_spd_tbl limit in
+  let spd_tbl = Euler.Math.aliquot_sum_tbl limit in
   let abndnt_flag = Array.init (Array.length spd_tbl) ~f:(fun n -> n < spd_tbl.(n)) in
   let abndnt_lst = ref [] in
   let rec loop lst acc =

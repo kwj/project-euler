@@ -36,4 +36,5 @@ module Prime : sig
 end
 
 (* Divisor function *)
-val get_sigma_tbl : int -> int -> int array
+val sigma_tbl : int -> int -> int array
+val aliquot_sum_tbl : int -> int array

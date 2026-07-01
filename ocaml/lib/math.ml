@@ -730,7 +730,7 @@ end
 
 (* Divisor function *)
 (* https://en.wikipedia.org/wiki/Divisor_function *)
-let get_sigma_tbl z upper =
+let sigma_tbl z upper =
   let p_lst = Prime.primes 1 upper in
   let tbl = Array.init (upper + 1) (fun _ -> 1) in
   let f1 p =
@@ -757,5 +757,11 @@ let get_sigma_tbl z upper =
   List.iter f1 p_lst;
   List.iter f2 p_lst;
   tbl.(0) <- 0;
+  tbl
+;;
+
+let aliquot_sum_tbl upper =
+  let tbl = sigma_tbl 1 upper in
+  Array.mapi_inplace (fun idx v -> v - idx) tbl;
   tbl
 ;;

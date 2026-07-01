@@ -2,12 +2,6 @@
 
 open Core
 
-let make_spd_tbl limit =
-  let d_tbl = Euler.Math.get_sigma_tbl 1 limit in
-  Array.iteri ~f:(fun idx _ -> d_tbl.(idx) <- d_tbl.(idx) - idx) d_tbl;
-  d_tbl
-;;
-
 let update_chain_tbl tbl lst v =
   let rec loop = function
     | [] -> ()
@@ -19,7 +13,7 @@ let update_chain_tbl tbl lst v =
 ;;
 
 let compute limit =
-  let spd_tbl = make_spd_tbl limit in
+  let spd_tbl = Euler.Math.aliquot_sum_tbl limit in
   let chain_tbl = Array.create ~len:(limit + 1) 0 in
   let chain = Queue.create () in
   let max_length = ref 0 in
