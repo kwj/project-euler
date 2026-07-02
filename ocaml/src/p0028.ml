@@ -23,10 +23,10 @@
 open Core
 
 let compute side_len =
-  (List.range 1 ((side_len - 1) / 2) ~stop:`inclusive
-   |> List.map ~f:(fun n -> (16 * n * n) + (4 * n) + 4)
-   |> List.reduce_exn ~f:( + ))
-  + 1
+  List.(
+    range 1 ((side_len - 1) / 2) ~stop:`inclusive
+    |> sum (module Int) ~f:(fun n -> (16 * n * n) + (4 * n) + 4)
+    |> succ)
 ;;
 
 let solve () = compute 1_001 |> Int.to_string

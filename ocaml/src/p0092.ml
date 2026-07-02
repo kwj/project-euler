@@ -29,17 +29,21 @@ let compute limit =
   let n_digits = Euler.Math.num_of_digits (limit - 1) in
   let numer = factorial n_digits in
 
-  List.range 0 9 ~stop:`inclusive
-  |> List.map ~f:(fun n -> n * n)
-  |> Euler.Util.combination_with_repetition n_digits
-  |> List.filter ~f:(fun lst -> is_group89 (List.reduce_exn lst ~f:( + )))
-  |> List.map ~f:(fun lst ->
-    Hashtbl.fold
-      (countmap (module Int) lst)
-      ~init:1
-      ~f:(fun ~key:_ ~data:v acc -> acc * factorial v))
-  |> List.map ~f:(fun denom -> numer / denom)
-  |> List.reduce_exn ~f:( + )
+  List.(
+    range 0 9 ~stop:`inclusive
+    |> map ~f:(fun n -> n * n)
+    |> Euler.Util.combination_with_repetition n_digits
+    |> filter_map ~f:(fun lst ->
+      if (Fun.compose is_group89 (reduce_exn ~f:( + ))) lst
+      then
+        Hashtbl.fold
+          (countmap (module Int) lst)
+          ~init:1
+          ~f:(fun ~key:_ ~data:v acc -> acc * factorial v)
+        |> Option.some
+      else None)
+    |> map ~f:(fun denom -> numer / denom)
+    |> reduce_exn ~f:( + ))
 ;;
 
 let solve () = compute 10_000_000 |> Int.to_string

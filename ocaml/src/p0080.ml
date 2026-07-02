@@ -16,17 +16,18 @@ open Core
 
 let compute upper n_digit =
   let const_pow_of_10 = Z.pow (Z.of_int 10) ((n_digit - 1) * 2) in
-  List.range 1 upper ~stop:`inclusive
-  |> List.map ~f:(fun n ->
-    if Int.pow (Euler.Math.isqrt n) 2 = n
-    then 0
-    else
-      Z.(sqrt (const_pow_of_10 * ~$n))
-      |> Euler.Util.z_digits
-      |> List.rev
-      |> Fun.flip List.take n_digit
-      |> List.reduce_exn ~f:( + ))
-  |> List.reduce_exn ~f:( + )
+  List.(
+    range 1 upper ~stop:`inclusive
+    |> map ~f:(fun n ->
+      if Euler.Math.is_square n
+      then 0
+      else
+        Z.(sqrt (const_pow_of_10 * ~$n))
+        |> Euler.Util.z_digits
+        |> rev
+        |> Fun.flip take n_digit
+        |> reduce_exn ~f:( + ))
+    |> reduce_exn ~f:( + ))
 ;;
 
 let solve () = compute 100 100 |> Int.to_string

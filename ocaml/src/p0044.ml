@@ -22,33 +22,34 @@ module M = Euler.Math
  * Note: 'n' and '3n-1' are relatively prime.
  *)
 let get_divisors n =
-  M.factorize n @ M.factorize ((3 * n) - 1)
-  |> M.pfactors_to_divisors
-  |> List.filter ~f:(fun i -> i < n && i mod 3 = n mod 3)
+  List.(
+    [ n; (3 * n) - 1 ]
+    >>= Euler.Math.divisors
+    |> filter ~f:(fun i -> i < n && i mod 3 = n mod 3))
 ;;
 
+let pent n = n * ((3 * n) - 1) / 2
+
 let check_conditions r1 r2 =
-  let pent n = n * ((3 * n) - 1) / 2 in
-  if r2 mod 3 <> 2
-  then false
-  else (
-    let tmp = (r2 + 1) / 3 in
-    if (r1 + tmp) mod 2 <> 0
-    then false
-    else (
-      let k = (r1 + tmp) / 2 in
-      let j = k - r1 in
-      if M.is_pentagonal (pent k + pent j) then true else false))
+  r2 mod 3 = 2
+  &&
+  let tmp = r1 + ((r2 + 1) / 3) in
+  tmp mod 2 = 0
+  &&
+  let k = tmp / 2 in
+  let j = k - r1 in
+  Euler.Math.is_pentagonal (pent k + pent j)
 ;;
 
 let compute () =
-  Sequence.unfold ~init:4 ~f:(fun d -> Some (d, d + 1))
-  |> Sequence.find_map ~f:(fun d ->
-    let lhs = d * ((3 * d) - 1) in
-    if get_divisors d |> List.exists ~f:(fun r1 -> check_conditions r1 (lhs / r1))
-    then Some (lhs / 2)
-    else None)
-  |> Option.value_exn
+  Sequence.(
+    unfold ~init:4 ~f:(fun d -> Some (d, d + 1))
+    |> find_map ~f:(fun d ->
+      let lhs = d * ((3 * d) - 1) in
+      if get_divisors d |> List.exists ~f:(fun r1 -> check_conditions r1 (lhs / r1))
+      then Some (lhs / 2)
+      else None)
+    |> Option.value_exn)
 ;;
 
 let solve () = compute () |> Int.to_string

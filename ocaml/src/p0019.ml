@@ -13,9 +13,11 @@ let count_sundays () =
 
   (* days in month (Jan 1901 - *Nov* 2000) *)
   let days =
-    List.drop_last_exn (repeat_lst (List.append (repeat_lst common_year 3) leap_year) 25)
+    List.(
+      append (repeat_lst common_year 3) leap_year
+      |> Fun.flip repeat_lst 25
+      |> drop_last_exn)
   in
-
   (*
      # day of week - [0: Sunday, 1: Monday, 2: Tuesday, ..., 6: Saturday]
      # Jan 1, 1900 was Monday and assume this day is the first day. (Monday is '1 mod 7 = 1')
@@ -24,9 +26,9 @@ let count_sundays () =
      #     Feb 1, 1901 was Firday since ((1 + 365) + 31) mod 7 = 5.
      #     ... and so on
   *)
-  List.folding_map ((1 + 365) :: days) ~init:0 ~f:(fun x y -> (x + y, x + y))
-  |> List.filter ~f:(fun n -> n mod 7 = 0)
-  |> List.length
+  List.(
+    folding_map ((1 + 365) :: days) ~init:0 ~f:(fun x y -> (x + y, x + y))
+    |> count ~f:(fun n -> n mod 7 = 0))
 ;;
 
 let compute () = count_sundays ()

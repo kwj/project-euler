@@ -9,12 +9,12 @@ open Core
 let is_twice_square n = n mod 2 = 0 && Int.pow (Euler.Math.isqrt (n / 2)) 2 = n / 2
 
 let compute () =
-  let rec aux odd_primes odd_number =
-    if Euler.Math.Prime.is_prime odd_number
-    then aux (odd_number :: odd_primes) (odd_number + 2)
-    else if List.exists odd_primes ~f:(fun p -> is_twice_square (odd_number - p))
-    then aux odd_primes (odd_number + 2)
-    else odd_number
+  let rec aux odd_primes n =
+    if Euler.Math.Prime.is_prime n
+    then aux (n :: odd_primes) (n + 2)
+    else if List.exists odd_primes ~f:(fun p -> is_twice_square (n - p))
+    then aux odd_primes (n + 2)
+    else n
   in
   aux [ 31; 29; 23; 19; 17; 13; 11; 7; 5; 3 ] 35
 ;;

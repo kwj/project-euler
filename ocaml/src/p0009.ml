@@ -27,7 +27,7 @@ let compute perim =
           ~stop:`inclusive
         |> map ~f:(fun n -> (m, n)))
       |> filter ~f:(fun (m, n) -> Euler.Math.gcd m n = 1 && half_perim mod (m + n) = 0)
-      (* The problem statement assumes that there is exactly only one Pythagorean triplet *)
+      (* The problem statement assumes that there is only one Pythagorean triplet *)
       |> hd_exn)
   in
   let k = half_perim / m / (m + n) in

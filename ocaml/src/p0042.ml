@@ -4,18 +4,14 @@ open Core
 
 let parse_data data =
   let line = List.hd_exn data in
-  String.sub line ~pos:1 ~len:(String.length line - 2)
-  |> Str.split (Str.regexp {|","|})
-  |> List.map ~f:(fun s ->
-    List.init (String.length s) ~f:(String.get s)
-    |> List.map ~f:(fun ch -> Char.to_int ch - 0x40) (* 0x41 = 'A', 0x42 = 'B', ... *)
-    |> List.reduce_exn ~f:( + ))
+  List.(
+    String.sub line ~pos:1 ~len:(String.length line - 2)
+    |> Str.(split (regexp {|","|}))
+    |> map ~f:String.to_list
+    |> map ~f:(sum (module Int) ~f:(fun ch -> Char.to_int ch - 0x40)))
 ;;
 
-let compute str_lst =
-  parse_data str_lst |> List.count ~f:(fun n -> Euler.Math.is_triangular n)
-;;
-
+let compute str_lst = parse_data str_lst |> List.count ~f:Euler.Math.is_triangular
 let solve fname = compute (Euler.Task.read_file fname) |> Int.to_string
 
 (* Test *)

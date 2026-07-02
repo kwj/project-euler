@@ -18,27 +18,27 @@ let check_left_truncatable n =
 ;;
 
 let make_right_truncatable_primes () =
-  let module S = Sequence in
+  let next_prime_numbers ns posts =
+    List.(
+      cartesian_product ns posts
+      |> filter_map ~f:(fun (x, y) ->
+        let p = (10 * x) + y in
+        if Euler.Math.Prime.is_prime p then Some p else None))
+  in
   let rec aux res = function
     | [] -> res
     | lst ->
-      let cands =
-        S.cartesian_product (S.of_list lst) (S.of_list [ 1; 3; 7; 9 ])
-        |> S.map ~f:(fun (x, y) -> (10 * x) + y)
-        |> S.filter ~f:(fun n -> Euler.Math.Prime.is_prime n)
-        |> S.to_list
-      in
+      let cands = next_prime_numbers lst [ 1; 3; 7; 9 ] in
       aux (res @ cands) cands
   in
-  S.cartesian_product (S.of_list (aux [ 2; 3; 5; 7 ] [ 2; 3; 5; 7 ])) (S.of_list [ 3; 7 ])
-  |> S.map ~f:(fun (x, y) -> (10 * x) + y)
-  |> S.filter ~f:(fun n -> Euler.Math.Prime.is_prime n)
-  |> S.to_list
+  next_prime_numbers (aux [ 2; 3; 5; 7 ] [ 2; 3; 5; 7 ]) [ 3; 7 ]
 ;;
 
 let compute () =
-  List.filter ~f:(fun n -> check_left_truncatable n) (make_right_truncatable_primes ())
-  |> List.reduce_exn ~f:( + )
+  List.(
+    make_right_truncatable_primes ()
+    |> filter ~f:check_left_truncatable
+    |> reduce_exn ~f:( + ))
 ;;
 
 let solve () = compute () |> Int.to_string

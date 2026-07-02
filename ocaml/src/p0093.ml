@@ -37,11 +37,12 @@ let count_consec_numbers lst =
 
 let compute () =
   let _, lst =
-    List.range 1 9 ~stop:`inclusive
-    |> Euler.Util.combination 4
-    |> List.map ~f:(fun lst -> (count_consec_numbers lst, lst))
-    |> List.max_elt ~compare:(fun (x, _) (y, _) -> Int.compare x y)
-    |> Option.value_exn
+    List.(
+      range 1 9 ~stop:`inclusive
+      |> Euler.Util.combination 4
+      |> map ~f:(fun lst -> (count_consec_numbers lst, lst))
+      |> max_elt ~compare:(fun (x, _) (y, _) -> Int.compare x y)
+      |> Option.value_exn)
   in
   List.rev lst |> Euler.Util.undigits
 ;;

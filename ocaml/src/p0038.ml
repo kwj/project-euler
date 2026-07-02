@@ -33,10 +33,10 @@ let compute () =
     let rem = x mod 10 in
     (rem = 2 || rem = 3 || rem = 6 || rem = 7) && Euler.Math.is_pandigital_nz (g x)
   in
-  List.range 9183 9499 ~stop:`inclusive
-  |> List.rev
-  |> List.find ~f:is_pandigital
-  |> Option.value_map ~default:918273645 ~f:g
+  List.(
+    range 9499 9183 ~stride:(-1) ~stop:`inclusive
+    |> find ~f:is_pandigital
+    |> Option.value_map ~default:918273645 ~f:g)
 ;;
 
 let solve () = compute () |> Int.to_string

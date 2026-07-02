@@ -3,41 +3,45 @@
 open Core
 
 let under_20 =
-  [ 0
-  ; String.length "one"
-  ; String.length "two"
-  ; String.length "three"
-  ; String.length "four"
-  ; String.length "five"
-  ; String.length "six"
-  ; String.length "seven"
-  ; String.length "eight"
-  ; String.length "nine"
-  ; String.length "ten"
-  ; String.length "eleven"
-  ; String.length "twelve"
-  ; String.length "thirteen"
-  ; String.length "fourteen"
-  ; String.length "fifteen"
-  ; String.length "sixteen"
-  ; String.length "seventeen"
-  ; String.length "eighteen"
-  ; String.length "nineteen"
-  ]
+  List.map
+    ~f:String.length
+    [ ""
+    ; "one"
+    ; "two"
+    ; "three"
+    ; "four"
+    ; "five"
+    ; "six"
+    ; "seven"
+    ; "eight"
+    ; "nine"
+    ; "ten"
+    ; "eleven"
+    ; "twelve"
+    ; "thirteen"
+    ; "fourteen"
+    ; "fifteen"
+    ; "sixteen"
+    ; "seventeen"
+    ; "eighteen"
+    ; "nineteen"
+    ]
 ;;
 
 let mults_10 =
-  [ 0
-  ; 0
-  ; String.length "twenty"
-  ; String.length "thirty"
-  ; String.length "forty"
-  ; String.length "fifty"
-  ; String.length "sixty"
-  ; String.length "seventy"
-  ; String.length "eighty"
-  ; String.length "ninety"
-  ]
+  List.map
+    ~f:String.length
+    [ ""
+    ; ""
+    ; "twenty"
+    ; "thirty"
+    ; "forty"
+    ; "fifty"
+    ; "sixty"
+    ; "seventy"
+    ; "eighty"
+    ; "ninety"
+    ]
 ;;
 
 let nchars_1000 = String.length "thousand"

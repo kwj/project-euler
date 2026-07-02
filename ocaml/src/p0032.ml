@@ -14,22 +14,23 @@ open Core
 
 let compute () =
   let module U = Euler.Util in
-  Sequence.append
-    (Sequence.cartesian_product
-       (Sequence.range 1_000 10_000 ~stop:`exclusive)
-       (Sequence.range 2 10 ~stop:`exclusive))
-    (Sequence.cartesian_product
-       (Sequence.range 100 1_000 ~stop:`exclusive)
-       (Sequence.range 10 100 ~stop:`exclusive))
-  |> Sequence.filter_map ~f:(fun (a, b) ->
-    if a * b < 10_000
-    then Some (a * b, U.undigits (U.digits (a * b) @ U.digits b @ U.digits a))
-    else None)
-  |> Sequence.filter_map ~f:(fun (prod, n) ->
-    if Euler.Math.is_pandigital_nz n then Some prod else None)
-  |> Sequence.to_list
-  |> List.dedup_and_sort ~compare:Int.compare
-  |> List.reduce_exn ~f:( + )
+  Sequence.(
+    append
+      (cartesian_product
+         (range 1_000 10_000 ~stop:`exclusive)
+         (range 2 10 ~stop:`exclusive))
+      (cartesian_product
+         (range 100 1_000 ~stop:`exclusive)
+         (range 10 100 ~stop:`exclusive))
+    |> filter_map ~f:(fun (a, b) ->
+      if a * b < 10_000
+      then Some (a * b, U.undigits (U.digits (a * b) @ U.digits b @ U.digits a))
+      else None)
+    |> filter_map ~f:(fun (prod, n) ->
+      if Euler.Math.is_pandigital_nz n then Some prod else None)
+    |> to_list
+    |> List.dedup_and_sort ~compare:Int.compare
+    |> List.reduce_exn ~f:( + ))
 ;;
 
 let solve () = compute () |> Int.to_string

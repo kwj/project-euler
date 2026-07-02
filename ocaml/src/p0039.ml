@@ -41,13 +41,12 @@ let compute limit =
             aux ((a, b, p - a - b) :: lst) xs)
           else aux lst xs
       in
-      let lst = aux [] (List.range 1 ((p - 1) / 3) ~stop:`inclusive) in
-      if List.length lst <> 0
-      then perim_loop ((List.length lst, p) :: res) ps
-      else perim_loop res ps
+      (match List.(aux [] (range 1 ((p - 1) / 3) ~stop:`inclusive) |> length) with
+       | 0 -> perim_loop res ps
+       | len -> perim_loop ((len, p) :: res) ps)
   in
   perim_loop [] (List.range 2 limit ~stop:`inclusive ~stride:2)
-  |> List.max_elt ~compare:(fun p1 p2 -> Int.compare (fst p1) (fst p2))
+  |> List.max_elt ~compare:(fun (x, _) (y, _) -> Int.compare x y)
   |> Option.value_exn
   |> snd
 ;;

@@ -57,15 +57,16 @@ open Core
 let compute perim =
   let counter = Array.create ~len:(perim + 1) 0 in
   for m = 2 to Euler.Math.isqrt (perim / 2) do
-    Sequence.range (1 + (m mod 2)) m ~stop:`inclusive ~stride:2
-    |> Sequence.iter ~f:(fun n ->
-      if Euler.Math.gcd m n = 1
-      then (
-        let p = 2 * m * (m + n) in
-        if p <= perim
-        then
-          Sequence.range p perim ~stop:`inclusive ~stride:p
-          |> Sequence.iter ~f:(fun i -> counter.(i) <- counter.(i) + 1)))
+    Sequence.(
+      range (1 + (m mod 2)) m ~stop:`inclusive ~stride:2
+      |> iter ~f:(fun n ->
+        if Euler.Math.gcd m n = 1
+        then (
+          let p = 2 * m * (m + n) in
+          if p <= perim
+          then
+            range p perim ~stop:`inclusive ~stride:p
+            |> iter ~f:(fun i -> counter.(i) <- counter.(i) + 1))))
   done;
   Array.count counter ~f:(fun i -> i = 1)
 ;;

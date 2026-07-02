@@ -11,8 +11,8 @@
 open Core
 
 let parse_data data =
-  List.map ~f:(fun l -> Str.split (Str.regexp ",") l) data
-  |> List.map ~f:(List.map ~f:Int.of_string)
+  data
+  |> List.(map ~f:(Fun.compose (map ~f:Int.of_string) Str.(split (regexp ","))))
   |> Array.of_list_map ~f:Array.of_list
 ;;
 

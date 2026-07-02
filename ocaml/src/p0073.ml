@@ -10,10 +10,8 @@ let make_mobius_tbl limit =
     if p_tbl.(i) = i
     then (
       let k = i * i in
-      List.range k limit ~stop:`inclusive ~stride:i
-      |> List.iter ~f:(fun j -> p_tbl.(j) <- i);
-      List.range k limit ~stop:`inclusive ~stride:k
-      |> List.iter ~f:(fun j -> p_tbl.(j) <- 0))
+      List.(range k limit ~stop:`inclusive ~stride:i |> iter ~f:(fun j -> p_tbl.(j) <- i));
+      List.(range k limit ~stop:`inclusive ~stride:k |> iter ~f:(fun j -> p_tbl.(j) <- 0)))
   done;
 
   mu_tbl.(1) <- 1;
@@ -25,16 +23,18 @@ let make_mobius_tbl limit =
 ;;
 
 let f x =
-  List.range 1 x ~stop:`inclusive
-  |> List.map ~f:(fun j -> ((j - 1) / 2) - (j / 3))
-  |> List.reduce_exn ~f:( + )
+  List.(
+    range 1 x ~stop:`inclusive
+    |> map ~f:(fun j -> ((j - 1) / 2) - (j / 3))
+    |> reduce_exn ~f:( + ))
 ;;
 
 let g limit =
   let mu_tbl = make_mobius_tbl limit in
-  List.range 1 limit ~stop:`inclusive
-  |> List.map ~f:(fun k -> mu_tbl.(k) * f (limit / k))
-  |> List.reduce_exn ~f:( + )
+  List.(
+    range 1 limit ~stop:`inclusive
+    |> map ~f:(fun k -> mu_tbl.(k) * f (limit / k))
+    |> reduce_exn ~f:( + ))
 ;;
 
 let compute limit = g limit

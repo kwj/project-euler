@@ -54,17 +54,18 @@ open Core
 
 let parse_data data =
   let trim s =
-    Str.global_replace (Str.regexp "[^0-9.]") "" s
-    |> Str.global_replace (Str.regexp "\\.") "0"
+    Str.(
+      s
+      |> global_replace (Str.regexp "[^0-9.]") ""
+      |> global_replace (Str.regexp "\\.") "0")
   in
   let rec loop lines acc result =
     match lines with
-    | [] ->
-      List.rev (List.map ~f:trim (List.fold ~f:( ^ ) ~init:"" (List.rev acc) :: result))
+    | [] -> List.(rev (map ~f:trim (fold ~f:( ^ ) ~init:"" (rev acc) :: result)))
     | x :: xs ->
-      if Str.string_match (Str.regexp "^[0-9.]") x 0
+      if Str.(string_match (regexp "^[0-9.]") x 0)
       then loop xs (x :: acc) result
-      else if Str.string_match (Str.regexp "^-") x 0 || List.length acc = 0
+      else if Str.(string_match (regexp "^-") x 0) || List.length acc = 0
       then loop xs acc result
       else loop xs [] (List.fold ~f:( ^ ) ~init:"" (List.rev acc) :: result)
   in
@@ -94,9 +95,7 @@ let make_dlx q =
         add_row' i
       done
   in
-  List.iteri
-    ~f:(fun i n -> add_row i n)
-    (List.map ~f:Int.of_string (Str.split (Str.regexp "") q));
+  List.iteri ~f:add_row (List.map ~f:Int.of_string Str.(split (regexp "") q));
   d
 ;;
 

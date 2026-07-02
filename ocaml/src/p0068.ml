@@ -97,9 +97,7 @@ let compute n_gon =
   (* Only 16-digit strings are covered in this problem (when n_gon == 5). *)
   if n_gon = 5 then result := List.filter ~f:(fun s -> String.length s = 16) !result;
 
-  List.map ~f:(fun s -> Int.of_string s) !result
-  |> List.max_elt ~compare:Int.compare
-  |> Option.value_exn
+  List.(map ~f:Int.of_string !result |> max_elt ~compare:Int.compare |> Option.value_exn)
 ;;
 
 let solve () = compute 5 |> Int.to_string

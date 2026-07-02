@@ -52,22 +52,19 @@ open Core
 
 let compute () =
   let fact_tbl = [| 1; 1; 2; 6; 24; 120; 720; 5040; 40320; 362880 |] in
-  List.range 2 7 ~stop:`inclusive
-  |> List.map ~f:(fun n ->
-    let rec aux ans = function
-      | [] -> ans
-      | xs :: xss ->
-        let num = List.fold ~init:0 ~f:(fun acc n -> acc + fact_tbl.(n)) xs in
-        if
-          List.equal
-            Int.equal
-            (Euler.Util.digits num |> List.sort ~compare:Int.compare)
-            xs
-        then aux (ans + num) xss
-        else aux ans xss
-    in
-    aux 0 (Euler.Util.combination_with_repetition n [ 0; 1; 2; 3; 4; 5; 6; 7; 8; 9 ]))
-  |> List.reduce_exn ~f:( + )
+  List.(
+    range 2 7 ~stop:`inclusive
+    |> map ~f:(fun n ->
+      let rec aux ans = function
+        | [] -> ans
+        | xs :: xss ->
+          let num = sum (module Int) ~f:(fun n -> fact_tbl.(n)) xs in
+          if equal Int.equal (Euler.Util.digits num |> sort ~compare:Int.compare) xs
+          then aux (ans + num) xss
+          else aux ans xss
+      in
+      aux 0 (Euler.Util.combination_with_repetition n [ 0; 1; 2; 3; 4; 5; 6; 7; 8; 9 ]))
+    |> reduce_exn ~f:( + ))
 ;;
 
 let solve () = compute () |> Int.to_string

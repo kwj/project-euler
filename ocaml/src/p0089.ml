@@ -27,20 +27,21 @@
 
 open Core
 
-let replace s =
-  Str.global_replace (* step 1: IX/XC/CM *)
-    (Str.regexp "IIIIIIIII\\|XXXXXXXXX\\|CCCCCCCCC")
-    "##"
+let replace_roman_numerals s =
+  Str.(
     s
-  |> Str.global_replace (Str.regexp "VIIII\\|LXXXX\\|DCCCC") "##" (* step 2: IX/XC/CM *)
-  |> Str.global_replace (Str.regexp "IIIII\\|XXXXX\\|CCCCC") "#" (* step 3: V/L/D *)
-  |> Str.global_replace (Str.regexp "IIII\\|XXXX\\|CCCC") "##" (* step 4: IV/XL/CD *)
+    |> global_replace
+         (regexp "IIIIIIIII\\|XXXXXXXXX\\|CCCCCCCCC")
+         "##" (* step 1: IX/XC/CM *)
+    |> global_replace (regexp "VIIII\\|LXXXX\\|DCCCC") "##" (* step 2: IX/XC/CM *)
+    |> global_replace (regexp "IIIII\\|XXXXX\\|CCCCC") "#" (* step 3: V/L/D *)
+    |> global_replace (regexp "IIII\\|XXXX\\|CCCC") "##" (* step 4: IV/XL/CD *))
 ;;
 
 let compute str_lst =
   let rec loop acc = function
     | [] -> acc
-    | x :: xs -> loop (acc + (String.length x - String.length (replace x))) xs
+    | s :: ss -> loop (acc + String.(length s - length (replace_roman_numerals s))) ss
   in
   loop 0 str_lst
 ;;

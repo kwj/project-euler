@@ -12,7 +12,6 @@
 open Core
 
 let compute () =
-  (* We know that 2413 is a 4-digit pandigital and is also prime. So, the value must exist. *)
   List.find_map [ 7; 4 ] ~f:(fun k ->
     let rec aux = function
       | [] -> None
@@ -23,6 +22,7 @@ let compute () =
         else aux xss
     in
     aux (Euler.Util.permutation k (List.range k 1 ~stop:`inclusive ~stride:(-1))))
+  (* We know that 2413 is a 4-digit pandigital and is also prime. So, the answer must exist. *)
   |> Option.value_exn
 ;;
 

@@ -45,27 +45,22 @@ let get_max_ndigits exp =
 ;;
 
 let compute exp =
-  let pow_tbl =
-    List.range 0 9 ~stop:`inclusive
-    |> List.map ~f:(fun n -> Int.pow n exp)
-    |> List.to_array
-  in
-  List.range 2 (get_max_ndigits exp) ~stop:`inclusive
-  |> List.map ~f:(fun n ->
-    let rec aux ans = function
-      | [] -> ans
-      | xs :: xss ->
-        let tmp = List.map ~f:(fun n -> pow_tbl.(n)) xs |> List.reduce_exn ~f:( + ) in
-        if
-          List.equal
-            Int.equal
-            (Euler.Util.digits tmp |> List.sort ~compare:Int.compare)
-            xs
-        then aux (ans + tmp) xss
-        else aux ans xss
+  List.(
+    let pow_tbl =
+      range 0 9 ~stop:`inclusive |> map ~f:(Fun.flip Int.pow exp) |> to_array
     in
-    aux 0 (Euler.Util.combination_with_repetition n [ 0; 1; 2; 3; 4; 5; 6; 7; 8; 9 ]))
-  |> List.reduce_exn ~f:( + )
+    range 2 (get_max_ndigits exp) ~stop:`inclusive
+    |> map ~f:(fun n ->
+      let rec aux ans = function
+        | [] -> ans
+        | xs :: xss ->
+          let tmp = sum (module Int) xs ~f:(Array.get pow_tbl) in
+          if equal Int.equal (Euler.Util.digits tmp |> sort ~compare:Int.compare) xs
+          then aux (ans + tmp) xss
+          else aux ans xss
+      in
+      aux 0 (Euler.Util.combination_with_repetition n [ 0; 1; 2; 3; 4; 5; 6; 7; 8; 9 ]))
+    |> reduce_exn ~f:( + ))
 ;;
 
 let solve () = compute 5 |> Int.to_string

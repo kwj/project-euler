@@ -71,23 +71,30 @@
 open Core
 
 let compute () =
-  let check_divisibility s =
-    let divs = [| 17; 13; 11; 7; 5; 3; 2 |] in
-    Int.of_string (String.sub s ~pos:0 ~len:3) mod divs.(String.length s - 3) = 0
+  let check_divisibility ns =
+    match List.length ns with
+    | 10 -> List.hd_exn ns <> 0
+    | len when len < 3 -> true
+    | len ->
+      let divs = [| 17; 13; 11; 7; 5; 3; 2 |] in
+      let n = List.(take ns 3 |> rev |> Euler.Util.undigits) in
+      n mod divs.(len - 3) = 0
   in
-  let make_next_str pand_str unused_str_lst =
-    List.map
-      ~f:(fun elm ->
-        (elm ^ pand_str, List.filter ~f:(fun s -> String.(s <> elm)) unused_str_lst))
-      unused_str_lst
+  let make_next_tpls (lst, unused_nums) =
+    unused_nums
+    |> List.filter_map ~f:(fun x ->
+      let next_lst = x :: lst in
+      if check_divisibility next_lst
+      then Some (next_lst, List.filter ~f:(( <> ) x) unused_nums)
+      else None)
   in
-  let rec aux = function
-    | x, [] -> if Char.compare x.[0] '0' = 0 then 0 else Int.of_string x
-    | x, lst when String.length x < 3 || check_divisibility x ->
-      List.map ~f:aux (make_next_str x lst) |> List.reduce_exn ~f:( + )
-    | _, _ -> 0 (* Divisibility check failed, so no need to look further. *)
+  let rec find_numbers cnt tpl_lst =
+    if cnt = 0
+    then List.(tpl_lst |> map ~f:(Fun.compose rev fst) |> map ~f:Euler.Util.undigits)
+    else List.concat_map ~f:make_next_tpls tpl_lst |> find_numbers (pred cnt)
   in
-  aux ("", [ "0"; "1"; "2"; "3"; "4"; "5"; "6"; "7"; "8"; "9" ])
+  let digits = [ 0; 1; 2; 3; 4; 5; 6; 7; 8; 9 ] in
+  List.(find_numbers (length digits) [ ([], digits) ] |> reduce_exn ~f:( + ))
 ;;
 
 let solve () = compute () |> Int.to_string

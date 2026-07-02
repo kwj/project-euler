@@ -44,10 +44,10 @@ let compute thr =
   let p_lst = Euler.Math.Prime.primes 1 (Euler.Math.isqrt thr) in
   let x2_lst = List.map p_lst ~f:(fun n -> n * n) in
   let y3_lst =
-    List.map p_lst ~f:(fun n -> n * n * n) |> List.take_while ~f:(fun x -> x < thr)
+    List.(map p_lst ~f:(fun n -> n * n * n) |> take_while ~f:(fun x -> x < thr))
   in
   let z4_lst =
-    List.map x2_lst ~f:(fun n -> n * n) |> List.take_while ~f:(fun x -> x < thr)
+    List.(map x2_lst ~f:(fun n -> n * n) |> take_while ~f:(fun x -> x < thr))
   in
   List.iter z4_lst ~f:(fun z4 ->
     List.iter y3_lst ~f:(fun y3 ->

@@ -30,7 +30,7 @@
 
 open Core
 
-let d nth =
+let d n_th =
   let rec loop pos n_digits =
     let block_size = n_digits * 9 * Int.pow 10 (n_digits - 1) in
     if pos > block_size
@@ -40,10 +40,13 @@ let d nth =
       let num = Int.pow 10 (n_digits - 1) + q in
       num / Int.pow 10 (n_digits - r - 1) mod 10)
   in
-  loop nth 1
+  loop n_th 1
 ;;
 
-let compute () = d 1 * d 10 * d 100 * d 1_000 * d 10_000 * d 100_000 * d 1_000_000
+let compute () =
+  List.(map ~f:d [ 1; 10; 100; 1_000; 10_000; 100_000; 1_000_000 ] |> reduce_exn ~f:( * ))
+;;
+
 let solve () = compute () |> Int.to_string
 
 (* Test *)

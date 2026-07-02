@@ -64,8 +64,8 @@ let is_family p f_size =
       (match
          Euler.Util.findall (fun x -> x = n) p_digits
          |> Euler.Util.powerset
-         |> List.filter ~f:(fun l ->
-           List.length l mod 3 = 0 && List.length l <> 0 && List.hd_exn l <> 0)
+         |> List.(
+              filter ~f:(fun l -> length l mod 3 = 0 && length l <> 0 && hd_exn l <> 0))
          |> loop_masks
        with
        | None -> loop_figures ns
@@ -75,11 +75,12 @@ let is_family p f_size =
 ;;
 
 let compute f_size =
-  Sequence.unfold ~init:3 ~f:(fun n -> Some (n, n + 1))
-  |> Sequence.find_map ~f:(fun exp ->
-    Euler.Math.Prime.primes (Int.pow 10 exp) (Int.pow 10 (exp + 1))
-    |> List.find ~f:(fun p -> is_family p f_size))
-  |> Option.value_exn
+  Sequence.(
+    unfold ~init:3 ~f:(fun n -> Some (n, n + 1))
+    |> find_map ~f:(fun exp ->
+      Euler.Math.Prime.primes (Int.pow 10 exp) (Int.pow 10 (exp + 1))
+      |> List.find ~f:(Fun.flip is_family f_size))
+    |> Option.value_exn)
 ;;
 
 let solve () = compute 8 |> Int.to_string

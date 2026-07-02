@@ -75,9 +75,10 @@ let go_steady matrix =
     for x = 0 to size - 1 do
       for y = 0 to size - 1 do
         work.(x).(y)
-        <- List.range 0 (size - 1) ~stop:`inclusive
-           |> List.map ~f:(fun i -> prev.(x).(i) *. prev.(i).(y))
-           |> List.reduce_exn ~f:( +. )
+        <- List.(
+             range 0 (size - 1) ~stop:`inclusive
+             |> map ~f:(fun i -> prev.(x).(i) *. prev.(i).(y))
+             |> reduce_exn ~f:( +. ))
       done
     done;
     if is_steady work.(0) prev.(0) then work else loop ()
@@ -137,32 +138,23 @@ let compute nfaces nsquares =
 
   (* Chance Card *)
   (* note: It must be processed before Communy Chest because the CH3 -> CC3 path is exist. *)
-  List.iter [ 0; 40; 80 ] ~f:(fun offset ->
-    List.iter [ sq_CH1; sq_CH2; sq_CH3 ] ~f:(fun chance ->
-      Array.to_list stoch_matrix.(chance + offset)
-      |> List.iteri ~f:(fun current prblty ->
-        let next_r =
-          if chance = sq_CH1 then sq_R2 else if chance = sq_CH2 then sq_R3 else sq_R1
-        in
-        let next_u = if chance = sq_CH2 then sq_U2 else sq_U1 in
-        List.iter
-          [ sq_GO
-          ; sq_C1
-          ; sq_E3
-          ; sq_H2
-          ; sq_R1
-          ; next_r
-          ; next_r
-          ; next_u
-          ; (chance - 3) mod 40
-          ]
-          ~f:(fun next_sq ->
-            stoch_matrix.(next_sq + offset).(current)
-            <- stoch_matrix.(next_sq + offset).(current) +. (prblty /. 16.));
-        stoch_matrix.(sq_JAIL).(current)
-        <- stoch_matrix.(sq_JAIL).(current) +. (prblty /. 16.);
-        stoch_matrix.(chance).(current)
-        <- stoch_matrix.(chance).(current) -. (prblty /. 16. *. 10.))));
+  List.(
+    iter [ 0; 40; 80 ] ~f:(fun offset ->
+      iter [ sq_CH1; sq_CH2; sq_CH3 ] ~f:(fun chance ->
+        Array.to_list stoch_matrix.(chance + offset)
+        |> iteri ~f:(fun current prblty ->
+          let next_r =
+            if chance = sq_CH1 then sq_R2 else if chance = sq_CH2 then sq_R3 else sq_R1
+          and next_u = if chance = sq_CH2 then sq_U2 else sq_U1 in
+          iter
+            [ sq_GO; sq_C1; sq_E3; sq_H2; sq_R1; next_r; next_r; next_u; (chance - 3) mod 40 ]
+            ~f:(fun next_sq ->
+              stoch_matrix.(next_sq + offset).(current)
+              <- stoch_matrix.(next_sq + offset).(current) +. (prblty /. 16.)) [@ocamlformat "disable"];
+          stoch_matrix.(sq_JAIL).(current)
+          <- stoch_matrix.(sq_JAIL).(current) +. (prblty /. 16.);
+          stoch_matrix.(chance).(current)
+          <- stoch_matrix.(chance).(current) -. (prblty /. 16. *. 10.)))));
 
   (* Community Chest *)
   List.iter [ 0; 40; 80 ] ~f:(fun offset ->
@@ -177,13 +169,14 @@ let compute nfaces nsquares =
       done));
 
   let steady_state = go_steady stoch_matrix in
-  List.range 0 39 ~stop:`inclusive
-  |> List.map ~f:(fun i ->
-    ( Printf.sprintf "%02d" i
-    , steady_state.(i).(0) +. steady_state.(i + 40).(0) +. steady_state.(i + 80).(0) ))
-  |> List.sort ~compare:(fun (_, f1) (_, f2) -> Float.compare f2 f1)
-  |> Fun.flip List.take nsquares
-  |> Euler.Util.list_to_str (fun (sq, _) -> sq) ""
+  List.(
+    range 0 39 ~stop:`inclusive
+    |> map ~f:(fun i ->
+      ( Printf.sprintf "%02d" i
+      , steady_state.(i).(0) +. steady_state.(i + 40).(0) +. steady_state.(i + 80).(0) ))
+    |> sort ~compare:(fun (_, f1) (_, f2) -> Float.compare f2 f1)
+    |> Fun.flip take nsquares
+    |> Euler.Util.list_to_str fst "")
 ;;
 
 let solve () = compute 4 3

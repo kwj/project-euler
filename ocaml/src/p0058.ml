@@ -31,17 +31,16 @@
 open Core
 
 let compute () =
-  let is_prime_wrapper num = if Euler.Math.Prime.is_prime num then 1 else 0 in
   let rec aux n nprimes acc =
-    let nprimes =
+    let next_nprimes =
       nprimes
-      + is_prime_wrapper (acc + (2 * n))
-      + is_prime_wrapper (acc + (4 * n))
-      + is_prime_wrapper (acc + (6 * n))
+      + List.count
+          ~f:Euler.Math.Prime.is_prime
+          [ acc + (2 * n); acc + (4 * n); acc + (6 * n) ]
     in
-    if Float.(of_int nprimes / of_int Int.((4 * n) + 1) < 0.1)
+    if Float.(of_int next_nprimes / of_int Int.((4 * n) + 1) < 0.1)
     then (2 * n) + 1
-    else aux (succ n) nprimes (acc + (8 * n))
+    else aux (succ n) next_nprimes (acc + (8 * n))
   in
   aux 1 0 1
 ;;

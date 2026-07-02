@@ -27,9 +27,11 @@ let find_nodes lst r idx =
 ;;
 
 let compute idx =
-  find_nodes [ 0; 1; 2; 3; 4; 5; 6; 7; 8; 9 ] 10 (pred idx)
-  |> List.rev
-  |> List.fold ~init:"" ~f:(fun acc n -> acc ^ string_of_int n)
+  List.(
+    let lst = range 0 10 ~stop:`exclusive in
+    find_nodes lst (length lst) (pred idx)
+    |> rev_map ~f:string_of_int
+    |> reduce_exn ~f:( ^ ))
 ;;
 
 let solve () = compute 1_000_000

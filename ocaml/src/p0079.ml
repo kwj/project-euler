@@ -17,30 +17,29 @@ open Core
 exception Cycle of int list
 
 let parse_data data =
-  List.map ~f:(Str.split (Str.regexp "")) data
-  |> List.map ~f:(fun l -> List.map l ~f:Int.of_string)
-  |> List.map ~f:(fun l ->
-    [ (List.nth_exn l 0, List.nth_exn l 1)
-    ; (List.nth_exn l 1, List.nth_exn l 2)
-    ; (List.nth_exn l 0, List.nth_exn l 2)
-    ])
-  |> List.concat
-  |> Euler.Util.list_assoc_group
-  |> List.map ~f:(fun (v, vs) -> (v, List.dedup_and_sort vs ~compare))
+  List.(
+    map ~f:Str.(split (regexp "")) data
+    |> map ~f:(map ~f:Int.of_string)
+    |> concat_map ~f:(fun l ->
+      [ (nth_exn l 0, nth_exn l 1)
+      ; (nth_exn l 1, nth_exn l 2)
+      ; (nth_exn l 0, nth_exn l 2)
+      ])
+    |> Euler.Util.list_assoc_group
+    |> map ~f:(Tuple2.map_snd ~f:(dedup_and_sort ~compare:Int.compare)))
 ;;
 
 let dfs graph perm v =
   let rec visit temp visited node =
-    if List.mem temp node ~equal
-    then raise (Cycle (List.rev (node :: temp)))
-    else if List.mem visited node ~equal
-    then visited
-    else (
-      match List.Assoc.find graph node ~equal with
-      | Some dests ->
-        node
-        :: List.fold dests ~init:visited ~f:(fun perm v -> visit (node :: temp) perm v)
-      | None -> node :: [])
+    List.(
+      if mem temp node ~equal:Int.equal
+      then raise (Cycle (rev (node :: temp)))
+      else if mem visited node ~equal:Int.equal
+      then visited
+      else (
+        match Assoc.find graph node ~equal:Int.equal with
+        | Some dests -> node :: fold dests ~init:visited ~f:(visit (node :: temp))
+        | None -> node :: []))
   in
   visit [] perm v
 ;;

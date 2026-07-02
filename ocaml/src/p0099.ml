@@ -3,7 +3,8 @@
 open Core
 
 let parse_data data =
-  List.map data ~f:(fun l -> Str.split (Str.regexp ",") l |> List.map ~f:Float.of_string)
+  data
+  |> List.map ~f:(Fun.compose (List.map ~f:Float.of_string) Str.(split (Str.regexp ",")))
   |> List.map ~f:(fun lst -> (List.nth_exn lst 0, List.nth_exn lst 1))
 ;;
 

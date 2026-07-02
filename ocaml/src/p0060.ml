@@ -16,7 +16,7 @@ let is_pair x y =
     let rec aux n = if b > n then aux (n * 10) else n in
     (a * aux 10) + b
   in
-  Euler.Math.Prime.is_prime (concat x y) && Euler.Math.Prime.is_prime (concat y x)
+  Euler.Math.Prime.(is_prime (concat x y) && is_prime (concat y x))
 ;;
 
 let find_nbrs p p_lst limit = List.filter p_lst ~f:(fun n -> n + p < limit && is_pair n p)

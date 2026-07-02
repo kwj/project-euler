@@ -16,20 +16,20 @@ let squares =
 ;;
 
 let check_pair two_dice pair =
-  List.mem (List.nth_exn two_dice 0) (fst pair) ~equal
-  && List.mem (List.nth_exn two_dice 1) (snd pair) ~equal
+  List.(
+    mem (nth_exn two_dice 0) (fst pair) ~equal:Int.equal
+    && mem (nth_exn two_dice 1) (snd pair) ~equal:Int.equal)
 ;;
 
 let check_square two_dice =
   assert (List.length two_dice = 2);
-  List.for_all squares ~f:(fun pair_lst ->
-    List.exists pair_lst ~f:(fun pair -> check_pair two_dice pair))
+  List.(for_all squares ~f:(exists ~f:(check_pair two_dice)))
 ;;
 
 let compute () =
   Euler.Util.combination 6 [ 0; 1; 2; 3; 4; 5; 6; 7; 8; 6 ]
   |> Euler.Util.combination_with_repetition 2
-  |> List.count ~f:(fun two_dice -> check_square two_dice)
+  |> List.count ~f:check_square
 ;;
 
 let solve () = compute () |> Int.to_string

@@ -30,12 +30,13 @@
 
 open Core
 
-let compute nth =
+let compute n_th =
   let _, y =
-    Sequence.unfold ~init:(1, 1) ~f:(fun (a, b) ->
-      Some ((a, b), ((2 * a) + (3 * b), a + (2 * b))))
-    |> Sequence.filter ~f:(fun (a, b) -> a mod 6 = 5 && b mod 4 = 3)
-    |> Fun.flip Sequence.nth_exn (nth - 1)
+    Sequence.(
+      unfold ~init:(1, 1) ~f:(fun (a, b) ->
+        Some ((a, b), ((2 * a) + (3 * b), a + (2 * b))))
+      |> filter ~f:(fun (a, b) -> a mod 6 = 5 && b mod 4 = 3)
+      |> Fun.flip nth_exn (n_th - 1))
   in
   let j = (y + 1) / 4 in
   j * ((2 * j) - 1)

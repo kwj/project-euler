@@ -8,13 +8,14 @@
 open Core
 
 let compute upper =
-  let modulus = Int.pow 10 10 in
-  List.range 1 upper ~stop:`inclusive
-  |> List.filter ~f:(fun n -> n mod 10 <> 0)
-  |> List.map ~f:(fun n -> Euler.Math.powmod n n modulus)
-  |> List.reduce_exn ~f:( + )
-  |> Fun.flip ( % ) modulus
-  |> Printf.sprintf "%010d"
+  let m = Int.pow 10 10 in
+  List.(
+    range 1 upper ~stop:`inclusive
+    |> filter_map ~f:(fun n ->
+      if n mod 10 <> 0 then Some (Euler.Math.powmod n n m) else None)
+    |> reduce_exn ~f:( + )
+    |> Fun.flip ( % ) m
+    |> Printf.sprintf "%010d")
 ;;
 
 let solve () = compute 1_000

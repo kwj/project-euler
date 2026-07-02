@@ -23,11 +23,10 @@ open Core
 
 let compute limit =
   let z_ndigits n = Z.to_string n |> String.length in
-  Sequence.unfold
-    ~init:Z.(~$3, ~$2)
-    ~f:(fun (n, d) -> Some ((n, d), Z.((d * ~$2) + n, d + n)))
-  |> Fun.flip Sequence.take limit
-  |> Sequence.count ~f:(fun (n, d) -> z_ndigits n > z_ndigits d)
+  Sequence.(
+    unfold ~init:Z.(~$3, ~$2) ~f:(fun (n, d) -> Some ((n, d), Z.((d * ~$2) + n, d + n)))
+    |> Fun.flip take limit
+    |> count ~f:(fun (n, d) -> z_ndigits n > z_ndigits d))
 ;;
 
 let solve () = compute 1_000 |> Int.to_string

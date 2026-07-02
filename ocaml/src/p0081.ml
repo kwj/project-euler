@@ -8,22 +8,23 @@
 open Core
 
 let parse_data data =
-  List.map ~f:(fun l -> Str.split (Str.regexp ",") l |> List.map ~f:Int.of_string) data
+  data |> List.(map ~f:(Fun.compose (map ~f:Int.of_string) Str.(split (regexp ","))))
 ;;
 
 let compute data =
   let aux_rightward prev crnt =
-    List.folding_map (List.zip_exn prev crnt) ~init:Int.max_value ~f:(fun acc (p, c) ->
-      let x = c + Int.min acc p in
-      (x, x))
+    List.(
+      folding_map (zip_exn prev crnt) ~init:Int.max_value ~f:(fun acc (p, c) ->
+        let x = c + Int.min acc p in
+        (x, x)))
   in
   let matrix = parse_data data in
-  List.fold
-    (List.tl_exn matrix)
-    ~init:
-      (List.folding_map (List.hd_exn matrix) ~init:0 ~f:(fun acc x -> (acc + x, acc + x)))
-    ~f:aux_rightward
-  |> List.last_exn
+  List.(
+    fold
+      (tl_exn matrix)
+      ~init:(folding_map (hd_exn matrix) ~init:0 ~f:(fun acc x -> (acc + x, acc + x)))
+      ~f:aux_rightward
+    |> last_exn)
 ;;
 
 let solve fname = compute (Euler.Task.read_file fname) |> Int.to_string

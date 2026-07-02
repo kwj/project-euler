@@ -7,9 +7,8 @@ let compute limit =
   List.(
     range 2 limit ~stop:`exclusive
     |> filter_map ~f:(fun x ->
-      if x > spd_tbl.(x) && spd_tbl.(spd_tbl.(x)) = x
-      then Some (x + spd_tbl.(x))
-      else None)
+      let y = spd_tbl.(x) in
+      if x > y && spd_tbl.(y) = x then Some (x + y) else None)
     |> reduce_exn ~f:( + ))
 ;;
 

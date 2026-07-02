@@ -91,24 +91,32 @@ let compute limit =
   (* initial data for pruning: phi(87109) = 79180, 87109 = 11 * 7919 *)
   PQ.add pq (87109. /. 79180., [ (11, 1); (7919, 1) ]);
 
-  let rec aux pf_gen =
-    match pf_gen () with
-    | None -> true (* go to next smaller prime *)
+  let rec update_pqueue_by_pf_gen gen =
+    match gen () with
+    | None -> () (* go to next smaller prime *)
     | Some pf_lst ->
       if Float.(fst (PQ.get_min_elt pq) < get_phi_ratio (List.take pf_lst 2))
-      then true (* pruning: skip to next smaller prime *)
+      then () (* pruning: skip to next smaller prime *)
       else (
         if Euler.Math.is_permutation (prod pf_lst) (phi pf_lst)
         then PQ.add pq (get_phi_ratio pf_lst, pf_lst);
-        aux pf_gen)
+        update_pqueue_by_pf_gen gen)
   in
-  ignore
-    (Prime.primes 11 (Euler.Math.isqrt limit)
-     |> List.rev_map ~f:(fun p -> (p, Prime.prev_prime ((limit / p) + 1)))
-     |> List.for_all ~f:(fun tpl ->
-       if Float.(get_phi_ratio [ (fst tpl, 1) ] > fst (PQ.get_min_elt pq))
-       then false (* pruning: no further searching is needed. *)
-       else aux (pf_generator tpl limit)));
+
+  let rec search_min_ratio = function
+    | [] -> () (* all prime numbers have been checked. *)
+    | ((p, _) as tpl) :: tpls ->
+      if Float.(get_phi_ratio [ (p, 1) ] > fst (PQ.get_min_elt pq))
+      then () (* pruning: no further searching is needed. *)
+      else (
+        update_pqueue_by_pf_gen (pf_generator tpl limit);
+        search_min_ratio tpls)
+  in
+
+  Prime.primes 11 (Euler.Math.isqrt limit)
+  |> List.rev_map ~f:(fun p -> (p, Prime.prev_prime ((limit / p) + 1)))
+  |> search_min_ratio;
+
   PQ.get_min_elt pq |> snd |> prod
 ;;
 

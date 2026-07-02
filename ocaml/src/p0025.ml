@@ -10,10 +10,7 @@ let fibs a b =
 
 let compute n_digits =
   let thr = Z.pow (Z.of_int 10) (n_digits - 1) in
-  fibs 1 1
-  |> Sequence.drop_while ~f:(fun tpl -> Z.lt (snd tpl) thr)
-  |> Sequence.hd_exn
-  |> fst
+  fibs 1 1 |> Sequence.find_exn ~f:(fun (_, v) -> Z.geq v thr) |> fst
 ;;
 
 let solve () = compute 1_000 |> Int.to_string

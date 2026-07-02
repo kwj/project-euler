@@ -43,10 +43,9 @@ let get_cont_fraction n =
 ;;
 
 let compute limit =
-  List.range 1 limit ~stop:`inclusive
-  |> List.count ~f:(fun n ->
-    let _, lst = get_cont_fraction n in
-    List.length lst mod 2 = 1)
+  List.(
+    range 1 limit ~stop:`inclusive
+    |> count ~f:(fun n -> length (get_cont_fraction n |> snd) mod 2 = 1))
 ;;
 
 let solve () = compute 10_000 |> Int.to_string

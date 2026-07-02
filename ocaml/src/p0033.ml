@@ -41,9 +41,7 @@ let compute () =
       if 9 * a * (c - b) = c * (b - a) then aux ((a, b) :: result) xss else aux result xss
   in
   let cands = Euler.Util.combination 3 [ 1; 2; 3; 4; 5; 6; 7; 8; 9 ] in
-  let a, b =
-    List.fold (aux [] cands) ~init:(1, 1) ~f:(fun (x1, x2) (y1, y2) -> (x1 * y1, x2 * y2))
-  in
+  let a, b = List.(aux [] cands |> unzip |> Tuple2.map ~f:(reduce_exn ~f:( * ))) in
   b / Euler.Math.gcd a b
 ;;
 

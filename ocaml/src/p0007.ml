@@ -2,11 +2,12 @@
 
 open Core
 
-let compute nth =
-  assert (nth > 0);
+let compute n_th =
+  assert (n_th > 0);
 
-  Sequence.unfold ~init:2 ~f:(fun n -> Some (n, Euler.Math.Prime.next_prime n))
-  |> Fun.flip Sequence.nth_exn (nth - 1)
+  Sequence.(
+    unfold ~init:2 ~f:(fun n -> Some (n, Euler.Math.Prime.next_prime n))
+    |> Fun.flip nth_exn (pred n_th))
 ;;
 
 let solve () = compute 10_001 |> Int.to_string

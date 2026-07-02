@@ -129,7 +129,7 @@ let compare_hands hands_lst =
 ;;
 
 let parse_data data =
-  List.map ~f:(fun s -> List.split_n (Str.split (Str.regexp " ") s) 5) data
+  List.(map ~f:(Fun.compose (Fun.flip split_n 5) Str.(split (regexp " "))) data)
 ;;
 
 let compute str_lst =

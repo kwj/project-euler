@@ -2,7 +2,7 @@
 
 open Core
 
-let compute num = List.range 1 num ~stop:`inclusive |> List.reduce_exn ~f:Euler.Math.lcm
+let compute num = List.(range 1 num ~stop:`inclusive |> reduce_exn ~f:Euler.Math.lcm)
 let solve () = compute 20 |> Int.to_string
 
 (* Test *)

@@ -14,9 +14,10 @@
 open Core
 
 let compute () =
-  List.range 1 9 ~stop:`inclusive
-  |> List.map ~f:(fun m -> 1. /. (1. -. Float.log10 (Int.to_float m)))
-  |> List.sum (module Int) ~f:Float.to_int
+  List.(
+    range 1 9 ~stop:`inclusive
+    |> map ~f:(fun m -> 1. /. (1. -. Float.log10 (Int.to_float m)))
+    |> sum (module Int) ~f:Float.to_int)
 ;;
 
 let solve () = compute () |> Int.to_string

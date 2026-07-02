@@ -14,7 +14,7 @@
 open Core
 
 let parse_data data =
-  List.hd_exn data |> String.split ~on:',' |> List.map ~f:(fun s -> Int.of_string s)
+  List.hd_exn data |> String.split ~on:',' |> List.map ~f:Int.of_string
 ;;
 
 let calc_score ch =
@@ -35,15 +35,15 @@ let compute str_lst =
       let plain_text =
         List.mapi cipher_text ~f:(fun idx ch -> Int.bit_xor ch key.(idx mod 3))
       in
-      let score = List.fold plain_text ~init:0 ~f:(fun acc ch -> acc + calc_score ch) in
+      let score = List.sum (module Int) ~f:calc_score plain_text in
       if score > max_score
       then loop score (List.reduce_exn plain_text ~f:( + )) xs
       else loop max_score ans xs
   in
-  loop
-    0
-    0
-    (Euler.Util.permutation_with_repetition 3 (List.range 0x61 0x7A ~stop:`inclusive))
+  let keys =
+    Euler.Util.permutation_with_repetition 3 (List.range 0x61 0x7A ~stop:`inclusive)
+  in
+  loop 0 0 keys
 ;;
 
 let solve fname = compute (Euler.Task.read_file fname) |> Int.to_string

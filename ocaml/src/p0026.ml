@@ -16,9 +16,10 @@ let pp n =
    because the function assumes that the argument is not a multiple of 2.
 *)
 let carmichael n =
-  M.factorize n
-  |> List.map ~f:(fun (b, e) -> (b - 1) * Int.pow b (e - 1))
-  |> List.fold ~init:1 ~f:M.lcm
+  List.(
+    M.factorize n
+    |> map ~f:(fun (b, e) -> (b - 1) * Int.pow b (e - 1))
+    |> reduce_exn ~f:M.lcm)
 ;;
 
 let find_repetend_length n =
