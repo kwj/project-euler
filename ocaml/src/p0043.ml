@@ -75,11 +75,13 @@ let compute () =
     match List.length ns with
     | 10 -> List.hd_exn ns <> 0
     | len when len < 3 -> true
-    | len ->
-      let divs = [| 17; 13; 11; 7; 5; 3; 2 |] in
-      let n = List.(take ns 3 |> rev |> Euler.Util.undigits) in
-      n mod divs.(len - 3) = 0
+    | len when len < 10 ->
+      let n = List.(take ns 3 |> rev |> Euler.Util.undigits)
+      and denom = [| 17; 13; 11; 7; 5; 3; 2 |].(len - 3) in
+      n mod denom = 0
+    | _ -> failwith "not reached"
   in
+
   let make_next_tpls (lst, unused_nums) =
     unused_nums
     |> List.filter_map ~f:(fun x ->
@@ -88,11 +90,13 @@ let compute () =
       then Some (next_lst, List.filter ~f:(( <> ) x) unused_nums)
       else None)
   in
+
   let rec find_numbers cnt tpl_lst =
     if cnt = 0
     then List.(tpl_lst |> map ~f:(Fun.compose rev fst) |> map ~f:Euler.Util.undigits)
     else List.concat_map ~f:make_next_tpls tpl_lst |> find_numbers (pred cnt)
   in
+
   let digits = [ 0; 1; 2; 3; 4; 5; 6; 7; 8; 9 ] in
   List.(find_numbers (length digits) [ ([], digits) ] |> reduce_exn ~f:( + ))
 ;;

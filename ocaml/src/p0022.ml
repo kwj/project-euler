@@ -5,7 +5,7 @@ open Core
 let parse_data data =
   let line = List.hd_exn data in
   List.(
-    String.sub line ~pos:1 ~len:(String.length line - 2)
+    String.(sub line ~pos:1 ~len:(length line - 2))
     |> Str.(split (regexp {|","|}))
     |> sort ~compare:String.compare
     |> map ~f:String.to_list

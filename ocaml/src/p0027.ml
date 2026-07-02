@@ -16,9 +16,7 @@ open Core
 module Prime = Euler.Math.Prime
 
 let count_consecutive a b =
-  let rec loop n =
-    if not (Prime.is_prime ((n * n) + (a * n) + b)) then n else loop (succ n)
-  in
+  let rec loop n = if Prime.is_prime ((n * n) + (a * n) + b) then loop (succ n) else n in
   loop 0
 ;;
 
