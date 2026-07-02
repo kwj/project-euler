@@ -14,10 +14,9 @@ sh solve.sh 1
 
 ## Notes
 
-The quality of these programs is poor since I'm a newbie of OCaml.
-
 Ocaml 5.5.0 or later is required to run these solutions.
-Furthermore, the following libraries/packages are used.
+Furthermore, the following libraries/packages are used,
+and my solutions heavily depend on them.
 
   - Str [^1]
   - [Zarith](https://opam.ocaml.org/packages/zarith/) 1.14
