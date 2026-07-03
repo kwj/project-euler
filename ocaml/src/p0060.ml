@@ -29,17 +29,17 @@ let get_pairable_primes x desc_ps curr_minsum =
 let find_cliques desc_nbr_primes clique_size tbl =
   let result = ref [] in
 
-  let rec aux group nbrs depth =
+  let rec aux clq nbrs depth =
     if depth = 0
-    then result := group :: !result
+    then result := clq :: !result
     else
-      for idx = 0 to List.length nbrs - depth do
-        let elem = List.nth_exn nbrs idx in
-        if List.for_all group ~f:(fun x -> Set.mem (Hashtbl.find_exn tbl x) elem)
-        then (
-          let _, rest_nbrs = List.split_n nbrs idx in
-          aux (elem :: group) rest_nbrs (pred depth))
-      done
+      List.(
+        take nbrs (length nbrs - depth + 1)
+        |> iteri ~f:(fun idx elem ->
+          if for_all clq ~f:Fun.(compose (flip Set.mem elem) (Hashtbl.find_exn tbl))
+          then (
+            let _, rest_nbrs = split_n nbrs idx in
+            aux (elem :: clq) rest_nbrs (pred depth))))
   in
   aux [] desc_nbr_primes clique_size;
   !result
