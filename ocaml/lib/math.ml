@@ -48,6 +48,7 @@ let powmod b e m =
 ;;
 
 let get_max_exp ?(base = 10) num =
+  assert (base > 1 && num > 0);
   let rec aux n cnt = if n < base then cnt else aux (n / base) (succ cnt) in
   aux num 0
 ;;
