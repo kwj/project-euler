@@ -49,10 +49,11 @@ let compute thr =
   let z4_lst =
     List.(map x2_lst ~f:(fun n -> n * n) |> take_while ~f:(fun x -> x < thr))
   in
-  List.iter z4_lst ~f:(fun z4 ->
-    List.iter y3_lst ~f:(fun y3 ->
-      List.iter x2_lst ~f:(fun x2 ->
-        if z4 + y3 + x2 < thr then BitArray.set ba (z4 + y3 + x2))));
+  List.(
+    iter z4_lst ~f:(fun z4 ->
+      iter y3_lst ~f:(fun y3 ->
+        iter x2_lst ~f:(fun x2 ->
+          if z4 + y3 + x2 < thr then BitArray.set ba (z4 + y3 + x2)))));
   BitArray.popcount ba
 ;;
 
