@@ -68,7 +68,7 @@ let compute perim =
             range p perim ~stop:`inclusive ~stride:p
             |> iter ~f:(fun i -> counter.(i) <- counter.(i) + 1))))
   done;
-  Array.count counter ~f:(fun i -> i = 1)
+  Array.count counter ~f:(( = ) 1)
 ;;
 
 let solve () = compute 1_500_000 |> Int.to_string

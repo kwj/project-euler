@@ -37,7 +37,7 @@ let get_trans_tbl w sq =
   let tmp_tbl = Hashtbl.create (module Char) in
   let trans_tbl = Hashtbl.create (module Char) in
   add_pairs tmp_tbl (List.zip_exn (String.to_list sq) (String.to_list w));
-  Hashtbl.to_alist tmp_tbl |> List.map ~f:(fun (k, v) -> (v, k)) |> add_pairs trans_tbl;
+  Hashtbl.to_alist tmp_tbl |> List.map ~f:Tuple2.swap |> add_pairs trans_tbl;
   trans_tbl
 ;;
 
@@ -47,9 +47,7 @@ let get_max_anagram words sq_tbl =
   let trans trans_tbl s =
     String.to_list s
     |> List.map ~f:(fun ch ->
-      match Hashtbl.find trans_tbl ch with
-      | None -> ch
-      | Some x -> x)
+      Hashtbl.find_and_call trans_tbl ch ~if_found:Fun.id ~if_not_found:Fun.id)
     |> String.of_list
   in
 
@@ -70,8 +68,9 @@ let get_max_anagram words sq_tbl =
   in
 
   let ans = ref 0 in
-  List.iteri words ~f:(fun idx w1 ->
-    List.iter (List.drop words (idx + 1)) ~f:(fun w2 -> ans := Int.max !ans (aux w1 w2)));
+  List.(
+    iteri words ~f:(fun idx w1 ->
+      iter (drop words (idx + 1)) ~f:(fun w2 -> ans := Int.max !ans (aux w1 w2))));
   !ans
 ;;
 
@@ -87,7 +86,7 @@ let compute str_lst =
   let sq_tbl = Hashtbl.create (module Int) in
   Hashtbl.data word_tbl
   |> List.filter ~f:(fun lst -> List.length lst > 1)
-  |> List.map ~f:(fun lst -> get_max_anagram lst sq_tbl)
+  |> List.map ~f:(Fun.flip get_max_anagram sq_tbl)
   |> List.max_elt ~compare:Int.compare
   |> Option.value_exn
 ;;

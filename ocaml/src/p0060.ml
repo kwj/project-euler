@@ -65,7 +65,7 @@ let compute target_size =
       if List.length desc_nbr_primes < search_clique_size
       then loop p answer
       else (
-        (* Search for cliques from p's pairable primes *)
+        (* Search for cliques from p's neighbour primes *)
         match find_cliques desc_nbr_primes search_clique_size tbl with
         | [] -> loop p answer
         | cliques ->

@@ -39,11 +39,10 @@ let replace_roman_numerals s =
 ;;
 
 let compute str_lst =
-  let rec loop acc = function
-    | [] -> acc
-    | s :: ss -> loop (acc + String.(length s - length (replace_roman_numerals s))) ss
-  in
-  loop 0 str_lst
+  List.sum
+    (module Int)
+    str_lst
+    ~f:(fun s -> String.(length s - length (replace_roman_numerals s)))
 ;;
 
 let solve fname = compute (Euler.Task.read_file fname) |> Int.to_string

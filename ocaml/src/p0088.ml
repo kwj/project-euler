@@ -27,18 +27,19 @@ open Core
 
 let compute limit =
   let tbl = Array.create ~len:(limit + 1) (limit * 2) in
-  let rec aux p s length num =
-    let k = p - s + length in
+  let rec aux p s len num =
+    let k = p - s + len in
     if k <= limit
     then (
       if p < tbl.(k) then tbl.(k) <- p;
-      List.range num (limit * 2 / p) ~stop:`inclusive
-      |> List.iter ~f:(fun x -> aux (p * x) (s + x) (succ length) x))
+      List.(
+        range num (limit * 2 / p) ~stop:`inclusive
+        |> iter ~f:(fun x -> aux (p * x) (s + x) (succ len) x)))
   in
   aux 1 0 0 2;
   Array.to_list tbl
   |> Fun.flip List.drop 2
-  |> List.dedup_and_sort ~compare
+  |> List.dedup_and_sort ~compare:Int.compare
   |> List.reduce_exn ~f:( + )
 ;;
 

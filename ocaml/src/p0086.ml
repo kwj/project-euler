@@ -47,14 +47,9 @@ let compute thr =
       let rec aux ab acc =
         if ab < 2
         then acc
-        else (
-          let tmp = (c * c) + (ab * ab) in
-          let tmp_isqrt = Euler.Math.isqrt tmp in
-          if tmp_isqrt * tmp_isqrt <> tmp
-          then aux (pred ab) acc
-          else if ab <= c
-          then aux (pred ab) (acc + (ab / 2))
-          else aux (pred ab) (acc + (ab / 2) - (ab - 1 - c)))
+        else if Euler.Math.is_square ((c * c) + (ab * ab))
+        then aux (pred ab) (acc + (ab / 2) - if ab <= c then 0 else ab - 1 - c)
+        else aux (pred ab) acc
       in
       loop (succ c) (acc + aux (c * 2) 0))
   in
