@@ -12,7 +12,7 @@ open Core
 
 let parse_data data =
   data
-  |> List.(map ~f:(Fun.compose (map ~f:Int.of_string) Str.(split (regexp ","))))
+  |> List.(map ~f:(Fun.compose (map ~f:Int.of_string) (String.split ~on:',')))
   |> Array.of_list_map ~f:Array.of_list
 ;;
 

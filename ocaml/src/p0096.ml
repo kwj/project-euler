@@ -95,7 +95,7 @@ let make_dlx q =
         add_row' i
       done
   in
-  List.iteri ~f:add_row (List.map ~f:Int.of_string Str.(split (regexp "") q));
+  List.iteri ~f:add_row (List.map ~f:Char.get_digit_exn (String.to_list q));
   d
 ;;
 
@@ -107,12 +107,7 @@ let compute str_lst =
       else (
         match l with
         | [] -> assert false
-        | x :: xs ->
-          loop
-            (pred n)
-            xs
-            ((acc * 10)
-             + Int.of_string (List.hd_exn (List.rev (Str.split (Str.regexp "") x)))))
+        | s :: ss -> loop (pred n) ss ((acc * 10) + Int.of_string (String.suffix s 1)))
     in
     loop 3 lst 0
   in
@@ -120,8 +115,7 @@ let compute str_lst =
     match q with
     | [] -> acc
     | x :: xs ->
-      let d = make_dlx x in
-      (match Euler.Algo_x.dlx_solve d with
+      (match Euler.Algo_x.dlx_solve (make_dlx x) with
        | None -> loop xs (succ i) acc
        | Some l ->
          let ans = pick_num (List.sort ~compare:String.compare (List.hd_exn l)) in

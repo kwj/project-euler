@@ -18,8 +18,7 @@ exception Cycle of int list
 
 let parse_data data =
   List.(
-    map ~f:Str.(split (regexp "")) data
-    |> map ~f:(map ~f:Int.of_string)
+    map ~f:(Fun.compose (map ~f:Char.get_digit_exn) String.to_list) data
     |> concat_map ~f:(fun l ->
       [ (nth_exn l 0, nth_exn l 1)
       ; (nth_exn l 1, nth_exn l 2)

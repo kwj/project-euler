@@ -4,7 +4,9 @@ open Core
 
 let parse_data data =
   let line = List.hd_exn data in
-  String.sub line ~pos:1 ~len:(String.length line - 2) |> Str.(split (regexp {|","|}))
+  String.sub line ~pos:1 ~len:(String.length line - 2)
+  (* If the Core library supports `split_all` or an equivalent feature, I'll use it. *)
+  |> Stdlib.String.split_all ~sep:{|","|}
 ;;
 
 let get_squares tbl n_digits =

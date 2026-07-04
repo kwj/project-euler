@@ -6,7 +6,8 @@ let parse_data data =
   let line = List.hd_exn data in
   List.(
     String.sub line ~pos:1 ~len:(String.length line - 2)
-    |> Str.(split (regexp {|","|}))
+    (* If the Core library supports `split_all` or an equivalent feature, I'll use it. *)
+    |> Stdlib.String.split_all ~sep:{|","|}
     |> map ~f:String.to_list
     |> map ~f:(sum (module Int) ~f:(fun ch -> Char.to_int ch - 0x40)))
 ;;

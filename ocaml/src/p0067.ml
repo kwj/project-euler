@@ -14,7 +14,7 @@ let calc_from_bottom l_lst =
 ;;
 
 let parse_data data =
-  List.(map ~f:(Fun.compose (map ~f:Int.of_string) Str.(split (regexp " "))) data)
+  List.(map ~f:(Fun.compose (map ~f:Int.of_string) (String.split ~on:' ')) data)
 ;;
 
 let compute str_lst = parse_data str_lst |> calc_from_bottom
