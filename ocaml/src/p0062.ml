@@ -3,8 +3,9 @@
 open Core
 
 let compute qty =
-  let make_key n = Euler.Util.digits n |> List.sort ~compare |> Euler.Util.undigits in
+  let make_key n = Euler.Util.digits n |> List.sort ~compare:Int.compare |> Euler.Util.undigits in
   let tbl = Hashtbl.create (module Int) in
+
   let rec loop n =
     let cube = Int.pow n 3 in
     let cube_lst =
