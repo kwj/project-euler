@@ -9,8 +9,7 @@ let compute qty =
   let rec loop n =
     let cube = Int.pow n 3 in
     let cube_lst =
-      Hashtbl.update_and_return tbl (make_key cube) ~f:(fun v ->
-        match v with
+      Hashtbl.update_and_return tbl (make_key cube) ~f:(function
         | None -> [ cube ]
         | Some lst -> cube :: lst)
     in

@@ -17,8 +17,7 @@ let rec factorial n = if n > 1 then n * factorial (n - 1) else 1
 let countmap t lst =
   let ret = Hashtbl.create t in
   List.iter lst ~f:(fun elm ->
-    Hashtbl.update ret elm ~f:(fun v ->
-      match v with
+    Hashtbl.update ret elm ~f:(function
       | None -> 1
       | Some n -> n + 1));
   ret

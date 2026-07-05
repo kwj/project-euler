@@ -28,8 +28,7 @@ let get_trans_tbl w sq =
   let rec add_pairs tbl = function
     | [] -> ()
     | (k, v) :: xs ->
-      Hashtbl.update tbl k ~f:(fun x ->
-        match x with
+      Hashtbl.update tbl k ~f:(function
         | None -> v
         | Some _ -> v);
       add_pairs tbl xs
@@ -78,8 +77,7 @@ let compute str_lst =
   let word_tbl = Hashtbl.create (module String) in
   List.iter (parse_data str_lst) ~f:(fun s ->
     let key = String.to_list s |> List.sort ~compare:Char.compare |> String.of_list in
-    Hashtbl.update word_tbl key ~f:(fun v ->
-      match v with
+    Hashtbl.update word_tbl key ~f:(function
       | None -> [ s ]
       | Some lst -> s :: lst));
 
