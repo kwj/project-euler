@@ -3,7 +3,7 @@
 open Core
 
 let get_prime_tbl n_digits =
-  let make_key n = Euler.Util.digits n |> List.sort ~compare:Int.compare |> Euler.Util.undigits in
+  let make_key n = Euler.Util.(digits n |> List.sort ~compare:Int.compare |> undigits) in
 
   Euler.Math.Prime.primes (Int.pow 10 (n_digits - 1)) (Int.pow 10 n_digits)
   |> List.filter_map ~f:(fun n -> if n >= 1000 then Some (make_key n, n) else None)
