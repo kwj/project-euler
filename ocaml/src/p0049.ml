@@ -3,17 +3,11 @@
 open Core
 
 let get_prime_tbl n_digits =
-  let tbl = Hashtbl.create (module Int) in
-  List.(
-    Euler.Math.Prime.primes (Int.pow 10 (n_digits - 1)) (Int.pow 10 n_digits)
-    |> filter ~f:(fun n -> n >= 1000)
-    |> iter ~f:(fun p ->
-      let key = Euler.Util.digits p |> sort ~compare:Int.compare |> Euler.Util.undigits in
-      Hashtbl.update tbl key ~f:(fun v ->
-        match v with
-        | None -> [ p ]
-        | Some lst -> p :: lst)));
-  tbl
+  let make_key n = Euler.Util.digits n |> List.sort ~compare:Int.compare |> Euler.Util.undigits in
+
+  Euler.Math.Prime.primes (Int.pow 10 (n_digits - 1)) (Int.pow 10 n_digits)
+  |> List.filter_map ~f:(fun n -> if n >= 1000 then Some (make_key n, n) else None)
+  |> Hashtbl.of_alist_multi ~growth_allowed:false (module Int)
 ;;
 
 let compute n_digits =
