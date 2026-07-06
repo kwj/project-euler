@@ -14,7 +14,7 @@ let get_prime_group_lst n_digits =
 ;;
 
 let compute n_digits =
-  assert (n_digits > 0);
+  assert (n_digits > 0 && n_digits <= 4);
 
   List.(
     get_prime_group_lst n_digits
