@@ -35,4 +35,7 @@ let solve () = compute 4
 
 (* Test *)
 
+let%test_unit "1" = [%test_eq: string] (compute 1) "There are no such sequences."
+let%test_unit "2" = [%test_eq: string] (compute 2) "There are no such sequences."
+let%test_unit "3" = [%test_eq: string] (compute 3) "There are no such sequences."
 let%test_unit "4" = [%test_eq: string] (compute 4) "296962999629"
