@@ -55,7 +55,7 @@ let compute exp =
         | [] -> ans
         | xs :: xss ->
           let tmp = sum (module Int) xs ~f:(Array.get pow_tbl) in
-          if equal Int.equal (Euler.Util.digits tmp |> sort ~compare:Int.compare) xs
+          if equal Int.equal (Euler.Util.digits tmp |> sort ~compare:Int.ascending) xs
           then aux (ans + tmp) xss
           else aux ans xss
       in

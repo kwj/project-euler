@@ -118,7 +118,7 @@ let compute str_lst =
       (match Euler.Algo_x.dlx_solve (make_dlx x) with
        | None -> loop xs (succ i) acc
        | Some l ->
-         let ans = pick_num (List.sort ~compare:String.compare (List.hd_exn l)) in
+         let ans = pick_num (List.sort ~compare:String.ascending (List.hd_exn l)) in
          loop xs (succ i) (acc + ans))
   in
   loop (parse_data str_lst) 1 0

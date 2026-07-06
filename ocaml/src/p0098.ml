@@ -76,7 +76,7 @@ let get_max_anagram words sq_tbl =
 let compute str_lst =
   let word_tbl = Hashtbl.create (module String) in
   List.iter (parse_data str_lst) ~f:(fun s ->
-    let key = String.to_list s |> List.sort ~compare:Char.compare |> String.of_list in
+    let key = String.(to_list s |> List.sort ~compare:Char.ascending |> of_list) in
     Hashtbl.update word_tbl key ~f:(function
       | None -> [ s ]
       | Some lst -> s :: lst));

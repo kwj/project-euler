@@ -174,7 +174,7 @@ let compute nfaces nsquares =
     |> map ~f:(fun i ->
       ( Printf.sprintf "%02d" i
       , steady_state.(i).(0) +. steady_state.(i + 40).(0) +. steady_state.(i + 80).(0) ))
-    |> sort ~compare:(fun (_, f1) (_, f2) -> Float.compare f2 f1)
+    |> sort ~compare:(fun (_, f1) (_, f2) -> Float.descending f1 f2)
     |> Fun.flip take nsquares
     |> Euler.Util.list_to_str fst "")
 ;;

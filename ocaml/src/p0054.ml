@@ -85,7 +85,7 @@ let get_handrank cards =
   let num_lst = List.map ~f:rank_to_num rank_lst |> List.sort ~compare:Int.descending in
   let hand_info = get_hand_info num_lst in
 
-  let num_suits = List.dedup_and_sort ~compare:Char.compare suit_lst |> List.length in
+  let num_suits = List.dedup_and_sort ~compare:Char.ascending suit_lst |> List.length in
   if num_suits = 1
   then (
     (* This hand contains five cards all of the same suit. *)

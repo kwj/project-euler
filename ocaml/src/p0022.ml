@@ -8,7 +8,7 @@ let parse_data data =
     String.(sub line ~pos:1 ~len:(length line - 2))
     (* If the Core library supports `split_all` or an equivalent feature, I'll use it. *)
     |> Stdlib.String.split_all ~sep:{|","|}
-    |> sort ~compare:String.compare
+    |> sort ~compare:String.ascending
     |> map ~f:String.to_list
     |> map ~f:(List.sum (module Int) ~f:(fun ch -> Char.to_int ch - 0x40)))
 ;;

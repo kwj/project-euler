@@ -3,7 +3,7 @@
 open Core
 
 let check_num n =
-  let make_key x = Euler.Util.digits x |> List.sort ~compare:Int.compare in
+  let make_key x = Euler.Util.digits x |> List.sort ~compare:Int.ascending in
   let key = make_key n in
   List.(
     range 2 6 ~stop:`inclusive

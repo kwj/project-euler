@@ -29,7 +29,7 @@ let compute () =
     |> filter_map ~f:(fun (prod, n) ->
       if Euler.Math.is_pandigital_nz n then Some prod else None)
     |> to_list
-    |> List.dedup_and_sort ~compare:Int.compare
+    |> List.dedup_and_sort ~compare:Int.ascending
     |> List.reduce_exn ~f:( + ))
 ;;
 

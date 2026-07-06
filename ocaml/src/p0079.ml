@@ -25,7 +25,7 @@ let parse_data data =
       ; (nth_exn l 0, nth_exn l 2)
       ])
     |> Euler.Util.list_assoc_group
-    |> map ~f:(Tuple2.map_snd ~f:(dedup_and_sort ~compare:Int.compare)))
+    |> map ~f:(Tuple2.map_snd ~f:(dedup_and_sort ~compare:Int.ascending)))
 ;;
 
 let dfs graph perm v =

@@ -39,7 +39,7 @@ let compute limit =
   aux 1 0 0 2;
   Array.to_list tbl
   |> Fun.flip List.drop 2
-  |> List.dedup_and_sort ~compare:Int.compare
+  |> List.dedup_and_sort ~compare:Int.ascending
   |> List.reduce_exn ~f:( + )
 ;;
 

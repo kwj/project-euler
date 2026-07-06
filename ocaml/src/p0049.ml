@@ -3,7 +3,9 @@
 open Core
 
 let get_prime_group_lst n_digits =
-  let make_key n = Euler.Util.(digits n |> List.sort ~compare:Int.compare |> undigits) in
+  let make_key n =
+    Euler.Util.(digits n |> List.sort ~compare:Int.ascending |> undigits)
+  in
 
   Euler.Math.Prime.primes (Int.pow 10 (n_digits - 1)) (Int.pow 10 n_digits)
   |> List.map ~f:(fun n -> (make_key n, n))
