@@ -49,11 +49,10 @@ let find_chain route_info p_tbl =
     | [], _ -> []
     | _, [] ->
       List.(
-        filter chains ~f:(fun lst ->
-          let p1, p2 = hd_exn lst in
-          let q1, q2 = last_exn lst in
-          p1 = q1 && p2 = q2)
-        |> map ~f:tl_exn)
+        filter_map chains ~f:(fun lst ->
+          if Tuple2.equal ~eq1:Int.equal ~eq2:Int.equal (hd_exn lst) (last_exn lst)
+          then Some (tl_exn lst)
+          else None))
     | _, x :: xs -> aux List.(concat (map ~f:(Fun.flip get_next_chains x) chains)) xs
   in
   aux List.(map ~f:singleton p_tbl.(8)) route_info
