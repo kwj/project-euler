@@ -2,21 +2,12 @@
 
 open Core
 
-let update_chain_tbl tbl lst v =
-  let rec loop = function
-    | [] -> ()
-    | x :: xs ->
-      tbl.(x) <- v;
-      loop xs
-  in
-  loop lst
-;;
-
 let compute limit =
   let spd_tbl = Euler.Math.aliquot_sum_tbl limit in
   let chain_tbl = Array.create ~len:(limit + 1) 0 in
+  let update_chain_tbl tbl lst v = List.iter lst ~f:(fun i -> tbl.(i) <- v) in
   let chain = Queue.create () in
-  let max_length = ref 0 in
+  let max_len = ref 0 in
 
   Sequence.range 2 limit ~stop:`inclusive
   |> Sequence.iter ~f:(fun i ->
@@ -36,15 +27,14 @@ let compute limit =
     then update_chain_tbl chain_tbl (Queue.to_list chain) (-1)
     else (
       let rec aux i = if !pos <> Queue.get chain i then aux (succ i) else i in
-      let i = aux 0 in
-      let length = Queue.length chain - i + 1 in
-      update_chain_tbl chain_tbl (List.take (Queue.to_list chain) i) (-1);
-      update_chain_tbl chain_tbl (List.drop (Queue.to_list chain) i) length;
-      max_length := Int.max !max_length length));
-  let ans, _ =
-    Array.findi chain_tbl ~f:(fun _ n -> n = !max_length) |> Option.value_exn
-  in
-  ans
+      let idx = aux 0 in
+      let len = Queue.length chain - idx + 1 in
+      let lst_a, lst_b = List.split_n (Queue.to_list chain) idx in
+      update_chain_tbl chain_tbl lst_a (-1);
+      update_chain_tbl chain_tbl lst_b len;
+      max_len := Int.max !max_len len));
+
+  Array.findi_exn chain_tbl ~f:(fun _ n -> n = !max_len) |> fst
 ;;
 
 let solve () = compute 1_000_000 |> Int.to_string
