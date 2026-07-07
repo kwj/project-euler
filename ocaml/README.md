@@ -14,7 +14,7 @@ sh solve.sh 1
 
 ## Notes
 
-Ocaml 5.5.0 or later is required to run these solutions.
+OCaml 5.5.0 or later is required to run these solutions.
 Furthermore, the following libraries/packages are used,
 and my solutions heavily depend on them.
 
