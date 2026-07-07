@@ -4,13 +4,15 @@ open Core
 
 let fibs a b =
   Sequence.unfold
-    ~init:(Z.of_int a, Z.of_int b, 1)
-    ~f:(fun (a, b, idx) -> Some ((idx, a), (b, Z.(a + b), succ idx)))
+    ~init:(Z.of_int a, Z.of_int b)
+    ~f:(fun (a, b) -> Some (a, (b, Z.(a + b))))
 ;;
 
 let compute n_digits =
   let thr = Z.pow (Z.of_int 10) (n_digits - 1) in
-  fibs 1 1 |> Sequence.find_exn ~f:(fun (_, v) -> Z.geq v thr) |> fst
+  fibs 1 1
+  |> Sequence.find_mapi ~f:(fun i v -> if Z.geq v thr then Some (succ i) else None)
+  |> Option.value_exn
 ;;
 
 let solve () = compute 1_000 |> Int.to_string
