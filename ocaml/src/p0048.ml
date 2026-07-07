@@ -9,11 +9,9 @@ open Core
 
 let compute upper =
   let m = Int.pow 10 10 in
-  List.(
+  Sequence.(
     range 1 upper ~stop:`inclusive
-    |> filter_map ~f:(fun n ->
-      if n mod 10 <> 0 then Some (Euler.Math.powmod n n m) else None)
-    |> reduce_exn ~f:( + ))
+    |> sum (module Int) ~f:(fun n -> if n mod 10 <> 0 then Euler.Math.powmod n n m else 0))
   |> Fun.flip ( % ) m
   |> Printf.sprintf "%010d"
 ;;
