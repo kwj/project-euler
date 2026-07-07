@@ -1,14 +1,15 @@
 (* Project Euler: Problem 93 *)
 
 open Core
+module BA = Euler.Bitarray
 
 let make_numbers lst =
-  let res = Hash_set.create (module Int) in
+  let arr = BA.init (9 * 9 * 9 * 9) in
   let rec aux lst =
     if List.length lst = 1
     then (
-      if Z.(equal (Q.den (List.hd_exn lst)) one)
-      then Hash_set.add res (Q.to_int (List.hd_exn lst)))
+      let n = List.hd_exn lst in
+      if Q.sign n = 1 && Z.(equal (Q.den n) one) then BA.set arr (Q.to_int n))
     else (
       let length = List.length lst in
       for i = 0 to length - 1 do
@@ -26,12 +27,12 @@ let make_numbers lst =
       done)
   in
   aux (List.map lst ~f:(fun n -> Q.of_int n));
-  res
+  arr
 ;;
 
 let count_consec_numbers lst =
-  let number_set = make_numbers lst in
-  let rec loop cnt = if Hash_set.mem number_set cnt then loop (succ cnt) else cnt - 1 in
+  let nembers_ba = make_numbers lst in
+  let rec loop cnt = if BA.test nembers_ba cnt then loop (succ cnt) else cnt - 1 in
   loop 1
 ;;
 
