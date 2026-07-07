@@ -15,21 +15,21 @@ let plst_generator () =
 
 let compute thr =
   let plst_gen = plst_generator () in
-  let rec loop n p_lst =
-    let tbl = Array.create ~len:(n + 1) 0 in
-    let rec aux lst =
-      match lst with
-      | [] -> tbl.(n)
+  let rec loop p_lst =
+    let len = List.length p_lst in
+    let tbl = Array.create ~len:(len + 1) 0 in
+    let rec aux = function
+      | [] -> tbl.(len)
       | x :: xs ->
-        for i = x to n do
+        for i = x to len do
           tbl.(i) <- tbl.(i) + tbl.(i - x)
         done;
         aux xs
     in
     tbl.(0) <- 1;
-    if aux p_lst > thr then n else loop (succ n) (plst_gen ())
+    if aux p_lst > thr then len else loop (plst_gen ())
   in
-  loop 1 (plst_gen ())
+  loop (plst_gen ())
 ;;
 
 let solve () = compute 5_000 |> Int.to_string

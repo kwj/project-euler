@@ -37,10 +37,11 @@ let compute limit =
         |> iter ~f:(fun x -> aux (p * x) (s + x) (succ len) x)))
   in
   aux 1 0 0 2;
-  Array.to_list tbl
-  |> Fun.flip List.drop 2
-  |> List.dedup_and_sort ~compare:Int.ascending
-  |> List.reduce_exn ~f:( + )
+  List.(
+    Array.to_list tbl
+    |> Fun.flip drop 2
+    |> dedup_and_sort ~compare:Int.ascending
+    |> reduce_exn ~f:( + ))
 ;;
 
 let solve () = compute 12_000 |> Int.to_string

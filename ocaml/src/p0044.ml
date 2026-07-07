@@ -48,8 +48,8 @@ let compute () =
       let lhs = d * ((3 * d) - 1) in
       if get_divisors d |> List.exists ~f:(fun r1 -> check_conditions r1 (lhs / r1))
       then Some (lhs / 2)
-      else None)
-    |> Option.value_exn)
+      else None))
+  |> Option.value_exn
 ;;
 
 let solve () = compute () |> Int.to_string

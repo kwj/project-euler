@@ -13,17 +13,15 @@ let find_max_digital_sum answer a b_max =
 ;;
 
 let compute upper =
-  let a_lst =
-    List.(
-      range upper 2 ~stride:(-1) ~stop:`inclusive
-      |> filter ~f:(fun n -> n mod 10 <> 0)
-      |> map ~f:Z.of_int)
-  in
   let rec aux ans = function
     | [] -> ans
     | x :: xs -> aux (find_max_digital_sum ans x upper) xs
   in
-  aux 0 a_lst
+  List.(
+    range upper 2 ~stride:(-1) ~stop:`inclusive
+    |> filter ~f:(fun n -> n mod 10 <> 0)
+    |> map ~f:Z.of_int)
+  |> aux 0
 ;;
 
 let solve () = compute 99 |> Int.to_string

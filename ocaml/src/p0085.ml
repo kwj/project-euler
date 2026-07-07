@@ -52,8 +52,8 @@ let compute target =
     let n, d = search_n m in
     if m > upper_m && d > fst (PQ.get_min_elt pq)
     then (
-      let _, pair = PQ.get_min_elt pq in
-      fst pair * snd pair)
+      let m, n = PQ.get_min_elt pq |> snd in
+      m * n)
     else (
       PQ.add pq (d, (m, n));
       loop (succ m))

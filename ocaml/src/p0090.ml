@@ -15,10 +15,10 @@ let squares =
   ] [@ocamlformat "disable"]
 ;;
 
-let check_pair two_dice pair =
+let check_pair two_dice (d0, d1) =
   List.(
-    mem (nth_exn two_dice 0) (fst pair) ~equal:Int.equal
-    && mem (nth_exn two_dice 1) (snd pair) ~equal:Int.equal)
+    mem (nth_exn two_dice 0) d0 ~equal:Int.equal
+    && mem (nth_exn two_dice 1) d1 ~equal:Int.equal)
 ;;
 
 let check_square two_dice =

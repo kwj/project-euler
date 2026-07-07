@@ -17,9 +17,7 @@ let compute () =
       | [] -> None
       | xs :: xss ->
         let n = List.rev xs |> Euler.Util.undigits in
-        if Euler.Math.is_pandigital_nz n && Euler.Math.Prime.is_prime n
-        then Some n
-        else aux xss
+        if Euler.Math.(is_pandigital_nz n && Prime.is_prime n) then Some n else aux xss
     in
     aux (Euler.Util.permutation k (List.range k 1 ~stop:`inclusive ~stride:(-1))))
   (* We know that 2413 is a 4-digit pandigital and is also prime. So, the answer must exist. *)

@@ -43,9 +43,9 @@ let compute stop =
       ~init:Z.(~$3, ~$2, start)
       ~f:(fun (a, b, idx) ->
         Some (Z.((a * c idx) + b), (Z.((a * c idx) + b), a, succ idx)))
-    |> Fun.flip nth_exn (stop - start)
-    |> Euler.Util.z_digits
-    |> List.reduce_exn ~f:( + ))
+    |> Fun.flip nth_exn (stop - start))
+  |> Euler.Util.z_digits
+  |> List.reduce_exn ~f:( + )
 ;;
 
 let solve () = compute 100 |> Int.to_string

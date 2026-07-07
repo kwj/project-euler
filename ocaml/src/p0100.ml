@@ -7,9 +7,9 @@ let compute thr =
   Sequence.(
     unfold ~init:(1, 1) ~f:(fun (x, y) ->
       Some ((x, y), ((3 * x) + (4 * y), (2 * x) + (3 * y))))
-    |> find_exn ~f:(fun (x, _) -> x > limit)
-    |> snd
-    |> fun y -> (y + 1) / 2)
+    |> find_exn ~f:(fun (x, _) -> x > limit))
+  |> snd
+  |> fun y -> (y + 1) / 2
 ;;
 
 let solve () = compute 1_000_000_000_000 |> Int.to_string

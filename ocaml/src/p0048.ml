@@ -13,9 +13,9 @@ let compute upper =
     range 1 upper ~stop:`inclusive
     |> filter_map ~f:(fun n ->
       if n mod 10 <> 0 then Some (Euler.Math.powmod n n m) else None)
-    |> reduce_exn ~f:( + )
-    |> Fun.flip ( % ) m
-    |> Printf.sprintf "%010d")
+    |> reduce_exn ~f:( + ))
+  |> Fun.flip ( % ) m
+  |> Printf.sprintf "%010d"
 ;;
 
 let solve () = compute 1_000

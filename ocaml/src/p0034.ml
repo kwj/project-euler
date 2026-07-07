@@ -58,7 +58,7 @@ let compute () =
       let rec aux ans = function
         | [] -> ans
         | xs :: xss ->
-          let num = sum (module Int) ~f:(fun n -> fact_tbl.(n)) xs in
+          let num = sum (module Int) ~f:(Array.get fact_tbl) xs in
           if equal Int.equal (Euler.Util.digits num |> sort ~compare:Int.ascending) xs
           then aux (ans + num) xss
           else aux ans xss

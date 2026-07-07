@@ -37,7 +37,7 @@
 
 open Core
 
-let is_family p f_size =
+let is_family f_size p =
   let p_digits = Euler.Util.digits p in
   let rec loop_figures = function
     | [] -> false
@@ -79,8 +79,8 @@ let compute f_size =
     unfold ~init:3 ~f:(fun n -> Some (n, n + 1))
     |> find_map ~f:(fun exp ->
       Euler.Math.Prime.primes (Int.pow 10 exp) (Int.pow 10 (exp + 1))
-      |> List.find ~f:(Fun.flip is_family f_size))
-    |> Option.value_exn)
+      |> List.find ~f:(is_family f_size)))
+  |> Option.value_exn
 ;;
 
 let solve () = compute 8 |> Int.to_string

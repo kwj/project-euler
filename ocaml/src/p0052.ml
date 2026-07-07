@@ -15,8 +15,8 @@ let compute () =
     unfold ~init:6 ~f:(fun n -> Some (n, n + 1))
     |> find_map ~f:(fun exp ->
       range (Int.pow 10 (exp - 1)) (Int.pow 10 exp / 6) ~stop:`inclusive
-      |> find ~f:check_num)
-    |> Option.value_exn)
+      |> find ~f:check_num))
+  |> Option.value_exn
 ;;
 
 let solve () = compute () |> Int.to_string

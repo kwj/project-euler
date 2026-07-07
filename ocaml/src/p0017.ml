@@ -52,12 +52,10 @@ let rec count_letters = function
   | 1000 -> List.nth_exn under_20 1 + nchars_1000
   | n when n < 20 -> List.nth_exn under_20 n
   | n when n < 100 ->
-    let q = n / 10
-    and r = n mod 10 in
+    let q, r = (n / 10, n mod 10) in
     List.nth_exn mults_10 q + List.nth_exn under_20 r
   | n ->
-    let q = n / 100
-    and r = n mod 100 in
+    let q, r = (n / 100, n mod 100) in
     List.nth_exn under_20 q
     + nchars_100
     + if r = 0 then 0 else nchars_and + count_letters r

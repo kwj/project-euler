@@ -13,7 +13,6 @@
 open Core
 
 let compute () =
-  let module U = Euler.Util in
   Sequence.(
     append
       (cartesian_product
@@ -23,14 +22,14 @@ let compute () =
          (range 100 1_000 ~stop:`exclusive)
          (range 10 100 ~stop:`exclusive))
     |> filter_map ~f:(fun (a, b) ->
-      if a * b < 10_000
-      then Some (a * b, U.undigits (U.digits (a * b) @ U.digits b @ U.digits a))
+      let prod = a * b in
+      if prod < 10_000
+      then (
+        let n = Euler.Util.(digits prod @ digits b @ digits a |> undigits) in
+        if Euler.Math.is_pandigital_nz n then Some prod else None)
       else None)
-    |> filter_map ~f:(fun (prod, n) ->
-      if Euler.Math.is_pandigital_nz n then Some prod else None)
-    |> to_list
-    |> List.dedup_and_sort ~compare:Int.ascending
-    |> List.reduce_exn ~f:( + ))
+    |> to_list)
+  |> List.(Fun.compose (reduce_exn ~f:( + )) (dedup_and_sort ~compare:Int.ascending))
 ;;
 
 let solve () = compute () |> Int.to_string

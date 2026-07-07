@@ -43,9 +43,9 @@ let get_cont_fraction n =
 ;;
 
 let compute limit =
-  List.(
+  Sequence.(
     range 1 limit ~stop:`inclusive
-    |> count ~f:(fun n -> length (get_cont_fraction n |> snd) mod 2 = 1))
+    |> count ~f:(fun n -> List.length (get_cont_fraction n |> snd) mod 2 = 1))
 ;;
 
 let solve () = compute 10_000 |> Int.to_string

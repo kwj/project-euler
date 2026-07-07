@@ -9,8 +9,11 @@ let parse_data data =
     (* If the Core library supports `split_all` or an equivalent feature, I'll use it. *)
     |> Stdlib.String.split_all ~sep:{|","|}
     |> sort ~compare:String.ascending
-    |> map ~f:String.to_list
-    |> map ~f:(List.sum (module Int) ~f:(fun ch -> Char.to_int ch - 0x40)))
+    |> map
+         ~f:
+           (Fun.compose
+              (sum (module Int) ~f:(fun ch -> Char.to_int ch - 0x40))
+              String.to_list))
 ;;
 
 let compute str_lst =
