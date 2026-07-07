@@ -37,9 +37,7 @@ let find_cliques desc_nbr_primes clique_size tbl =
         take nbrs (length nbrs - (clique_size - length clq) + 1)
         |> iteri ~f:(fun idx elem ->
           if for_all clq ~f:Fun.(compose (flip Set.mem elem) (Hashtbl.find_exn tbl))
-          then (
-            let _, rest_nbrs = split_n nbrs idx in
-            aux (elem :: clq) rest_nbrs)))
+          then aux (elem :: clq) (split_n nbrs idx |> snd)))
   in
   aux [] desc_nbr_primes;
   !result
@@ -70,10 +68,8 @@ let compute target_size =
         | [] -> loop p answer
         | cliques ->
           let min_sum_clique =
-            List.(
-              map cliques ~f:(reduce_exn ~f:( + ))
-              |> min_elt ~compare:Int.compare
-              |> Option.value_exn)
+            List.(map cliques ~f:(reduce_exn ~f:( + )) |> min_elt ~compare:Int.compare)
+            |> Option.value_exn
           in
           loop p (min answer (p + min_sum_clique))))
   in
