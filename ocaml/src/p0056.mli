@@ -1,1 +1,1 @@
-val solve: unit -> string
+val solve : unit -> string

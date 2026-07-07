@@ -1,1 +1,1 @@
-val solve: string -> string
+val solve : string -> string
