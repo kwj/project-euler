@@ -24,8 +24,8 @@ let compute n_digits =
       |> filter_map ~f:(fun lst ->
         if length lst < 3 then None else Some (sort ~compare:Int.ascending lst))
       >>= Euler.Util.combination 3
-      |> filter ~f:(fun lst ->
-        nth_exn lst 1 - nth_exn lst 0 = nth_exn lst 2 - nth_exn lst 1)
+      |> filter ~f:(fun triplet ->
+        nth_exn triplet 1 - nth_exn triplet 0 = nth_exn triplet 2 - nth_exn triplet 1)
       |> map ~f:(Fun.compose (reduce_exn ~f:( ^ )) (map ~f:Int.to_string))
       |> filter ~f:(Fun.compose not (String.equal "148748178147")))
   in
