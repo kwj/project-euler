@@ -25,22 +25,21 @@ let get_squares tbl n_digits =
 ;;
 
 let get_trans_tbl w sq =
-  let rec add_pairs tbl = function
-    | [] -> ()
-    | (k, v) :: xs ->
+  let add_pairs tbl (sq_lst, w_lst) =
+    List.iter2_exn sq_lst w_lst ~f:(fun k v ->
       Hashtbl.update tbl k ~f:(function
         | None -> v
-        | Some _ -> v);
-      add_pairs tbl xs
+        | Some _ -> v))
   in
   let tmp_tbl = Hashtbl.create (module Char) in
   let trans_tbl = Hashtbl.create (module Char) in
-  add_pairs tmp_tbl (List.zip_exn (String.to_list sq) (String.to_list w));
-  Hashtbl.to_alist tmp_tbl |> List.map ~f:Tuple2.swap |> add_pairs trans_tbl;
+  add_pairs tmp_tbl String.(to_list sq, to_list w);
+  Hashtbl.to_alist tmp_tbl |> List.map ~f:Tuple2.swap |> List.unzip |> add_pairs trans_tbl;
+
   trans_tbl
 ;;
 
-let get_max_anagram words sq_tbl =
+let get_max_anagram sq_tbl words =
   let squares = get_squares sq_tbl (String.length (List.hd_exn words)) in
 
   let trans trans_tbl s =
@@ -60,7 +59,7 @@ let get_max_anagram words sq_tbl =
         else (
           let tmp = trans trans_tbl w2 in
           if List.exists squares ~f:(fun sq -> String.(sq = tmp))
-          then loop (Int.max res (Int.max (Int.of_string x) (Int.of_string tmp))) xs
+          then loop Int.(max res (max (of_string x) (of_string tmp))) xs
           else loop res xs)
     in
     loop 0 squares
@@ -84,7 +83,7 @@ let compute str_lst =
   let sq_tbl = Hashtbl.create (module Int) in
   Hashtbl.data word_tbl
   |> List.filter ~f:(fun lst -> List.length lst > 1)
-  |> List.map ~f:(Fun.flip get_max_anagram sq_tbl)
+  |> List.map ~f:(get_max_anagram sq_tbl)
   |> List.max_elt ~compare:Int.compare
   |> Option.value_exn
 ;;
