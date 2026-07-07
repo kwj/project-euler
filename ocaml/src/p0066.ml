@@ -107,17 +107,17 @@ let get_numerator a0 lst =
 ;;
 
 let compute limit =
-  List.(
+  Sequence.(
     range 1 limit ~stop:`inclusive
     |> filter ~f:(Fun.compose not Euler.Math.is_square)
     |> map ~f:(fun d ->
       let a0, lst = get_cont_fraction d in
-      match length lst mod 2 with
-      | 0 -> (d, get_numerator a0 (drop_last_exn lst))
-      | _ -> (d, get_numerator a0 (drop_last_exn (lst @ lst))))
-    |> max_elt ~compare:(fun (_, z1) (_, z2) -> Z.compare z1 z2)
-    |> Option.value_exn
-    |> fst)
+      match List.length lst mod 2 with
+      | 0 -> (d, get_numerator a0 (List.drop_last_exn lst))
+      | _ -> (d, get_numerator a0 (List.drop_last_exn (lst @ lst))))
+    |> max_elt ~compare:(fun (_, z1) (_, z2) -> Z.compare z1 z2))
+  |> Option.value_exn
+  |> fst
 ;;
 
 let solve () = compute 1_000 |> Int.to_string

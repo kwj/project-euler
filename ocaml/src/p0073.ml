@@ -23,7 +23,7 @@ let make_mobius_tbl limit =
 ;;
 
 let f x =
-  List.(
+  Sequence.(
     range 1 x ~stop:`inclusive
     |> map ~f:(fun j -> ((j - 1) / 2) - (j / 3))
     |> reduce_exn ~f:( + ))
@@ -31,7 +31,7 @@ let f x =
 
 let g limit =
   let mu_tbl = make_mobius_tbl limit in
-  List.(
+  Sequence.(
     range 1 limit ~stop:`inclusive
     |> map ~f:(fun k -> mu_tbl.(k) * f (limit / k))
     |> reduce_exn ~f:( + ))
