@@ -14,15 +14,6 @@ let rec is_group89 n =
 
 let rec factorial n = if n > 1 then n * factorial (n - 1) else 1
 
-let countmap t lst =
-  let ret = Hashtbl.create t in
-  List.iter lst ~f:(fun elm ->
-    Hashtbl.update ret elm ~f:(function
-      | None -> 1
-      | Some n -> n + 1));
-  ret
-;;
-
 let compute limit =
   assert (Euler.Math.num_of_digits limit = Euler.Math.num_of_digits (limit - 1) + 1);
   let n_digits = Euler.Math.num_of_digits (limit - 1) in
@@ -35,10 +26,9 @@ let compute limit =
     |> filter_map ~f:(fun lst ->
       if (Fun.compose is_group89 (reduce_exn ~f:( + ))) lst
       then
-        Hashtbl.fold
-          (countmap (module Int) lst)
-          ~init:1
-          ~f:(fun ~key:_ ~data:v acc -> acc * factorial v)
+        sort lst ~compare:Int.ascending
+        |> group ~break:( <> )
+        |> fold ~init:1 ~f:(fun acc grp -> acc * (length grp |> factorial))
         |> Option.some
       else None)
     |> map ~f:(fun denom -> numer / denom)

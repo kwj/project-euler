@@ -59,17 +59,16 @@ let parse_data data =
       |> global_replace (Str.regexp "[^0-9.]") ""
       |> global_replace (Str.regexp "\\.") "0")
   in
-  let rec loop lines acc result =
-    match lines with
+  let rec loop acc result = function
     | [] -> List.(rev (map ~f:trim (fold ~f:( ^ ) ~init:"" (rev acc) :: result)))
     | x :: xs ->
       if Str.(string_match (regexp "^[0-9.]") x 0)
-      then loop xs (x :: acc) result
+      then loop (x :: acc) result xs
       else if Str.(string_match (regexp "^-") x 0) || List.length acc = 0
-      then loop xs acc result
-      else loop xs [] (List.fold ~f:( ^ ) ~init:"" (List.rev acc) :: result)
+      then loop acc result xs
+      else loop [] (List.fold ~f:( ^ ) ~init:"" (List.rev acc) :: result) xs
   in
-  loop data [] []
+  loop [] [] data
 ;;
 
 let make_dlx q =

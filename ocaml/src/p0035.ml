@@ -7,8 +7,9 @@ let compute limit =
     let k = Euler.Math.num_of_digits prime in
     let d = Int.pow 10 (k - 1) in
     Sequence.(
-      unfold ~init:prime ~f:(fun n -> Some (n, (n mod 10 * d) + (n / 10)))
-      |> Fun.flip drop 1
+      unfold ~init:prime ~f:(fun n ->
+        let x = (n mod 10 * d) + (n / 10) in
+        Some (x, x))
       |> Fun.flip take (k - 1)
       |> for_all ~f:Euler.Math.Prime.is_prime)
   in
