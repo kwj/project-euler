@@ -13,21 +13,23 @@ func compute(ndigits int) string {
 	}
 	var nUpper = mylib.Pow(10, ndigits) - 1
 	var nLower = mylib.Pow(10, ndigits-1)
-	var blkUpperLimit = mylib.Pow(10, ndigits*2)
-	var blkLowerLimit = 0
-	if ndigits > 1 {
-		blkLowerLimit = mylib.Pow(10, (ndigits-1)*2)
+	if ndigits == 1 {
+		nLower = 0
 	}
 	var blkWidth = mylib.Pow(10, (ndigits*2 - 2))
 	var answer = make([]int, 0, 1)
 
-	for blkLower := blkUpperLimit - blkWidth; blkLower >= blkLowerLimit; blkLower -= blkWidth {
+	for blkLower := ((nUpper * nUpper) / blkWidth) * blkWidth; blkLower >= (nLower * nLower); blkLower -= blkWidth {
 		var blkUpper = blkLower + blkWidth - 1
 		for x := nUpper; x >= nLower; x-- {
 			if x*x < blkLower {
 				break
 			}
-			for y := min(blkUpper/x, x); y >= nLower; y-- {
+			var yStart = x
+			if x > 0 {
+				yStart = min(blkUpper/x, x)
+			}
+			for y := yStart; y >= nLower; y-- {
 				var tmp = x * y
 				if tmp < blkLower {
 					break

@@ -3,7 +3,7 @@ module Sol.P0004 (compute, solve) where
 import Control.Arrow ((&&&))
 import Data.Foldable (asum)
 
-import Mylib.Math (isPalindrome)
+import Mylib.Math (isPalindrome, isqrt)
 
 compute :: Int -> String
 compute n
@@ -14,17 +14,16 @@ compute n
             _ -> "not found"
   where
     nUpper = 10 ^ n - 1
-    nLower = 10 ^ (n - 1)
-    blkUpperLimit = 10 ^ (n * 2)
-    blkLowerLimit = if n == 1 then 0 else 10 ^ ((n - 1) * 2)
+    nLower = if n == 1 then 0 else 10 ^ (n - 1)
     blkSize = 10 ^ (n * 2 - 2)
 
     -- descending list of block ranges [(lower, uppper), ...]
     blocks :: [(Int, Int)]
     blocks =
-        map (subtract blkSize &&& subtract 1)
-            . takeWhile (> blkLowerLimit)
-            $ iterate (subtract blkSize) blkUpperLimit
+        map (id &&& (+ (blkSize - 1)))
+            . reverse
+            . takeWhile (<= nUpper * nUpper)
+            $ iterate (+ blkSize) (nLower * nLower)
 
     -- find the maximum palindrome number in the block
     maxPalindromeNumber :: (Int, Int) -> Maybe Int
@@ -36,9 +35,13 @@ compute n
 
         findPalindromeNumbers :: (Int, Int) -> [Int]
         findPalindromeNumbers (blkLower, blkUpper) =
-            filter (`isPalindrome` 10) . filter (>= blkLower) $
-                (\x -> (x *) <$> [nLower .. (min x (blkUpper `div` x))])
-                    =<< [x | x <- [nLower .. nUpper], x * x >= blkLower]
+            [ prod
+            | x <- [isqrt blkLower .. nUpper]
+            , y <- [nLower .. if x == 0 then 0 else min x (blkUpper `div` x)]
+            , let prod = x * y
+            , prod >= blkLower
+            , prod `isPalindrome` 10
+            ]
 
 solve :: String
 solve = compute 3

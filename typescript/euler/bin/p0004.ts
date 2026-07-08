@@ -9,14 +9,12 @@ export const compute = (digits: number): string => {
   }
 
   const nUpper = (10 ** digits) - 1;
-  const nLower = 10 ** (digits - 1);
-  const blkUpperLimit = 10 ** (digits * 2) - 1;
-  const blkLowerLimit = digits > 1 ? 10 ** ((digits - 1) * 2) : 0;
+  const nLower = digits > 1 ? 10 ** (digits - 1) : 0;
   const blkWidth = 10 ** (digits * 2 - 2);
   const answer: number[] = [];
 
   for (
-    const blk_lower of range(blkLowerLimit, blkUpperLimit, blkWidth)
+    const blk_lower of range(nLower ** 2, nUpper ** 2 + 1, blkWidth)
       .toReversed()
   ) {
     const blk_upper = blk_lower + blkWidth - 1;
@@ -25,7 +23,7 @@ export const compute = (digits: number): string => {
         break;
       }
       for (
-        const y of range(nLower, Math.min(Math.trunc(blk_upper / x), x) + 1)
+        const y of range(nLower, x == 0 ? x + 1: Math.min(Math.trunc(blk_upper / x), x) + 1)
           .toReversed()
       ) {
         const tmp = x * y;

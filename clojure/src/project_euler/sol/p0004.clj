@@ -10,22 +10,20 @@
   ([n-digits]
    {:pre [(pos? n-digits)]}
    (let [n-upper (dec (my-math/pow 10 n-digits))
-         n-lower (my-math/pow 10 (dec n-digits))
-         blk-upper-limit (my-math/pow 10 (* n-digits 2))
-         blk-lower-limit (if (> n-digits 1) (my-math/pow 10 (* (dec n-digits) 2)) 0)
+         n-lower (if (> n-digits 1) (my-math/pow 10 (dec n-digits)) 0)
          blk-width (my-math/pow 10 (- (* n-digits 2) 2))]
-     (loop [upper-lst (range blk-upper-limit blk-lower-limit (- blk-width))]
-       (if (seq upper-lst)
-         (let [blk-upper (first upper-lst)
-               blk-lower (- blk-upper blk-width)
+     (loop [blk-lower-lst (range (* (quot (* n-upper n-upper) blk-width) blk-width) (dec (* n-lower n-lower)) (- blk-width))]
+       (if (seq blk-lower-lst)
+         (let [blk-lower (first blk-lower-lst)
+               blk-upper (dec (+ blk-lower blk-width))
                prods (for [x (range n-upper (dec n-lower) -1)
                            :while (>= (* x x) blk-lower)
-                           y (range (min (quot blk-upper x) x) (dec n-lower) -1)
+                           y (range (if (> x 0) (min (quot blk-upper x) x) x) (dec n-lower) -1)
                            :let [prod (* x y)]
                            :while (>= prod blk-lower)
                            :when (my-math/palindrome? prod)]
                        prod)]
            (if (seq prods)
              (apply max prods)
-             (recur (next upper-lst))))
+             (recur (next blk-lower-lst))))
          (throw (ex-info "No answer is found" {:n-digits n-digits})))))))

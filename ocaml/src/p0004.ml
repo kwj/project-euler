@@ -4,23 +4,21 @@ open Core
 
 let make_segments low high =
   let blk_size = if low = 0 then 1 else low * low in
-  List.(
-    range (low * low) (high * high) ~stride:blk_size ~stop:`inclusive
-    |> map ~f:(fun x -> (x, x + blk_size - 1))
-    |> rev)
-  |> Sequence.of_list
+  Sequence.(
+    range
+      (high * high / blk_size * blk_size)
+      (low * low)
+      ~stride:(-blk_size)
+      ~stop:`inclusive
+    |> map ~f:(fun x -> (x, x + blk_size - 1)))
 ;;
 
 let find_max_palindrome_number low high (blk_low, blk_high) =
   Sequence.(
-    range
-      (Euler.Math.isqrt blk_low)
-      (if low = 0 then high else min high (blk_high / low))
-      ~stop:`inclusive
+    range (Euler.Math.isqrt blk_low) high ~stop:`inclusive
     |> concat_map ~f:(fun x ->
-      range x low ~stride:(-1) ~stop:`inclusive
+      range (if x = 0 then 0 else min x (blk_high / x)) low ~stride:(-1) ~stop:`inclusive
       |> map ~f:(( * ) x)
-      |> drop_while ~f:(( < ) blk_high)
       |> take_while ~f:(( <= ) blk_low)
       |> filter ~f:Euler.Math.is_palindrome)
     |> max_elt ~compare:Int.compare)

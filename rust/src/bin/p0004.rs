@@ -13,26 +13,29 @@ fn compute(ndigit: u32) -> i64 {
     debug_assert!(ndigit > 0);
 
     let n_upper = 10_i64.pow(ndigit) - 1;
-    let n_lower = 10_i64.pow(ndigit - 1);
-    let blk_upper_limit = 10_i64.pow(ndigit * 2);
-    let blk_lower_limit = if ndigit > 1 {
-        10_i64.pow((ndigit - 1) * 2)
+    let n_lower = if ndigit > 1 {
+        10_i64.pow(ndigit - 1)
     } else {
         0
     };
     let blk_width = 10_i64.pow(ndigit * 2 - 2);
-    let mut answer: Vec<i64> = Vec::new();
-
-    for (blk_lower, blk_upper) in ((blk_lower_limit + blk_width)..=blk_upper_limit)
-        .rev()
+    // an ugly workaround
+    let blk_lowers: Vec<i64> = ((n_lower * n_lower)..=(n_upper * n_upper))
         .step_by(blk_width as usize)
-        .map(|x| (x - blk_width, x - 1))
-    {
+        .collect();
+
+    let mut answer: Vec<i64> = Vec::new();
+    for (blk_lower, blk_upper) in blk_lowers.into_iter().rev().map(|x| (x, x + blk_width - 1)) {
         for x in (n_lower..=n_upper).rev() {
             if x * x < blk_lower {
                 break;
             }
-            for y in (n_lower..=cmp::min(blk_upper / x, x)).rev() {
+            let y_upper = if x == 0 {
+                x
+            } else {
+                cmp::min(blk_upper / x, x)
+            };
+            for y in (n_lower..=y_upper).rev() {
                 let tmp = x * y;
                 if tmp < blk_lower {
                     break;
