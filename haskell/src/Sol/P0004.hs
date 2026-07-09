@@ -21,9 +21,8 @@ compute n
     blocks :: [(Int, Int)]
     blocks =
         map (id &&& (+ (blkSize - 1)))
-            . reverse
-            . takeWhile (<= nUpper * nUpper)
-            $ iterate (+ blkSize) (nLower * nLower)
+            . takeWhile (>= nLower * nLower)
+            $ iterate (subtract blkSize) (((nUpper * nUpper) `div` blkSize) * blkSize)
 
     -- find the maximum palindrome number in the block
     maxPalindromeNumber :: (Int, Int) -> Maybe Int
