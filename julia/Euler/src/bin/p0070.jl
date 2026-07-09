@@ -95,7 +95,7 @@ function solve_0070()
     pq = PriorityQueue{Vector{Tuple{Int, Int}}, Float64}()
     push!(pq, [(11, 1), (7919, 1)] => (87109 / 79180) )
 
-    for p in reverse(primes(11, isqrt(LIMIT)))
+    for p in Iterators.reverse(primes(11, isqrt(LIMIT)))
         # pruning: end of search
         if get_ratio([(p, 1)]) > first(pq)[2]
             break
