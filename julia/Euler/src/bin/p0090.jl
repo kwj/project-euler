@@ -15,7 +15,7 @@ function solve_0090()
     end
 
     # julia> squares
-    # 9-element Vector{Tuple{Vector{Int64}, Vector{Int64}}}:
+    # 8-element Vector{Tuple{Vector{Int64}, Vector{Int64}}}:
     # ([1, 0], [0, 1])
     # ([4, 0], [0, 4])
     # ([6, 0], [0, 6])
@@ -23,9 +23,8 @@ function solve_0090()
     # ([5, 2], [2, 5])
     # ([6, 3], [3, 6])
     # ([6, 4], [4, 6])
-    # ([4, 6], [6, 4])
     # ([1, 8], [8, 1])
-    squares = [(sq, reverse(sq)) for sq in replace.([digits(i^2; pad = 2) for i = 1:9], 9 => 6)]
+    squares = [(sq, reverse(sq)) for sq in replace.([digits(i^2; pad = 2) for i = 1:9 if i != 8], 9 => 6)]
 
     # julia> for dice in with_replacement_combinations(collect(combinations(vcat(0:8, 6), 6)), 2)
     #            println(dice)
