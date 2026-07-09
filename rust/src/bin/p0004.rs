@@ -7,9 +7,6 @@ fn solve() -> String {
 }
 
 fn compute(ndigit: u32) -> i64 {
-    use euler::math;
-    use std::cmp;
-
     debug_assert!(ndigit > 0);
 
     let n_upper = 10_i64.pow(ndigit) - 1;
@@ -19,43 +16,57 @@ fn compute(ndigit: u32) -> i64 {
         0
     };
     let blk_width = 10_i64.pow(ndigit * 2 - 2);
-    // an ugly workaround
-    let blk_lowers: Vec<i64> = ((n_lower * n_lower)..=(n_upper * n_upper))
-        .step_by(blk_width as usize)
-        .collect();
 
-    let mut answer: Vec<i64> = Vec::new();
-    for (blk_lower, blk_upper) in blk_lowers.into_iter().rev().map(|x| (x, x + blk_width - 1)) {
-        for x in (n_lower..=n_upper).rev() {
-            if x * x < blk_lower {
+    // descending order - (100, 999, 990000, 999999), (100, 999, 980000, 989999), ...
+    let mut blocks = ((n_lower * n_lower)..=((n_upper * n_upper) / blk_width * blk_width))
+        .rev()
+        .step_by(blk_width as usize)
+        .map(|x| (n_lower, n_upper, x, x + blk_width - 1));
+
+    if let Some(v) = blocks.find_map(max_palindrome_number) {
+        v
+    } else {
+        unreachable!()
+    }
+}
+
+fn max_palindrome_number(
+    (n_lower, n_upper, blk_lower, blk_upper): (i64, i64, i64, i64),
+) -> Option<i64> {
+    use euler::math;
+    use std::cmp;
+
+    let mut result: Vec<i64> = Vec::new();
+    for x in (n_lower..=n_upper).rev() {
+        if x * x < blk_lower {
+            break;
+        }
+        let y_upper = if x == 0 {
+            x
+        } else {
+            cmp::min(blk_upper / x, x)
+        };
+        for y in (n_lower..=y_upper).rev() {
+            let tmp = x * y;
+            if tmp < blk_lower {
                 break;
             }
-            let y_upper = if x == 0 {
-                x
-            } else {
-                cmp::min(blk_upper / x, x)
-            };
-            for y in (n_lower..=y_upper).rev() {
-                let tmp = x * y;
-                if tmp < blk_lower {
-                    break;
-                }
-                if math::is_palindrome(tmp, 10) {
-                    answer.push(tmp);
-                }
+            if math::is_palindrome(tmp, 10) {
+                result.push(tmp);
             }
         }
-        if !answer.is_empty() {
-            return answer.into_iter().max().unwrap();
-        }
     }
-
-    unreachable!();
+    result.into_iter().max()
 }
 
 #[cfg(test)]
 mod tests {
     use super::compute;
+
+    #[test]
+    fn p0004_one_digit() {
+        assert_eq!(compute(1), 9);
+    }
 
     #[test]
     fn p0004_two_digit() {
