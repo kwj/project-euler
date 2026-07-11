@@ -29,14 +29,14 @@ fn solve() -> String {
     compute(4).to_string()
 }
 
-fn compute(n_nums: i64) -> i64 {
+fn compute(n_nums: u64) -> u64 {
     debug_assert!(n_nums > 0);
 
     let grid = get_grid();
     let row_size = grid.len() as i64;
     let col_size = grid[0].len() as i64;
 
-    let value_at = |r: i64, c: i64| -> i64 {
+    let value_at = |r: i64, c: i64| -> u64 {
         if r < 0 || r >= row_size || c < 0 || c >= col_size {
             0
         } else {
@@ -44,13 +44,13 @@ fn compute(n_nums: i64) -> i64 {
         }
     };
 
-    let products = |r: i64, c: i64| -> Vec<i64> {
-        let mut v_r: i64 = 1; // Right
-        let mut v_d: i64 = 1; // Down
-        let mut v_ur: i64 = 1; // Upper Right
-        let mut v_dr: i64 = 1; // Down Right
+    let products = |r: i64, c: i64| -> Vec<u64> {
+        let mut v_r: u64 = 1; // Right
+        let mut v_d: u64 = 1; // Down
+        let mut v_ur: u64 = 1; // Upper Right
+        let mut v_dr: u64 = 1; // Down Right
 
-        for i in 0..n_nums {
+        for i in 0..(n_nums as i64) {
             v_r *= value_at(r, c + i);
             v_d *= value_at(r + i, c);
             v_ur *= value_at(r - i, c + i);
@@ -65,12 +65,12 @@ fn compute(n_nums: i64) -> i64 {
         .unwrap()
 }
 
-fn get_grid() -> Vec<Vec<i64>> {
+fn get_grid() -> Vec<Vec<u64>> {
     DATA.trim()
         .lines()
         .map(|s| {
             s.split_whitespace()
-                .map(|x| x.parse::<i64>().unwrap())
+                .map(|x| x.parse::<u64>().unwrap())
                 .collect()
         })
         .collect()

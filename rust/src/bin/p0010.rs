@@ -6,7 +6,7 @@ fn solve() -> String {
     compute(2_000_000).to_string()
 }
 
-fn compute(upper: i64) -> i64 {
+fn compute(upper: u64) -> u64 {
     use euler::math::primes;
 
     debug_assert!(upper > 2);

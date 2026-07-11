@@ -8,13 +8,13 @@ fn solve() -> String {
     compute(1_000_000).to_string()
 }
 
-fn compute(limit: i64) -> i64 {
+fn compute(limit: u64) -> u64 {
     debug_assert!(limit > 2);
 
-    let mut cs_gen: CumSumPrime = CumSumPrime::default();
-    let mut cs_lst: Vec<i64> = cs_gen.initial_lst(limit);
+    let mut cs_gen = CumSumPrime::default();
+    let mut cs_lst = cs_gen.initial_lst(limit);
 
-    let mut k: usize = cs_lst.len() - 2;
+    let mut k = cs_lst.len() - 2;
     let mut left: usize = 0;
     loop {
         let diff = cs_lst[left + k] - cs_lst[left];
@@ -34,14 +34,14 @@ fn compute(limit: i64) -> i64 {
 
 #[derive(Default)]
 struct CumSumPrime {
-    cumsum: i64,
-    prime: i64,
+    cumsum: u64,
+    prime: u64,
 }
 
 impl Iterator for CumSumPrime {
-    type Item = i64;
+    type Item = u64;
 
-    fn next(&mut self) -> Option<i64> {
+    fn next(&mut self) -> Option<u64> {
         self.prime = primes::next_prime(self.prime);
         self.cumsum += self.prime;
 
@@ -50,7 +50,7 @@ impl Iterator for CumSumPrime {
 }
 
 impl CumSumPrime {
-    fn initial_lst(&mut self, limit: i64) -> Vec<i64> {
+    fn initial_lst(&mut self, limit: u64) -> Vec<u64> {
         use std::iter;
 
         [0].into_iter()

@@ -10,15 +10,15 @@ fn solve() -> String {
     compute(5).to_string()
 }
 
-fn compute(size_of_clique: usize) -> i64 {
+fn compute(size_of_clique: usize) -> u64 {
     debug_assert!(size_of_clique > 1);
 
-    let mut prime_lst: Vec<Vec<i64>> = vec![vec![3], vec![3]];
-    let mut tbl: HashMap<i64, HashSet<i64>> = HashMap::new();
-    let mut ans = i64::MAX;
+    let mut prime_lst: Vec<Vec<u64>> = vec![vec![3], vec![3]];
+    let mut tbl: HashMap<u64, HashSet<u64>> = HashMap::new();
+    let mut ans = u64::MAX;
 
     // start searching from the 4th prime, 7
-    let mut p: i64 = 5;
+    let mut p: u64 = 5;
     loop {
         // break this loop when it has verified the answer is the lowest sum
         p = primes::next_prime(p);
@@ -45,7 +45,7 @@ fn compute(size_of_clique: usize) -> i64 {
             ans = cmp::min(
                 ans,
                 clqs.into_iter()
-                    .map(|v| v.iter().sum::<i64>() + p)
+                    .map(|v| v.into_iter().sum::<u64>() + p)
                     .min()
                     .unwrap(),
             );
@@ -55,9 +55,9 @@ fn compute(size_of_clique: usize) -> i64 {
     ans
 }
 
-fn is_pair(x: i64, y: i64) -> bool {
-    fn concat(a: i64, b: i64) -> i64 {
-        let mut n: i64 = 10;
+fn is_pair(x: u64, y: u64) -> bool {
+    fn concat(a: u64, b: u64) -> u64 {
+        let mut n: u64 = 10;
         while b > n {
             n *= 10;
         }
@@ -67,26 +67,26 @@ fn is_pair(x: i64, y: i64) -> bool {
     primes::is_prime(concat(x, y)) && primes::is_prime(concat(y, x))
 }
 
-fn find_nbrs(p: i64, asc_p_lst: &[i64], current_ans: i64) -> Vec<i64> {
+fn find_nbrs(p: u64, asc_p_lst: &[u64], current_ans: u64) -> Vec<u64> {
     asc_p_lst
         .iter()
-        .take_while(|&x| *x < current_ans - p)
-        .filter(|&x| is_pair(*x, p))
+        .take_while(|x| **x < current_ans - p)
+        .filter(|x| is_pair(**x, p))
         .copied()
         .collect()
 }
 
 fn check_cliques(
-    desc_nbr_lst: &[i64],
+    desc_nbr_lst: &[u64],
     size: usize,
-    tbl: &HashMap<i64, HashSet<i64>>,
-) -> Option<Vec<Vec<i64>>> {
+    tbl: &HashMap<u64, HashSet<u64>>,
+) -> Option<Vec<Vec<u64>>> {
     fn aux(
-        group: &[i64],
-        ps: &[i64],
+        group: &[u64],
+        ps: &[u64],
         depth: usize,
-        tbl: &HashMap<i64, HashSet<i64>>,
-        result: &mut Vec<Vec<i64>>,
+        tbl: &HashMap<u64, HashSet<u64>>,
+        result: &mut Vec<Vec<u64>>,
     ) {
         if depth == 0 {
             result.push(group.to_vec());
@@ -104,7 +104,7 @@ fn check_cliques(
         }
     }
 
-    let mut result: Vec<Vec<i64>> = Vec::new();
+    let mut result: Vec<Vec<u64>> = Vec::new();
     aux(&Vec::new(), desc_nbr_lst, size, tbl, &mut result);
 
     if result.is_empty() {

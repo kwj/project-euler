@@ -54,16 +54,16 @@ fn solve() -> String {
     compute().to_string()
 }
 
-fn compute() -> i64 {
+fn compute() -> u64 {
     use euler::math;
     use itertools::Itertools;
 
-    let fact_tbl: Vec<i64> = vec![1, 1, 2, 6, 24, 120, 720, 5_040, 40_320, 362_880];
-    let mut acc = 0_i64;
+    let fact_tbl: Vec<u64> = vec![1, 1, 2, 6, 24, 120, 720, 5_040, 40_320, 362_880];
+    let mut acc = 0_u64;
 
     for ndigits in 2_usize..8 {
         for v in (0_usize..10).combinations_with_replacement(ndigits) {
-            let n = v.iter().map(|x| fact_tbl[*x]).sum::<i64>();
+            let n = v.iter().map(|x| fact_tbl[*x]).sum::<u64>();
             let mut tmp: Vec<_> = math::digits(n).into_iter().map(|x| x as usize).collect();
             tmp.sort_unstable();
             if tmp == v {

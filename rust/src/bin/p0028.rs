@@ -26,14 +26,14 @@ fn solve() -> String {
     compute(1_001).to_string()
 }
 
-fn compute(length: i64) -> i64 {
-    fn f(x: i64) -> i64 {
+fn compute(length: u64) -> u64 {
+    fn f(x: u64) -> u64 {
         16 * x * x + 4 * x + 4
     }
 
-    debug_assert!(length.is_positive() && length % 2 == 1);
+    debug_assert!(length % 2 == 1);
 
-    1 + (1..=((length - 1) / 2)).map(f).sum::<i64>()
+    1 + (1..=((length - 1) / 2)).map(f).sum::<u64>()
 }
 
 #[cfg(test)]

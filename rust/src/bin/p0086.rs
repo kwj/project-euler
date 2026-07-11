@@ -43,11 +43,11 @@ fn solve() -> String {
     compute(1_000_000).to_string()
 }
 
-fn compute(thr: i64) -> i64 {
+fn compute(thr: u64) -> u64 {
     use euler::math;
 
-    let mut acc: i64 = 0;
-    let mut c: i64 = 3;
+    let mut acc: u64 = 0;
+    let mut c: u64 = 3;
     while acc <= thr {
         let mut ab = c * 2;
         while ab > 1 {

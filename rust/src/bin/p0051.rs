@@ -8,13 +8,13 @@ fn solve() -> String {
     compute(8).to_string()
 }
 
-fn compute(f_size: i64) -> i64 {
+fn compute(f_size: u64) -> u64 {
     use euler::math::primes;
 
     debug_assert!(f_size >= 8);
 
     for exp in 3_u32.. {
-        let p_lst = primes::primes(10_i64.pow(exp), 10_i64.pow(exp + 1));
+        let p_lst = primes::primes(10_u64.pow(exp), 10_u64.pow(exp + 1));
         for p in p_lst {
             if is_family(p, f_size) {
                 return p;
@@ -25,17 +25,17 @@ fn compute(f_size: i64) -> i64 {
     unreachable!();
 }
 
-fn is_family(p: i64, f_size: i64) -> bool {
+fn is_family(p: u64, f_size: u64) -> bool {
     use euler::math::{self, primes};
 
     for n in 0..=(10 - f_size) {
         let p_digits = math::digits(p);
-        let masks = euler::powerset(&euler::findall(|&x| x == n, &p_digits));
+        let masks = euler::powerset(&euler::findall(|x| *x == n, &p_digits));
         for mask in masks {
             if mask.len() < 3 || mask.len() % 3 != 0 || mask[0] == 0 {
                 continue;
             }
-            let mut cnt: i64 = 1;
+            let mut cnt: u64 = 1;
             let mut p_digits_tmp = p_digits.clone();
             for d in (n + 1)..=9 {
                 for idx in &mask {

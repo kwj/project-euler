@@ -13,7 +13,7 @@ fn compute(limit: usize) -> usize {
 
     let d_tbl = math::aliquot_sum_tbl(limit);
 
-    let abndnt_flag: Vec<bool> = (0..=limit).map(|i| (i as i64) < d_tbl[i]).collect();
+    let abndnt_flag: Vec<bool> = (0..=limit).map(|i| (i as u64) < d_tbl[i]).collect();
     let mut abndnt_lst: Vec<usize> = Vec::new();
     let mut acc: usize = 0;
 

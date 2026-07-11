@@ -6,11 +6,11 @@ fn solve() -> String {
     compute().to_string()
 }
 
-fn compute() -> i64 {
+fn compute() -> u64 {
     let limit: usize = 1_000_000;
     let thr: usize = 60;
     let mut chain_tbl: Vec<usize> = vec![0; limit + 1];
-    let mut cnt: i64 = 0;
+    let mut cnt: u64 = 0;
 
     for n in 1..limit {
         let mut footprints: Vec<usize> = Vec::new();

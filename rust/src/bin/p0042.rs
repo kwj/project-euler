@@ -21,15 +21,15 @@ fn parse_data(s: &str) -> Vec<String> {
     use std::string::ToString;
 
     s.chars()
-        .filter(|&c| c != '"')
+        .filter(|c| *c != '"')
         .collect::<String>()
         .split(',')
         .map(ToString::to_string)
         .collect()
 }
 
-fn worth(s: &str) -> i64 {
-    s.chars().map(|c| c as i64 - 'A' as i64 + 1).sum()
+fn worth(s: &str) -> u64 {
+    s.chars().map(|c| c as u64 - 'A' as u64 + 1).sum()
 }
 
 #[cfg(test)]

@@ -55,10 +55,10 @@ fn solve() -> String {
     compute(1_000_000_000).to_string()
 }
 
-fn compute(limit: i64) -> i64 {
-    let mut a: i64 = 2;
-    let mut b: i64 = 1;
-    let mut res: i64 = 0;
+fn compute(limit: u64) -> u64 {
+    let mut a: u64 = 2;
+    let mut b: u64 = 1;
+    let mut res: u64 = 0;
 
     loop {
         (a, b) = (2 * a + 3 * b, a + 2 * b);

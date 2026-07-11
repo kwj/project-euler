@@ -6,7 +6,7 @@ fn solve() -> String {
     compute(20, 20).to_string()
 }
 
-fn compute(x: i64, y: i64) -> i64 {
+fn compute(x: u64, y: u64) -> u64 {
     use euler::math;
 
     debug_assert!(x > 0 && y > 0);

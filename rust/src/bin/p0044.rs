@@ -13,12 +13,12 @@ fn solve() -> String {
     compute().to_string()
 }
 
-fn compute() -> i64 {
+fn compute() -> u64 {
     use euler::math;
 
-    let pent = |n: i64| n * (3 * n - 1) / 2;
+    let pent = |n: u64| n * (3 * n - 1) / 2;
 
-    for d in 4_i64.. {
+    for d in 4_u64.. {
         let lhs = d * (3 * d - 1);
         for r1 in get_divisors(d) {
             let r2 = lhs / r1;
@@ -46,7 +46,7 @@ fn compute() -> i64 {
 //  - They are less than 'n'.
 //  - They are congruent to 'n' modulo 3.
 // note: 'n' and '3n-1' are relatively prime.
-fn get_divisors(n: i64) -> Vec<i64> {
+fn get_divisors(n: u64) -> Vec<u64> {
     use euler::math;
     use itertools::Itertools;
 
@@ -54,7 +54,7 @@ fn get_divisors(n: i64) -> Vec<i64> {
         .into_iter()
         .cartesian_product(math::divisors(3 * n - 1))
         .map(|(x, y)| x * y)
-        .filter(|&x| x < n && x % 3 == n % 3)
+        .filter(|x| *x < n && *x % 3 == n % 3)
         .collect()
 }
 

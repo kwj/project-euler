@@ -6,14 +6,14 @@ fn solve() -> String {
     compute(1_000).to_string()
 }
 
-fn compute(exp: u32) -> i64 {
+fn compute(exp: u32) -> u64 {
     use num_bigint::BigUint;
 
     BigUint::from(2_u32)
         .pow(exp)
         .to_radix_le(10)
         .into_iter()
-        .map(i64::from)
+        .map(u64::from)
         .sum()
 }
 

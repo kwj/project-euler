@@ -6,9 +6,9 @@ fn solve() -> String {
     compute().to_string()
 }
 
-fn compute() -> i64 {
+fn compute() -> u64 {
     (1..=9)
-        .map(|m| ((1.0 / (1.0 - (m as f32).log10())).floor()) as i64)
+        .map(|m| ((1.0 / (1.0 - (m as f32).log10())).floor()) as u64)
         .sum()
 }
 

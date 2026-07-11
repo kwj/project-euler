@@ -14,7 +14,7 @@ fn solve() -> String {
     compute(FILE_DATA).to_string()
 }
 
-fn compute(data: &str) -> i64 {
+fn compute(data: &str) -> u64 {
     let matrix = parse_data(data);
     let nbr_tbl = make_neighbor_tbl(matrix.len(), matrix[0].len());
     let mut dist_tbl = make_distance_tbl(matrix.len(), matrix[0].len());
@@ -46,11 +46,11 @@ fn compute(data: &str) -> i64 {
     dist_tbl[dist_tbl.len() - 1][dist_tbl[0].len() - 1]
 }
 
-fn parse_data(data: &str) -> Vec<Vec<i64>> {
-    let mut ret: Vec<Vec<i64>> = Vec::new();
+fn parse_data(data: &str) -> Vec<Vec<u64>> {
+    let mut ret: Vec<Vec<u64>> = Vec::new();
 
     for line in data.lines() {
-        ret.push(line.split(',').map(|s| s.parse::<i64>().unwrap()).collect());
+        ret.push(line.split(',').map(|s| s.parse::<u64>().unwrap()).collect());
     }
 
     ret
@@ -65,7 +65,7 @@ fn make_neighbor_tbl(n_rows: usize, n_cols: usize) -> Vec<Vec<Vec<(usize, usize)
             let y = c_idx as i64;
             *node = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
                 .into_iter()
-                .filter(|&tpl| {
+                .filter(|tpl| {
                     tpl.0 >= 0 && tpl.0 < n_rows as i64 && tpl.1 >= 0 && tpl.1 < n_cols as i64
                 })
                 .map(|tpl| (tpl.0 as usize, tpl.1 as usize))
@@ -76,14 +76,14 @@ fn make_neighbor_tbl(n_rows: usize, n_cols: usize) -> Vec<Vec<Vec<(usize, usize)
     tbl
 }
 
-fn make_distance_tbl(n_rows: usize, n_cols: usize) -> Vec<Vec<i64>> {
-    vec![vec![i64::MAX; n_cols]; n_rows]
+fn make_distance_tbl(n_rows: usize, n_cols: usize) -> Vec<Vec<u64>> {
+    vec![vec![u64::MAX; n_cols]; n_rows]
 }
 
 // minimum binary heap (priority key: distance from (0, 0), value: node)
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct Node {
-    priority: i64,
+    priority: u64,
     pos: (usize, usize),
 }
 

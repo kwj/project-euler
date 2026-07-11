@@ -6,7 +6,7 @@ fn solve() -> String {
     compute(100).to_string()
 }
 
-fn compute(n: usize) -> i64 {
+fn compute(n: usize) -> u64 {
     use num_bigint::BigUint;
 
     debug_assert!(n > 0);
@@ -15,7 +15,7 @@ fn compute(n: usize) -> i64 {
         .fold(BigUint::from(1_u32), |acc, x| acc * x)
         .to_radix_le(10)
         .into_iter()
-        .map(i64::from)
+        .map(u64::from)
         .sum()
 }
 

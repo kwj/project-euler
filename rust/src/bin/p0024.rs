@@ -10,8 +10,8 @@ fn compute(mut idx: usize) -> String {
     debug_assert!(idx > 0 && idx <= 3_628_800); // 3_628_800 = 10!
 
     idx -= 1; // convert to 0-origin
-    let mut lst: Vec<i64> = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    let mut acc = 0_i64;
+    let mut lst: Vec<u64> = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let mut acc = 0_u64;
 
     for i in (0..lst.len()).rev() {
         let fact = factorial(i);

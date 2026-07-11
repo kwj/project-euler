@@ -6,10 +6,10 @@ fn solve() -> String {
     compute(1000).to_string()
 }
 
-fn compute(limit: i64) -> i64 {
+fn compute(limit: u64) -> u64 {
     debug_assert!(limit > 0);
 
-    let f = |x: i64| -> i64 {
+    let f = |x: u64| -> u64 {
         // tmp: number of multiples of `x` less than `limit`
         let tmp = (limit - 1) / x;
         (1 + tmp) * tmp / 2 * x

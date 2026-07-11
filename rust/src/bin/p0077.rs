@@ -10,15 +10,15 @@ fn compute(thr: i64) -> usize {
     use euler::math::primes;
 
     let mut prime = 0;
-    let mut p_lst: Vec<i64> = Vec::new();
+    let mut p_lst: Vec<u64> = Vec::new();
 
     loop {
         prime = primes::next_prime(prime);
         p_lst.push(prime);
         let mut tbl: Vec<i64> = vec![0; p_lst.len() + 1];
         tbl[0] = 1;
-        for i in &p_lst {
-            for j in *i..(tbl.len() as i64) {
+        for i in p_lst.iter() {
+            for j in *i..(tbl.len() as u64) {
                 tbl[j as usize] += tbl[(j - *i) as usize];
             }
         }

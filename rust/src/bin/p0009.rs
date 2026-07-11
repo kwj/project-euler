@@ -17,7 +17,7 @@ fn solve() -> String {
     compute(1_000).to_string()
 }
 
-fn compute(perim: i64) -> i64 {
+fn compute(perim: u64) -> u64 {
     use euler::math;
 
     debug_assert!(perim >= 3 + 4 + 5);
@@ -25,13 +25,13 @@ fn compute(perim: i64) -> i64 {
     let half_perim = perim / 2;
 
     for m in 2..=half_perim.isqrt() {
-        if half_perim % m != 0 {
+        if !half_perim.is_multiple_of(m) {
             continue;
         }
         // assume that x = m + n where x is odd number
         let mut x = m + 1 + (m % 2);
         while x < 2 * m && x <= half_perim / m {
-            if math::gcd(m, x) == 1 && half_perim / m % x == 0 {
+            if math::gcd(m, x) == 1 && (half_perim / m).is_multiple_of(x) {
                 let k = half_perim / m / x;
                 let n = x - m;
                 return k.pow(3) * (m.pow(4) - n.pow(4)) * 2 * m * n;

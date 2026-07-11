@@ -6,7 +6,7 @@ fn solve() -> String {
     compute(1_000).to_string()
 }
 
-fn compute(n_digits: u32) -> i64 {
+fn compute(n_digits: u32) -> u64 {
     use num_bigint::BigUint;
 
     debug_assert!(n_digits > 0);
@@ -18,7 +18,7 @@ fn compute(n_digits: u32) -> i64 {
     };
     let mut f1 = BigUint::from(1_u32);
     let mut f2 = BigUint::from(1_u32);
-    let mut idx = 1_i64;
+    let mut idx = 1_u64;
 
     while f1 < bound {
         (f2, f1) = (f1 + &f2, f2);

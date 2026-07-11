@@ -8,12 +8,12 @@ fn solve() -> String {
     compute(FILE_DATA).to_string()
 }
 
-fn compute(data: &str) -> i64 {
+fn compute(data: &str) -> u64 {
     use itertools::Itertools;
 
     let cipher_text = parse_data(data);
-    let mut ans = 0_i64;
-    let mut max_score = 0_i64;
+    let mut ans = 0_u64;
+    let mut max_score = 0_u64;
 
     // 'a' = 0x61, 'z' = 0x7A
     for key in (0..3).map(|_| 0x61_u8..=0x7A).multi_cartesian_product() {
@@ -24,13 +24,13 @@ fn compute(data: &str) -> i64 {
             .collect();
         if decrypted_text
             .iter()
-            .map(|&x| char::from(x)) // without this code, it is about 10% slower on my machine
+            .map(|x| char::from(*x)) // without this code, it is about 10% slower on my machine
             .all(|c| c.is_ascii_graphic() || c.is_ascii_whitespace())
         {
             let score = decrypted_text.iter().map(|ch| calc_score(*ch)).sum();
             if score > max_score {
                 max_score = score;
-                ans = decrypted_text.into_iter().map(i64::from).sum();
+                ans = decrypted_text.into_iter().map(u64::from).sum();
             }
         }
     }
@@ -50,7 +50,7 @@ fn parse_data(s: &str) -> Vec<u8> {
     0x21 - 0x7E (printable characters except alphabet letters): 1
     others: 0
 */
-fn calc_score(ch: u8) -> i64 {
+fn calc_score(ch: u8) -> u64 {
     if ch == 0x20 {
         return 4;
     }

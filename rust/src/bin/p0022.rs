@@ -23,7 +23,7 @@ fn parse_data(s: &str) -> Vec<String> {
     use std::string::ToString;
 
     s.chars()
-        .filter(|&c| c != '"')
+        .filter(|c| *c != '"')
         .collect::<String>()
         .split(',')
         .map(ToString::to_string)

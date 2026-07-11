@@ -38,16 +38,16 @@ fn solve() -> String {
     compute(50, 50).to_string()
 }
 
-fn compute(x_size: i64, y_size: i64) -> i64 {
+fn compute(x_size: u64, y_size: u64) -> u64 {
     use euler::math;
     use std::cmp;
 
-    fn case_1(x_upper: i64, y_upper: i64) -> i64 {
+    fn case_1(x_upper: u64, y_upper: u64) -> u64 {
         x_upper * y_upper * 3
     }
 
-    fn case_2(x_upper: i64, y_upper: i64) -> i64 {
-        let mut acc: i64 = 0;
+    fn case_2(x_upper: u64, y_upper: u64) -> u64 {
+        let mut acc: u64 = 0;
 
         for (x, y) in itertools::iproduct!(1..=x_upper, 1..=y_upper) {
             acc += cmp::min(y * math::gcd(x, y) / x, (x_upper - x) * math::gcd(x, y) / y);

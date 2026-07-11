@@ -6,11 +6,11 @@ fn solve() -> String {
     compute(1_000).to_string()
 }
 
-fn compute(upper: i64) -> i64 {
+fn compute(upper: u64) -> u64 {
     debug_assert!(upper > 1);
 
-    let mut max_length = 0_i64;
-    let mut ans = 0_i64;
+    let mut max_length = 0_u64;
+    let mut ans = 0_u64;
 
     for d in ((upper / 2)..upper).rev() {
         if d <= max_length {
@@ -27,23 +27,23 @@ fn compute(upper: i64) -> i64 {
 }
 
 // preprocessing
-fn pp(mut n: i64) -> i64 {
-    while n % 2 == 0 {
+fn pp(mut n: u64) -> u64 {
+    while n.is_multiple_of(2) {
         n /= 2;
     }
-    while n % 5 == 0 {
+    while n.is_multiple_of(5) {
         n /= 5;
     }
 
     n
 }
 
-fn find_repetend_length(mut n: i64) -> Option<(i64, i64)> {
+fn find_repetend_length(mut n: u64) -> Option<(u64, u64)> {
     use euler::math;
 
     // This function is not strictly correct Carmichael function
     // because the function assumes that the argument is not a multiple of 2.
-    fn carmichael(n: i64) -> i64 {
+    fn carmichael(n: u64) -> u64 {
         math::factorize(n)
             .into_iter()
             .map(|(b, e)| (b - 1) * b.pow(e - 1))

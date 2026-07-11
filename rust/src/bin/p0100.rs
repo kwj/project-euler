@@ -31,16 +31,16 @@ fn solve() -> String {
     compute(1_000_000_000_000).to_string()
 }
 
-fn compute(thr: i64) -> i64 {
+fn compute(thr: u64) -> u64 {
     let limit = 2 * thr - 1;
-    let mut x: i64 = 1;
-    let mut y: i64 = 1;
+    let mut x: u64 = 1;
+    let mut y: u64 = 1;
 
     while x <= limit {
         (x, y) = (3 * x + 4 * y, 2 * x + 3 * y);
     }
 
-    (y + 1) / 2
+    y.div_ceil(2)
 }
 
 #[cfg(test)]

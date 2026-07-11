@@ -6,11 +6,11 @@ fn solve() -> String {
     compute().to_string()
 }
 
-fn compute() -> i64 {
+fn compute() -> u64 {
     use euler::math::{self, primes};
     use itertools::Itertools;
 
-    for k in [7_i64, 4] {
+    for k in [7_u64, 4] {
         for lst in (1..=k).rev().permutations(k as usize) {
             let n = lst.iter().fold(0, |acc, x| 10 * acc + x);
             if math::is_pandigital_nz(n) && primes::is_prime(n) {

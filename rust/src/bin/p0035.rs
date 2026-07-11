@@ -6,20 +6,20 @@ fn solve() -> String {
     compute(1_000_000).to_string()
 }
 
-fn compute(limit: i64) -> usize {
+fn compute(limit: u64) -> usize {
     use euler::math::{self, primes};
 
-    fn check_rot_num(n: i64) -> bool {
-        let s = &format!("{n}{n}");
+    fn check_rot_num(n: u64) -> bool {
+        let s = format!("{n}{n}");
         let m = math::num_of_digits(n, 10) as usize;
         (0..m)
-            .map(|pos| s[pos..(pos + m)].parse::<i64>().unwrap())
+            .map(|pos| s[pos..(pos + m)].parse::<u64>().unwrap())
             .all(primes::is_prime)
     }
 
     primes::primes(1, limit)
         .into_iter()
-        .filter(|&x| check_rot_num(x))
+        .filter(|x| check_rot_num(*x))
         .count()
 }
 

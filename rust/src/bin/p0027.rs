@@ -23,19 +23,19 @@ fn solve() -> String {
 
 fn compute() -> i64 {
     let p_lst = primes::primes(1, 2_000);
-    let mut max_len = 0_i64;
+    let mut max_len = 0_u64;
     let mut max_tpl: (i64, i64) = (0, 0);
 
-    for &b in p_lst[1..].iter().filter(|&x| *x < 1_000) {
+    for &b in p_lst[1..].iter().filter(|x| **x < 1_000) {
         for a in p_lst
             .iter()
-            .map(|&x| x - b - 1)
-            .filter(|&x| x.abs() < 1_000)
+            .map(|x| (*x as i64) - (b as i64) - 1)
+            .filter(|x| *x < 1_000)
         {
             let length = count_consec_times(a, b);
             if length > max_len {
                 max_len = length;
-                max_tpl = (a, b);
+                max_tpl = (a, b as i64);
             }
         }
     }
@@ -43,14 +43,19 @@ fn compute() -> i64 {
     max_tpl.0 * max_tpl.1
 }
 
-fn count_consec_times(a: i64, b: i64) -> i64 {
+fn count_consec_times(a: i64, b: u64) -> u64 {
     let mut n = 0_i64;
 
-    while primes::is_prime(n * n + a * n + b) {
-        n += 1;
+    loop {
+        let p = n * n + a * n + (b as i64);
+        if p > 0 && primes::is_prime(p as u64) {
+            n += 1;
+        } else {
+            break;
+        }
     }
 
-    n
+    u64::try_from(n).unwrap()
 }
 
 #[cfg(test)]

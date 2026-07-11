@@ -27,12 +27,12 @@ fn solve() -> String {
     compute(2_000_000).to_string()
 }
 
-fn compute(target: i64) -> i64 {
+fn compute(target: u64) -> u64 {
     let new_target = target * 4;
-    let mut min_diff = i64::MAX;
-    let mut ans: i64 = 0;
+    let mut min_diff = u64::MAX;
+    let mut ans: u64 = 0;
 
-    for m in 1_i64.. {
+    for m in 1_u64.. {
         if let Some(tpl) = get_diff(m, new_target) {
             if tpl.0 < min_diff {
                 ans = m * tpl.1;
@@ -46,19 +46,24 @@ fn compute(target: i64) -> i64 {
     ans
 }
 
-fn get_diff(m: i64, target: i64) -> Option<(i64, i64)> {
-    let lhs = |m: i64, n: i64| m * (m + 1) * n * (n + 1);
+fn get_diff(m: u64, target: u64) -> Option<(u64, u64)> {
+    let lhs = |m: u64, n: u64| m * (m + 1) * n * (n + 1);
 
     let mut n = (target / (m * (m + 1))).isqrt() - 1;
-    while lhs(m, n) < target {
-        n += 1;
-    }
+    let mut x1 = 0_u64;
+    let mut x2 = lhs(m, n);
 
+    while x2 < target {
+        n += 1;
+        x1 = x2;
+        x2 = lhs(m, n);
+    }
     if m >= n {
         return None;
     }
-    let d1 = (target - lhs(m, n - 1)).abs();
-    let d2 = (target - lhs(m, n)).abs();
+
+    let d1 = target - x1;
+    let d2 = x2 - target;
     if d1 < d2 {
         Some((d1, n - 1))
     } else {

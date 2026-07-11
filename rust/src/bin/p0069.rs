@@ -25,13 +25,13 @@ fn solve() -> String {
     compute(1_000_000).to_string()
 }
 
-fn compute(limit: i64) -> i64 {
+fn compute(limit: u64) -> u64 {
     use euler::math::primes;
 
     debug_assert!(limit >= 2);
 
-    let mut acc = 1_i64;
-    let mut p = 1_i64;
+    let mut acc = 1_u64;
+    let mut p = 1_u64;
 
     loop {
         p = primes::next_prime(p);

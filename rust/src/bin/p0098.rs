@@ -11,10 +11,10 @@ fn solve() -> String {
     compute(FILE_DATA).to_string()
 }
 
-fn compute(data: &str) -> i64 {
+fn compute(data: &str) -> u64 {
     let mut word_tbl: HashMap<String, Vec<String>> = HashMap::new();
     let mut sq_tbl: HashMap<usize, Vec<String>> = HashMap::new();
-    let mut ans: i64 = 0;
+    let mut ans: u64 = 0;
 
     for w in parse_data(data) {
         let mut tmp: Vec<_> = w.chars().collect();
@@ -23,7 +23,7 @@ fn compute(data: &str) -> i64 {
         word_tbl.entry(key).or_default().push(w);
     }
 
-    for anagram_words in word_tbl.values().filter(|&words| words.len() > 1) {
+    for anagram_words in word_tbl.values().filter(|words| words.len() > 1) {
         ans = cmp::max(ans, get_max_anagram(anagram_words, &mut sq_tbl));
     }
 
@@ -34,14 +34,14 @@ fn parse_data(s: &str) -> Vec<String> {
     use std::string::ToString;
 
     s.chars()
-        .filter(|&c| c != '"')
+        .filter(|c| *c != '"')
         .collect::<String>()
         .split(',')
         .map(ToString::to_string)
         .collect()
 }
 
-fn get_max_anagram(words: &[String], tbl: &mut HashMap<usize, Vec<String>>) -> i64 {
+fn get_max_anagram(words: &[String], tbl: &mut HashMap<usize, Vec<String>>) -> u64 {
     fn get_trans_tbl(w: &str, sq_str: &str) -> HashMap<char, char> {
         sq_str
             .chars()
@@ -52,7 +52,7 @@ fn get_max_anagram(words: &[String], tbl: &mut HashMap<usize, Vec<String>>) -> i
             .collect()
     }
 
-    fn aux(w1: &str, w2: &str, squares: &[String]) -> i64 {
+    fn aux(w1: &str, w2: &str, squares: &[String]) -> u64 {
         fn trans(tbl: &HashMap<char, char>, s: &str) -> String {
             s.chars()
                 .map(|ch| {
@@ -65,7 +65,7 @@ fn get_max_anagram(words: &[String], tbl: &mut HashMap<usize, Vec<String>>) -> i
                 .collect()
         }
 
-        let mut ret: i64 = 0;
+        let mut ret: u64 = 0;
         for sq in squares {
             let trans_tbl = get_trans_tbl(w1, sq);
             if trans(&trans_tbl, w1) != *sq {
@@ -80,7 +80,7 @@ fn get_max_anagram(words: &[String], tbl: &mut HashMap<usize, Vec<String>>) -> i
         ret
     }
 
-    let mut ret: i64 = 0;
+    let mut ret: u64 = 0;
     let squares = get_squares(tbl, words[0].len());
 
     for (idx, w1) in words.iter().enumerate() {

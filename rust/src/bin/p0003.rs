@@ -6,7 +6,7 @@ fn solve() -> String {
     compute(600_851_475_143).to_string()
 }
 
-fn compute(n: i64) -> i64 {
+fn compute(n: u64) -> u64 {
     use euler::math;
 
     debug_assert!(n > 0);

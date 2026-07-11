@@ -8,7 +8,7 @@ fn solve() -> String {
     compute(FILE_DATA).to_string()
 }
 
-fn compute(data: &str) -> i64 {
+fn compute(data: &str) -> u64 {
     use std::cmp;
 
     let mut matrix = parse_data(data);
@@ -19,10 +19,10 @@ fn compute(data: &str) -> i64 {
             Some(*acc)
         })
         .collect();
-    prev.insert(0, i64::MAX);
+    prev.insert(0, u64::MAX);
 
     for work in &mut matrix[1..] {
-        (*work).insert(0, i64::MAX);
+        (*work).insert(0, u64::MAX);
         for i in 1..((*work).len()) {
             work[i] += cmp::min(work[i - 1], prev[i]);
         }
@@ -32,11 +32,11 @@ fn compute(data: &str) -> i64 {
     *prev.last().unwrap()
 }
 
-fn parse_data(data: &str) -> Vec<Vec<i64>> {
-    let mut ret: Vec<Vec<i64>> = Vec::new();
+fn parse_data(data: &str) -> Vec<Vec<u64>> {
+    let mut ret: Vec<Vec<u64>> = Vec::new();
 
     for line in data.lines() {
-        ret.push(line.split(',').map(|s| s.parse::<i64>().unwrap()).collect());
+        ret.push(line.split(',').map(|s| s.parse::<u64>().unwrap()).collect());
     }
 
     ret

@@ -6,13 +6,13 @@ fn solve() -> String {
     compute().to_string()
 }
 
-fn compute() -> i64 {
+fn compute() -> u64 {
     let mut lst: Vec<String> = vec![String::new()];
 
     for d in [1, 1, 17, 13, 11, 7, 5, 3, 2, 1] {
         let mut tmp_lst: Vec<String> = Vec::new();
         for x in "0123456789".chars() {
-            for s in &lst {
+            for s in lst.iter() {
                 if !s.contains(x) {
                     let tmp_s = format!("{x}{s}");
                     if tmp_s.len() < 3 || tmp_s[0..3].parse::<i32>().unwrap() % d == 0 {
@@ -26,7 +26,7 @@ fn compute() -> i64 {
 
     lst.into_iter()
         .filter(|s| s.as_bytes()[0] != 0x30) // Check if the leftmost digit isn't zero.
-        .filter_map(|s| s.parse::<i64>().ok())
+        .filter_map(|s| s.parse::<u64>().ok())
         .sum()
 }
 

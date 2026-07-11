@@ -32,12 +32,12 @@ fn solve() -> String {
     compute().to_string()
 }
 
-fn compute() -> i64 {
+fn compute() -> u64 {
     use euler::math;
 
-    let mut ans = 918_273_645_i64;
+    let mut ans = 918_273_645_u64;
 
-    for x in (9183_i64..9498).rev() {
+    for x in (9183_u64..9498).rev() {
         let rem = x % 10;
         if rem <= 1 || rem >= 8 || rem == 4 || rem == 5 {
             continue;

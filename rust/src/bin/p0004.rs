@@ -6,16 +6,16 @@ fn solve() -> String {
     compute(3).to_string()
 }
 
-fn compute(ndigit: u32) -> i64 {
+fn compute(ndigit: u32) -> u64 {
     debug_assert!(ndigit > 0);
 
-    let n_upper = 10_i64.pow(ndigit) - 1;
+    let n_upper = 10_u64.pow(ndigit) - 1;
     let n_lower = if ndigit > 1 {
-        10_i64.pow(ndigit - 1)
+        10_u64.pow(ndigit - 1)
     } else {
         0
     };
-    let blk_width = 10_i64.pow(ndigit * 2 - 2);
+    let blk_width = 10_u64.pow(ndigit * 2 - 2);
 
     // descending order - (100, 999, 990000, 999999), (100, 999, 980000, 989999), ...
     let mut blocks = ((n_lower * n_lower)..=((n_upper * n_upper) / blk_width * blk_width))
@@ -31,20 +31,20 @@ fn compute(ndigit: u32) -> i64 {
 }
 
 fn max_palindrome_number(
-    (n_lower, n_upper, blk_lower, blk_upper): (i64, i64, i64, i64),
-) -> Option<i64> {
+    (n_lower, n_upper, blk_lower, blk_upper): (u64, u64, u64, u64),
+) -> Option<u64> {
     use euler::math;
     use std::cmp;
 
-    let mut result: Vec<i64> = Vec::new();
+    let mut result: Vec<u64> = Vec::new();
     for x in (n_lower..=n_upper).rev() {
         if x * x < blk_lower {
             break;
         }
-        let y_upper = if x == 0 {
-            x
+        let y_upper = if let Some(v) = blk_upper.checked_div(x) {
+            cmp::min(v, x)
         } else {
-            cmp::min(blk_upper / x, x)
+            x
         };
         for y in (n_lower..=y_upper).rev() {
             let tmp = x * y;

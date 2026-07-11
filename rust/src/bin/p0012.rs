@@ -16,11 +16,11 @@ fn solve() -> String {
     compute(500).to_string()
 }
 
-fn compute(thr: u32) -> i64 {
-    let mut n: i64 = 1;
+fn compute(thr: u32) -> u64 {
+    let mut n: u64 = 1;
 
     loop {
-        if num_of_divs(n) * num_of_divs((n + 1) / 2) > thr {
+        if num_of_divs(n) * num_of_divs(n.div_ceil(2)) > thr {
             break;
         };
         n += 1;
@@ -33,7 +33,7 @@ fn compute(thr: u32) -> i64 {
     (n * (n + 1)) / 2
 }
 
-fn num_of_divs(n: i64) -> u32 {
+fn num_of_divs(n: u64) -> u32 {
     use euler::math;
 
     debug_assert!(n > 0);

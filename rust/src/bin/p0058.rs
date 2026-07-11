@@ -49,15 +49,15 @@ fn solve() -> String {
     compute().to_string()
 }
 
-fn compute() -> i64 {
+fn compute() -> u64 {
     use euler::math::primes;
 
-    let mut cnt: i64 = 0;
+    let mut cnt: u64 = 0;
 
-    for m in (3_i64..).step_by(2) {
-        cnt += (1_i64..=3)
-            .filter(|&i| primes::is_prime(m * (m - i) + i))
-            .count() as i64;
+    for m in (3_u64..).step_by(2) {
+        cnt += (1_u64..=3)
+            .filter(|i| primes::is_prime(m * (m - *i) + *i))
+            .count() as u64;
         if cnt * 10 < 2 * m - 1 {
             return m;
         }

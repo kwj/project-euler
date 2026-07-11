@@ -29,7 +29,7 @@ fn solve() -> String {
     compute(13).to_string()
 }
 
-fn compute(n_digits: usize) -> i64 {
+fn compute(n_digits: usize) -> u64 {
     debug_assert!(n_digits > 0);
 
     DATA.split(['0'])
@@ -38,13 +38,13 @@ fn compute(n_digits: usize) -> i64 {
         .unwrap()
 }
 
-fn max_prod(s: &str, n_digits: usize) -> Option<i64> {
+fn max_prod(s: &str, n_digits: usize) -> Option<u64> {
     if s.len() < n_digits {
         None
     } else {
         s.as_bytes()
             .windows(n_digits)
-            .map(|bs| bs.iter().fold(1, |acc, x| acc * (i64::from(*x) - 0x30)))
+            .map(|bs| bs.iter().fold(1, |acc, x| acc * (u64::from(*x) - 0x30)))
             .max()
     }
 }

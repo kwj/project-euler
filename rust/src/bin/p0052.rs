@@ -6,9 +6,9 @@ fn solve() -> String {
     compute().to_string()
 }
 
-fn compute() -> i64 {
+fn compute() -> u64 {
     for exp in 6_u32.. {
-        for n in 10_i64.pow(exp - 1)..=(10_i64.pow(exp) / 6) {
+        for n in 10_u64.pow(exp - 1)..=(10_u64.pow(exp) / 6) {
             if check_num(n) {
                 return n;
             }
@@ -18,10 +18,10 @@ fn compute() -> i64 {
     unreachable!();
 }
 
-fn check_num(num: i64) -> bool {
+fn check_num(num: u64) -> bool {
     use euler::math;
 
-    fn make_key(n: i64) -> Vec<i64> {
+    fn make_key(n: u64) -> Vec<u64> {
         let mut key = math::digits(n);
         key.sort_unstable();
         key

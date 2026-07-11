@@ -11,7 +11,7 @@ fn compute(n_digits: u32) -> String {
 
     debug_assert!(n_digits > 0);
 
-    let divisor = 10_i64.pow(n_digits);
+    let divisor = 10_u64.pow(n_digits);
 
     format!(
         "{:0width$}",

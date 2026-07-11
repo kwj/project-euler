@@ -7,8 +7,8 @@ fn solve() -> String {
 }
 
 fn compute() -> usize {
-    let common_year: Vec<i64> = vec![31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    let leap_year: Vec<i64> = vec![31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    let common_year: Vec<u64> = vec![31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    let leap_year: Vec<u64> = vec![31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
     // number of days in each month (from 'Jan 1901' to 'Dec 2000')
     let mut days = repeat_vec(&concat_vec(&repeat_vec(&common_year, 3), &leap_year), 25);
@@ -28,11 +28,17 @@ fn compute() -> usize {
         .count()
 }
 
-fn repeat_vec(v: &[i64], count: usize) -> Vec<i64> {
+fn repeat_vec<T>(v: &[T], count: usize) -> Vec<T>
+where
+    T: Copy,
+{
     v.iter().copied().cycle().take(v.len() * count).collect()
 }
 
-fn concat_vec(v1: &[i64], v2: &[i64]) -> Vec<i64> {
+fn concat_vec<T>(v1: &[T], v2: &[T]) -> Vec<T>
+where
+    T: Clone,
+{
     [v1, v2].concat()
 }
 

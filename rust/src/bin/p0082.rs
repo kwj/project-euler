@@ -8,7 +8,7 @@ fn solve() -> String {
     compute(FILE_DATA).to_string()
 }
 
-fn compute(data: &str) -> i64 {
+fn compute(data: &str) -> u64 {
     use std::cmp;
 
     let matrix = parse_data(data);
@@ -28,13 +28,13 @@ fn compute(data: &str) -> i64 {
     work[0]
 }
 
-fn parse_data(data: &str) -> Vec<Vec<i64>> {
+fn parse_data(data: &str) -> Vec<Vec<u64>> {
     use std::iter::IntoIterator;
 
-    let mut ret: Vec<Vec<i64>> = Vec::new();
+    let mut ret: Vec<Vec<u64>> = Vec::new();
 
     for line in data.lines() {
-        ret.push(line.split(',').map(|s| s.parse::<i64>().unwrap()).collect());
+        ret.push(line.split(',').map(|s| s.parse::<u64>().unwrap()).collect());
     }
 
     // transpose

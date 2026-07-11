@@ -6,16 +6,16 @@ fn solve() -> String {
     compute(1_000_000).to_string()
 }
 
-fn compute(thr: i64) -> i64 {
+fn compute(thr: u64) -> u64 {
     debug_assert!(thr > 1);
 
     ((thr / 2)..thr)
-        .max_by_key(|&n| get_collatz_length(n))
+        .max_by_key(|n| get_collatz_length(*n))
         .unwrap()
 }
 
-fn get_collatz_length(mut n: i64) -> i64 {
-    let mut cnt: i64 = 1;
+fn get_collatz_length(mut n: u64) -> u64 {
+    let mut cnt: u64 = 1;
 
     while n > 1 {
         cnt += 1;

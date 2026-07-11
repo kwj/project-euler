@@ -6,12 +6,12 @@ fn solve() -> String {
     compute(1_000).to_string()
 }
 
-fn compute(limit: i64) -> usize {
+fn compute(limit: u64) -> usize {
     use std::collections::HashMap;
 
     debug_assert!(limit > 0 && limit <= 1_000);
 
-    let kv_pairs: Vec<(i64, usize)> = vec![
+    let kv_pairs: Vec<(u64, usize)> = vec![
         (1, "one".len()),
         (2, "two".len()),
         (3, "three".len()),

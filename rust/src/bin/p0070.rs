@@ -26,10 +26,10 @@ fn solve() -> String {
     compute().to_string()
 }
 
-fn compute() -> i64 {
+fn compute() -> u64 {
     use std::cmp;
 
-    let limit = 10_000_000_i64 - 1;
+    let limit = 10_000_000_u64 - 1;
     let mut pq: BinaryHeap<Ratio> = BinaryHeap::new();
     pq.push(Ratio {
         priority: ratio(87109, 79180),
@@ -57,21 +57,21 @@ fn compute() -> i64 {
     pq.peek().unwrap().num
 }
 
-fn prod(pf_lst: &[(i64, i64)]) -> i64 {
+fn prod(pf_lst: &[(u64, u64)]) -> u64 {
     pf_lst.iter().fold(1, |acc, x| acc * (x.0).pow(x.1 as u32))
 }
 
-fn phi(pf_lst: &[(i64, i64)]) -> i64 {
+fn phi(pf_lst: &[(u64, u64)]) -> u64 {
     pf_lst
         .iter()
         .fold(1, |acc, x| acc * (x.0).pow(x.1 as u32 - 1) * (x.0 - 1))
 }
 
-fn get_phi_ratio(pf_lst: &[(i64, i64)]) -> f32 {
+fn get_phi_ratio(pf_lst: &[(u64, u64)]) -> f32 {
     ratio(prod(pf_lst), phi(pf_lst))
 }
 
-fn ratio(num: i64, denom: i64) -> f32 {
+fn ratio(num: u64, denom: u64) -> f32 {
     num as f32 / denom as f32
 }
 
@@ -79,7 +79,7 @@ fn ratio(num: i64, denom: i64) -> f32 {
 #[derive(Debug, Clone, PartialEq)]
 struct Ratio {
     priority: f32,
-    num: i64,
+    num: u64,
 }
 
 impl Eq for Ratio {}
@@ -99,12 +99,12 @@ impl PartialOrd for Ratio {
 // prime factorization of candidates
 #[derive(Debug)]
 struct PrimeFactorization {
-    pf_lst: Vec<(i64, i64)>,
-    limit: i64,
+    pf_lst: Vec<(u64, u64)>,
+    limit: u64,
 }
 
 impl PrimeFactorization {
-    fn new(tpl: (i64, i64), limit: i64) -> PrimeFactorization {
+    fn new(tpl: (u64, u64), limit: u64) -> PrimeFactorization {
         if tpl.0 == tpl.1 {
             PrimeFactorization {
                 pf_lst: vec![(tpl.0, 2)],
@@ -120,10 +120,10 @@ impl PrimeFactorization {
 }
 
 impl Iterator for PrimeFactorization {
-    type Item = Vec<(i64, i64)>;
+    type Item = Vec<(u64, u64)>;
 
-    fn next(&mut self) -> Option<Vec<(i64, i64)>> {
-        fn aux(lst: &[(i64, i64)], limit: i64) -> Vec<(i64, i64)> {
+    fn next(&mut self) -> Option<Vec<(u64, u64)>> {
+        fn aux(lst: &[(u64, u64)], limit: u64) -> Vec<(u64, u64)> {
             let (b, e) = lst[0];
             let tmp = limit / prod(lst);
             if tmp < b {
@@ -131,7 +131,7 @@ impl Iterator for PrimeFactorization {
             } else {
                 let prev_p = primes::prev_prime(tmp);
                 if prev_p > b {
-                    [&[(prev_p, 1_i64)], lst].concat()
+                    [&[(prev_p, 1_u64)], lst].concat()
                 } else {
                     [&[(b, e + 1)], &lst[1..]].concat()
                 }
@@ -157,7 +157,7 @@ impl Iterator for PrimeFactorization {
                 );
             } else {
                 self.pf_lst = aux(
-                    &[&[(prev_p, 1_i64)], &self.pf_lst[1..]].concat(),
+                    &[&[(prev_p, 1_u64)], &self.pf_lst[1..]].concat(),
                     self.limit,
                 );
             }
@@ -167,7 +167,7 @@ impl Iterator for PrimeFactorization {
     }
 }
 
-fn is_perm(x: i64, y: i64) -> bool {
+fn is_perm(x: u64, y: u64) -> bool {
     let mut tmp_x = math::digits(x);
     let mut tmp_y = math::digits(y);
 

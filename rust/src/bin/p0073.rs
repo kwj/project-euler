@@ -28,10 +28,10 @@ fn compute(limit: usize) -> i64 {
 fn g(limit: usize) -> i64 {
     let mu_tbl = make_mobius_tbl(limit);
 
-    (1..=limit).map(|k| mu_tbl[k] * f((limit / k) as i64)).sum()
+    (1..=limit).map(|k| mu_tbl[k] * f(limit / k) as i64).sum()
 }
 
-fn f(x: i64) -> i64 {
+fn f(x: usize) -> usize {
     (1..=x).map(|j| ((j - 1) / 2) - (j / 3)).sum()
 }
 

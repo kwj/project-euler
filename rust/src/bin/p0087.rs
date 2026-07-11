@@ -15,13 +15,13 @@ fn solve() -> String {
     compute(50_000_000).to_string()
 }
 
-fn compute(thr: i64) -> usize {
+fn compute(thr: u64) -> usize {
     use euler::math::primes;
     use std::collections::HashSet;
 
     debug_assert!(thr > 28);
 
-    let mut res: HashSet<i64> = HashSet::new();
+    let mut res: HashSet<u64> = HashSet::new();
     let p_lst = primes::primes(1, thr.isqrt());
 
     for z4 in p_lst.iter().map(|n| (*n).pow(4)).take_while(|n| *n <= thr) {

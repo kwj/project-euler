@@ -28,25 +28,25 @@ fn solve() -> String {
     compute(10_000).to_string()
 }
 
-fn compute(limit: i64) -> usize {
+fn compute(limit: u64) -> usize {
     debug_assert!(limit > 0);
 
     (1..=limit)
-        .filter(|&n| get_cont_fraction(n).1.len() % 2 == 1)
+        .filter(|n| get_cont_fraction(*n).1.len() % 2 == 1)
         .count()
 }
 
-fn get_cont_fraction(n: i64) -> (i64, Vec<i64>) {
+fn get_cont_fraction(n: u64) -> (u64, Vec<u64>) {
     let isqrt_n = n.isqrt();
     if n == isqrt_n * isqrt_n {
         return (isqrt_n, vec![]);
     }
 
     let stop_condition = isqrt_n * 2;
-    let mut b = 0_i64;
-    let mut c = 1_i64;
+    let mut b = 0_u64;
+    let mut c = 1_u64;
     let mut a = (isqrt_n + b) / c;
-    let mut rep: Vec<i64> = Vec::new();
+    let mut rep: Vec<u64> = Vec::new();
     loop {
         b = a * c - b;
         c = (n - b * b) / c;

@@ -6,7 +6,7 @@ fn solve() -> String {
     compute(10_000).to_string()
 }
 
-fn compute(limit: usize) -> i64 {
+fn compute(limit: usize) -> u64 {
     use euler::math;
 
     debug_assert!(limit > 1);
@@ -14,8 +14,8 @@ fn compute(limit: usize) -> i64 {
     let d_tbl = math::aliquot_sum_tbl(limit - 1);
 
     (1..limit)
-        .filter(|&x| x as i64 > d_tbl[x] && d_tbl[d_tbl[x] as usize] == x as i64)
-        .map(|x| x as i64 + d_tbl[x])
+        .filter(|x| *x as u64 > d_tbl[*x] && d_tbl[d_tbl[*x] as usize] == *x as u64)
+        .map(|x| x as u64 + d_tbl[x])
         .sum()
 }
 

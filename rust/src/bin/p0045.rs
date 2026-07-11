@@ -29,15 +29,15 @@ fn solve() -> String {
     compute(3).to_string()
 }
 
-fn compute(n_th: usize) -> i64 {
+fn compute(n_th: usize) -> u64 {
     use std::iter;
 
     debug_assert!(n_th > 0);
 
-    let y = iter::successors(Some((1_i64, 1_i64)), |&(x, y)| {
-        Some((2 * x + 3 * y, x + 2 * y))
+    let y = iter::successors(Some((1_u64, 1_u64)), |(x, y)| {
+        Some((2 * (*x) + 3 * (*y), (*x) + 2 * (*y)))
     })
-    .filter(|&(x, y)| x % 6 == 5 && y % 4 == 3)
+    .filter(|(x, y)| *x % 6 == 5 && *y % 4 == 3)
     .nth(n_th - 1)
     .unwrap()
     .1;

@@ -12,15 +12,15 @@ fn solve() -> String {
     compute(1_000_000).to_string()
 }
 
-fn compute(limit: i64) -> i64 {
+fn compute(limit: u64) -> u64 {
     debug_assert!(limit > 1);
 
-    let mut cache: HashMap<i64, i64> = HashMap::new();
+    let mut cache: HashMap<u64, u64> = HashMap::new();
 
     sum_phi(limit, &mut cache) - sum_phi(1, &mut cache)
 }
 
-fn sum_phi(num: i64, cache: &mut HashMap<i64, i64>) -> i64 {
+fn sum_phi(num: u64, cache: &mut HashMap<u64, u64>) -> u64 {
     if let Some(val) = cache.get(&num) {
         *val
     } else {

@@ -8,7 +8,7 @@ fn solve() -> String {
     compute(FILE_DATA).to_string()
 }
 
-fn compute(data: &str) -> i64 {
+fn compute(data: &str) -> u64 {
     use std::cmp;
 
     parse_data(data)
@@ -24,11 +24,11 @@ fn compute(data: &str) -> i64 {
         .unwrap()[0]
 }
 
-fn parse_data(data: &str) -> Vec<Vec<i64>> {
+fn parse_data(data: &str) -> Vec<Vec<u64>> {
     data.lines()
         .map(|s| {
             s.split_ascii_whitespace()
-                .map(|elm| elm.parse::<i64>().unwrap())
+                .map(|elm| elm.parse::<u64>().unwrap())
                 .collect()
         })
         .collect()

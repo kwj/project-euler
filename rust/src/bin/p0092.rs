@@ -65,7 +65,7 @@ fn solve() -> String {
     compute(10_000_000).to_string()
 }
 
-fn compute(limit: i64) -> usize {
+fn compute(limit: u64) -> usize {
     use euler::math;
     use itertools::Itertools;
 

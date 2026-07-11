@@ -19,7 +19,7 @@ fn solve() -> String {
     compute(1_000_000).to_string()
 }
 
-fn compute(limit: i64) -> i64 {
+fn compute(limit: u64) -> u64 {
     debug_assert!(limit >= 8);
 
     2 + 3 * ((limit - 5) / 7)

@@ -17,12 +17,12 @@ fn solve() -> String {
     compute(FILE_DATA).to_string()
 }
 
-fn compute(data: &str) -> i64 {
+fn compute(data: &str) -> u64 {
     use euler::math;
 
     let mut graph = parse_data(data);
-    let mut acc: Vec<i64> = Vec::new();
-    let keys: Vec<i64> = graph.keys().copied().collect();
+    let mut acc: Vec<u64> = Vec::new();
+    let keys: Vec<u64> = graph.keys().copied().collect();
 
     for v in keys {
         acc = dfs(&mut graph, &mut acc, v);
@@ -32,13 +32,13 @@ fn compute(data: &str) -> i64 {
     math::undigits(&acc)
 }
 
-fn parse_data(data: &str) -> HashMap<i64, Vec<i64>> {
-    let mut ret: HashMap<i64, Vec<i64>> = HashMap::new();
+fn parse_data(data: &str) -> HashMap<u64, Vec<u64>> {
+    let mut ret: HashMap<u64, Vec<u64>> = HashMap::new();
 
     for line in data.lines() {
         let v: Vec<_> = line
             .chars()
-            .map(|ch| i64::from(ch.to_digit(10).unwrap()))
+            .map(|ch| u64::from(ch.to_digit(10).unwrap()))
             .collect();
         ret.entry(v[0]).or_default().extend(vec![v[1], v[2]]);
         ret.entry(v[1]).or_default().push(v[2]);
@@ -47,8 +47,8 @@ fn parse_data(data: &str) -> HashMap<i64, Vec<i64>> {
     ret
 }
 
-fn dfs(graph: &mut HashMap<i64, Vec<i64>>, perm: &mut [i64], v: i64) -> Vec<i64> {
-    fn visit(temp: &[i64], visited: &[i64], node: i64, graph: &HashMap<i64, Vec<i64>>) -> Vec<i64> {
+fn dfs(graph: &mut HashMap<u64, Vec<u64>>, perm: &mut [u64], v: u64) -> Vec<u64> {
+    fn visit(temp: &[u64], visited: &[u64], node: u64, graph: &HashMap<u64, Vec<u64>>) -> Vec<u64> {
         assert!(!temp.contains(&node), "a cycle path is found");
 
         if visited.contains(&node) {

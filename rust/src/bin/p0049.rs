@@ -8,7 +8,7 @@ fn solve() -> String {
     compute(4).to_string()
 }
 
-fn compute(n_digits: u32) -> i64 {
+fn compute(n_digits: u32) -> u64 {
     let p_tbl = get_prime_tbl(n_digits);
     for lst in p_tbl.values() {
         let length = lst.len();
@@ -22,7 +22,7 @@ fn compute(n_digits: u32) -> i64 {
                 if lst.contains(&tmp) && lst[i] != 1487 {
                     return [lst[i], lst[j], tmp]
                         .into_iter()
-                        .fold(0, |acc, x| acc * 10_i64.pow(n_digits) + x);
+                        .fold(0, |acc, x| acc * 10_u64.pow(n_digits) + x);
                 }
             }
         }
@@ -31,15 +31,15 @@ fn compute(n_digits: u32) -> i64 {
     unreachable!();
 }
 
-fn get_prime_tbl(n_digits: u32) -> HashMap<i64, Vec<i64>> {
+fn get_prime_tbl(n_digits: u32) -> HashMap<u64, Vec<u64>> {
     use euler::math::{self, primes};
     use std::cmp;
 
-    let mut p_tbl: HashMap<i64, Vec<i64>> = HashMap::new();
+    let mut p_tbl: HashMap<u64, Vec<u64>> = HashMap::new();
 
-    for p in primes::primes(10_i64.pow(n_digits - 1), 10_i64.pow(n_digits)) {
+    for p in primes::primes(10_u64.pow(n_digits - 1), 10_u64.pow(n_digits)) {
         let mut key_digits = math::digits(p);
-        key_digits.sort_by_key(|&x| cmp::Reverse(x));
+        key_digits.sort_by_key(|x| cmp::Reverse(*x));
         let key = math::undigits(&key_digits);
         let mut lst = match p_tbl.get(&key) {
             Some(v) => v.clone(),

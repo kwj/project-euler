@@ -6,20 +6,20 @@ fn solve() -> String {
     compute().to_string()
 }
 
-fn compute() -> i64 {
+fn compute() -> u64 {
     use euler::math::primes;
 
-    fn is_twice_square(n: i64) -> bool {
-        n % 2 == 0 && (n / 2).isqrt().pow(2) == n / 2
+    fn is_twice_square(n: u64) -> bool {
+        n.is_multiple_of(2) && (n / 2).isqrt().pow(2) == n / 2
     }
 
     // Two is not odd
-    let mut odd_primes: Vec<i64> = vec![3, 5, 7, 11, 13, 17, 19, 23, 29, 31];
+    let mut odd_primes: Vec<u64> = vec![3, 5, 7, 11, 13, 17, 19, 23, 29, 31];
 
     for x in (35..).step_by(2) {
         if primes::is_prime(x) {
             odd_primes.push(x);
-        } else if !odd_primes.iter().any(|&p| is_twice_square(x - p)) {
+        } else if !odd_primes.iter().any(|p| is_twice_square(x - *p)) {
             return x;
         }
     }

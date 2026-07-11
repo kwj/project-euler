@@ -25,14 +25,14 @@ fn solve() -> String {
 }
 
 struct FibSeq3 {
-    a: i64,
-    b: i64,
+    a: u64,
+    b: u64,
 }
 
 impl Iterator for FibSeq3 {
-    type Item = i64;
+    type Item = u64;
 
-    fn next(&mut self) -> Option<i64> {
+    fn next(&mut self) -> Option<u64> {
         let result = self.a;
         (self.a, self.b) = (self.b, 4 * self.b + self.a);
 
@@ -40,7 +40,7 @@ impl Iterator for FibSeq3 {
     }
 }
 
-fn compute(limit: i64) -> i64 {
+fn compute(limit: u64) -> u64 {
     let even_fibs = FibSeq3 { a: 2, b: 8 };
 
     even_fibs.take_while(|x| *x <= limit).sum()

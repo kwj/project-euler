@@ -6,11 +6,11 @@ fn solve() -> String {
     compute(5).to_string()
 }
 
-fn compute(n_perms: usize) -> i64 {
+fn compute(n_perms: usize) -> u64 {
     use euler::math;
     use std::collections::HashMap;
 
-    fn make_key(n: i64) -> i64 {
+    fn make_key(n: u64) -> u64 {
         let mut tmp = math::digits(n);
         tmp.sort_unstable();
         math::undigits(&tmp)
@@ -18,8 +18,8 @@ fn compute(n_perms: usize) -> i64 {
 
     debug_assert!(n_perms > 1);
 
-    let mut tbl: HashMap<i64, Vec<i64>> = HashMap::new();
-    for n in 1_i64.. {
+    let mut tbl: HashMap<u64, Vec<u64>> = HashMap::new();
+    for n in 1_u64.. {
         let cube = n.pow(3);
         let key = make_key(cube);
         tbl.entry(key).or_default().push(cube);

@@ -93,10 +93,10 @@ fn solve() -> String {
     compute(1_000).to_string()
 }
 
-fn compute(limit: i64) -> i64 {
+fn compute(limit: u64) -> u64 {
     debug_assert!(limit > 1);
 
-    let mut ans: (BigUint, i64) = (BigUint::from(0_u32), 0);
+    let mut ans: (BigUint, u64) = (BigUint::from(0_u32), 0);
     let mut numerator: BigUint;
     for i in 1..=limit {
         let (cf_a0, mut cf_rep) = get_cont_fraction(i);
@@ -115,24 +115,24 @@ fn compute(limit: i64) -> i64 {
     ans.1
 }
 
-fn get_cont_fraction(n: i64) -> (u64, Vec<u64>) {
+fn get_cont_fraction(n: u64) -> (u64, Vec<u64>) {
     let isqrt_n = n.isqrt();
     if n == isqrt_n * isqrt_n {
-        return (isqrt_n as u64, vec![]);
+        return (isqrt_n, vec![]);
     }
 
     let stop_condition = isqrt_n * 2;
-    let mut b = 0_i64;
-    let mut c = 1_i64;
+    let mut b = 0_u64;
+    let mut c = 1_u64;
     let mut a = (isqrt_n + b) / c;
     let mut rep: Vec<u64> = Vec::new();
     loop {
         b = a * c - b;
         c = (n - b * b) / c;
         a = (isqrt_n + b) / c;
-        rep.push(a as u64);
+        rep.push(a);
         if a == stop_condition {
-            return (isqrt_n as u64, rep);
+            return (isqrt_n, rep);
         }
     }
 }

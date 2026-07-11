@@ -1,6 +1,6 @@
-fn sprp_base(n: i64) -> i64 {
+fn sprp_base(n: u64) -> u64 {
     #[rustfmt::skip]
-    const BASES: [i64; 256] = [
+    const BASES: [u64; 256] = [
         15591, 2018, 166, 7429, 8064, 16045, 10503, 4399, 1949, 1295, 2776, 3620, 560, 3128, 5212, 2657,
         2300, 2021, 4652, 1471, 9336, 4018, 2398, 20462, 10277, 8028, 2213, 6219, 620, 3763, 4852, 5012,
         3185, 1333, 6227, 5298, 1074, 2391, 5113, 7061, 803, 1269, 3875, 422, 751, 580, 4729, 10239,
@@ -19,7 +19,7 @@ fn sprp_base(n: i64) -> i64 {
         922, 350, 7514, 4452, 3449, 2663, 4708, 418, 1621, 1171, 3471, 88, 11345, 412, 1559, 194
     ];
 
-    let mut h = u64::try_from(n).unwrap();
+    let mut h = n;
     h = ((h >> 16) ^ h).wrapping_mul(0x45d9f3b);
     h = ((h >> 16) ^ h).wrapping_mul(0x45d9f3b);
     h = ((h >> 16) ^ h) & 0xff;
@@ -27,7 +27,7 @@ fn sprp_base(n: i64) -> i64 {
     BASES[h as usize]
 }
 
-fn miller_rabin_test(n: i64, base: i64) -> bool {
+fn miller_rabin_test(n: u64, base: u64) -> bool {
     let mut d = n - 1;
     let s = d.trailing_zeros();
     d >>= s;
@@ -47,8 +47,8 @@ fn miller_rabin_test(n: i64, base: i64) -> bool {
     false
 }
 
-fn kronecker(mut a: i64, mut n: i64) -> i64 {
-    fn euclidean_mod(x: i64, y: i64) -> i64 {
+fn kronecker(mut a: i128, mut n: i128) -> i64 {
+    fn euclidean_mod(x: i128, y: i128) -> i128 {
         let mut tmp = x % y;
         if tmp < 0 {
             tmp += y.abs();
@@ -141,12 +141,12 @@ fn kronecker(mut a: i64, mut n: i64) -> i64 {
     if n == 1 { sign } else { 0 }
 }
 
-fn find_d(n: i64) -> Option<i128> {
+fn find_d(n: u64) -> Option<i128> {
     let mut cnt = 0;
     let mut d = 5_i64;
 
     loop {
-        let k = kronecker(d, n);
+        let k = kronecker(d.into(), n.into());
         if k == -1 {
             break;
         }
@@ -156,7 +156,7 @@ fn find_d(n: i64) -> Option<i128> {
             return None;
         }
 
-        if k == 0 && (d.abs() < n || d.abs() % n != 0) {
+        if k == 0 && (d.unsigned_abs() < n || !d.unsigned_abs().is_multiple_of(n)) {
             return None;
         }
 
@@ -170,7 +170,7 @@ fn find_d(n: i64) -> Option<i128> {
     Some(i128::from(d))
 }
 
-fn lucas_test(num: i64) -> bool {
+fn lucas_test(num: u64) -> bool {
     fn euclidean_mod(x: i128, y: i128) -> i128 {
         let mut tmp = x % y;
         if tmp < 0 {
@@ -254,19 +254,14 @@ fn lucas_test(num: i64) -> bool {
     while pow2 < abs_q {
         pow2 = pow2 * pow2;
     }
-    if pow2 > abs_q
-        && euclidean_mod(
-            prev_qk - q * i128::from(kronecker(i64::try_from(q).unwrap(), num)),
-            n,
-        ) != 0
-    {
+    if pow2 > abs_q && euclidean_mod(prev_qk - q * i128::from(kronecker(q, num.into())), n) != 0 {
         return false;
     }
 
     true
 }
 
-pub fn is_prime(n: i64) -> bool {
+pub fn is_prime(n: u64) -> bool {
     // all even numbers except 2 are composite numbers
     if n & 0b1 == 0 {
         return n == 2;
@@ -282,8 +277,8 @@ pub fn is_prime(n: i64) -> bool {
     }
 
     // trial division
-    for i in [3_i64, 5, 7, 11, 13, 17, 19, 23, 29, 31] {
-        if n % i == 0 {
+    for i in [3_u64, 5, 7, 11, 13, 17, 19, 23, 29, 31] {
+        if n.is_multiple_of(i) {
             return false;
         }
     }
@@ -301,9 +296,7 @@ pub fn is_prime(n: i64) -> bool {
     miller_rabin_test(n, 2) && lucas_test(n)
 }
 
-fn num_to_index(mut n: i64) -> usize {
-    assert!(n >= 0);
-
+fn num_to_index(mut n: u64) -> usize {
     #[rustfmt::skip]
     const INDICES: [usize; 210] = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 2,
@@ -330,21 +323,21 @@ fn num_to_index(mut n: i64) -> usize {
     }
 }
 
-fn index_to_num(idx: usize) -> i64 {
+fn index_to_num(idx: usize) -> u64 {
     #[rustfmt::skip]
-    const WHEEL_PRIME_CANDS: [i64; 48] = [
+    const WHEEL_PRIME_CANDS: [u64; 48] = [
         11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71,
         73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 121, 127, 131, 137, 139, 143,
         149, 151, 157, 163, 167, 169, 173, 179, 181, 187, 191, 193, 197, 199, 209, 211
     ];
 
-    let q = idx as i64 / 48;
+    let q = idx as u64 / 48;
     let r = idx % 48;
     (210 * q) + WHEEL_PRIME_CANDS[r]
 }
 
 // Note: This implementation doesn't take overflow into account.
-pub fn next_prime(n: i64) -> i64 {
+pub fn next_prime(n: u64) -> u64 {
     if n < 2 {
         2
     } else if n < 3 {
@@ -370,7 +363,7 @@ pub fn next_prime(n: i64) -> i64 {
     }
 }
 
-pub fn prev_prime(n: i64) -> i64 {
+pub fn prev_prime(n: u64) -> u64 {
     assert!(n > 2);
 
     if n <= 3 {
@@ -396,15 +389,15 @@ pub fn prev_prime(n: i64) -> i64 {
 }
 
 #[rustfmt::skip]
-static WHEEL_GAPS: [i64; 48] = [
+static WHEEL_GAPS: [u64; 48] = [
     2, 4, 2, 4, 6, 2, 6, 4, 2, 4, 6, 6, 2, 6, 4, 2,
     6, 4, 6, 8, 4, 2, 4, 2, 4, 8, 6, 4, 6, 2, 4, 6,
     2, 6, 6, 4, 2, 4, 6, 2, 6, 4, 2, 4, 2, 10, 2, 10
 ];
 
-const MIN_WHEEL_PRIME: i64 = 11;
+const MIN_WHEEL_PRIME: u64 = 11;
 
-fn get_small_prime_tbl(upper: i64) -> Vec<bool> {
+fn get_small_prime_tbl(upper: u64) -> Vec<bool> {
     assert!(
         upper >= MIN_WHEEL_PRIME,
         "'upper' must be larger or equal to 11"
@@ -430,7 +423,7 @@ fn get_small_prime_tbl(upper: i64) -> Vec<bool> {
     s_sieve
 }
 
-fn get_prime_tbl(low: i64, high: i64) -> Vec<bool> {
+fn get_prime_tbl(low: u64, high: u64) -> Vec<bool> {
     use std::cmp;
 
     assert!(high >= low, "'high' must be larger or equal to 'low'");
@@ -453,12 +446,12 @@ fn get_prime_tbl(low: i64, high: i64) -> Vec<bool> {
         for (i, val) in small_sieve.iter().enumerate() {
             if *val {
                 let prime = index_to_num(i);
-                let mut idx = num_to_index(cmp::max((low + prime - 1) / prime, prime));
+                let mut idx = num_to_index(cmp::max(low.div_ceil(prime), prime));
                 let mut q = prime.checked_mul(index_to_num(idx)).unwrap();
                 if q > max_prime {
                     continue;
                 }
-                while q <= max_prime && q.is_positive() {
+                while q <= max_prime {
                     sieve[num_to_index(q) - w_low] = false;
                     idx %= WHEEL_GAPS.len();
                     q += WHEEL_GAPS[idx] * prime;
@@ -470,12 +463,12 @@ fn get_prime_tbl(low: i64, high: i64) -> Vec<bool> {
     sieve
 }
 
-pub fn primes(mut low: i64, high: i64) -> Vec<i64> {
+pub fn primes(mut low: u64, high: u64) -> Vec<u64> {
     use std::cmp;
 
     assert!(high >= low, "'high' must be larger or equal to 'low'");
 
-    let mut lst: Vec<i64> = Vec::new();
+    let mut lst: Vec<u64> = Vec::new();
     if low <= 2 && 2 <= high {
         lst.push(2);
     }

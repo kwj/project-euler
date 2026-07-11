@@ -6,7 +6,7 @@ fn solve() -> String {
     compute(4).to_string()
 }
 
-fn compute(nfactors: i64) -> i64 {
+fn compute(nfactors: u64) -> u64 {
     use euler::math;
 
     debug_assert!(nfactors > 1);
@@ -14,8 +14,8 @@ fn compute(nfactors: i64) -> i64 {
     let mut cnt = 0;
 
     // '6' is the smallest product of two distinct prime factors
-    for x in 6_i64.. {
-        if math::factorize(x).len() as i64 != nfactors {
+    for x in 6_u64.. {
+        if math::factorize(x).len() as u64 != nfactors {
             cnt = 0;
         } else if cnt == nfactors - 1 {
             return x - (nfactors - 1);

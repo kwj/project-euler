@@ -28,13 +28,13 @@ fn solve() -> String {
     compute(5).to_string()
 }
 
-fn compute(n_gon: i64) -> i64 {
+fn compute(n_gon: i64) -> u64 {
     debug_assert!(n_gon >= 3);
 
     solve_by_backtraking(n_gon)
 }
 
-fn solve_by_backtraking(n_gon: i64) -> i64 {
+fn solve_by_backtraking(n_gon: i64) -> u64 {
     let mut ring = vec![0_i64; (n_gon * 2 + 1) as usize];
     let mut result: Vec<String> = Vec::new();
 
@@ -58,7 +58,7 @@ fn solve_by_backtraking(n_gon: i64) -> i64 {
 
     result
         .into_iter()
-        .map(|s| s.parse().unwrap())
+        .map(|s| s.parse::<u64>().unwrap())
         .max()
         .unwrap()
 }

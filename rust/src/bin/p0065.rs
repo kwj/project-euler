@@ -39,7 +39,7 @@ fn solve() -> String {
     compute(100).to_string()
 }
 
-fn compute(nth: u32) -> i64 {
+fn compute(nth: u32) -> u64 {
     use num_bigint::BigUint;
 
     fn c(i: u32) -> BigUint {
@@ -59,7 +59,7 @@ fn compute(nth: u32) -> i64 {
         (x, y) = (c(i) * &x + y, x);
     }
 
-    x.to_radix_le(10).into_iter().map(i64::from).sum()
+    x.to_radix_le(10).into_iter().map(u64::from).sum()
 }
 
 #[cfg(test)]

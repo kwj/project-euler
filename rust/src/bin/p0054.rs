@@ -39,19 +39,19 @@ static FILE_DATA: &str = include_str!("../../assets/0054_poker.txt");
 
 #[derive(Ord, PartialOrd, PartialEq, Eq)]
 struct Hand {
-    category: i64,
-    cards: Vec<i64>,
+    category: u64,
+    cards: Vec<u64>,
 }
 
 fn solve() -> String {
     compute(FILE_DATA).to_string()
 }
 
-fn compute(data: &str) -> i64 {
+fn compute(data: &str) -> u64 {
     let all_games = parse_data(data);
-    let mut p1_win: i64 = 0;
-    let mut _p2_win: i64 = 0;
-    let mut _draw: i64 = 0;
+    let mut p1_win: u64 = 0;
+    let mut _p2_win: u64 = 0;
+    let mut _draw: u64 = 0;
     for cards in all_games {
         let hand_p1 = make_handinfo(&cards[0..5]);
         let hand_p2 = make_handinfo(&cards[5..10]);
@@ -65,8 +65,8 @@ fn compute(data: &str) -> i64 {
     p1_win
 }
 
-fn parse_data(data: &str) -> Vec<Vec<(i64, char)>> {
-    let card_num: HashMap<char, i64> = HashMap::from([
+fn parse_data(data: &str) -> Vec<Vec<(u64, char)>> {
+    let card_num: HashMap<char, u64> = HashMap::from([
         ('2', 2),
         ('3', 3),
         ('4', 4),
@@ -81,10 +81,10 @@ fn parse_data(data: &str) -> Vec<Vec<(i64, char)>> {
         ('K', 13),
         ('A', 14),
     ]);
-    let mut ret: Vec<Vec<(i64, char)>> = Vec::new();
+    let mut ret: Vec<Vec<(u64, char)>> = Vec::new();
 
     for line in data.lines() {
-        let cards: Vec<(i64, char)> = line
+        let cards: Vec<(u64, char)> = line
             .split_ascii_whitespace()
             .map(|card| {
                 (
@@ -99,17 +99,17 @@ fn parse_data(data: &str) -> Vec<Vec<(i64, char)>> {
     ret
 }
 
-fn make_handinfo(cards: &[(i64, char)]) -> Hand {
-    const CAT_RF: i64 = 9;
-    const CAT_SF: i64 = 8;
-    const CAT_FK: i64 = 7;
-    const CAT_FH: i64 = 6;
-    const CAT_F: i64 = 5;
-    const CAT_S: i64 = 4;
-    const CAT_TK: i64 = 3;
-    const CAT_TP: i64 = 2;
-    const CAT_OP: i64 = 1;
-    const CAT_HC: i64 = 0;
+fn make_handinfo(cards: &[(u64, char)]) -> Hand {
+    const CAT_RF: u64 = 9;
+    const CAT_SF: u64 = 8;
+    const CAT_FK: u64 = 7;
+    const CAT_FH: u64 = 6;
+    const CAT_F: u64 = 5;
+    const CAT_S: u64 = 4;
+    const CAT_TK: u64 = 3;
+    const CAT_TP: u64 = 2;
+    const CAT_OP: u64 = 1;
+    const CAT_HC: u64 = 0;
 
     let (nums, mut suits): (Vec<_>, Vec<_>) = cards.iter().copied().unzip();
 
@@ -119,7 +119,7 @@ fn make_handinfo(cards: &[(i64, char)]) -> Hand {
     let flash = suits.len() == 1;
 
     // get numbers and their counts
-    let mut hand_tmp: Vec<(i64, usize)> = euler::countmap(nums).drain().collect();
+    let mut hand_tmp: Vec<(u64, usize)> = euler::countmap(nums).drain().collect();
     hand_tmp.sort_by(cmp_countmap);
     let (hand_n, hand_c): (Vec<_>, Vec<_>) = hand_tmp.into_iter().unzip();
 
@@ -168,15 +168,15 @@ fn make_handinfo(cards: &[(i64, char)]) -> Hand {
     rank
 }
 
-fn is_straight(lst: &[i64]) -> bool {
+fn is_straight(lst: &[u64]) -> bool {
     if lst.len() == 5 {
-        *lst == (lst[4]..(lst[4] + 5)).rev().collect::<Vec<i64>>()
+        *lst == (lst[4]..(lst[4] + 5)).rev().collect::<Vec<u64>>()
     } else {
         false
     }
 }
 
-fn cmp_countmap(x: &(i64, usize), y: &(i64, usize)) -> std::cmp::Ordering {
+fn cmp_countmap(x: &(u64, usize), y: &(u64, usize)) -> std::cmp::Ordering {
     if x.1 == y.1 {
         (y.0).cmp(&x.0)
     } else {

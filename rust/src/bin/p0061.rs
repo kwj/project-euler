@@ -8,20 +8,20 @@ fn solve() -> String {
     compute(8).to_string()
 }
 
-fn compute(max_nsides_polygon: usize) -> i64 {
+fn compute(max_nsides_polygon: usize) -> u64 {
     debug_assert!(max_nsides_polygon > 3);
 
-    let cycles: Vec<Vec<i64>> = find_closed_paths(max_nsides_polygon)
+    let cycles: Vec<Vec<u64>> = find_closed_paths(max_nsides_polygon)
         .into_iter()
         .map(|path| {
             // Change a closed path to a vector of cyclic numbers
             path.windows(2)
                 .map(|pair| pair[0] * 100 + pair[1])
-                .collect::<Vec<i64>>()
+                .collect::<Vec<u64>>()
         })
         .filter(|lst| {
             // All numbers in a cycle are different from each other's
-            lst.len() == HashSet::<i64>::from_iter(lst.clone()).len()
+            lst.len() == HashSet::<u64>::from_iter(lst.clone()).len()
         })
         .collect();
 
@@ -33,13 +33,13 @@ fn compute(max_nsides_polygon: usize) -> i64 {
     unreachable!();
 }
 
-fn find_closed_paths(max_nsides_polygon: usize) -> Vec<Vec<i64>> {
-    let mut closed_paths: Vec<Vec<i64>> = Vec::new();
-    let polynum_tbl: HashMap<usize, HashMap<i64, Vec<i64>>> = make_polynum_tbl(max_nsides_polygon);
+fn find_closed_paths(max_nsides_polygon: usize) -> Vec<Vec<u64>> {
+    let mut closed_paths: Vec<Vec<u64>> = Vec::new();
+    let polynum_tbl: HashMap<usize, HashMap<u64, Vec<u64>>> = make_polynum_tbl(max_nsides_polygon);
     let stop_condition: u32 = (1 << (max_nsides_polygon + 1)) - 8;
 
-    let get_next_states = |(bits, path): (u32, Vec<i64>)| -> Vec<(u32, Vec<i64>)> {
-        let mut states: Vec<(u32, Vec<i64>)> = Vec::new();
+    let get_next_states = |(bits, path): (u32, Vec<u64>)| -> Vec<(u32, Vec<u64>)> {
+        let mut states: Vec<(u32, Vec<u64>)> = Vec::new();
 
         for i in 3_usize..max_nsides_polygon {
             let p_bit = 0b1_u32 << i;
@@ -60,7 +60,7 @@ fn find_closed_paths(max_nsides_polygon: usize) -> Vec<Vec<i64>> {
     };
 
     // Search for all closed paths
-    let mut dq: VecDeque<(u32, Vec<i64>)> = VecDeque::new();
+    let mut dq: VecDeque<(u32, Vec<u64>)> = VecDeque::new();
     for (&k, vs) in polynum_tbl.get(&max_nsides_polygon).unwrap() {
         for &v in vs {
             dq.push_back((0b1 << max_nsides_polygon, vec![k, v]));
@@ -90,20 +90,20 @@ fn find_closed_paths(max_nsides_polygon: usize) -> Vec<Vec<i64>> {
     closed_paths
 }
 
-fn make_polynum_tbl(max_nsides_polygon: usize) -> HashMap<usize, HashMap<i64, Vec<i64>>> {
-    let mut tbl: HashMap<usize, HashMap<i64, Vec<i64>>> = HashMap::new();
+fn make_polynum_tbl(max_nsides_polygon: usize) -> HashMap<usize, HashMap<u64, Vec<u64>>> {
+    let mut tbl: HashMap<usize, HashMap<u64, Vec<u64>>> = HashMap::new();
 
     for p in 3..=max_nsides_polygon {
-        let mut x: HashMap<i64, Vec<i64>> = HashMap::new();
-        for n in (1_i64..)
+        let mut x: HashMap<u64, Vec<u64>> = HashMap::new();
+        for n in (1_u64..)
             .step_by(p - 2)
             .scan(0, |state, x| {
                 *state += x;
                 Some(*state)
             })
-            .skip_while(|&x| x < 1_000)
-            .take_while(|&x| x < 10_000)
-            .filter(|&x| x % 100 >= 10)
+            .skip_while(|x| *x < 1_000)
+            .take_while(|x| *x < 10_000)
+            .filter(|x| *x % 100 >= 10)
         {
             x.entry(n / 100).or_default().push(n % 100);
         }

@@ -6,7 +6,7 @@ fn solve() -> String {
     compute(100, 100).to_string()
 }
 
-fn compute(limit: i64, n_digits: u32) -> i64 {
+fn compute(limit: u64, n_digits: u32) -> u64 {
     use euler::math;
     use num_bigint::BigUint;
 
@@ -14,15 +14,15 @@ fn compute(limit: i64, n_digits: u32) -> i64 {
 
     let power_10 = BigUint::from(10_u32).pow((n_digits - 1) * 2);
     (2..=limit)
-        .filter(|&x| !math::is_square(x))
+        .filter(|x| !math::is_square(*x))
         .map(|x| (power_10.clone() * x as u32).sqrt())
         .map(|x| {
             x.to_radix_le(10)
                 .into_iter()
                 .rev()
                 .take(n_digits as usize)
-                .map(i64::from)
-                .sum::<i64>()
+                .map(u64::from)
+                .sum::<u64>()
         })
         .sum()
 }

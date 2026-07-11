@@ -16,7 +16,7 @@ fn compute(perim: usize) -> usize {
 
     for m in 2..=limit {
         for n in ((1 + m % 2)..=m).step_by(2) {
-            if math::gcd(m as i64, n as i64) == 1 {
+            if math::gcd(m as u64, n as u64) == 1 {
                 let p = 2 * m * (m + n);
                 if p > perim {
                     break;
@@ -28,7 +28,7 @@ fn compute(perim: usize) -> usize {
         }
     }
 
-    counter.into_iter().filter(|&x| x == 1).count()
+    counter.into_iter().filter(|x| *x == 1).count()
 }
 
 #[cfg(test)]

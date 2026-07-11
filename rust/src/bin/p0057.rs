@@ -25,12 +25,12 @@ fn solve() -> String {
     compute(1_000).to_string()
 }
 
-fn compute(limit: i64) -> i64 {
+fn compute(limit: u64) -> u64 {
     use num_bigint::BigUint;
 
     debug_assert!(limit > 0);
 
-    let mut ans: i64 = 0;
+    let mut ans: u64 = 0;
     let (mut b, mut c) = (BigUint::from(1_u32), BigUint::from(1_u32));
 
     for _ in 0..limit {

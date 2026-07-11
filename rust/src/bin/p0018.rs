@@ -24,15 +24,15 @@ fn solve() -> String {
     compute().to_string()
 }
 
-fn compute() -> i64 {
+fn compute() -> u64 {
     use std::cmp;
 
-    let triangle: Vec<Vec<i64>> = DATA
+    let triangle: Vec<Vec<u64>> = DATA
         .trim()
         .lines()
         .map(|s| {
             s.split_whitespace()
-                .map(|elm| elm.parse::<i64>().unwrap())
+                .map(|elm| elm.parse::<u64>().unwrap())
                 .collect()
         })
         .collect();
