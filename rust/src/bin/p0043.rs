@@ -25,7 +25,7 @@ fn compute() -> u64 {
     }
 
     lst.into_iter()
-        .filter(|s| s.as_bytes()[0] != 0x30) // Check if the leftmost digit isn't zero.
+        .filter(|s| !s.starts_with('0')) // Check if the leftmost digit isn't zero.
         .filter_map(|s| s.parse::<u64>().ok())
         .sum()
 }

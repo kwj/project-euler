@@ -44,7 +44,10 @@ fn max_prod(s: &str, n_digits: usize) -> Option<u64> {
     } else {
         s.as_bytes()
             .windows(n_digits)
-            .map(|bs| bs.iter().fold(1, |acc, x| acc * (u64::from(*x) - 0x30)))
+            .map(|bs| {
+                bs.iter()
+                    .fold(1, |acc, x| acc * (u64::from(*x) - '0' as u64))
+            })
             .max()
     }
 }
