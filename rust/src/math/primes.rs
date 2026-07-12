@@ -210,7 +210,7 @@ fn lucas_test(num: u64) -> bool {
     // example:
     // '0b1001101001'
     //     ^start  ^end
-    for x in (0..d.highest_one().unwrap()).rev() {
+    for x in (0..(d.bit_width() - 1)).rev() {
         u = euclidean_mod(u * v, n);
         v = euclidean_mod(v * v - 2 * qk, n);
         qk = euclidean_mod(qk * qk, n);
