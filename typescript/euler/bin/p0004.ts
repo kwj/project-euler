@@ -14,8 +14,11 @@ export const compute = (digits: number): string => {
   const answer: number[] = [];
 
   for (
-    const blk_lower of range(nLower ** 2, nUpper ** 2 + 1, blkWidth)
-      .toReversed()
+    const blk_lower of range(
+      nLower ** 2,
+      nUpper ** 2 + 1,
+      blkWidth,
+    ).toReversed()
   ) {
     const blk_upper = blk_lower + blkWidth - 1;
     for (const x of range(nLower, nUpper + 1).toReversed()) {
@@ -23,8 +26,10 @@ export const compute = (digits: number): string => {
         break;
       }
       for (
-        const y of range(nLower, x == 0 ? x + 1: Math.min(Math.trunc(blk_upper / x), x) + 1)
-          .toReversed()
+        const y of range(
+          nLower,
+          x == 0 ? x + 1 : Math.min(Math.trunc(blk_upper / x), x) + 1,
+        ).toReversed()
       ) {
         const tmp = x * y;
         if (tmp < blk_lower) {
