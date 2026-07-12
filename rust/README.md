@@ -16,11 +16,11 @@ If you are familiar with Cargo, you can run it directly.
 
 ## Notes
 
-It was confirmed to work with Rust 1.95.0.
+It was confirmed to work with Rust 1.97.0.
 
 I used the following crates and their dependent crates.
 
-- itertools v0.14.0
-- num-bigint v0.4.6
+- itertools v0.15.0
+- num-bigint v0.4.8
 - num-rational v0.4.2
 
