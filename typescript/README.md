@@ -27,9 +27,9 @@ These solutions were confirmed to work in the following version.
 
 ```console
 $ deno --version
-deno 2.7.4 (stable, release, aarch64-unknown-linux-gnu)
-v8 14.6.202.6-rusty
-typescript 5.9.2
+deno 2.9.2 (stable, release, aarch64-unknown-linux-gnu)
+v8 14.9.207.2-rusty
+typescript 6.0.3
 ```
 
 I used the following libraries/packages in addition to the runtime APIs part of Deno.
