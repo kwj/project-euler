@@ -99,8 +99,6 @@
         Please compare it with the solution of Grid 01.
 */
 
-use regex::Regex;
-
 euler::run_solver!(96);
 
 static FILE_DATA: &str = include_str!("../../assets/0096_sudoku.txt");
@@ -162,39 +160,26 @@ fn compute(data: &str) -> usize {
 }
 
 fn parse_data(data: &str) -> Vec<Vec<usize>> {
-    let re_data = Regex::new(r"^[0-9.]").unwrap();
-    let re_sep = Regex::new(r"^-").unwrap();
-
     let mut ret: Vec<Vec<usize>> = Vec::new();
-    let mut acc: Vec<String> = Vec::new();
+    let mut acc: Vec<&str> = Vec::new();
 
-    for line in data.lines() {
-        if re_data.is_match(line) {
-            acc.push(line.to_string());
-        } else if re_sep.is_match(line) {
-            continue;
-        } else if !acc.is_empty() {
-            ret.push(process_data(&acc));
+    for line in data.lines().rev() {
+        if line.starts_with("Grid") {
+            ret.push(
+                acc.iter()
+                    .fold(String::new(), |s, x| format!("{}{}", x, s))
+                    .chars()
+                    .map(|c| c as usize - '0' as usize)
+                    .collect::<Vec<usize>>(),
+            );
             acc.clear();
+        } else {
+            acc.push(line);
         }
     }
-    if !acc.is_empty() {
-        ret.push(process_data(&acc));
-    }
+    ret.reverse();
 
     ret
-}
-
-fn process_data(data: &[String]) -> Vec<usize> {
-    let re_rplc1 = Regex::new(r"[^0-9.]").unwrap();
-    let re_rplc2 = Regex::new(r"\.").unwrap();
-    let mut tmp = data
-        .iter()
-        .fold(String::new(), |acc, x| format!("{acc}{x}"));
-
-    tmp = re_rplc1.replace_all(&tmp, "").to_string();
-    tmp = re_rplc2.replace_all(&tmp, "0").to_string();
-    tmp.chars().map(|c| c as usize - '0' as usize).collect()
 }
 
 fn check_data(pazzles: &[Vec<usize>]) -> Vec<Vec<u128>> {

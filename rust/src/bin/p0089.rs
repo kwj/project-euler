@@ -22,8 +22,6 @@
     CCCC          CD
 */
 
-use regex::Regex;
-
 euler::run_solver!(89);
 
 static FILE_DATA: &str = include_str!("../../assets/0089_roman.txt");
@@ -33,23 +31,31 @@ fn solve() -> String {
 }
 
 fn compute(data: &str) -> usize {
-    let lines = parse_data(data);
-    let re_step1 = Regex::new(r"IIIIIIIII|XXXXXXXXX|CCCCCCCCC").unwrap();
-    let re_step2 = Regex::new(r"VIIII|LXXXX|DCCCC").unwrap();
-    let re_step3 = Regex::new(r"IIIII|XXXXX|CCCCC").unwrap();
-    let re_step4 = Regex::new(r"IIII|XXXX|CCCC").unwrap();
-
-    lines
-        .iter()
-        .map(|s| s.len() - replace_numbers(s, &re_step1, &re_step2, &re_step3, &re_step4).len())
+    parse_data(data)
+        .into_iter()
+        .map(|s| s.len() - replace_numbers(&s).len())
         .sum()
 }
 
-fn replace_numbers(line: &str, re1: &Regex, re2: &Regex, re3: &Regex, re4: &Regex) -> String {
-    let s1 = re1.replace_all(line, "##");
-    let s2 = re2.replace_all(&s1, "##");
-    let s3 = re3.replace_all(&s2, "#");
-    re4.replace_all(&s3, "##").to_string()
+fn replace_numbers(s: &str) -> String {
+    let from_to = [
+        ("IIIIIIIII", "##"),
+        ("XXXXXXXXX", "##"),
+        ("CCCCCCCCC", "##"),
+        ("VIIII", "##"),
+        ("LXXXX", "##"),
+        ("DCCCC", "##"),
+        ("IIIII", "#"),
+        ("XXXXX", "#"),
+        ("CCCCC", "#"),
+        ("IIII", "##"),
+        ("XXXX", "##"),
+        ("CCCC", "##"),
+    ];
+
+    from_to
+        .into_iter()
+        .fold(s.to_string(), |acc, (from, to)| acc.replace(from, to))
 }
 
 fn parse_data(data: &str) -> Vec<String> {
