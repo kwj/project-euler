@@ -1,7 +1,5 @@
 // Project Euler: Problem 93
 
-use itertools::Itertools;
-use num_rational::Ratio;
 use std::collections::HashSet;
 
 euler::run_solver!(93);
@@ -11,6 +9,8 @@ fn solve() -> String {
 }
 
 fn compute() -> i32 {
+    use itertools::Itertools;
+
     let res = (1..=9)
         .combinations(4)
         .map(|lst| (get_consec_counts(&lst), lst))
@@ -33,6 +33,8 @@ fn get_consec_counts(lst: &[i32]) -> i32 {
 }
 
 fn make_numbers(lst: &[i32]) -> HashSet<i32> {
+    use num_rational::Ratio;
+
     fn aux(lst: &[Ratio<i32>], res: &mut HashSet<i32>) {
         if lst.len() == 1 {
             if lst[0].is_integer() {

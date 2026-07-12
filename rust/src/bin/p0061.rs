@@ -1,6 +1,6 @@
 // Project Euler: Problem 61
 
-use std::collections::{HashMap, HashSet, VecDeque};
+use std::collections::HashMap;
 
 euler::run_solver!(61);
 
@@ -9,6 +9,8 @@ fn solve() -> String {
 }
 
 fn compute(max_nsides_polygon: usize) -> u64 {
+    use itertools::Itertools;
+
     debug_assert!(max_nsides_polygon > 3);
 
     let cycles: Vec<Vec<u64>> = find_closed_paths(max_nsides_polygon)
@@ -21,7 +23,7 @@ fn compute(max_nsides_polygon: usize) -> u64 {
         })
         .filter(|lst| {
             // All numbers in a cycle are different from each other's
-            lst.len() == HashSet::<u64>::from_iter(lst.clone()).len()
+            lst.len() == lst.iter().sorted().dedup().count()
         })
         .collect();
 
@@ -34,6 +36,8 @@ fn compute(max_nsides_polygon: usize) -> u64 {
 }
 
 fn find_closed_paths(max_nsides_polygon: usize) -> Vec<Vec<u64>> {
+    use std::collections::VecDeque;
+
     let mut closed_paths: Vec<Vec<u64>> = Vec::new();
     let polynum_tbl: HashMap<usize, HashMap<u64, Vec<u64>>> = make_polynum_tbl(max_nsides_polygon);
     let stop_condition: u32 = (1 << (max_nsides_polygon + 1)) - 8;

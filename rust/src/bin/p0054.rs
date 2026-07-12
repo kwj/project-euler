@@ -31,7 +31,6 @@
 */
 
 use std::cmp::Ordering;
-use std::collections::HashMap;
 
 euler::run_solver!(54);
 
@@ -66,6 +65,8 @@ fn compute(data: &str) -> u64 {
 }
 
 fn parse_data(data: &str) -> Vec<Vec<(u64, char)>> {
+    use std::collections::HashMap;
+
     let card_num: HashMap<char, u64> = HashMap::from([
         ('2', 2),
         ('3', 3),

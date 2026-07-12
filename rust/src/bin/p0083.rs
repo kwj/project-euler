@@ -4,7 +4,7 @@
   https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 */
 
-use std::{cmp::Ordering, collections::BinaryHeap};
+use std::cmp::Ordering;
 
 euler::run_solver!(83);
 
@@ -15,6 +15,8 @@ fn solve() -> String {
 }
 
 fn compute(data: &str) -> u64 {
+    use std::collections::BinaryHeap;
+
     let matrix = parse_data(data);
     let nbr_tbl = make_neighbor_tbl(matrix.len(), matrix[0].len());
     let mut dist_tbl = make_distance_tbl(matrix.len(), matrix[0].len());

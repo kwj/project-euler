@@ -1,7 +1,6 @@
 // Project Euler: Problem 60
 
 use euler::math::primes;
-use std::cmp;
 use std::collections::{HashMap, HashSet};
 
 euler::run_solver!(60);
@@ -11,6 +10,8 @@ fn solve() -> String {
 }
 
 fn compute(size_of_clique: usize) -> u64 {
+    use std::cmp;
+
     debug_assert!(size_of_clique > 1);
 
     let mut prime_lst: Vec<Vec<u64>> = vec![vec![3], vec![3]];

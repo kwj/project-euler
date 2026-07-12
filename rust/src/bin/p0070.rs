@@ -17,8 +17,8 @@
     N = p1^k1 * p2^k2 * ... * pn^kn  (N < 10^7, n > 1, 11 <= p1 < p2 < ... < pn, k1>2 when n=1)
 */
 
-use euler::math::{self, primes};
-use std::{cmp::Ordering, collections::BinaryHeap};
+use euler::math::primes;
+use std::cmp::Ordering;
 
 euler::run_solver!(70);
 
@@ -28,6 +28,7 @@ fn solve() -> String {
 
 fn compute() -> u64 {
     use std::cmp;
+    use std::collections::BinaryHeap;
 
     let limit = 10_000_000_u64 - 1;
     let mut pq: BinaryHeap<Ratio> = BinaryHeap::new();
@@ -168,6 +169,8 @@ impl Iterator for PrimeFactorization {
 }
 
 fn is_perm(x: u64, y: u64) -> bool {
+    use euler::math;
+
     let mut tmp_x = math::digits(x);
     let mut tmp_y = math::digits(y);
 
