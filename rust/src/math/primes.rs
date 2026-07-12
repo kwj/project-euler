@@ -201,16 +201,16 @@ fn lucas_test(num: u64) -> bool {
     // num + 1 = d * 2^s
     //
     // Note:
-    //   i64::MAX = 2^63 - 1 = 7^2 * 73 * 127 * 337 * 92737 * 649657
-    //   So, `num` is less than i64::MAX and `num + 1` isn't over wrapped
-    //   because we already performed trial division to check if `num` is divisible by 7
+    //   u64::MAX = 2^64 - 1 = 3 * 5 * 17 * 257 * 641 * 65537 * 6700417
+    //   `num`` is not equal to u64::MAX because u64::MAX is already determined as
+    //   composite by trial division. So, `num + 1` isn't over wrapped.
     let s = (num + 1).trailing_zeros();
     let d = (num + 1) >> s;
 
     // example:
     // '0b1001101001'
     //     ^start  ^end
-    for x in (0..=(i64::BITS - d.leading_zeros() - 2)).rev() {
+    for x in (0..d.highest_one().unwrap()).rev() {
         u = euclidean_mod(u * v, n);
         v = euclidean_mod(v * v - 2 * qk, n);
         qk = euclidean_mod(qk * qk, n);
