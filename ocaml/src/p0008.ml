@@ -25,17 +25,18 @@ let source_data =
    71636269561882670428252483600823257530420752963450" [@ocamlformat "disable"]
 ;;
 
-let find_max_product lst n_digits =
+let find_max_product n_digits lst =
   List.(
     range 0 (length lst - n_digits) ~stop:`inclusive
-    |> map ~f:(fun idx -> sub lst ~pos:idx ~len:n_digits)
-    |> map ~f:(reduce_exn ~f:( * ))
-    |> max_elt ~compare:Int.compare
-    |> Option.value_exn)
+    |> map ~f:(fun idx -> sub lst ~pos:idx ~len:n_digits |> reduce_exn ~f:( * ))
+    |> max_elt ~compare:Int.compare)
+  |> Option.value_exn
 ;;
 
 let compute n_digits =
-  find_max_product (String.to_list source_data |> List.map ~f:Char.get_digit_exn) n_digits
+  String.to_list source_data
+  |> List.map ~f:Char.get_digit_exn
+  |> find_max_product n_digits
 ;;
 
 let solve () = compute 13 |> Int.to_string
