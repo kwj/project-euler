@@ -6,7 +6,7 @@ fn solve() -> String {
     compute(5_000).to_string()
 }
 
-fn compute(thr: i64) -> usize {
+fn compute(thr: u64) -> usize {
     use euler::math::primes;
 
     let mut prime = 0;
@@ -15,7 +15,7 @@ fn compute(thr: i64) -> usize {
     loop {
         prime = primes::next_prime(prime);
         p_lst.push(prime);
-        let mut tbl: Vec<i64> = vec![0; p_lst.len() + 1];
+        let mut tbl: Vec<u64> = vec![0; p_lst.len() + 1];
         tbl[0] = 1;
         for i in p_lst.iter() {
             for j in *i..(tbl.len() as u64) {

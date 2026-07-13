@@ -96,8 +96,8 @@ fn get_squares(tbl: &mut HashMap<usize, Vec<String>>, n_digits: usize) -> Vec<St
         lst.clone()
     } else {
         let mut lst: Vec<String> = Vec::new();
-        for i in (10_i64.pow(n_digits as u32 - 1) - 1).isqrt() + 1
-            ..=(10_i64.pow(n_digits as u32) - 1).isqrt()
+        for i in (10_u64.pow(n_digits as u32 - 1) - 1).isqrt() + 1
+            ..=(10_u64.pow(n_digits as u32) - 1).isqrt()
         {
             lst.push(format!("{}", i * i));
         }
