@@ -9,26 +9,23 @@ fn solve() -> String {
 }
 
 fn compute(data: &str) -> usize {
-    let max_line = parse_data(data)
+    let (line_no, _) = parse_data(data)
         .into_iter()
         .map(|(b, e)| e * b.ln())
         .enumerate()
         .max_by(|(_, x1), (_, x2)| x1.total_cmp(x2))
         .unwrap();
 
-    max_line.0 + 1
+    line_no + 1
 }
 
 fn parse_data(data: &str) -> Vec<(f64, f64)> {
     use itertools::Itertools;
 
     data.lines()
-        .map(|line| {
-            line.split(',')
-                .map(|s| s.parse::<f64>().unwrap())
-                .collect_tuple()
-                .unwrap()
-        })
+        .flat_map(|s| s.split(','))
+        .map(|s| s.parse::<f64>().unwrap())
+        .tuples()
         .collect()
 }
 

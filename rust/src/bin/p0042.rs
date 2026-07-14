@@ -18,14 +18,11 @@ fn compute(data: &str) -> usize {
 }
 
 fn parse_data(s: &str) -> Vec<String> {
-    use std::string::ToString;
-
-    s.chars()
-        .filter(|c| *c != '"')
-        .collect::<String>()
-        .split(',')
-        .map(ToString::to_string)
-        .collect()
+    if let Some(body) = s.get(1..(s.len() - 1)) {
+        body.split(r#"",""#).map(|s| s.to_string()).collect()
+    } else {
+        unreachable!()
+    }
 }
 
 fn worth(s: &str) -> u64 {
