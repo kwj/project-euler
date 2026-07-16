@@ -29,8 +29,13 @@ fn make_cands() -> Vec<(u64, u64)> {
     // in lexicographic order according to the order of the input iterables.
     (1_u64..10)
         .combinations(3)
-        .filter(|v| check(v[0], v[1], v[2]))
-        .map(|v| (v[0], v[1]))
+        .filter_map(|v| {
+            if check(v[0], v[1], v[2]) {
+                Some((v[0], v[1]))
+            } else {
+                None
+            }
+        })
         .collect()
 }
 

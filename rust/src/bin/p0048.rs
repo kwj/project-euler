@@ -13,8 +13,13 @@ fn compute(upper: u64) -> String {
 
     let m = 10_u64.pow(10);
     let ans = (1..=upper)
-        .filter(|x| *x % 10 != 0)
-        .map(|x| math::powmod(x, x, m))
+        .filter_map(|x| {
+            if x % 10 != 0 {
+                Some(math::powmod(x, x, m))
+            } else {
+                None
+            }
+        })
         .sum::<u64>();
 
     format!("{:010}", ans % m)

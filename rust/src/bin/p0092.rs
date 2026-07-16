@@ -80,15 +80,17 @@ fn compute(limit: u64) -> usize {
     (0..10)
         .map(|i| i * i)
         .combinations_with_replacement(n_digits)
-        .filter(|lst| is_group89(lst.iter().sum()))
-        .map(|lst| {
-            let mut acc: usize = 1;
-            for (_, v) in euler::countmap(lst) {
-                acc *= factorial(v);
+        .filter_map(|lst| {
+            if is_group89(lst.iter().sum()) {
+                let mut denominator: usize = 1;
+                for (_, v) in euler::countmap(lst) {
+                    denominator *= factorial(v);
+                }
+                Some(numerator / denominator)
+            } else {
+                None
             }
-            acc
         })
-        .map(|denominator| numerator / denominator)
         .sum()
 }
 

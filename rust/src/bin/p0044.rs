@@ -53,8 +53,14 @@ fn get_divisors(n: u64) -> Vec<u64> {
     math::divisors(n)
         .into_iter()
         .cartesian_product(math::divisors(3 * n - 1))
-        .map(|(x, y)| x * y)
-        .filter(|x| *x < n && *x % 3 == n % 3)
+        .filter_map(|(x, y)| {
+            let p = x * y;
+            if p < n && p % 3 == n % 3 {
+                Some(p)
+            } else {
+                None
+            }
+        })
         .collect()
 }
 
