@@ -7,50 +7,56 @@ fn solve() -> String {
 }
 
 fn compute() -> u64 {
-    make_cands()
+    right_truncatable_primes()
         .into_iter()
         .filter(|x| check_left_truncatable(*x))
         .sum()
 }
 
-fn make_cands() -> Vec<u64> {
-    use euler::math::primes;
-    use itertools::Itertools;
-
+fn right_truncatable_primes() -> Vec<u64> {
     let mut primes: Vec<u64> = vec![2, 3, 5, 7];
     let mut cands: Vec<u64> = vec![2, 3, 5, 7];
 
     while !cands.is_empty() {
-        cands = cands
-            .into_iter()
-            .cartesian_product([1, 3, 7, 9])
-            .map(|(x, y)| 10 * x + y)
-            .filter(|x| primes::is_prime(*x))
-            .collect();
+        cands = make_cands(&cands, &[1, 3, 7, 9]);
         primes.extend(cands.clone());
     }
 
-    primes
-        .into_iter()
-        .cartesian_product([3, 7])
-        .map(|(x, y)| 10 * x + y)
-        .filter(|x| primes::is_prime(*x))
+    make_cands(&primes, &[3, 7])
+}
+
+fn make_cands(lst: &[u64], nums: &[u64]) -> Vec<u64> {
+    use euler::math::primes;
+    use itertools::Itertools;
+
+    lst.iter()
+        .cartesian_product(nums)
+        .filter_map(|(x, y)| {
+            let tmp = 10 * (*x) + (*y);
+            if primes::is_prime(tmp) {
+                Some(tmp)
+            } else {
+                None
+            }
+        })
         .collect()
 }
 
 fn check_left_truncatable(n: u64) -> bool {
-    use euler::math::{self, primes};
+    use euler::math::primes;
 
-    let mut d = math::num_of_digits(n, 10) as u32;
+    let mut m = 10;
 
-    while d > 0 {
-        if !primes::is_prime(n % (10_u64.pow(d))) {
+    loop {
+        let (q, r) = (n / m, n % m);
+        if q == 0 {
+            return true;
+        } else if !primes::is_prime(r) {
             return false;
         }
-        d -= 1;
-    }
 
-    true
+        m *= 10;
+    }
 }
 
 #[cfg(test)]
