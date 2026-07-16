@@ -236,7 +236,7 @@ pub fn aliquot_sum_tbl(upper: usize) -> Vec<u64> {
         .collect()
 }
 
-pub fn get_max_exp(mut n: u64, base: u64) -> u64 {
+pub fn get_max_exp(mut n: u64, base: u64) -> u32 {
     let mut e = 0;
     while n >= base {
         n /= base;
@@ -245,7 +245,7 @@ pub fn get_max_exp(mut n: u64, base: u64) -> u64 {
     e
 }
 
-pub fn num_of_digits(num: u64, base: u64) -> u64 {
+pub fn num_of_digits(num: u64, base: u64) -> u32 {
     get_max_exp(num, base) + 1
 }
 
