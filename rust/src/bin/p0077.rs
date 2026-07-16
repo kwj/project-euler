@@ -10,25 +10,26 @@ fn compute(thr: u64) -> usize {
     use euler::math::primes;
 
     let mut prime = 0;
-    let mut p_lst: Vec<u64> = Vec::new();
+    let mut p_lst: Vec<usize> = Vec::new();
+    let mut tbl: Vec<u64> = vec![0; 1];
 
     loop {
-        prime = primes::next_prime(prime);
-        p_lst.push(prime);
-        let mut tbl: Vec<u64> = vec![0; p_lst.len() + 1];
+        let target = tbl.len();
+        tbl.fill(0);
+        tbl.push(0);
         tbl[0] = 1;
-        for i in p_lst.iter() {
-            for j in *i..(tbl.len() as u64) {
-                tbl[j as usize] += tbl[(j - *i) as usize];
-            }
-        }
 
-        if *tbl.last().unwrap() > thr {
-            break;
+        prime = primes::next_prime(prime);
+        p_lst.push(prime as usize);
+        p_lst
+            .iter()
+            .flat_map(|i| (*i..=target).map(|j| (*i, j)))
+            .for_each(|(i, j)| tbl[j] += tbl[j - i]);
+
+        if tbl[target] > thr {
+            return target;
         }
     }
-
-    p_lst.len()
 }
 
 #[cfg(test)]

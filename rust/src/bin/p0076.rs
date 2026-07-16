@@ -10,11 +10,10 @@ fn compute(coins: Vec<usize>, target: usize) -> usize {
     let mut tbl = vec![0_usize; target + 1];
     tbl[0] = 1;
 
-    for c in coins {
-        for i in c..=target {
-            tbl[i] += tbl[i - c];
-        }
-    }
+    coins
+        .into_iter()
+        .flat_map(|c| (c..=target).map(move |i| (c, i)))
+        .for_each(|(c, i)| tbl[i] += tbl[i - c]);
 
     tbl[target]
 }
