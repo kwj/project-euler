@@ -20,8 +20,7 @@ fn d(mut pos: u32) -> u32 {
         pos -= n_digits * 9 * (10_u32.pow(n_digits - 1));
         n_digits += 1;
     }
-    let q = (pos - 1) / n_digits;
-    let r = (pos - 1) % n_digits;
+    let (q, r) = ((pos - 1) / n_digits, (pos - 1) % n_digits);
     let num = 10_u32.pow(n_digits - 1) + q;
 
     (num / (10_u32.pow(n_digits - r - 1))) % 10

@@ -8,18 +8,24 @@ fn solve() -> String {
 
 fn compute(limit: u64) -> usize {
     use euler::math::{self, primes};
+    use std::iter;
 
-    fn check_rot_num(n: u64) -> bool {
-        let s = format!("{n}{n}");
-        let m = math::num_of_digits(n, 10) as usize;
-        (0..m)
-            .map(|pos| s[pos..(pos + m)].parse::<u64>().unwrap())
-            .all(primes::is_prime)
+    fn check_circular_numbers(n: u64) -> bool {
+        let k = math::get_max_exp(n, 10);
+        let m = 10_u64.pow(k);
+        let mut num = n;
+        let circular_numbers = iter::from_fn(move || {
+            let (q, r) = (num / m, num % m);
+            num = r * 10 + q;
+            Some(num)
+        });
+
+        circular_numbers.take(k as usize).all(primes::is_prime)
     }
 
     primes::primes(1, limit)
         .into_iter()
-        .filter(|x| check_rot_num(*x))
+        .filter(|x| check_circular_numbers(*x))
         .count()
 }
 

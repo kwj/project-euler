@@ -34,13 +34,12 @@ fn compute(n_th: usize) -> u64 {
 
     debug_assert!(n_th > 0);
 
-    let y = iter::successors(Some((1_u64, 1_u64)), |(x, y)| {
+    let (_x, y): (u64, u64) = iter::successors(Some((1, 1)), |(x, y)| {
         Some((2 * (*x) + 3 * (*y), (*x) + 2 * (*y)))
     })
     .filter(|(x, y)| *x % 6 == 5 && *y % 4 == 3)
     .nth(n_th - 1)
-    .unwrap()
-    .1;
+    .unwrap();
 
     let j = (y + 1) / 4;
     j * (2 * j - 1)
