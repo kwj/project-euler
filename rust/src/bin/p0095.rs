@@ -15,9 +15,14 @@ fn compute() -> usize {
     // spd: sum of proper divisors
     let spd_tbl = math::aliquot_sum_tbl(limit);
 
+    // chain_tbl
+    //   0: unconfirmed
+    //  -1: not amicable chain
+    //   n: length of amicable chain
     let mut chain_tbl = vec![0_i64; limit + 1];
+
     let mut chain: Vec<usize> = Vec::new();
-    let mut max_length: usize = 0;
+    let mut max_length: usize = usize::MIN;
 
     for mut pos in 2..=limit {
         chain.clear();
@@ -32,13 +37,12 @@ fn compute() -> usize {
         if pos <= 1 || pos > limit || chain_tbl[pos] != 0 {
             update_chain_tbl(&mut chain_tbl, &chain, -1);
         } else {
-            let mut i: usize = 0;
-            while pos != chain[i] {
-                i += 1;
-            }
-            let length = chain.len() - i + 1;
-            update_chain_tbl(&mut chain_tbl, &chain[..i], -1);
-            update_chain_tbl(&mut chain_tbl, &chain[i..], length as i64);
+            let i = chain.iter().position(|x| *x == pos).unwrap();
+            let (c1, c2) = chain.split_at(i);
+            let length = c2.len();
+
+            update_chain_tbl(&mut chain_tbl, c1, -1);
+            update_chain_tbl(&mut chain_tbl, c2, length as i64);
             max_length = cmp::max(max_length, length);
         }
     }
