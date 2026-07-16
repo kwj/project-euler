@@ -7,19 +7,28 @@ fn solve() -> String {
 }
 
 fn compute() -> u64 {
+    if let Some(n) = find_number(&[7, 4]) {
+        n
+    } else {
+        unreachable!()
+    }
+}
+
+fn find_number(n_digits_lst: &[u64]) -> Option<u64> {
     use euler::math::{self, primes};
     use itertools::Itertools;
 
-    for k in [7_u64, 4] {
-        for lst in (1..=k).rev().permutations(k as usize) {
-            let n = lst.iter().fold(0, |acc, x| 10 * acc + x);
+    n_digits_lst
+        .iter()
+        .flat_map(|k| (1..=*k).rev().permutations(*k as usize))
+        .find_map(|lst| {
+            let n = lst.into_iter().fold(0, |acc, x| 10 * acc + x);
             if math::is_pandigital_nz(n) && primes::is_prime(n) {
-                return n;
+                Some(n)
+            } else {
+                None
             }
-        }
-    }
-
-    unreachable!();
+        })
 }
 
 #[cfg(test)]

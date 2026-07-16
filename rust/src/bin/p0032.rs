@@ -10,35 +10,33 @@ fn compute() -> u64 {
     use euler::math;
     use itertools::Itertools;
 
-    let mut nums: Vec<_> = make_cands()
+    make_cands()
         .into_iter()
-        .filter(|(n, _)| math::is_pandigital_nz(*n))
-        .map(|(_, prod)| prod)
-        .collect();
-
-    nums.sort_unstable();
-    nums.iter().dedup().sum()
+        .filter_map(|(n, prod)| {
+            if math::is_pandigital_nz(n) {
+                Some(prod)
+            } else {
+                None
+            }
+        })
+        .sorted()
+        .dedup()
+        .sum()
 }
 
 fn make_cands() -> Vec<(u64, u64)> {
-    let mut lst: Vec<(u64, u64)> = Vec::new();
+    let it1 = (1_000_u64..10_000).flat_map(|m1| {
+        (2_u64..10)
+            .map(move |m2| (m1 * 10_u64.pow(5) + m2 * 10_u64.pow(4) + m1 * m2, m1 * m2))
+            .take_while(|(_, x)| *x < 10_000)
+    });
+    let it2 = (100_u64..1_000).flat_map(|m1| {
+        (10_u64..100)
+            .map(move |m2| (m1 * 10_u64.pow(6) + m2 * 10_u64.pow(4) + m1 * m2, m1 * m2))
+            .take_while(|(_, x)| *x < 10_000)
+    });
 
-    for m1 in 1_000_u64..10_000 {
-        for m2 in 2_u64..10 {
-            if m1 * m2 < 10_000 {
-                lst.push((m1 * 10_u64.pow(5) + m2 * 10_u64.pow(4) + m1 * m2, m1 * m2));
-            }
-        }
-    }
-    for m1 in 100_u64..1_000 {
-        for m2 in 10_u64..100 {
-            if m1 * m2 < 10_000 {
-                lst.push((m1 * 10_u64.pow(6) + m2 * 10_u64.pow(4) + m1 * m2, m1 * m2));
-            }
-        }
-    }
-
-    lst
+    it1.chain(it2).collect()
 }
 
 #[cfg(test)]

@@ -22,32 +22,32 @@ fn solve() -> String {
 }
 
 fn compute() -> i64 {
-    let p_lst = primes::primes(1, 2_000);
-    let mut max_len = 0_u64;
-    let mut max_tpl: (i64, i64) = (0, 0);
+    let p_lst: Vec<i64> = primes::primes(1, 2_000)
+        .into_iter()
+        .map(|x| i64::try_from(x).unwrap())
+        .collect();
 
-    for &b in p_lst[1..].iter().filter(|x| **x < 1_000) {
-        for a in p_lst
-            .iter()
-            .map(|x| (*x as i64) - (b as i64) - 1)
-            .filter(|x| *x < 1_000)
-        {
-            let length = count_consec_times(a, b);
-            if length > max_len {
-                max_len = length;
-                max_tpl = (a, b as i64);
-            }
-        }
-    }
+    let (a, b) = p_lst
+        .iter()
+        .skip(1)
+        .filter(|p| **p < 1_000)
+        .flat_map(|b| {
+            p_lst.iter().filter_map(|p| {
+                let a = *p - *b - 1;
+                if a < 1_000 { Some((a, *b)) } else { None }
+            })
+        })
+        .max_by_key(|(a, b)| count_consec_times(*a, *b))
+        .unwrap();
 
-    max_tpl.0 * max_tpl.1
+    a * b
 }
 
-fn count_consec_times(a: i64, b: u64) -> u64 {
+fn count_consec_times(a: i64, b: i64) -> u64 {
     let mut n = 0_i64;
 
     loop {
-        let p = n * n + a * n + (b as i64);
+        let p = n * n + a * n + b;
         if p > 0 && primes::is_prime(p as u64) {
             n += 1;
         } else {

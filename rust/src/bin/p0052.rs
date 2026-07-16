@@ -28,13 +28,7 @@ fn check_num(num: u64) -> bool {
     }
 
     let key = make_key(num);
-    for mult in 2..=6 {
-        if key != make_key(num * mult) {
-            return false;
-        }
-    }
-
-    true
+    (2..=6).all(|mult| key == make_key(num * mult))
 }
 
 #[cfg(test)]

@@ -59,20 +59,16 @@ fn compute() -> u64 {
     use itertools::Itertools;
 
     let fact_tbl: Vec<u64> = vec![1, 1, 2, 6, 24, 120, 720, 5_040, 40_320, 362_880];
-    let mut acc = 0_u64;
 
-    for ndigits in 2_usize..8 {
-        for v in (0_usize..10).combinations_with_replacement(ndigits) {
-            let n = v.iter().map(|x| fact_tbl[*x]).sum::<u64>();
-            let mut tmp: Vec<_> = math::digits(n).into_iter().map(|x| x as usize).collect();
+    (2_usize..8)
+        .flat_map(|n_digits| (0_u64..10).combinations_with_replacement(n_digits))
+        .filter_map(|lst| {
+            let n = lst.iter().map(|x| fact_tbl[*x as usize]).sum();
+            let mut tmp = math::digits(n);
             tmp.sort_unstable();
-            if tmp == v {
-                acc += n;
-            }
-        }
-    }
-
-    acc
+            if tmp == lst { Some(n) } else { None }
+        })
+        .sum()
 }
 
 #[cfg(test)]

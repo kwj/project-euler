@@ -35,21 +35,18 @@ fn solve() -> String {
 fn compute() -> u64 {
     use euler::math;
 
-    let mut ans = 918_273_645_u64;
-
-    for x in (9183_u64..9498).rev() {
-        let rem = x % 10;
-        if rem <= 1 || rem >= 8 || rem == 4 || rem == 5 {
-            continue;
-        }
-        let n = x * 100_002;
-        if math::is_pandigital_nz(n) {
-            ans = n;
-            break;
-        }
-    }
-
-    ans
+    (9182_u64..9498)
+        .rev()
+        .filter_map(|x| {
+            let rem = x % 10;
+            if rem == 2 || rem == 3 || rem == 6 || rem == 7 {
+                Some(x * 100_002)
+            } else {
+                None
+            }
+        })
+        .find(|n| math::is_pandigital_nz(*n))
+        .unwrap()
 }
 
 #[cfg(test)]
