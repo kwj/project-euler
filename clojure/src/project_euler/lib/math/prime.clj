@@ -1,5 +1,8 @@
 (ns project-euler.lib.math.prime
-  (:require [project-euler.lib.math :as my-math]))
+  (:require
+   [clojure.edn :as edn]
+   [clojure.java.io :as io]
+   [project-euler.lib.math :as my-math]))
 
 ;;; Primality test
 ;;;
@@ -13,7 +16,8 @@
 ;;;              https://arxiv.org/abs/2006.14425v2
 
 ;; lookup table
-(load "min_factors")
+(def ^:private min-factor-tbl
+  (-> "min-factor-tbl.edn" io/resource io/reader slurp edn/read-string))
 
 (def ^:private sprp-bases
   [15591 2018 166 7429 8064 16045 10503 4399 1949 1295 2776 3620 560 3128 5212 2657
@@ -138,7 +142,7 @@
     (boolean (some #(= % n) [2 3 5 7 11 13 17 19 23 29 31])) true
     (boolean (some #(zero? (mod n %)) [2 3 5 7 11 13 17 19 23 29 31])) false
     (< n 1369) (> n 1) ; 1369 = 37^2
-    (<= n 65535) (= (nth min-factor-tbl (my-math/bshift-right n 1)) 1) ; 65535 = 2^16 - 1
+    (<= n 65535) (= (min-factor-tbl (keyword (str n))) 1) ; 65535 = 2^16 - 1
     (<= n 4294967295) (test-sprp n (get-sprp-base n)) ; 4294967295 = 2^32 - 1
     :else (strengthened-BPSW-test n)))
 
