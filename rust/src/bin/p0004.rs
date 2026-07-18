@@ -7,7 +7,9 @@ fn solve() -> String {
 }
 
 fn compute(ndigit: u32) -> u64 {
-    debug_assert!(ndigit > 0);
+    // u64::MAX = 18446744073709551615 (20-digits number)
+    // So, limit the maximum number of digits to less than 10.
+    debug_assert!(ndigit > 0 && ndigit < 10);
 
     let n_upper = 10_u64.pow(ndigit) - 1;
     let n_lower = if ndigit > 1 {
@@ -15,48 +17,68 @@ fn compute(ndigit: u32) -> u64 {
     } else {
         0
     };
-    let blk_width = 10_u64.pow(ndigit * 2 - 2);
 
-    // descending order - (100, 999, 990000, 999999), (100, 999, 980000, 989999), ...
-    let mut blocks = ((n_lower * n_lower)..=((n_upper * n_upper) / blk_width * blk_width))
-        .rev()
-        .step_by(blk_width as usize)
-        .map(|x| (n_lower, n_upper, x, x + blk_width - 1));
+    let is_product_of_twos = |p: u64| -> bool {
+        use std::cmp;
 
-    if let Some(v) = blocks.find_map(max_palindrome_number) {
-        v
+        let step = ((p & 1) + 1) as usize;
+        let x_upper = |x: u64| {
+            if x & 1 == 0 && p & 1 == 1 { x - 1 } else { x }
+        };
+
+        for x in (p.isqrt()..=x_upper(cmp::min(n_upper, p / n_lower.max(1))))
+            .rev()
+            .step_by(step)
+        {
+            if p.is_multiple_of(x) {
+                if p == 0 {
+                    return true;
+                }
+                let y = p / x;
+                if y >= n_lower && y <= n_upper {
+                    return true;
+                }
+            }
+        }
+
+        false
+    };
+
+    let it1 = (n_lower..=n_upper).rev().filter_map(palindrome_even_digits);
+    let it2 = (n_lower..=n_upper).rev().map(palindrome_odd_digits);
+
+    if let Some(ans) = it1.chain(it2).find(|p| is_product_of_twos(*p)) {
+        ans
     } else {
         unreachable!()
     }
 }
 
-fn max_palindrome_number(
-    (n_lower, n_upper, blk_lower, blk_upper): (u64, u64, u64, u64),
-) -> Option<u64> {
-    use euler::math;
-    use std::cmp;
-
-    let mut result: Vec<u64> = Vec::new();
-    for x in (n_lower..=n_upper).rev() {
-        if x * x < blk_lower {
-            break;
+// xyz -> xyzzyx
+fn palindrome_even_digits(mut n: u64) -> Option<u64> {
+    if n == 0 {
+        None
+    } else {
+        let mut x = n;
+        let mut r;
+        while n > 0 {
+            (n, r) = (n / 10, n % 10);
+            x = 10 * x + r;
         }
-        let y_upper = if let Some(v) = blk_upper.checked_div(x) {
-            cmp::min(v, x)
-        } else {
-            x
-        };
-        for y in (n_lower..=y_upper).rev() {
-            let tmp = x * y;
-            if tmp < blk_lower {
-                break;
-            }
-            if math::is_palindrome(tmp, 10) {
-                result.push(tmp);
-            }
-        }
+        Some(x)
     }
-    result.into_iter().max()
+}
+
+// xyz -> xyzyx
+fn palindrome_odd_digits(mut n: u64) -> u64 {
+    let mut x = n;
+    let mut r;
+    n /= 10;
+    while n > 0 {
+        (n, r) = (n / 10, n % 10);
+        x = 10 * x + r;
+    }
+    x
 }
 
 #[cfg(test)]
