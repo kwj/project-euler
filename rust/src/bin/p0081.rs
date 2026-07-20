@@ -9,8 +9,6 @@ fn solve() -> String {
 }
 
 fn compute(data: &str) -> u64 {
-    use std::cmp;
-
     let mut matrix = parse_data(data);
     let mut prev: Vec<_> = matrix[0]
         .iter()
@@ -24,7 +22,7 @@ fn compute(data: &str) -> u64 {
     for work in &mut matrix[1..] {
         (*work).insert(0, u64::MAX);
         for i in 1..((*work).len()) {
-            work[i] += cmp::min(work[i - 1], prev[i]);
+            work[i] += work[i - 1].min(prev[i]);
         }
         prev.clone_from(work);
     }

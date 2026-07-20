@@ -1,6 +1,5 @@
 // Project Euler: Problem 98
 
-use std::cmp;
 use std::collections::HashMap;
 
 euler::run_solver!(98);
@@ -24,7 +23,7 @@ fn compute(data: &str) -> u64 {
     }
 
     for anagram_words in word_tbl.values().filter(|words| words.len() > 1) {
-        ans = cmp::max(ans, get_max_anagram(anagram_words, &mut sq_tbl));
+        ans = ans.max(get_max_anagram(anagram_words, &mut sq_tbl));
     }
 
     ans
@@ -71,7 +70,7 @@ fn get_max_anagram(words: &[String], tbl: &mut HashMap<usize, Vec<String>>) -> u
 
             let tmp = trans(&trans_tbl, w2);
             if !tmp.starts_with('0') && squares.contains(&tmp) {
-                ret = cmp::max(ret, cmp::max(sq.parse().unwrap(), tmp.parse().unwrap()));
+                ret = ret.max(sq.parse::<u64>().unwrap().max(tmp.parse().unwrap()));
             }
         }
         ret
@@ -82,7 +81,7 @@ fn get_max_anagram(words: &[String], tbl: &mut HashMap<usize, Vec<String>>) -> u
 
     for (idx, w1) in words.iter().enumerate() {
         for w2 in &words[(idx + 1)..] {
-            ret = cmp::max(ret, aux(w1, w2, &squares));
+            ret = ret.max(aux(w1, w2, &squares));
         }
     }
     ret

@@ -9,14 +9,12 @@ fn solve() -> String {
 }
 
 fn compute(data: &str) -> u64 {
-    use std::cmp;
-
     parse_data(data)
         .into_iter()
         .rev()
         .reduce(|acc, e| {
             acc.windows(2)
-                .map(|v| cmp::max(v[0], v[1]))
+                .map(|v| v[0].max(v[1]))
                 .zip(e)
                 .map(|(e1, e2)| e1 + e2)
                 .collect()

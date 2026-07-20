@@ -8,7 +8,6 @@ fn solve() -> String {
 
 fn compute() -> usize {
     use euler::math;
-    use std::cmp;
 
     let limit: usize = 1_000_000;
 
@@ -43,7 +42,7 @@ fn compute() -> usize {
 
             update_chain_tbl(&mut chain_tbl, c1, -1);
             update_chain_tbl(&mut chain_tbl, c2, length as i64);
-            max_length = cmp::max(max_length, length);
+            max_length = max_length.max(length);
         }
     }
 

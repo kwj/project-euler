@@ -40,7 +40,6 @@ fn solve() -> String {
 
 fn compute(x_size: u64, y_size: u64) -> u64 {
     use euler::math;
-    use std::cmp;
 
     fn case_1(x_upper: u64, y_upper: u64) -> u64 {
         x_upper * y_upper * 3
@@ -50,7 +49,7 @@ fn compute(x_size: u64, y_size: u64) -> u64 {
         let mut acc: u64 = 0;
 
         for (x, y) in itertools::iproduct!(1..=x_upper, 1..=y_upper) {
-            acc += cmp::min(y * math::gcd(x, y) / x, (x_upper - x) * math::gcd(x, y) / y);
+            acc += (y * math::gcd(x, y) / x).min((x_upper - x) * math::gcd(x, y) / y);
         }
 
         acc * 2

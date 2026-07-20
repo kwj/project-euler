@@ -27,7 +27,6 @@ fn solve() -> String {
 }
 
 fn compute() -> u64 {
-    use std::cmp;
     use std::collections::BinaryHeap;
 
     let limit = 10_000_000_u64 - 1;
@@ -43,7 +42,7 @@ fn compute() -> u64 {
         }
 
         for pf_lst in PrimeFactorization::new((p, primes::prev_prime(limit / p + 1)), limit) {
-            if get_phi_ratio(&pf_lst[0..cmp::min(2, pf_lst.len())]) > pq.peek().unwrap().priority {
+            if get_phi_ratio(&pf_lst[0..pf_lst.len().min(2)]) > pq.peek().unwrap().priority {
                 break;
             }
             if is_perm(prod(&pf_lst), phi(&pf_lst)) {

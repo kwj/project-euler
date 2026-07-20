@@ -19,8 +19,6 @@ fn compute(ndigit: u32) -> u64 {
     };
 
     let is_product_of_twos = |p: u64| -> bool {
-        use std::cmp;
-
         if p == 0 {
             return true;
         }
@@ -30,7 +28,7 @@ fn compute(ndigit: u32) -> u64 {
             if x & 1 == 0 && p & 1 == 1 { x - 1 } else { x }
         };
 
-        for x in (p.isqrt()..=x_upper(cmp::min(n_upper, p / n_lower.max(1))))
+        for x in (p.isqrt()..=x_upper(n_upper.min(p / n_lower.max(1))))
             .rev()
             .step_by(step)
         {

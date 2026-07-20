@@ -8,7 +8,6 @@ fn solve() -> String {
 
 fn compute() -> usize {
     use num_bigint::BigUint;
-    use std::cmp;
 
     let mut ans: usize = 0;
 
@@ -26,7 +25,7 @@ fn compute() -> usize {
             if p.to_radix_le(10).len() * 9 < ans {
                 break;
             }
-            ans = cmp::max(ans, p.to_radix_le(10).into_iter().map(usize::from).sum());
+            ans = ans.max(p.to_radix_le(10).into_iter().map(usize::from).sum());
         }
     }
 

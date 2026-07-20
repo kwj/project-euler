@@ -25,8 +25,6 @@ fn solve() -> String {
 }
 
 fn compute() -> u64 {
-    use std::cmp;
-
     let triangle: Vec<Vec<u64>> = DATA
         .trim()
         .lines()
@@ -42,7 +40,7 @@ fn compute() -> u64 {
         .rev()
         .reduce(|acc, e| {
             acc.windows(2)
-                .map(|v| cmp::max(v[0], v[1]))
+                .map(|v| v[0].max(v[1]))
                 .zip(e)
                 .map(|(e1, e2)| e1 + e2)
                 .collect()

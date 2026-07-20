@@ -10,8 +10,6 @@ fn solve() -> String {
 }
 
 fn compute(size_of_clique: usize) -> u64 {
-    use std::cmp;
-
     debug_assert!(size_of_clique > 1);
 
     let mut prime_lst: Vec<Vec<u64>> = vec![vec![3], vec![3]];
@@ -43,8 +41,7 @@ fn compute(size_of_clique: usize) -> u64 {
         // switch the list of connectable primes to descending order and check cliques.
         nbr_lst.reverse();
         if let Some(clqs) = check_cliques(&nbr_lst, size_of_clique - 1, &tbl) {
-            ans = cmp::min(
-                ans,
+            ans = ans.min(
                 clqs.into_iter()
                     .map(|v| v.into_iter().sum::<u64>() + p)
                     .min()

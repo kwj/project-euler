@@ -41,7 +41,6 @@ fn compute(upper: usize) -> u64 {
 
 fn make_dupctr_tbl(upper: usize) -> Vec<u64> {
     use euler::math;
-    use std::cmp;
 
     let max_exp = math::get_max_exp(upper as u64, 2) as usize;
     let mut dupctr_tbl = vec![0_u64; max_exp + 1];
@@ -50,7 +49,7 @@ fn make_dupctr_tbl(upper: usize) -> Vec<u64> {
         let mut dups = vec![0_u64; upper + 1];
         for y in 1..x {
             let k = math::lcm(x as u64, y as u64) as usize / x;
-            (cmp::max(k, 2)..=(upper * y / x))
+            (k.max(2)..=(upper * y / x))
                 .step_by(k)
                 .for_each(|idx| dups[idx] = 1);
         }
