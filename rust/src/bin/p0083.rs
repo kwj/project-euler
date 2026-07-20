@@ -33,13 +33,13 @@ fn compute(data: &str) -> u64 {
             priority: d,
             pos: (i, j),
         } = pq.pop().unwrap();
-        for (x, y) in &nbr_tbl[i][j] {
-            let new_d = d + matrix[*x][*y];
-            if new_d < dist_tbl[*x][*y] {
-                dist_tbl[*x][*y] = new_d;
+        for &(x, y) in &nbr_tbl[i][j] {
+            let new_d = d + matrix[x][y];
+            if new_d < dist_tbl[x][y] {
+                dist_tbl[x][y] = new_d;
                 pq.push(Node {
                     priority: new_d,
-                    pos: (*x, *y),
+                    pos: (x, y),
                 });
             }
         }

@@ -32,7 +32,7 @@ fn compute(limit: u64) -> usize {
     debug_assert!(limit > 0);
 
     (1..=limit)
-        .filter(|n| get_cont_fraction(*n).1.len() % 2 == 1)
+        .filter(|&n| get_cont_fraction(n).1.len() % 2 == 1)
         .count()
 }
 

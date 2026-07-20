@@ -63,7 +63,7 @@ fn compute() -> u64 {
     (2_usize..8)
         .flat_map(|n_digits| (0_u64..10).combinations_with_replacement(n_digits))
         .filter_map(|lst| {
-            let n = lst.iter().map(|x| fact_tbl[*x as usize]).sum();
+            let n = lst.iter().map(|&x| fact_tbl[x as usize]).sum();
             let mut tmp = math::digits(n);
             tmp.sort_unstable();
             if tmp == lst { Some(n) } else { None }

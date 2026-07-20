@@ -9,7 +9,7 @@ fn solve() -> String {
 fn compute() -> u64 {
     right_truncatable_primes()
         .into_iter()
-        .filter(|x| check_left_truncatable(*x))
+        .filter(|&x| check_left_truncatable(x))
         .sum()
 }
 
@@ -31,8 +31,8 @@ fn make_cands(lst: &[u64], nums: &[u64]) -> Vec<u64> {
 
     lst.iter()
         .cartesian_product(nums)
-        .filter_map(|(x, y)| {
-            let tmp = 10 * (*x) + (*y);
+        .filter_map(|(&x, &y)| {
+            let tmp = 10 * x + y;
             if primes::is_prime(tmp) {
                 Some(tmp)
             } else {

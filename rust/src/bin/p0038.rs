@@ -45,7 +45,7 @@ fn compute() -> u64 {
                 None
             }
         })
-        .find(|n| math::is_pandigital_nz(*n))
+        .find(|&n| math::is_pandigital_nz(n))
         .unwrap()
 }
 

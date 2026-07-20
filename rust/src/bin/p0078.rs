@@ -52,14 +52,14 @@ fn compute(denom: i64) -> usize {
         }
 
         let mut rem: i64 = 0;
-        for (i, x) in gp.iter().enumerate() {
-            if *x > n {
+        for (i, &x) in gp.iter().enumerate() {
+            if x > n {
                 break;
             }
             if i % 4 < 2 {
-                rem += p[n - *x];
+                rem += p[n - x];
             } else {
-                rem -= p[n - *x];
+                rem -= p[n - x];
             }
         }
 

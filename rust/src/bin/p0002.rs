@@ -43,7 +43,7 @@ impl Iterator for FibSeq3 {
 fn compute(limit: u64) -> u64 {
     let even_fibs = FibSeq3 { a: 2, b: 8 };
 
-    even_fibs.take_while(|x| *x <= limit).sum()
+    even_fibs.take_while(|&x| x <= limit).sum()
 }
 
 #[cfg(test)]

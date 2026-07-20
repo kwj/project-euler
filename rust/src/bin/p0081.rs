@@ -14,8 +14,8 @@ fn compute(data: &str) -> u64 {
     let mut matrix = parse_data(data);
     let mut prev: Vec<_> = matrix[0]
         .iter()
-        .scan(0, |acc, x| {
-            *acc += *x;
+        .scan(0, |acc, &x| {
+            *acc += x;
             Some(*acc)
         })
         .collect();

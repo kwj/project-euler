@@ -24,13 +24,13 @@ fn compute(thr: u64) -> usize {
     let mut res: HashSet<u64> = HashSet::new();
     let p_lst = primes::primes(1, thr.isqrt());
 
-    for z4 in p_lst.iter().map(|n| (*n).pow(4)).take_while(|n| *n <= thr) {
-        for y3 in p_lst.iter().map(|n| (*n).pow(3)).take_while(|n| *n <= thr) {
+    for z4 in p_lst.iter().map(|&n| n.pow(4)).take_while(|&n| n <= thr) {
+        for y3 in p_lst.iter().map(|&n| n.pow(3)).take_while(|&n| n <= thr) {
             let tmp = z4 + y3;
             if tmp >= thr {
                 break;
             }
-            for x2 in p_lst.iter().map(|n| (*n).pow(2)) {
+            for x2 in p_lst.iter().map(|&n| n.pow(2)) {
                 if tmp + x2 < thr {
                     res.insert(tmp + x2);
                 }

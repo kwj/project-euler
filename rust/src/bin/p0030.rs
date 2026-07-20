@@ -55,7 +55,7 @@ fn compute(exp: u32) -> u64 {
     (2..=get_max_ndigits(exp))
         .flat_map(|n_digits| (0_u64..=9).combinations_with_replacement(n_digits))
         .filter_map(|lst| {
-            let tmp = lst.iter().map(|x| pow_tbl[*x as usize]).sum::<u64>();
+            let tmp = lst.iter().map(|&x| pow_tbl[x as usize]).sum::<u64>();
             let mut key = math::digits(tmp);
             key.sort_unstable();
             if key == lst { Some(tmp) } else { None }

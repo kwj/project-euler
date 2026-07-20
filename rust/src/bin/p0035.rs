@@ -25,7 +25,7 @@ fn compute(limit: u64) -> usize {
 
     primes::primes(1, limit)
         .into_iter()
-        .filter(|x| check_circular_numbers(*x))
+        .filter(|&x| check_circular_numbers(x))
         .count()
 }
 

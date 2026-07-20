@@ -17,7 +17,7 @@ fn compute() -> i32 {
         .max_by_key(|x| x.0)
         .unwrap();
 
-    (res.1).iter().fold(0, |acc, n| acc * 10 + *n)
+    (res.1).into_iter().fold(0, |acc, n| acc * 10 + n)
 }
 
 fn get_consec_counts(lst: &[i32]) -> i32 {
@@ -61,7 +61,7 @@ fn make_numbers(lst: &[i32]) -> HashSet<i32> {
         }
     }
 
-    let rat_nums: Vec<_> = lst.iter().map(|n| Ratio::new(*n, 1)).collect();
+    let rat_nums: Vec<_> = lst.iter().map(|&n| Ratio::new(n, 1)).collect();
     let mut res: HashSet<i32> = HashSet::new();
     aux(&rat_nums, &mut res);
 

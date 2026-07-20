@@ -28,12 +28,12 @@ fn make_cands() -> Vec<(u64, u64)> {
     let it1 = (1_000_u64..10_000).flat_map(|m1| {
         (2_u64..10)
             .map(move |m2| (m1 * 10_u64.pow(5) + m2 * 10_u64.pow(4) + m1 * m2, m1 * m2))
-            .take_while(|(_, x)| *x < 10_000)
+            .take_while(|&(_, x)| x < 10_000)
     });
     let it2 = (100_u64..1_000).flat_map(|m1| {
         (10_u64..100)
             .map(move |m2| (m1 * 10_u64.pow(6) + m2 * 10_u64.pow(4) + m1 * m2, m1 * m2))
-            .take_while(|(_, x)| *x < 10_000)
+            .take_while(|&(_, x)| x < 10_000)
     });
 
     it1.chain(it2).collect()

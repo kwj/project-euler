@@ -71,8 +71,8 @@ fn is_pair(x: u64, y: u64) -> bool {
 fn find_nbrs(p: u64, asc_p_lst: &[u64], current_ans: u64) -> Vec<u64> {
     asc_p_lst
         .iter()
-        .take_while(|x| **x < current_ans - p)
-        .filter(|x| is_pair(**x, p))
+        .take_while(|&&x| x < current_ans - p)
+        .filter(|&&x| is_pair(x, p))
         .copied()
         .collect()
 }

@@ -141,8 +141,8 @@ fn get_numerator(a0: u64, rep_lst: &[u64]) -> BigUint {
     let mut x = BigUint::from(a0);
     let mut y = BigUint::from(1_u32);
 
-    for a in rep_lst {
-        (x, y) = (*a * &x + y, x);
+    for &a in rep_lst {
+        (x, y) = (a * &x + y, x);
     }
 
     x

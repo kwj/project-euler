@@ -12,7 +12,7 @@ fn compute(n_th: usize) -> u64 {
 
     debug_assert!(n_th > 0);
 
-    iter::successors(Some(2_u64), |p| Some(primes::next_prime(*p)))
+    iter::successors(Some(2_u64), |&p| Some(primes::next_prime(p)))
         .nth(n_th - 1)
         .unwrap()
 }

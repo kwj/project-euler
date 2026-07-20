@@ -15,7 +15,7 @@ fn compute(limit: u64) -> u64 {
 
     debug_assert!(limit > 1);
 
-    (1..limit).step_by(2).filter(|x| check_palindrome(*x)).sum()
+    (1..limit).step_by(2).filter(|&x| check_palindrome(x)).sum()
 }
 
 #[cfg(test)]

@@ -22,13 +22,13 @@ fn compute(upper: usize) -> u64 {
         if skip_flag[b] {
             continue;
         }
-        for (e, elm) in dupctr_tbl
+        for (e, &elm) in dupctr_tbl
             .iter()
             .enumerate()
             .take(math::get_max_exp(upper as u64, b as u64) as usize + 1)
             .skip(2)
         {
-            ans -= *elm;
+            ans -= elm;
             let tmp = b.pow(e as u32);
             if tmp <= base_limit {
                 skip_flag[tmp] = true;

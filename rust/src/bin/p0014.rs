@@ -10,7 +10,7 @@ fn compute(thr: u64) -> u64 {
     debug_assert!(thr > 1);
 
     ((thr / 2)..thr)
-        .max_by_key(|n| get_collatz_length(*n))
+        .max_by_key(|&n| get_collatz_length(n))
         .unwrap()
 }
 

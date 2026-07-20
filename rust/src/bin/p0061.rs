@@ -105,9 +105,9 @@ fn make_polynum_tbl(max_nsides_polygon: usize) -> HashMap<usize, HashMap<u64, Ve
                 *state += x;
                 Some(*state)
             })
-            .skip_while(|x| *x < 1_000)
-            .take_while(|x| *x < 10_000)
-            .filter(|x| *x % 100 >= 10)
+            .skip_while(|&x| x < 1_000)
+            .take_while(|&x| x < 10_000)
+            .filter(|&x| x % 100 >= 10)
         {
             x.entry(n / 100).or_default().push(n % 100);
         }

@@ -19,7 +19,7 @@ fn compute() -> u64 {
     for x in (35..).step_by(2) {
         if primes::is_prime(x) {
             odd_primes.push(x);
-        } else if !odd_primes.iter().any(|p| is_twice_square(x - *p)) {
+        } else if !odd_primes.iter().any(|&p| is_twice_square(x - p)) {
             return x;
         }
     }

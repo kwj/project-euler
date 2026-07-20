@@ -28,7 +28,7 @@ fn compute(perim: usize) -> usize {
         }
     }
 
-    counter.into_iter().filter(|x| *x == 1).count()
+    counter.into_iter().filter(|&x| x == 1).count()
 }
 
 #[cfg(test)]

@@ -65,7 +65,7 @@ fn get_max_anagram(words: &[String], tbl: &mut HashMap<usize, Vec<String>>) -> u
         let mut ret: u64 = 0;
         for sq in squares {
             let trans_tbl = get_trans_tbl(w1, sq);
-            if trans(&trans_tbl, w1) != *sq {
+            if trans(&trans_tbl, w1).ne(sq) {
                 continue;
             }
 

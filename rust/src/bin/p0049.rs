@@ -39,7 +39,7 @@ fn get_prime_tbl(n_digits: u32) -> HashMap<u64, Vec<u64>> {
 
     for p in primes::primes(10_u64.pow(n_digits - 1), 10_u64.pow(n_digits)) {
         let mut key_digits = math::digits(p);
-        key_digits.sort_by_key(|x| cmp::Reverse(*x));
+        key_digits.sort_by_key(|&x| cmp::Reverse(x));
         let key = math::undigits(&key_digits);
         let mut lst = match p_tbl.get(&key) {
             Some(v) => v.clone(),

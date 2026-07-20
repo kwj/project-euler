@@ -107,7 +107,11 @@ fn compute(nfaces: usize, nsquares: usize) -> String {
     // note: It must be processed before Communy Chest because the CH3 -> CC3 path is exist.
     for offset in (0..=80_usize).step_by(40) {
         for chance in [CH1, CH2, CH3] {
-            for (current, prblty) in stoch_matrix[chance + offset].clone().iter().enumerate() {
+            for (current, prblty) in stoch_matrix[chance + offset]
+                .clone()
+                .into_iter()
+                .enumerate()
+            {
                 let next_r = match chance {
                     CH1 => R2,
                     CH2 => R3,
@@ -125,11 +129,11 @@ fn compute(nfaces: usize, nsquares: usize) -> String {
                     next_u,
                     (chance - 3) % 40,
                 ] {
-                    stoch_matrix[next_sq + offset][current] += *prblty / 16.0;
+                    stoch_matrix[next_sq + offset][current] += prblty / 16.0;
                 }
-                stoch_matrix[JAIL][current] += *prblty / 16.0;
+                stoch_matrix[JAIL][current] += prblty / 16.0;
 
-                stoch_matrix[chance][current] -= (*prblty / 16.0) * 10.0;
+                stoch_matrix[chance][current] -= (prblty / 16.0) * 10.0;
             }
         }
     }

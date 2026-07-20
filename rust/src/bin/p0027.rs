@@ -30,14 +30,14 @@ fn compute() -> i64 {
     let (a, b) = p_lst
         .iter()
         .skip(1)
-        .filter(|p| **p < 1_000)
-        .flat_map(|b| {
-            p_lst.iter().filter_map(|p| {
-                let a = *p - *b - 1;
-                if a < 1_000 { Some((a, *b)) } else { None }
+        .filter(|&&p| p < 1_000)
+        .flat_map(|&b| {
+            p_lst.iter().filter_map(move |&p| {
+                let a = p - b - 1;
+                if a < 1_000 { Some((a, b)) } else { None }
             })
         })
-        .max_by_key(|(a, b)| count_consec_times(*a, *b))
+        .max_by_key(|&(a, b)| count_consec_times(a, b))
         .unwrap();
 
     a * b

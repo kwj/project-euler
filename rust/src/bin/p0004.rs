@@ -21,6 +21,10 @@ fn compute(ndigit: u32) -> u64 {
     let is_product_of_twos = |p: u64| -> bool {
         use std::cmp;
 
+        if p == 0 {
+            return true;
+        }
+
         let step = ((p & 1) + 1) as usize;
         let x_upper = |x: u64| {
             if x & 1 == 0 && p & 1 == 1 { x - 1 } else { x }
@@ -31,9 +35,6 @@ fn compute(ndigit: u32) -> u64 {
             .step_by(step)
         {
             if p.is_multiple_of(x) {
-                if p == 0 {
-                    return true;
-                }
                 let y = p / x;
                 if y >= n_lower && y <= n_upper {
                     return true;
@@ -47,7 +48,7 @@ fn compute(ndigit: u32) -> u64 {
     let it1 = (n_lower..=n_upper).rev().filter_map(palindrome_even_digits);
     let it2 = (n_lower..=n_upper).rev().map(palindrome_odd_digits);
 
-    if let Some(ans) = it1.chain(it2).find(|p| is_product_of_twos(*p)) {
+    if let Some(ans) = it1.chain(it2).find(|&p| is_product_of_twos(p)) {
         ans
     } else {
         unreachable!()

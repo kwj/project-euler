@@ -14,7 +14,7 @@ fn compute(limit: u64, n_digits: u32) -> u64 {
 
     let power_10 = BigUint::from(10_u32).pow((n_digits - 1) * 2);
     (2..=limit)
-        .filter(|x| !math::is_square(*x))
+        .filter(|&x| !math::is_square(x))
         .map(|x| (power_10.clone() * x as u32).sqrt())
         .map(|x| {
             x.to_radix_le(10)

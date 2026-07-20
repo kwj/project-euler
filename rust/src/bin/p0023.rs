@@ -21,7 +21,7 @@ fn compute(limit: usize) -> usize {
         if i % 2 == 0 && abndnt_flag[i / 2] {
             abndnt_lst.push(i / 2);
         }
-        if abndnt_lst.iter().any(|x| abndnt_flag[i - *x]) {
+        if abndnt_lst.iter().any(|&x| abndnt_flag[i - x]) {
             continue;
         }
         acc += i;

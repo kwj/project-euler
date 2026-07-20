@@ -30,7 +30,7 @@ fn is_family(p: u64, f_size: u64) -> bool {
 
     for n in 0..=(10 - f_size) {
         let p_digits = math::digits(p);
-        let masks = euler::powerset(&euler::findall(|x| *x == n, &p_digits));
+        let masks = euler::powerset(&euler::findall(|&x| x == n, &p_digits));
         for mask in masks {
             if mask.len() < 3 || mask.len() % 3 != 0 || mask[0] == 0 {
                 continue;
@@ -38,8 +38,8 @@ fn is_family(p: u64, f_size: u64) -> bool {
             let mut cnt: u64 = 1;
             let mut p_digits_tmp = p_digits.clone();
             for d in (n + 1)..=9 {
-                for idx in &mask {
-                    p_digits_tmp[*idx] = d;
+                for &idx in &mask {
+                    p_digits_tmp[idx] = d;
                 }
                 if primes::is_prime(math::undigits(&p_digits_tmp)) {
                     cnt += 1;

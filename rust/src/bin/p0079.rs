@@ -57,8 +57,8 @@ fn dfs(graph: &mut HashMap<u64, Vec<u64>>, perm: &mut [u64], v: u64) -> Vec<u64>
 
         if let Some(lst) = graph.get(&node) {
             let mut acc = visited.to_vec();
-            for v in lst {
-                acc = visit(&[vec![node], temp.to_vec()].concat(), &acc, *v, graph);
+            for &v in lst {
+                acc = visit(&[vec![node], temp.to_vec()].concat(), &acc, v, graph);
             }
             [vec![node], acc].concat()
         } else {

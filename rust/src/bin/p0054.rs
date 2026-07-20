@@ -171,7 +171,7 @@ fn make_handinfo(cards: &[(u64, char)]) -> Hand {
 
 fn is_straight(lst: &[u64]) -> bool {
     if lst.len() == 5 {
-        *lst == (lst[4]..(lst[4] + 5)).rev().collect::<Vec<u64>>()
+        lst == (lst[4]..(lst[4] + 5)).rev().collect::<Vec<u64>>()
     } else {
         false
     }

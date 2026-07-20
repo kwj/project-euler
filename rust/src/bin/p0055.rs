@@ -12,7 +12,7 @@ fn compute(upper: u32) -> usize {
     debug_assert!(upper > 0);
 
     (1..=upper)
-        .filter(|n| is_rychrel(BigUint::from(*n)))
+        .filter(|&n| is_rychrel(BigUint::from(n)))
         .count()
 }
 

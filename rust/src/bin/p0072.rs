@@ -21,8 +21,8 @@ fn compute(limit: u64) -> u64 {
 }
 
 fn sum_phi(num: u64, cache: &mut HashMap<u64, u64>) -> u64 {
-    if let Some(val) = cache.get(&num) {
-        *val
+    if let Some(&val) = cache.get(&num) {
+        val
     } else {
         let mut v = num * (num + 1) / 2;
         for m in 2..=num.isqrt() {

@@ -20,7 +20,7 @@ fn find_number(n_digits_lst: &[u64]) -> Option<u64> {
 
     n_digits_lst
         .iter()
-        .flat_map(|k| (1..=*k).rev().permutations(*k as usize))
+        .flat_map(|&k| (1..=k).rev().permutations(k as usize))
         .find_map(|lst| {
             let n = lst.into_iter().fold(0, |acc, x| 10 * acc + x);
             if math::is_pandigital_nz(n) && primes::is_prime(n) {

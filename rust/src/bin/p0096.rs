@@ -142,8 +142,8 @@ fn compute(data: &str) -> usize {
             let mut acc: usize = 0;
             for i in 0..3 {
                 let bit: u128 = 1 << i;
-                for (pos, elm) in sol.iter().enumerate().skip(1) {
-                    if *elm & bit != 0 {
+                for (pos, &elm) in sol.iter().enumerate().skip(1) {
+                    if elm & bit != 0 {
                         acc = acc * 10 + pos;
                         break;
                     }

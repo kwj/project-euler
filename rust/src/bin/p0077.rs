@@ -23,7 +23,7 @@ fn compute(thr: u64) -> usize {
         p_lst.push(prime as usize);
         p_lst
             .iter()
-            .flat_map(|i| (*i..=target).map(|j| (*i, j)))
+            .flat_map(|&i| (i..=target).map(move |j| (i, j)))
             .for_each(|(i, j)| tbl[j] += tbl[j - i]);
 
         if tbl[target] > thr {

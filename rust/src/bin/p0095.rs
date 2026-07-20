@@ -37,7 +37,7 @@ fn compute() -> usize {
         if pos <= 1 || pos > limit || chain_tbl[pos] != 0 {
             update_chain_tbl(&mut chain_tbl, &chain, -1);
         } else {
-            let i = chain.iter().position(|x| *x == pos).unwrap();
+            let i = chain.iter().position(|&x| x == pos).unwrap();
             let (c1, c2) = chain.split_at(i);
             let length = c2.len();
 

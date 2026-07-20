@@ -35,10 +35,10 @@ fn compute(thr: u64) -> u64 {
     use std::iter;
 
     let limit = 2 * thr - 1;
-    let (_x, y) = iter::successors(Some((1_u64, 1_u64)), |(x, y)| {
-        Some((3 * (*x) + 4 * (*y), 2 * (*x) + 3 * (*y)))
+    let (_x, y) = iter::successors(Some((1_u64, 1_u64)), |&(x, y)| {
+        Some((3 * x + 4 * y, 2 * x + 3 * y))
     })
-    .find(|(x, _)| *x > limit)
+    .find(|&(x, _)| x > limit)
     .unwrap();
 
     y.div_ceil(2)

@@ -12,7 +12,7 @@ fn compute(limit: u64) -> u64 {
 
     (2..=limit)
         .step_by(2)
-        .map(|p| ((1..=((p - 1) / 3)).filter(|a| check_pair(p, *a)).count(), p))
+        .map(|p| ((1..=((p - 1) / 3)).filter(|&a| check_pair(p, a)).count(), p))
         .max_by_key(|x| x.0)
         .unwrap()
         .1

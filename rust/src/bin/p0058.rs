@@ -56,7 +56,7 @@ fn compute() -> u64 {
 
     for m in (3_u64..).step_by(2) {
         cnt += (1_u64..=3)
-            .filter(|i| primes::is_prime(m * (m - *i) + *i))
+            .filter(|&i| primes::is_prime(m * (m - i) + i))
             .count() as u64;
         if cnt * 10 < 2 * m - 1 {
             return m;

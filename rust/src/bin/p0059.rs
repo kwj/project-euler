@@ -24,10 +24,10 @@ fn compute(data: &str) -> u64 {
             .collect();
         if decrypted_text
             .iter()
-            .map(|x| char::from(*x)) // without this code, it is about 10% slower on my machine
+            .map(|&x| char::from(x)) // without this code, it is about 10% slower on my machine
             .all(|c| c.is_ascii_graphic() || c.is_ascii_whitespace())
         {
-            let score = decrypted_text.iter().map(|ch| calc_score(*ch)).sum();
+            let score = decrypted_text.iter().map(|&ch| calc_score(ch)).sum();
             if score > max_score {
                 max_score = score;
                 ans = decrypted_text.into_iter().map(u64::from).sum();

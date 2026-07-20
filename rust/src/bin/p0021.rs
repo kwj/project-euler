@@ -14,7 +14,7 @@ fn compute(limit: usize) -> u64 {
     let d_tbl = math::aliquot_sum_tbl(limit - 1);
 
     (1..limit)
-        .filter(|x| *x as u64 > d_tbl[*x] && d_tbl[d_tbl[*x] as usize] == *x as u64)
+        .filter(|&x| x as u64 > d_tbl[x] && d_tbl[d_tbl[x] as usize] == x as u64)
         .map(|x| x as u64 + d_tbl[x])
         .sum()
 }

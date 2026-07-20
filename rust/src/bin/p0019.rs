@@ -19,12 +19,12 @@ fn compute() -> usize {
 
     // the `initial_state` parameter of Iterator::scan() is the day of the week on January 1, 1900
     // (0: Sunday, 1: Monday, ..., 6: Saturday)
-    days.iter()
+    days.into_iter()
         .scan(1, |state, x| {
-            *state = (*state + *x) % 7;
+            *state = (*state + x) % 7;
             Some(*state)
         })
-        .filter(|x| *x == 0)
+        .filter(|&x| x == 0)
         .count()
 }
 
