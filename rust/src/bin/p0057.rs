@@ -35,7 +35,7 @@ fn compute(limit: u64) -> u64 {
 
     for _ in 0..limit {
         (b, c) = (&c + &c + &b, &c + &b);
-        if BigUint::to_str_radix(&b, 10).len() > BigUint::to_str_radix(&c, 10).len() {
+        if b.to_radix_le(10).len() > c.to_radix_le(10).len() {
             ans += 1;
         }
     }

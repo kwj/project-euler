@@ -30,9 +30,7 @@ fn is_rychrel(mut n: BigUint) -> bool {
 }
 
 fn rev_biguint(n: &BigUint) -> BigUint {
-    let rev_string = |s: &str| s.chars().rev().collect::<String>();
-
-    BigUint::parse_bytes(rev_string(&BigUint::to_str_radix(n, 10)).as_bytes(), 10).unwrap()
+    BigUint::from_radix_be(&n.to_radix_le(10), 10).unwrap()
 }
 
 #[cfg(test)]

@@ -23,7 +23,7 @@ fn compute() -> usize {
         let a_big = BigUint::from(a);
         for b in (1..100).rev() {
             let p = a_big.pow(b);
-            if BigUint::to_str_radix(&p, 10).len() * 9 < ans {
+            if p.to_radix_le(10).len() * 9 < ans {
                 break;
             }
             ans = cmp::max(ans, p.to_radix_le(10).into_iter().map(usize::from).sum());
