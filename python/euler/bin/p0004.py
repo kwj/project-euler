@@ -12,12 +12,12 @@ def compute(digits: int) -> str:
 
     # The blocks of product of two numbers are checked in descending order
     # The block width, blk_width, is 1/100 of the upper limit
-    for blk_lower in reversed(range(n_lower ** 2, n_upper ** 2 + 1, blk_width)):
+    for blk_lower in reversed(range(n_lower**2, n_upper**2 + 1, blk_width)):
         blk_upper = blk_lower + blk_width - 1
         for x in reversed(range(n_lower, n_upper + 1)):
             if x * x < blk_lower:
                 break
-            for y in reversed(range(n_lower, min(blk_upper // x, x) + 1) if x > 0 else x + 1):
+            for y in reversed(range(n_lower, min(blk_upper // x, x) + 1 if x > 0 else x + 1)):
                 if (tmp := x * y) < blk_lower:
                     break
                 elif is_palindrome(tmp):
