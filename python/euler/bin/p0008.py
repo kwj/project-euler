@@ -1,8 +1,7 @@
 # project euler: problem 8
 
+from itertools import chain
 from math import prod
-
-from euler.lib.util import flatten
 
 numstr = """
 73167176531330624919225119674426574742355349194934
@@ -38,7 +37,7 @@ def str_product(digits: int, s: str) -> list[int]:
 def compute(digits: int) -> str:
     return str(
         max(
-            flatten(
+            chain.from_iterable(
                 str_product(digits, num_str)
                 for num_str in [s for s in numstr.split('0') if len(s) >= digits]
             )

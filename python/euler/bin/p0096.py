@@ -19,9 +19,8 @@
 import re
 from collections.abc import Iterable
 from functools import reduce
+from itertools import chain
 from typing import TextIO
-
-from euler.lib.util import flatten
 
 # row/column/position(cell)
 ROW = ['R' + str(i) for i in range(9)]  # R0, R1, ..., R8
@@ -40,7 +39,7 @@ BOX_LST = [
 # dictionary of cells and their corresponding row, column and box
 groups = dict((p, [group for group in ROW_LST + COL_LST + BOX_LST if p in group]) for p in POS)
 # dictionary of cells and their corresponding cells
-links = dict((p, set(flatten(groups[p])) - set((p,))) for p in POS)
+links = dict((p, set(chain.from_iterable(groups[p])) - set((p,))) for p in POS)
 
 
 class Grid:
@@ -138,7 +137,7 @@ def parse_data(fh: TextIO) -> list[str]:
             acc = []
 
     if len(acc) == 9:
-        result.append(trim(flatten(acc)))
+        result.append(trim(chain.from_iterable(acc)))
 
     assert all([len(s) == 81 for s in result]), 'invalid data file'
     return result
