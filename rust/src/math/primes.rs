@@ -1,3 +1,5 @@
+use super::montgomery::MontgomeryMM;
+
 fn sprp_base(n: u64) -> u64 {
     #[rustfmt::skip]
     const BASES: [u64; 256] = [
@@ -27,19 +29,24 @@ fn sprp_base(n: u64) -> u64 {
     BASES[h as usize]
 }
 
-fn miller_rabin_test(n: u64, base: u64) -> bool {
-    let mut d = n - 1;
-    let s = d.trailing_zeros();
-    d >>= s;
-    let mut x = super::powmod(base, d, n);
+// Strong probable primality test with Montgomery reduction (REDC)
+fn test_sprp(n: u64, base: u64) -> bool {
+    let mont = MontgomeryMM::new(n);
+    let (d, s, r, n_r) = (mont.d, mont.s, mont.r_mod_n, mont.n_r);
+    let mut xr = if base == 2 {
+        mont.add(r, r)
+    } else {
+        mont.m(base)
+    };
 
-    if x == 1 || x == n - 1 {
+    xr = mont.powmod_mr(xr, d);
+    if xr == r || xr == n_r {
         return true;
     }
 
     for _ in 0..(s - 1) {
-        x = super::powmod(x, 2, n);
-        if x == n - 1 {
+        xr = mont.mul_mr(xr, xr);
+        if xr == n_r {
             return true;
         }
     }
@@ -47,111 +54,21 @@ fn miller_rabin_test(n: u64, base: u64) -> bool {
     false
 }
 
-fn kronecker(mut a: i128, mut n: i128) -> i64 {
-    fn euclidean_mod(x: i128, y: i128) -> i128 {
-        let mut tmp = x % y;
-        if tmp < 0 {
-            tmp += y.abs();
-        }
-        tmp
-    }
-
-    // (a|0)
-    //   1  [if a == 1 or a == -1]
-    //   0  [otherwise]
-    if n == 0 {
-        if a.abs() == 1 {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    let mut sign = 1_i64;
-
-    // (a|-n) = (a|-1) * (a|n)
-    //
-    // (a|-1)
-    //  -1  [if a < 0]
-    //   1  [otherwise]
-    if n < 0 {
-        if a < 0 {
-            sign = -sign;
-        }
-        n = n.abs();
-    }
-
-    // (a|2)
-    //   0  [if a is a even number]
-    //   1  [if a % 8 == 1 or 7]
-    //  -1  [if a % 8 == 3 or 5]
-    let ntz_n = n.trailing_zeros();
-    if ntz_n > 0 {
-        if a & 0b1 == 0 {
-            return 0;
-        }
-        n >>= ntz_n;
-        if ntz_n & 0b1 == 1 {
-            let tmp = a & 0b111;
-            if tmp == 3 || tmp == 5 {
-                sign = -sign;
-            }
-        }
-    }
-
-    // From here on, `n` is an odd number.
-
-    loop {
-        a = euclidean_mod(a, n);
-        if a <= 0 {
-            break;
-        }
-
-        // From here on, `n` is an odd number witch is larger than 1
-
-        // (2a|n) = (2|n) * (a|n)
-        //
-        // (2|n)
-        //   1  [if n % 8 == 1 or 7]
-        //  -1  [if n % 8 == 3 or 5]
-        let ntz_a = a.trailing_zeros();
-        if ntz_a > 0 {
-            a >>= ntz_a;
-            if ntz_a & 0b1 == 1 {
-                let tmp = n & 0b111;
-                if tmp == 3 || tmp == 5 {
-                    sign = -sign;
-                }
-            }
-        }
-
-        // From here on, `a`` is an odd number.
-
-        // if `x` and `y` are odd numbers and are larger than or equal to 3,
-        //
-        // (x|y)
-        //  -(y|x)  [if x % 4 == 3 and y % 4 == 3]
-        //   (y|x)  [otherwise]
-        if a % 4 == 3 && n % 4 == 3 {
-            sign = -sign;
-        }
-        (a, n) = (n, a);
-    }
-
-    if n == 1 { sign } else { 0 }
-}
-
-fn find_d(n: u64) -> Option<i128> {
-    let mut cnt = 0;
+// Return (D, P, Q) by Method A*
+fn lucas_seq_parameter(mont: &MontgomeryMM) -> Option<(i64, u64, i64)> {
+    let n = mont.n;
     let mut d = 5_i64;
 
-    loop {
-        let k = kronecker(d.into(), n.into());
+    for cnt in 0.. {
+        let k = super::jacobi_symbol(d, n);
         if k == -1 {
-            break;
+            if d == 5 {
+                return Some((5, 5, 5));
+            } else {
+                return Some((d, 1, (1 - d) / 4));
+            }
         }
 
-        cnt += 1;
         if cnt == 20 && super::is_square(n) {
             return None;
         }
@@ -160,105 +77,116 @@ fn find_d(n: u64) -> Option<i128> {
             return None;
         }
 
-        if d > 0 {
-            d = -(d + 2);
+        if d.is_positive() {
+            d = -(d + 2)
         } else {
-            d = -(d - 2);
-        }
+            d = 2 - d;
+        };
     }
 
-    Some(i128::from(d))
+    unreachable!();
 }
 
-fn lucas_test(num: u64) -> bool {
-    fn euclidean_mod(x: i128, y: i128) -> i128 {
-        let mut tmp = x % y;
-        if tmp < 0 {
-            tmp += y.abs();
-        }
-        tmp
-    }
+// Return (Ud, Vd, Q^d) (REDC version)
+fn lucas_seq(mont: &MontgomeryMM, d: i64, p: u64, q: i64) -> (u64, u64, u64) {
+    //let n = mont.n;
 
-    // step 2
-    let opt_d = find_d(num);
-    if opt_d.is_none() {
-        return false;
-    }
-    let large_d = opt_d.unwrap();
-
-    let mut p = 1_i128;
-    let mut q = (1 - large_d) / 4;
-    if q == -1 {
-        (p, q) = (5, 5);
-    }
-
-    // step 3
-    let mut qk = q;
-    let mut u = 1_i128;
-    let mut v = p;
-    let n = i128::from(num);
-
-    // num + 1 = d * 2^s
-    //
     // Note:
     //   u64::MAX = 2^64 - 1 = 3 * 5 * 17 * 257 * 641 * 65537 * 6700417
-    //   `num`` is not equal to u64::MAX because u64::MAX is already determined as
-    //   composite by trial division. So, `num + 1` isn't over wrapped.
-    let s = (num + 1).trailing_zeros();
-    let d = (num + 1) >> s;
+    //   `n` is not equal to u64::MAX because u64::MAX is already determined as
+    //   composite by trial division. So, `n + 1` isn't over wrapped.
+    let mut bits = (mont.n + 1) << ((mont.n + 1).leading_zeros() + 1);
+    const U64_MSB: u64 = 0x8000_0000_0000_0000;
 
-    // example:
-    // '0b1001101001'
-    //     ^start  ^end
-    for x in (0..(d.bit_width() - 1)).rev() {
-        u = euclidean_mod(u * v, n);
-        v = euclidean_mod(v * v - 2 * qk, n);
-        qk = euclidean_mod(qk * qk, n);
+    let mut uk = mont.r_mod_n;
+    let pr = mont.m(p);
+    let mut vk = pr;
+    let qr = mont.m(mont.int_to_uint(q));
+    let mut qk = qr;
+    let dr = mont.m(mont.int_to_uint(d));
 
-        if (d >> x) & 0b1 != 0 {
-            qk = euclidean_mod(qk * q, n);
-            (u, v) = (p * u + v, large_d * u + p * v);
-            if u % 2 != 0 {
-                u += n;
-            }
-            if v % 2 != 0 {
-                v += n;
-            }
-            u = euclidean_mod(u / 2, n);
-            v = euclidean_mod(v / 2, n);
+    while bits != 0 {
+        uk = mont.mul_mr(uk, vk);
+        vk = mont.sub(mont.mul_mr(vk, vk), mont.add(qk, qk));
+        qk = mont.mul_mr(qk, qk);
+
+        if bits & U64_MSB != 0 {
+            (uk, vk) = (
+                mont.div2(mont.add(mont.mul_mr(pr, uk), vk)),
+                mont.div2(mont.add(mont.mul_mr(dr, uk), mont.mul_mr(pr, vk))),
+            );
+            qk = mont.mul_mr(qr, qk);
         }
+
+        bits <<= 1;
     }
 
+    (uk, vk, qk)
+}
+
+// Check whether `mont.n` is a strong Lucas Probable prime, slprp(P, Q). (REDC version)
+//
+// If yes, return Some((Vₙ₊₁, Q⁽ⁿ⁺¹⁾ᐟ²)). Otherwise, return None because `mont.n` is composite
+fn test_slprp(mont: &MontgomeryMM, d: i64, p: u64, q: i64) -> Option<(u64, u64)> {
+    let next_v = |_v: u64, _q: u64| -> u64 { mont.sub(mont.mul_mr(_v, _v), mont.add(_q, _q)) };
+    let next_q = |_q: u64| -> u64 { mont.mul_mr(_q, _q) };
+
+    let (ud, mut vd, mut qd) = lucas_seq(mont, d, p, q);
     let mut flag = false;
-    let mut prev_qk = qk;
-    for _ in 0..s {
-        if v == 0 {
+    let mut prev_qd = qd;
+    for _ in 0..(mont.n + 1).trailing_zeros() {
+        if vd == 0 {
             flag = true;
         }
-        v = euclidean_mod(v * v - 2 * qk, n);
-        prev_qk = qk;
-        qk = euclidean_mod(qk * qk, n);
+        prev_qd = qd;
+        vd = next_v(vd, qd);
+        qd = next_q(qd);
     }
-    if u != 0 && !flag {
+
+    if ud == 0 || flag {
+        Some((vd, prev_qd))
+    } else {
+        None
+    }
+}
+
+// Check whether `n` is a Lucas-V probable prime, vprp(Q)  (REDC version)
+//
+// Return false if `n` is composite.
+fn test_vprp(mont: &MontgomeryMM, vn: u64, q: i64) -> bool {
+    let qr = mont.m(mont.int_to_uint(q));
+    mont.sub(vn, mont.add(qr, qr)) == 0
+}
+
+// Euler Criterion test
+//
+// Return false if `n` is composite.
+fn test_euler_criterion(mont: &MontgomeryMM, qn: u64, q: i64) -> bool {
+    q.unsigned_abs().count_ones() == 1 || {
+        let qr = mont.m(mont.int_to_uint(q));
+        let js_result = mont.m(mont.int_to_uint(super::jacobi_symbol(q, mont.n)));
+        mont.sub(qn, mont.mul_mr(qr, js_result)) == 0
+    }
+}
+
+fn strengthened_bpsw_test(n: u64) -> bool {
+    // step 1
+    if !test_sprp(n, 2) {
         return false;
     }
 
-    // step 4
-    if euclidean_mod(v - 2 * q, n) != 0 {
-        return false;
+    let mont = MontgomeryMM::new(n);
+
+    // step 2
+    if let Some((d, p, q)) = lucas_seq_parameter(&mont) {
+        // step 3
+        if let Some((vn, qn)) = test_slprp(&mont, d, p, q) {
+            // step 4 and 5
+            return test_vprp(&mont, vn, q) && test_euler_criterion(&mont, qn, q);
+        }
     }
 
-    // step 5
-    let mut pow2 = 2_i128;
-    let abs_q = q.abs();
-    while pow2 < abs_q {
-        pow2 = pow2 * pow2;
-    }
-    if pow2 > abs_q && euclidean_mod(prev_qk - q * i128::from(kronecker(q, num.into())), n) != 0 {
-        return false;
-    }
-
-    true
+    false
 }
 
 pub fn is_prime(n: u64) -> bool {
@@ -286,14 +214,14 @@ pub fn is_prime(n: u64) -> bool {
     // Miller-Rabin primality test (< 2^32)
     // http://ceur-ws.org/Vol-1326/020-Forisek.pdf (FJ32_256)
     if n < 4294967296 {
-        return miller_rabin_test(n, sprp_base(n));
+        return test_sprp(n, sprp_base(n));
     }
 
-    // Baille-PSW primality test (< 2^63)
+    // Strengthened Baille-PSW primality test (< 2^64)
     // https://homes.cerias.purdue.edu/~ssw/bfw.pdf
-    //   step 1: Miller-Rabin primality test to base 2
-    //   step 2, 3, 4 and 5: Lucas primality test
-    miller_rabin_test(n, 2) && lucas_test(n)
+    //   step 1: base-2 strong probable prime test (sprp(2))
+    //   step 2, 3, 4 and 5: Lucas primality test (strengthened version)
+    strengthened_bpsw_test(n)
 }
 
 fn num_to_index(mut n: u64) -> usize {

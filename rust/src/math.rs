@@ -1,3 +1,4 @@
+pub mod montgomery;
 pub mod primes;
 
 pub fn gcd(mut x: u64, mut y: u64) -> u64 {
@@ -274,4 +275,71 @@ pub fn is_hexagonal(num: u64) -> bool {
     let tmp_sqrt = tmp.isqrt();
 
     tmp_sqrt * tmp_sqrt == tmp && tmp_sqrt % 4 == 3
+}
+
+pub fn jacobi_symbol(a: i64, n: u64) -> i64 {
+    debug_assert!(n > 0);
+    debug_assert_eq!(n & 1, 1);
+
+    let mut sign = if a < 0 && n % 4 == 3 { -1 } else { 1 };
+    let (mut _a, mut _n) = (a.unsigned_abs(), n);
+
+    loop {
+        if _a == 0 {
+            return if _n == 1 { sign } else { 0 };
+        }
+
+        if _a == 1 {
+            return sign;
+        }
+
+        if _a & 1 == 0 {
+            let ntz_a = _a.trailing_zeros();
+            _a >>= ntz_a;
+
+            if _n % 8 != 1 && _n % 8 != 7 {
+                sign = if ntz_a & 1 == 1 { -sign } else { sign };
+            }
+        } else {
+            let rem_a = _a % _n;
+            if rem_a & 1 == 0 {
+                _a = rem_a;
+            } else {
+                if rem_a % 4 == 3 && _n % 4 == 3 {
+                    sign = -sign;
+                }
+                (_a, _n) = (_n, rem_a);
+            }
+        }
+    }
+}
+
+pub fn kronecker_symbol(a: i64, n: i64) -> i64 {
+    if n == 0 {
+        return if a.abs() == 1 { 1 } else { 0 };
+    }
+
+    let sign: i64 = if a.is_negative() && n.is_negative() {
+        -1
+    } else {
+        1
+    };
+    let abs_n = n.unsigned_abs();
+
+    if abs_n & 1 == 1 {
+        jacobi_symbol(a, abs_n) * sign
+    } else {
+        if a & 1 == 0 {
+            return 0;
+        }
+
+        let ntz_n = abs_n.trailing_zeros();
+        let js_result = jacobi_symbol(a, abs_n >> ntz_n);
+
+        if a % 8 == 3 || a % 8 == 5 {
+            js_result * if ntz_n & 1 == 1 { -sign } else { sign }
+        } else {
+            js_result * sign
+        }
+    }
 }
