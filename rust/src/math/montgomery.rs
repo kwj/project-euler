@@ -164,6 +164,15 @@ impl MontgomeryMM {
         Self::_mul_mr(a, b, self.n, self.n_inv)
     }
 
+    #[inline]
+    pub fn mul(&self, a: u64, b: u64) -> u64 {
+        debug_assert!(a < self.n);
+        debug_assert!(b < self.n);
+
+        let ab = a as u128 * b as u128;
+        self.mul_mr(self.mr(ab), self.r2_mod_n)
+    }
+
     fn rr_mod_n(n: u64, n_inv: u64, r_mod_n: u64) -> u64 {
         let mut r2_mod = r_mod_n;
 
