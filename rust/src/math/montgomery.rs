@@ -123,7 +123,7 @@ impl MontgomeryMM {
     // x - (xN⁻¹ mod R)N ≡ x - xN⁻¹N ≡ x - x ≡ 0  (mod R)
     //   --> R|(x - (xN⁻¹ mod R)N)
     // yR ≡ x - (xN⁻¹ mod R)N ≡ x  (mod N)
-    //   --> y ≡ aR⁻¹  (mod N)
+    //   --> y ≡ xR⁻¹  (mod N)
     // x < RN, (xN⁻¹ mod R)N < RN
     //   --> -N < y = floor(x/R) - floor((xN⁻¹ mod R)N / R) < N
 
@@ -132,12 +132,9 @@ impl MontgomeryMM {
     pub fn mr64(&self, x: u64) -> u64 {
         debug_assert!(x < self.n);
 
-        let y = (((x.wrapping_mul(self.n_inv) as u128) * (self.n as u128)) >> 64) as u64;
-        if y == 0 {
-            0
-        } else {
-            y.wrapping_neg().wrapping_add(self.n)
-        }
+        let (y, flag) = ((((x.wrapping_mul(self.n_inv) as u128) * (self.n as u128)) >> 64) as u64)
+            .overflowing_neg();
+        if flag { y.wrapping_add(self.n) } else { y }
     }
 
     #[inline(always)]
