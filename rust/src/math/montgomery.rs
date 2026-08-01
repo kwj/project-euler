@@ -158,6 +158,9 @@ impl MontgomeryMM {
 
     #[inline]
     pub fn mul_mr(&self, a: u64, b: u64) -> u64 {
+        debug_assert!(a < self.n);
+        debug_assert!(b < self.n);
+
         Self::_mul_mr(a, b, self.n, self.n_inv)
     }
 
