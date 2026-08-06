@@ -7,7 +7,7 @@ import (
 
 func Test_compute(t *testing.T) {
 	type args struct {
-		limit uint
+		limit int
 	}
 	tests := []struct {
 		name string

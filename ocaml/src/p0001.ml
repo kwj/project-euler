@@ -7,7 +7,7 @@ let compute limit =
     let tmp = (limit - 1) / n in
     (1 + tmp) * tmp / 2 * n
   in
-  f 3 + f 5 - f 15
+  f 3 + f 5 - f (Euler.Math.lcm 3 5)
 ;;
 
 let solve () = compute 1_000 |> Int.to_string

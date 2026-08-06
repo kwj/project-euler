@@ -7,6 +7,8 @@ fn solve() -> String {
 }
 
 fn compute(limit: u64) -> u64 {
+    use euler::math;
+
     debug_assert!(limit > 0);
 
     let f = |x: u64| -> u64 {
@@ -15,7 +17,7 @@ fn compute(limit: u64) -> u64 {
         (1 + tmp) * tmp / 2 * x
     };
 
-    f(3) + f(5) - f(15)
+    f(3) + f(5) - f(math::lcm(3, 5))
 }
 
 #[cfg(test)]

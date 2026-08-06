@@ -2,7 +2,7 @@ module Sol.P0001 (compute, solve) where
 
 compute :: Int -> String
 compute limit =
-    show $ sumOfMultiples 3 + sumOfMultiples 5 - sumOfMultiples 15
+    show $ sumOfMultiples 3 + sumOfMultiples 5 - sumOfMultiples (lcm 3 5)
   where
     upper = pred limit
 
