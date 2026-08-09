@@ -2,6 +2,7 @@ package mylib
 
 import (
 	"math/big"
+	"slices"
 )
 
 func NumOfDigits(n, base int) int {
@@ -60,8 +61,8 @@ func Digits(n int) []int {
 
 func UnDigits(ns []int) int {
 	result := 0
-	for idx := len(ns) - 1; idx >= 0; idx-- {
-		result = result*10 + ns[idx]
+	for _, n := range slices.Backward(ns) {
+		result = result*10 + n
 	}
 
 	return result
@@ -85,9 +86,9 @@ func UndigitsBig(ns []int) *big.Int {
 	base := big.NewInt(10)
 	result := big.NewInt(0)
 
-	for idx := len(ns) - 1; idx >= 0; idx-- {
+	for _, n := range slices.Backward(ns) {
 		result.Mul(result, base)
-		result.Add(result, big.NewInt(int64(ns[idx])))
+		result.Add(result, big.NewInt(int64(n)))
 	}
 
 	return result
