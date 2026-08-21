@@ -26,6 +26,14 @@ all-test:
 lint:
 	@go vet .
 
+.PHONY: fix
+fix:
+	@go fix -diff ./...
+
+.PHONY: fmt
+fmt:
+	@gofmt -d .
+
 .PHONY: clean
 clean:
 	@rm -f ./pe-solver
