@@ -1,0 +1,1 @@
+{:hooks {:macroexpand {project-euler.lib.math/polygonal-numbers macro/polygonal-numbers}}}

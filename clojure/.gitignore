@@ -11,5 +11,5 @@ pom.xml.asc
 /.prepl-port
 /.calva
 /.lsp
-/.clj-kondo
+/.clj-kondo/.cache
 /.cpcache
