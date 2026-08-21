@@ -20,7 +20,7 @@ fn compute(data: &str) -> usize {
 }
 
 fn parse_data(s: &str) -> Vec<String> {
-    if let Some(body) = s.get(1..(s.len() - 1)) {
+    if let Some(body) = s.strip_circumfix("\"", "\"") {
         body.split(r#"",""#).map(|s| s.to_string()).collect()
     } else {
         unreachable!()
