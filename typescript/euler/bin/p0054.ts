@@ -61,9 +61,11 @@ const getHandRank = (hand: string[]): number[] => {
       HC: 0, OP: 1, TP: 2, TK: 3, S: 4, F: 5, FH: 6, FK: 7, SF: 8, RF: 9
     } as const;
 
+    // Used for descending sort
     const cmpDetail = (a: [number, number], b: [number, number]): number => {
       const tmp = b[1] - a[1];
 
+      // Note: Number(true) -> 1, Number(false) -> 0
       return tmp !== 0 ? tmp : Number(a[0] < b[0]) - Number(a[0] > b[0]);
     };
 
