@@ -131,15 +131,12 @@ export const cmpLst = <T>(lst1: T[], lst2: T[]): number => {
   }
 };
 
-interface Counter {
-  [prop: string]: number;
-}
+export const counterMap = <T>(lst: T[]): Map<T, number> => {
+  return lst.reduce((m, v) => m.set(v, (m.get(v) ?? 0) + 1), new Map());
+};
 
-export const Counter = <T>(lst: T[]): [string, number][] => {
-  const cntr: Counter = {};
-  lst.forEach((x) => cntr[String(x)] = (cntr[String(x)] || 0) + 1);
-
-  return Object.entries(cntr);
+export const counter = <T>(lst: T[]): [T, number][] => {
+  return counterMap(lst).entries().toArray();
 };
 
 export const isPalindrome = (num: number, base = 10): boolean => {

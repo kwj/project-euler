@@ -59,10 +59,9 @@
     https://en.wikipedia.org/wiki/Permutation#Permutations_of_multisets
 */
 
-import { unzip } from "@std/collections";
 import { combinationsWithReplacement } from "combinatorics/mod.ts";
 import { factorial, prod, sum } from "../lib/math.ts";
-import { Counter, numOfDigits } from "../lib/util.ts";
+import { counterMap, numOfDigits } from "../lib/util.ts";
 
 const isGroup89 = (n: number): boolean => {
   while (n !== 89 && n > 1) {
@@ -94,8 +93,7 @@ export const compute = (limit: number): string => {
   ) {
     if (isGroup89(sum(pat))) {
       // We need only each size of subsets, the elements of subsets themselves are not required.
-      const [_, x] = unzip(Counter(pat));
-      subsetInfoLst.push(x);
+      subsetInfoLst.push(counterMap(pat).values().toArray());
     }
   }
 

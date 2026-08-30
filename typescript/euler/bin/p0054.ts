@@ -36,7 +36,7 @@
 
 import { chunk, unzip } from "@std/collections";
 import { assetData } from "../lib/asset.ts";
-import { cmpLst, Counter, range } from "../lib/util.ts";
+import { cmpLst, counter, range } from "../lib/util.ts";
 
 const getHandRank = (hand: string[]): number[] => {
   const rankToNum = (s: string): number => {
@@ -51,9 +51,8 @@ const getHandRank = (hand: string[]): number[] => {
   const isStraight = (lst: number[]): boolean =>
     cmpLst(lst, range(lst[0], lst[0] - 5, -1)) === 0;
 
-  const getDetail = (handInfo: [string, number][]): number[] => {
-    const [detail, _] = unzip(handInfo);
-    return detail.map((x) => Number(x));
+  const getDetail = (handInfo: [number, number][]): number[] => {
+    return unzip(handInfo)[0];
   };
 
   const getHand = (suitLst: string[], rankLst: number[]): number[] => {
@@ -62,26 +61,15 @@ const getHandRank = (hand: string[]): number[] => {
       HC: 0, OP: 1, TP: 2, TK: 3, S: 4, F: 5, FH: 6, FK: 7, SF: 8, RF: 9
     } as const;
 
-    const cmpDetail = (a: [string, number], b: [string, number]): number => {
+    const cmpDetail = (a: [number, number], b: [number, number]): number => {
       const tmp = b[1] - a[1];
-      if (tmp !== 0) {
-        return tmp;
-      }
 
-      const a_n = Number(a[0]);
-      const b_n = Number(b[0]);
-      if (b_n < a_n) {
-        return -1;
-      } else if (b_n > a_n) {
-        return 1;
-      } else {
-        return 0;
-      }
+      return tmp !== 0 ? tmp : Number(a[0] < b[0]) - Number(a[0] > b[0]);
     };
 
-    const handInfo = Counter(rankLst).sort(cmpDetail);
+    const handInfo = counter(rankLst).sort(cmpDetail);
 
-    if (Counter(suitLst).length === 1) {
+    if (counter(suitLst).length === 1) {
       if (isStraight(rankLst)) {
         switch (rankLst[0]) {
           case 14:

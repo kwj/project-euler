@@ -5,7 +5,7 @@
 */
 
 import { unzip, zip } from "@std/collections";
-import { Counter, range } from "../lib/util.ts";
+import { counter, range } from "../lib/util.ts";
 
 // Don't use `as const` this object here because I need to treat these
 // values as number. Normally, we would define a type with readonly for
@@ -144,7 +144,7 @@ export const compute = (
     result.push(monteCarlo(dice, loopCnt));
   }
 
-  return Counter(result).sort((a, b) => b[1] - a[1])[0][0];
+  return counter(result).sort((a, b) => b[1] - a[1])[0][0];
 };
 
 export const solve = (): string => compute(4, 100, 10_000);
