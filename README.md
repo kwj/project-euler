@@ -3,7 +3,7 @@
 ## What is this?
 
 I play around with Project Euler to get a feel for programing languages.
-This repository deals with only the first 100 problems in accordance with the rule[^1].
+This repository deals with only the first 100 problems in accordance with the rule.[^1]
 
 Note that I assumes that these programs run on 64-bit platforms.
 

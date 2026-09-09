@@ -6,12 +6,13 @@
 # b = p - a - c
 # --> b^2 = (p - a - c)^2
 #
-# a^2 + (p - a - c)^2 = c^2
-# --> a^2 + p^2 + a^2 + c^2 - 2ap - 2ac + 2ac = c^2
-#     a^2 + p^2 + a^2 + - 2ap - 2cp + 2ac = 0
+# a^2 + b^2 = c^2
+# --> a^2 + (p - a - c)^2 = c^2
+#     a^2 + p^2 + a^2 + c^2 - 2ap - 2ac + 2ac = c^2
+#     a^2 + p^2 + a^2 - 2ap - 2cp + 2ac = 0
 #     2*a^2 - 2(p - c)a + (p^2 - 2cp) = 0
 #
-# --> discriminant D = (2(p - c))^2 - 4 * 2 * (p^2 - 2cp)
+# --> discriminant D = (-2(p - c))^2 - 4 * 2 * (p^2 - 2cp)
 #                    = 4(p - c)^2 - 8(p^2 - 2cp) >= 0
 # --> D/4 = (p - c)^2 + 4cp - 2p^2
 #         = p^2 - 2cp + c^2 + 4cp - 2p^2
@@ -33,17 +34,24 @@
 from math import isqrt
 
 
-def compute(perim: int) -> str:
+def compute(p: int) -> str:
     for c in range(415, 500):
-        # d <- D/4
-        d = c * c + 2 * c * perim - 1000 * 1000
-        tmp = isqrt(d)
-        if tmp * tmp == d:
-            # a < b
-            a = (2 * (perim - c) - 2 * tmp) // 4
-            b = (2 * (perim - c) + 2 * tmp) // 4
-            if a > 0 and b > 0:
-                return str(a * b * c)
+        # quadratic equation:
+        #    2*a^2 - 2(p - c)a + (p^2 - 2cp) = 0
+        # discriminant D:
+        #    4(p - c)^2 - 8(p^2 - 2cp)
+        # roots of the quadratic equation:
+        #    (2(p - c) ± sqrt(D)) / 4
+
+        # d <- D/4, so sqrt(D) = sqrt(4d) = 2 * sqrt(d)
+        d = c * c + 2 * c * p - p * p
+        sqrt_d = isqrt(d)
+        if sqrt_d * sqrt_d == d:
+            # a < b, _a = 2a, _b = 2b
+            _a = p - c - sqrt_d
+            _b = p - c + sqrt_d
+            if _a > 0 and _a & 0b1 == 0 and _b & 0b1 == 0:
+                return str((_a // 2) * (_b // 2) * c)
 
     return str(0)  # not found (NOT REACHED when perimeter = 1000)
 
