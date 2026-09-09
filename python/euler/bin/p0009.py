@@ -34,16 +34,17 @@
 from math import isqrt
 
 
+# quadratic equation:
+#   2*a^2 - 2(p - c)a + (p^2 - 2cp) = 0
+# discriminant D:
+#  4(p - c)^2 - 8(p^2 - 2cp)
+# roots of the quadratic equation:
+#  (2(p - c) ± sqrt(D)) / 4 = (2(p - c) ± sqrt(4((p - c)^2 - 2(p^2 - 2cp)))) / 4
+#                           = (p - c ± 2 * sqrt((p - c)^2 - 2(p^2 - 2cp))) / 2
+#                           = (p - c ± 2 * sqrt(c^2 + 2cp - p^2)) / 2
+#                                               ^^^^^^^^^^^^^^^ -> d
 def compute(p: int) -> str:
     for c in range(415, 500):
-        # quadratic equation:
-        #    2*a^2 - 2(p - c)a + (p^2 - 2cp) = 0
-        # discriminant D:
-        #    4(p - c)^2 - 8(p^2 - 2cp)
-        # roots of the quadratic equation:
-        #    (2(p - c) ± sqrt(D)) / 4
-
-        # d <- D/4, so sqrt(D) = sqrt(4d) = 2 * sqrt(d)
         d = c * c + 2 * c * p - p * p
         sqrt_d = isqrt(d)
         if sqrt_d * sqrt_d == d:
