@@ -40,7 +40,7 @@ fn compute(size_of_clique: usize) -> u64 {
 
         // switch the list of connectable primes to descending order and check cliques.
         nbr_lst.reverse();
-        if let Some(clqs) = check_cliques(&nbr_lst, size_of_clique - 1, &tbl) {
+        if let Some(clqs) = check_cliques(&nbr_lst, size_of_clique - 1, &tbl, p, ans) {
             ans = ans.min(
                 clqs.into_iter()
                     .map(|v| v.into_iter().sum::<u64>() + p)
@@ -78,8 +78,12 @@ fn check_cliques(
     desc_nbr_lst: &[u64],
     size: usize,
     tbl: &HashMap<u64, HashSet<u64>>,
+    p: u64,
+    ans: u64,
 ) -> Option<Vec<Vec<u64>>> {
     fn aux(
+        acc: u64,
+        thr: u64,
         group: &[u64],
         ps: &[u64],
         depth: usize,
@@ -89,21 +93,30 @@ fn check_cliques(
         if depth == 0 {
             result.push(group.to_vec());
         } else {
-            for offset in 0..=(ps.len() - depth) {
-                if group
-                    .iter()
-                    .all(|x| tbl.get(x).unwrap().contains(&ps[offset]))
-                {
-                    let mut next_group = group.to_vec();
-                    next_group.push(ps[offset]);
-                    aux(&next_group, &ps[(offset + 1)..], depth - 1, tbl, result);
+            for idx in 0..=(ps.len() - depth) {
+                if acc + ps[idx] > thr {
+                    continue;
+                }
+                if group.iter().all(|x| tbl.get(x).unwrap().contains(&ps[idx])) {
+                    let mut next_group = Vec::with_capacity(group.len() + 1);
+                    next_group.extend_from_slice(group);
+                    next_group.push(ps[idx]);
+                    aux(
+                        acc + ps[idx],
+                        thr,
+                        &next_group,
+                        &ps[(idx + 1)..],
+                        depth - 1,
+                        tbl,
+                        result,
+                    );
                 }
             }
         }
     }
 
     let mut result: Vec<Vec<u64>> = Vec::new();
-    aux(&Vec::new(), desc_nbr_lst, size, tbl, &mut result);
+    aux(p, ans, &Vec::new(), desc_nbr_lst, size, tbl, &mut result);
 
     if result.is_empty() {
         None
