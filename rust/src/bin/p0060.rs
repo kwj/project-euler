@@ -27,7 +27,7 @@ fn compute(size_of_clique: usize) -> u64 {
 
         // search for prime numbers that can be paired with 'p' and are less than 'p'
         let idx = ((p % 3) - 1) as usize;
-        let mut nbr_lst = find_nbrs(p, &prime_lst[idx], ans);
+        let mut nbr_lst = find_nbrs(p, &prime_lst[idx], ans - p);
         tbl.insert(p, HashSet::from_iter(nbr_lst.clone()));
 
         // update checked prime numbers
@@ -65,10 +65,10 @@ fn is_pair(x: u64, y: u64) -> bool {
     primes::is_prime(concat(x, y)) && primes::is_prime(concat(y, x))
 }
 
-fn find_nbrs(p: u64, asc_p_lst: &[u64], current_ans: u64) -> Vec<u64> {
+fn find_nbrs(p: u64, asc_p_lst: &[u64], thr: u64) -> Vec<u64> {
     asc_p_lst
         .iter()
-        .take_while(|&&x| x < current_ans - p)
+        .take_while(|&&x| x < thr)
         .filter(|&&x| is_pair(x, p))
         .copied()
         .collect()
@@ -79,9 +79,9 @@ fn check_cliques(
     size: usize,
     tbl: &HashMap<u64, HashSet<u64>>,
     p: u64,
-    ans: u64,
+    thr: u64,
 ) -> Option<Vec<Vec<u64>>> {
-    fn aux(
+    fn dfs(
         acc: u64,
         thr: u64,
         group: &[u64],
@@ -101,7 +101,7 @@ fn check_cliques(
                     let mut next_group = Vec::with_capacity(group.len() + 1);
                     next_group.extend_from_slice(group);
                     next_group.push(ps[idx]);
-                    aux(
+                    dfs(
                         acc + ps[idx],
                         thr,
                         &next_group,
@@ -116,7 +116,7 @@ fn check_cliques(
     }
 
     let mut result: Vec<Vec<u64>> = Vec::new();
-    aux(p, ans, &Vec::new(), desc_nbr_lst, size, tbl, &mut result);
+    dfs(p, thr, &Vec::new(), desc_nbr_lst, size, tbl, &mut result);
 
     if result.is_empty() {
         None
