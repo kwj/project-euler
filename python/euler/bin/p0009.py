@@ -74,14 +74,14 @@ def solve() -> str:
 #   (2(p - c) ± sqrt(D)) / 4
 #
 # ----
-#from math import ceil, isqrt, sqrt
+# from math import ceil, isqrt, sqrt
 #
-#def compute(p: int) -> str:
-#    for c in range(ceil((sqrt(2) - 1) * p), ceil(p / 2)):
-#        D = 4 * (p - c) ** 2 - 8 * (p ** 2 - 2 * c * p)
-#        sqrt_D = isqrt(D)
-#        if sqrt_D * sqrt_D == D:
-#            _a = (2 * (p - c) - sqrt_D)
-#            _b = (2 * (p - c) + sqrt_D)
-#            if _a > 0 and _a % 4 == 0 and _b % 4 == 0:
-#                return str((_a // 4) * (_b // 4) * c)
+# def compute(p: int) -> str:
+#     for c in range(ceil((sqrt(2) - 1) * p), ceil(p / 2)):
+#         D = 4 * (p - c) ** 2 - 8 * (p ** 2 - 2 * c * p)
+#         sqrt_D = isqrt(D)
+#         if sqrt_D * sqrt_D == D:
+#             _a = (2 * (p - c) - sqrt_D)
+#             _b = (2 * (p - c) + sqrt_D)
+#             if _a > 0 and _a % 4 == 0 and _b % 4 == 0:
+#                 return str((_a // 4) * (_b // 4) * c)
