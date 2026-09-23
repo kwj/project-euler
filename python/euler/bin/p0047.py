@@ -15,7 +15,7 @@ def compute(nfactors: int) -> str:
         else:
             cnt += 1
 
-    raise RuntimeError('unreachable!')
+    raise AssertionError('unreachable!')
 
 
 def solve() -> str:

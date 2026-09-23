@@ -70,7 +70,7 @@ def compute(fh: TextIO) -> str:
             if (result := check_pair(w1, w2)) is not None:
                 return str(result)
 
-    raise RuntimeError('unreachable!')
+    raise AssertionError('unreachable!')
 
 
 def solve() -> str:

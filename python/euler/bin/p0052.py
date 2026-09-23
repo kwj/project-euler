@@ -20,7 +20,7 @@ def compute() -> str:
             if check_num(n):
                 return str(n)
 
-    raise RuntimeError('unreachable!')
+    raise AssertionError('unreachable!')
 
 
 def solve() -> str:

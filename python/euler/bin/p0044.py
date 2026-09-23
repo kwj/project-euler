@@ -38,7 +38,7 @@ def compute() -> str:
                     if is_pentagonal(pent(k) + pent(j)):
                         return str(lhs // 2)
 
-    raise RuntimeError('unreachable!')
+    raise AssertionError('unreachable!')
 
 
 def solve() -> str:

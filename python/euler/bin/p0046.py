@@ -25,7 +25,7 @@ def compute() -> str:
         else:
             return str(x)
 
-    raise RuntimeError('unreachable!')
+    raise AssertionError('unreachable!')
 
 
 def solve() -> str:

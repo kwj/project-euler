@@ -26,7 +26,7 @@ def compute(digits: int) -> str:
         if answer:
             return str(max(answer))
 
-    raise RuntimeError('unreachable!')
+    raise AssertionError('unreachable!')
 
 
 def solve() -> str:

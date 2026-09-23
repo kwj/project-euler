@@ -145,7 +145,7 @@ def compute() -> str:
         if answer != 10**ndigits:
             return str(answer)
 
-    raise RuntimeError('unreachable!')
+    raise AssertionError('unreachable!')
 
 
 def solve() -> str:

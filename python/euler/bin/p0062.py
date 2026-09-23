@@ -17,7 +17,7 @@ def compute(n_of_perms: int) -> str:
         else:
             tbl[key] = [n]
 
-    raise RuntimeError('unreachable!')
+    raise AssertionError('unreachable!')
 
 
 def solve() -> str:

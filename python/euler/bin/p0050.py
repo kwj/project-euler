@@ -43,7 +43,7 @@ def compute(limit: int) -> str:
         else:
             return str(diff)
 
-    raise RuntimeError('unreachable!')
+    raise AssertionError('unreachable!')
 
 
 def solve() -> str:

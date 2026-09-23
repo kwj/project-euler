@@ -101,7 +101,7 @@ def get_handrank(hand: Iterable[str]) -> list[int]:
             case 2:
                 handrank = HAND_FH  # Full House
             case _:
-                raise RuntimeError('unreachable!')
+                raise AssertionError('unreachable!')
 
     handrank.extend(get_detail(hand_info))
 

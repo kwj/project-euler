@@ -61,7 +61,7 @@ def compute() -> str:
         if n_primes * 10 < 2 * m - 1:
             return str(m)
 
-    raise RuntimeError('unreachable!')
+    raise AssertionError('unreachable!')
 
 
 def solve() -> str:

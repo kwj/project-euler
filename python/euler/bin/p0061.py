@@ -88,7 +88,7 @@ def compute(max_nsides: int) -> str:
         return str(sum(cycles[0]))
 
     print(f'DEBUG: cycles (max polygon: {max_nsides}) {max_nsides}')
-    raise RuntimeError('unreachable!')
+    raise AssertionError('unreachable!')
 
 
 def solve() -> str:

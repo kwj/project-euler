@@ -93,7 +93,7 @@ class ChanceCard(Pile):
         elif sq == CH3:
             return R1
         else:
-            raise RuntimeError('unreachable!')
+            raise AssertionError('unreachable!')
 
     def _nextU(self, sq: int) -> int:
         if sq == CH1:
@@ -103,7 +103,7 @@ class ChanceCard(Pile):
         elif sq == CH3:
             return U1
         else:
-            raise RuntimeError('unreachable!')
+            raise AssertionError('unreachable!')
 
     def get(self, sq: int) -> int:
         tmp = self.cards[self.idx]
@@ -120,7 +120,7 @@ class ChanceCard(Pile):
         elif tmp == BACK3:
             return (sq + 37) % NUMBER_OF_SQUARES
         else:
-            raise RuntimeError('unreachable!')
+            raise AssertionError('unreachable!')
 
 
 class Dice:
