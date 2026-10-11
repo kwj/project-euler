@@ -6,7 +6,7 @@
 (defn- parse-data
   [data]
   (->> (map #(str/split % #" ") data)
-       (map #(map (fn [s] (parse-long s)) %))))
+       (map #(map parse-long %))))
 
 (defn solve
   ([]
