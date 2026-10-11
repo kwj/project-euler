@@ -6,7 +6,7 @@
 (defn- parse-data
   [data]
   (->> (map #(str/split % #" ") data)
-       (map (fn [cards] {:player-1 (take 5 cards) :player-2 (drop 5 cards)}))))
+       (map #(hash-map :player-1 (take 5 %) :player-2 (drop 5 %)))))
 
 (defn- ch->num
   [ch]
