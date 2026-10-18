@@ -26,7 +26,7 @@
                     (aux (cons (/ d1 d2) rest-lst))))))]
       (aux digits)
       (->> (persistent! set-of-numbers)
-           (filter #(pos? %))
+           (filter pos?)
            (sort)))))
 
 (defn- get-consec-length
