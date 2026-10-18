@@ -1,4 +1,4 @@
-(ns project-euler.core
+(ns project-euler.main
   (:require [clojure.main :as main]
             project-euler.lib.math
             project-euler.lib.math.prime

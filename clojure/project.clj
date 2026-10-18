@@ -3,9 +3,9 @@
   :url "https://github.com/kwj/project-euler"
   :license {:name "The MIT License"
             :url "https://opensource.org/license/mit/"}
-  :dependencies [[org.clojure/clojure "1.12.4"]]
-  :plugins [[dev.weavejester/lein-cljfmt "0.16.0"]]
-  :main ^:skip-aot project-euler.core
+  :dependencies [[org.clojure/clojure "1.12.6"]]
+  :plugins [[dev.weavejester/lein-cljfmt "0.16.4"]]
+  :main ^:skip-aot project-euler.main
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}})

@@ -1,7 +1,7 @@
 {
   :paths ["src" "resources"]
   :deps {
-    org.clojure/clojure {:mvn/version "1.12.4"}
+    org.clojure/clojure {:mvn/version "1.12.6"}
   }
   :aliases {
     :dev {
@@ -16,7 +16,7 @@
                   :server-daemon false}
     }
     :build {
-      :deps {io.github.clojure/tools.build {:mvn/version "0.10.12"}}
+      :deps {io.github.clojure/tools.build {:mvn/version "0.10.14"}}
       :ns-default build
     }
     :test {

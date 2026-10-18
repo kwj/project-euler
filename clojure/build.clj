@@ -21,5 +21,5 @@
   (b/uber {:class-dir class-dir
            :uber-file uber-file
            :basis @basis
-           :main 'project-euler.core}))
+           :main 'project-euler.main}))
 
